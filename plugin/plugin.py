@@ -1,35 +1,37 @@
 # -*- coding: UTF-8 -*-
-
 #-------------------------------------------------------
 #
-#              Foreca Wetterprognose
+#              Foreca Weatherprognosis
 #
-#   Deze Plugin haalt van Foreca de actuele
-#   Weervoorspelling voor de komende 10 dagen op.
+#   This Plugin retrieves the actual weather prediction
+#   for the next 10 days from the Foreca website.
 #
 #
-#   We wensen alle gebruikers heerlijk weer toe!
+#        We wish all users wonderful weather!
 #
-#                 Versie 1.6
+#                 Version 2.01 Int
 #
-#                  21.10.2011
+#                    12.11.2011
 #
-#        Gegevensbron: http://www.foreca.nl
+#     Source of information: http://www.foreca.com
 #
-#             Ontwerp en idee van
+#             Design and idea by
 #                  @Bauernbub
-#            enigma2 mod door mogli123
+#            enigma2 mod by mogli123
+#
 #-------------------------------------------------------
 
 from Components.ActionMap import HelpableActionMap
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.AVSwitch import AVSwitch
 from Components.Label import Label
+from Components.Language import language
 from Components.Button import Button
 from Components.Sources.StaticText import StaticText
 from Components.ScrollLabel import ScrollLabel
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest
+from os import environ
 from Components.Pixmap import Pixmap
 from Components.PluginComponent import plugins
 from Components.Console import Console
@@ -46,7 +48,7 @@ from Screens.Screen import Screen
 from Components.FileList import FileList
 from time import sleep
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS, fileExists
+from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_PLUGINS, fileExists
 from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
 from twisted.web.client import downloadPage, getPage
@@ -57,9 +59,26 @@ import os
 from os import system, remove, path, walk, makedirs, listdir
 from time import *
 import string
+import gettext
+
+def localeInit():
+	lang = language.getLanguage()
+	environ["LANGUAGE"] = lang[:2]
+	gettext.bindtextdomain("enigma2", resolveFilename(SCOPE_LANGUAGE))
+	gettext.textdomain("enigma2")
+	gettext.bindtextdomain("Foreca", "%s%s" % (resolveFilename(SCOPE_PLUGINS), "Extensions/Foreca/locale/"))
+
+def _(txt):
+	t = gettext.dgettext("Foreca", txt)
+	if t == txt:
+		t = gettext.gettext(txt)
+	return t
+
+localeInit()
+language.addCallback(localeInit)
 
 config.plugins.foreca = ConfigSubsection()
-config.plugins.foreca.Device = ConfigSelection(default="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/bilder/", choices = [("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/", _("...Plugins/Extensions/Foreca/")), ("/media/hdd/Foreca/", _("/media/hdd/Foreca/")), ("/var/swap/Foreca/", _("/var/swap/Foreca/"))])
+config.plugins.foreca.Device = ConfigSelection(default=resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder/", choices = [(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/", _("...Plugins/Extensions/Foreca/")), ("/media/hdd/Foreca/", _("/media/hdd/Foreca/")), ("/var/swap/Foreca/", _("/var/swap/Foreca/"))])
 config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("simple")), ("1", _("better"))])
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
@@ -69,16 +88,23 @@ config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
 config.plugins.foreca.infoline = ConfigEnableDisable(default=True)
 config.plugins.foreca.loop = ConfigEnableDisable(default=False)
 
+global PluginVersion
+PluginVersion = "2.01 - 12-11-2011"
+
 global MAIN_PAGE
-MAIN_PAGE = "http://www.foreca.nl"
-PNG_PATH = resolveFilename(SCOPE_PLUGINS)+"/Extensions/Foreca/picon/"
+MAIN_PAGE = _("http://www.foreca.com")
+PNG_PATH = resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/picon/"
+USR_PATH = "/etc/enigma2/Foreca"
 deviceName = HardwareInfo().get_device_name()
 
 # Make Path for Slideshow
-if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/bilder") is False:
-		os.system("mkdir -p /usr/lib/enigma2/python/Plugins/Extensions/Foreca/bilder")
+if os.path.exists(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder") is False:
+	os.system("mkdir -p "+resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder")
+# Make Path for user settings
+if os.path.exists(USR_PATH) is False:
+	os.system("mkdir -p " + USR_PATH)
 
-#---------------------- Skin Funktionen ---------------------------------------------------
+#---------------------- Skin Functions ----------------------------------------------------
 def getAspect():
 	val = AVSwitch().getAspectRatioSetting()
 	return val/2
@@ -129,10 +155,10 @@ class InfoBarAspectSelection:
 		tlist = []
 		tlist.append((_("Resolution"), "resolution"))
 		tlist.append(("", ""))
-		tlist.append(("Letterbox", "letterbox"))
-		tlist.append(("PanScan", "panscan"))
-		tlist.append(("Non Linear", "non"))
-		tlist.append(("Bestfit", "bestfit"))
+		tlist.append((_("Letterbox"), "letterbox"))
+		tlist.append((_("PanScan"), "panscan"))
+		tlist.append((_("Non Linear"), "non"))
+		tlist.append((_("Bestfit"), "bestfit"))
 		mode = open("/proc/stb/video/policy").read()[:-1]
 		print mode
 		for x in range(len(tlist)):
@@ -170,7 +196,7 @@ class MainMenuList(MenuList):
 		self.pos = 20
 		##print "[Foreca] MainMenuList"
 
-#--------------------------- Alle Listeneintraege durchlaufen -----------------------------
+#--------------------------- Go through all list entries ----------------------------------
 
 	def buildEntries(self):
 		##print "[Foreca] buildEntries:", len(self.list)
@@ -184,11 +210,11 @@ class MainMenuList(MenuList):
 	def downloadThumbnail(self):
 		thumbUrl = self.list[self.idx][0]
 		windlink = self.list[self.idx][3]
-		self.thumb = "/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/" + str(thumbUrl+ ".png")
-		self.wind = "/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/" + str(windlink)
+		self.thumb = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/" + str(thumbUrl+ ".png")
+		self.wind = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/" + str(windlink)
 		self.buildEntry(None)
 
-#----------------------------------- Eintrasege fuer Liste bilden ------------------------------------------------
+#----------------------------------- Build entries for list -------------------------------
 
 	def buildEntry(self, picInfo=None):
 		self.x = self.list[self.idx]
@@ -240,13 +266,13 @@ class MainMenuList(MenuList):
 		if int(self.x[2]) <= -8:
 			self.tempcolor = ddblau
 
-		# Zeit
+		# Time
 		self.res.append(MultiContentEntryText(pos=(10, 26), size=(70, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
 
 		# Temp
 		self.res.append(MultiContentEntryText(pos=(215, 13), size=(80, 24), font=0, text="Temp", color=weiss, color_sel=weiss))
 		self.res.append(MultiContentEntryText(pos=(207, 39), size=(80, 24), font=1, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(248, 39), size=(80, 24), font=1, text="�C",  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(248, 39), size=(80, 24), font=1, text="°C",  color=self.tempcolor, color_sel=self.tempcolor))
                 
 		# Wind
 		self.res.append(MultiContentEntryText(pos=(339, 13), size=(125, 24), font=0, text="Wind", color=weiss, color_sel=weiss))
@@ -265,7 +291,7 @@ class MainMenuList(MenuList):
 		self.idx += 1
 		self.buildEntries()
 
-# -------------------------- Menue Liste aufbauen -----------------------------------------
+# -------------------------- Build Menu list ----------------------------------------------
 
 	def SetList(self, l):
 		##print "[Foreca] SetList"
@@ -313,7 +339,7 @@ class ForecaPreviewCache(Screen):
 		self["spinner"].instance.setPixmap(png)
 
 #------------------------------------------------------------------------------------------
-#------------------------------ Foreca Programmvorschau---------------------------------------
+#------------------------------ Foreca Preview---------------------------------------------
 #------------------------------------------------------------------------------------------
 
 class ForecaPreview(Screen, HelpableScreen):
@@ -321,32 +347,70 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		MAIN_PAGE = "http://www.foreca.nl"
+		MAIN_PAGE = _("http://www.foreca.com")
 
-		# aktuelle, lokale Zeit als Tulpel
+		# actual, local Time as Tuple
 		lt = localtime()
-		# Entpacken des Tupels, Datum
+		# Extract the Tuple, Date
 		jahr, monat, tag = lt[0:3]
 		heute ="%04i%02i%02i" % (jahr,monat,tag)
 		self.tag = 0
 
-		# Startort einlesen
+		# Get home location
 		global city
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/startservice.cfg"):
-			file = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/startservice.cfg","r")
+		if fileExists(USR_PATH + "/startservice.cfg"):
+			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
-			self.ort ="Nederland/Utrecht"
-		
-		MAIN_PAGE = "http://www.foreca.nl/" + self.ort + "?details=" + heute
+			self.ort =_("United_Kingdom/London")
 
+		# Get diacritics to handle
+		self.FILTERin = []
+		self.FILTERout = []
+		self.FILTERidx = 0
+		self.taal = language.getLanguage()[:2]
+		if fileExists(USR_PATH + "/Filter.cfg"):
+			file = open(USR_PATH + "/Filter.cfg","r")
+			for line in file:
+				regel = str(line)
+				if regel[:2] == self.taal:
+					if regel[4] == "Y":
+						self.FILTERidx += 1
+						self.FILTERin.append(regel[7:15].strip())
+						self.FILTERout.append(regel[17:].strip())
+		file.close
+		
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?details=" + heute + "&lang=" + self.taal + "&units=metrickmh&tf=24h"
+		
 		desktop = getDesktop(0)
 		size = desktop.size()
 		width = size.width()
 		print "Desktop ", size, width
-		if width == 1024:
-			self.skin = """<screen position="center,65" size="899,480" title="Foreca Weersverwachting V 1.6 NL" backgroundColor="#40000000" >"""
+		if width == 1280:
+			self.skin = "<screen position=\"center,center\" size=\"970,505\" title=\"" + _("Foreca Weather Forecast") + "\" backgroundColor=\"#40000000\" >"
+			self.skin += """<widget name="MainList" position="0,90" size="970,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" scrollbarMode="showOnDemand" />
+				<widget source="Titel" render="Label" position="4,10" zPosition="3" size="968,40" font="Regular;30" valign="center" halign="center" transparent="1" foregroundColor="#ffffff"/>
+				<widget source="Titel2" render="Label" position="299,15" zPosition="2" size="440,40" font="Regular;28" valign="center" halign="left" transparent="1" foregroundColor="#f47d19"/>
+				<eLabel position="5,70" zPosition="2" size="970,1" backgroundColor="#FFFFFF" />
+				<widget source="key_red" render="Label" position="39,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_green" render="Label" position="177,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_yellow" render="Label" position="315,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_blue" render="Label" position="453,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_ok" render="Label" position="591,463" zPosition="2" size="138,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_menu" render="Label" position="729,463" zPosition="2" size="138,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<widget source="key_info" render="Label" position="867,463" zPosition="2" size="138,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+				<ePixmap position="2,470" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
+				<ePixmap position="140,470" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
+				<ePixmap position="278,470" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
+				<ePixmap position="416,470" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+				<ePixmap position="554,470" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
+				<ePixmap position="692,470" size="36,25" pixmap="skin_default/buttons/key_menu.png" transparent="1" alphatest="on" />
+				<ePixmap position="830,470" size="36,25" pixmap="skin_default/buttons/key_info.png" transparent="1" alphatest="on" />
+				<eLabel position="5,460" zPosition="2" size="970,2" backgroundColor="#FFFFFF" />
+			</screen>"""
+		else:
+			self.skin = "<screen position=\"center,65\" size=\"899,480\" title=\"" + _("Foreca Weather Forecast") + "\" backgroundColor=\"#40000000\" >"
 			self.skin += """<widget name="MainList" position="0,65" size="899,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" scrollbarMode="showOnDemand" />
 				<widget source="Titel" render="Label" position="120,3" zPosition="3" size="740,40" font="Regular;36" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 				<widget source="Titel2" render="Label" position="288,5" zPosition="2" size="440,40" font="Regular;28" valign="center" halign="left" transparent="1" foregroundColor="#f47d19"/>
@@ -355,79 +419,63 @@ class ForecaPreview(Screen, HelpableScreen):
 				<widget source="key_green" render="Label" position="260,438" zPosition="2" size="180,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 				<widget source="key_yellow" render="Label" position="450,438" zPosition="2" size="180,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 				<widget source="key_blue" render="Label" position="640,438" zPosition="2" size="180,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
-				<widget source="key_ok" render="Label" position="730,438" zPosition="2" size="180,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
+				<widget source="key_ok" render="Label" position="773,438" zPosition="2" size="180,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 				<ePixmap position="27,442" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
 				<ePixmap position="217,442" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
 				<ePixmap position="407,442" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
 				<ePixmap position="597,442" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+				<ePixmap position="730,442" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
 				<eLabel position="5,437" zPosition="2" size="870,2" backgroundColor="#FFFFFF" />
-			</screen>"""
-		else:
-			self.skin = """<screen position="center,center" size="970,505" title="Foreca Weersverwachting V 1.6 NL" backgroundColor="#40000000" >"""
-			self.skin += """<widget name="MainList" position="0,90" size="970,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" scrollbarMode="showOnDemand" />
-				<widget source="Titel" render="Label" position="4,10" zPosition="3" size="968,40" font="Regular;30" valign="center" halign="center" transparent="1" foregroundColor="#ffffff"/>
-				<widget source="Titel2" render="Label" position="299,15" zPosition="2" size="440,40" font="Regular;28" valign="center" halign="left" transparent="1" foregroundColor="#f47d19"/>
-				<eLabel position="5,70" zPosition="2" size="970,1" backgroundColor="#FFFFFF" />
-				<widget source="key_red" render="Label" position="39,463" zPosition="2" size="109,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
-				<widget source="key_green" render="Label" position="184,463" zPosition="2" size="113,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
-				<widget source="key_yellow" render="Label" position="333,463" zPosition="2" size="113,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
-				<widget source="key_blue" render="Label" position="480,463" zPosition="2" size="117,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
-				<widget source="key_ok" render="Label" position="598,463" zPosition="2" size="94,40" font="Regular;17" valign="center" halign="center" transparent="1" foregroundColor="#ffffff" />
-				<eLabel text="(Menu) Weerkaarten" position="737,463" zPosition="2" size="120,40" font="Regular;17" valign="center" halign="center" transparent="1" foregroundColor="#ffffff" />
-				<eLabel text="(info) Legenda" position="883,463" zPosition="2" size="94,40" font="Regular;17" valign="center" halign="center" transparent="1" foregroundColor="#ffffff" />
-				<ePixmap position="2,470" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-				<ePixmap position="148,470" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-				<ePixmap position="296,470" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-				<ePixmap position="445,470" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-				<eLabel position="5,460" zPosition="2" size="970,2" backgroundColor="#FFFFFF" />
 			</screen>"""
 
 		Screen.__init__(self, session)
-		self["navigationTitle"] = Label(" ")
+		#self["navigationTitle"] = Label(" ")
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
 		self["Titel2"] = StaticText()
-		self["Titel2"].text = _("Een ogenblik geduld ...")
+		self["Titel2"].text = _("Please wait ...")
 		self["key_green"] = StaticText()
 		self["key_yellow"] = StaticText()
 		self["key_red"] = StaticText()
 		self["key_blue"] = StaticText()
 		self["key_ok"] = StaticText()
 		self["key_red"].text = _("Week")
-		self["key_green"].text = _("Favoriet 1")
-		self["key_yellow"].text = _("Favoriet 2")
-		self["key_blue"].text = _("Startpagina")
-		self["key_ok"].text = _("(OK) Stad")
-		#self["info"] = StaticText()
-		#self["info"].text = _("(info) Legenda")
-		#self["menu"] = StaticText()
-		#self["menu"].text = _("(MENU) Kaarten")
+		self["key_green"].text = _("Favorite 1")
+		self["key_yellow"].text = _("Favorite 2")
+		self["key_blue"].text = _("Home")
+		self["key_ok"].text = _("City")
+		self["key_info"] = StaticText()
+		self["key_info"].text = _("Legend")
+		self["key_menu"] = StaticText()
+		self["key_menu"].text = _("Maps")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Foreca Weather Forecast") + "    " + _("Version ") + PluginVersion
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.exit, "Exit - Beeindigen"),
-				"menu": (self.Menu, "Menu - Weerkaarten"),
-				"showEventInfo": (self.info, "Info - Legenda"),
-				"ok": (self.OK, "OK - Stad"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				"red": (self.red, "Rood - Weekoverzicht"),
-				"green": (self.Fav1, "Groen - Favoriet 1"),
-				"yellow": (self.Fav2, "Geel - Favoriet 2"),
-				"blue": (self.Fav0, "Blauw - Startpagina"),
-				"0": (self.Tag0, "0 - Vandaag"),
-				"1": (self.Tag1, "1 - Vandaag + 1 dag"),
-				"2": (self.Tag2, "2 - Vandaag + 2 dagen"),
-				"3": (self.Tag3, "3 - Vandaag + 3 dagen"),
-				"4": (self.Tag4, "4 - Vandaag + 4 dagen"),
-				"5": (self.Tag5, "5 - Vandaag + 5 dagen"),
-				"6": (self.Tag6, "6 - Vandaag + 6 dagen"),
-				"7": (self.Tag7, "7 - Vandaag + 7 dagen"),
-				"8": (self.Tag8, "8 - Vandaag + 8 dagen"),
-				"9": (self.Tag9, "9 - Vandaag + 9 dagen"),
+				"cancel": (self.exit, _("Exit - End")),
+				"menu": (self.Menu, _("Menu - Weather maps")),
+				"showEventInfo": (self.info, _("Info - Legend")),
+				"ok": (self.OK, _("OK - City")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"red": (self.red, _("Red - Weekoverview")),
+				"green": (self.Fav1, _("Green - Favorite 1")),
+				"yellow": (self.Fav2, _("Yellow - Favorite 2")),
+				"blue": (self.Fav0, _("Blue - Home")),
+				"0": (self.Tag0, _("0 - Today")),
+				"1": (self.Tag1, _("1 - Today + 1 day")),
+				"2": (self.Tag2, _("2 - Today + 2 days")),
+				"3": (self.Tag3, _("3 - Today + 3 days")),
+				"4": (self.Tag4, _("4 - Today + 4 days")),
+				"5": (self.Tag5, _("5 - Today + 5 days")),
+				"6": (self.Tag6, _("6 - Today + 6 days")),
+				"7": (self.Tag7, _("7 - Today + 7 days")),
+				"8": (self.Tag8, _("8 - Today + 8 days")),
+				"9": (self.Tag9, _("9 - Today + 9 days")),
 			}, -2)
 
 		self.StartPageFirst()
@@ -444,7 +492,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def StartPage(self):
 		self["Titel"].text = _("                                   ")
-		self["Titel2"].text = _("Een ogenblik geduld ...")
+		self["Titel2"].text = _("Please wait ...")
 		self.working = False
 		print "[Foreca] MainList show:"
 		self["MainList"].show
@@ -505,17 +553,17 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.Zukunft(9)
 
 	def Fav0(self):
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/startservice.cfg"):
-			file = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/startservice.cfg","r")
+		if fileExists(USR_PATH + "/startservice.cfg"):
+			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
-			self.ort ="Nederland/Utrecht"
+			self.ort =_("United_Kingdom/London")
 		self.Zukunft(0)
 
 	def Fav1(self):
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav1.cfg"):
-			file = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav1.cfg","r")
+		if fileExists(USR_PATH + "/fav1.cfg"):
+			file = open(USR_PATH + "/fav1.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
@@ -523,8 +571,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.Zukunft(0)
 
 	def Fav2(self):
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav2.cfg"):
-			file = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav2.cfg","r")
+		if fileExists(USR_PATH + "/fav2.cfg"):
+			file = open(USR_PATH + "/fav2.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
@@ -533,11 +581,11 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Zukunft(self, ztag=0):
 		global MAIN_PAGE
-		# aktuelle, lokale Zeit als Tupel
+		# actual, local Time as Tuple
 		lt = localtime()
 		jahr, monat, tag = lt[0:3]
 
-		# Zukunft berechnen
+		# Calculate future date
 		ntag = tag + ztag
 		zukunft = jahr, monat, ntag, 0, 0, 0, 0, 0, 0
 		morgen = mktime(zukunft)
@@ -545,10 +593,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = "http://www.foreca.nl/" + self.ort + "?details=" + morgen
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?details=" + morgen+ "&lang=" + self.taal + "&units=metrickmh&tf=24h"
 		##print "Taglink ", MAIN_PAGE
 
-		# im Gui anzeigen
+		# Show in Gui
 		self.StartPage()
 
 	def OK(self):
@@ -558,7 +606,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.openWithCallback(self.OKCallback, CityPanel,panelmenu)
 
 	def info(self):
-		message = "%s" % (_("\n0 - 9     =   Prognose over (x) dagen\n\nVOL+/-    =   snel scrollen (Stad keuze)\n\n<   >     =   Prognose komende/vorige dag\n\nInfo     =  deze info\n\nMenu     =  Satellietfoto's en kaarten\n\nRood     =  Temperatuurverloop over de volgende 5 dagen\n\nGroen  =  Ga naar favoriet 1\n\nGeel    =  Ga naar Favoriet 2\n\nBlauw    =  Ga naar Home-Favoriet\n\nWindrichting     =  Icon bijv. Pijl -> wijst naar rechts betekent: Wind waait uit het westen\n"))
+		message = "%s" % (_("\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll (City choice)\n\n<   >       =   Prognosis next/previous day\n\nInfo        =   This information\n\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature for the next 5 days\n\nGreen    =   Go to Favorite 1\n\nYellow    =   Go to Favorite 2\n\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West\n"))
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OKCallback(self):
@@ -595,14 +643,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.tag = self.tag + 1
 			self.Zukunft(self.tag)
 
-	#def left(self):
-	#	if not self.working:
-	#		self["MainList"].pageUp()
-
-	#def right(self):
-	#	if not self.working:
-	#		self["MainList"].pageDown()
-
 	def up(self):
 		if not self.working:
 			self["MainList"].up()
@@ -614,7 +654,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#self.loc_id = current id
-			self.url="http://www.foreca.nl/meteogram.php?loc_id=" + self.loc_id + "&lang=nl&units=metrickmh/meteogram.png"
+			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&lang=" + self.taal + "&units=metrickmh/meteogram.png"
 			self.loadPicture(self.url)
 
 # ----------------------------------------------------------------------
@@ -626,7 +666,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.loc_id = str(id[0])
 
 		# <!-- START -->
-		#<h6><span>Dienstag</span> März 29</h6>
+		#<h6><span>Tuesday</span> March 29</h6>
 
 		##print "[Foreca] Start:" + str(len(html))
 		fulltext = re.compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', re.DOTALL)
@@ -635,14 +675,14 @@ class ForecaPreview(Screen, HelpableScreen):
 		#print titel[0]
 		#self["Titel"].setText(titel[0])
 
-		# <a href="/Austria/Linz?details=20110330">Mi</a>
+		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
 		link = str(fulltext.findall(html))
 		#print link
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = str(fulltext.findall(link))
-		#print "Tag ", tag
+		#print "Day ", tag
 
 		# ---------- Wetterdaten -----------
 
@@ -650,22 +690,22 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = re.compile(r'<!-- START -->(.+?)<div class="datecopy">', re.DOTALL)
 		html = str(fulltext.findall(html))
 
-		##print "zoeken ....."
+		##print "searching ....."
 		list = []
 
 		fulltext = re.compile(r'<a href="(.+?)".+?', re.DOTALL)
 		taglink = str(fulltext.findall(html))
 		#taglink = konvert_uml(taglink)
-		#print "Taglink ", taglink
+		#print "Daylink ", taglink
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = fulltext.findall(html)
-		#print "Dag ", str(tag)
+		#print "Day ", str(tag)
 
 		# <div class="c0"> <strong>17:00</strong></div>
 		fulltime = re.compile(r'<div class="c0"> <strong>(.+?)<.+?', re.DOTALL)
 		zeit = fulltime.findall(html)
-		#print "Tijd ", str(zeit)
+		#print "Time ", str(zeit)
 
 		#<div class="c4">
 		#<span class="warm"><strong>+15&deg;</strong></span><br />
@@ -673,21 +713,21 @@ class ForecaPreview(Screen, HelpableScreen):
 		temp = fulltime.findall(html)
 		#print "Temp ", str(temp)
 
-		# <div class="symbol_50x50d symbol_d000_50x50" title="onbewolkt"
+		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
 		fulltext = re.compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', re.DOTALL)
 		thumbnails = fulltext.findall(html)
 
 		fulltext = re.compile(r'<div class="c3">.+? (.+?)<br />.+?', re.DOTALL)
 		titel1 = fulltext.findall(html)
-		#print "Titel ", str(titel1).lstrip("\t").lstrip()
+		#print "Title ", str(titel1).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', re.DOTALL)
 		titel2 = fulltext.findall(html)
-		#print "Titel ", str(titel2).lstrip("\t").lstrip()
+		#print "Title ", str(titel2).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
 		titel3 = fulltext.findall(html)
-		#print "Titel ", str(titel3).lstrip("\t").lstrip()
+		#print "Title ", str(titel3).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c2">.+?<img src="/img/symb-wind/(.+?).gif', re.DOTALL)
 		windlink = fulltext.findall(html)
@@ -703,13 +743,13 @@ class ForecaPreview(Screen, HelpableScreen):
 		x = 0
 		while x < wert:
 			titel1[x] = str(sub('<[^>]*>',"",titel1[x]))
-			#Satz1 = titel1[x]
+			#Text1 = titel1[x]
 			Satz1 = self.konvert_uml(titel1[x])
 			titel2[x] = str(sub('<[^>]*>',"",titel2[x]))
-			#Satz2 = titel2[x]
+			#Text2 = titel2[x]
 			Satz2 = self.konvert_uml(titel2[x])
 			titel3[x] = str(sub('<[^>]*>',"",titel3[x]))
-			#Satz3 = titel3[x]
+			#Text3 = titel3[x]
 			Satz3 = self.konvert_uml(titel3[x])
 			#print zeit[x]
 			#print tag[x]
@@ -724,14 +764,27 @@ class ForecaPreview(Screen, HelpableScreen):
 			x = x +1
 
 		self["Titel2"].text = _("                                   ")
-		self["Titel"].text = _(self.ort) + "  -  " + titel[0]
+		datum = titel[0]
+		foundPos=datum.rfind(" ")
+		foundPos2=datum.find(" ")
+		datum2=datum[0:foundPos2]+datum[foundPos:len(datum)]+datum[foundPos2:foundPos]
+		foundPos=self.ort.find("/")
+		plaats=_(self.ort[0:foundPos]) + "-" + self.ort[foundPos+1:len(self.ort)]
+		self["Titel"].text = _(plaats) + "  -  " + datum2
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(1)
 		self["MainList"].show
 
 #------------------------------------------------------------------------------------------
 	def konvert_uml(self,Satz):
+		# remove diacritics for selected country
+		tel = 0
+		while tel < self.FILTERidx:
+			Satz = string.replace(Satz, self.FILTERin[tel], self.FILTERout[tel])
+			tel += 1
+		# remove remaining control characters and return
 		return Satz[Satz.rfind("\\t")+2:len(Satz)]	
+
 # -------------------------------------------------------------------
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
@@ -746,23 +799,23 @@ class CityPanel(Screen, HelpableScreen):
 
 	def __init__(self, session, panelmenu):
 		self.session = session
-		self.skin = """<screen name="CityPanel" position="center,center" size="730,540" title="Kies een stad" backgroundColor="#40000000">
-			<widget name="Mlist" position="10,10" size="700,490" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+		self.skin = "<screen name=\"CityPanel\" position=\"center,center\" size=\"730,540\" title=\"" + _("Select a city") + "\" backgroundColor=\"#40000000\">"
+		self.skin += """<widget name="Mlist" position="10,10" size="700,490" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			<eLabel position="0,515" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-			<widget source="key_green" render="Label" position="50,512" zPosition="2" size="150,30" font="Regular;20" valign="center" halign="left" transparent="1" />
-			<widget source="key_yellow" render="Label" position="200,512" zPosition="2" size="150,30" font="Regular;20" valign="center" halign="left" transparent="1" />
-			<widget source="key_blue" render="Label" position="350,514" zPosition="2" size="350,30" font="Regular;20" valign="center" halign="left" transparent="1" />
+			<widget source="key_green" render="Label" position="40,512" zPosition="2" size="150,30" font="Regular;20" valign="center" halign="left" transparent="1" />
+			<widget source="key_yellow" render="Label" position="190,512" zPosition="2" size="150,30" font="Regular;20" valign="center" halign="left" transparent="1" />
+			<widget source="key_blue" render="Label" position="340,514" zPosition="2" size="350,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 			<ePixmap position="0,515" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
 			<ePixmap position="150,515" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
 			<ePixmap position="300,515" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-		</screen>"""
+			</screen>"""
 
 		Screen.__init__(self, session)
 		self.Mlist = []
 
 		self.maxidx = 0
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/City.cfg"):
-			file = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/City.cfg", "r")
+		if fileExists(USR_PATH + "/City.cfg"):
+			file = open(USR_PATH + "/City.cfg", "r")
 			for line in file:
 				text = line.strip()
 				self.maxidx += 1
@@ -777,26 +830,28 @@ class CityPanel(Screen, HelpableScreen):
 		self["key_green"] = StaticText()
 		self["key_yellow"] = StaticText()
 		self["key_blue"] = StaticText()
-		self["key_green"].text = _("Favoriet 1")
-		self["key_yellow"].text = _("Favoriet 2")
-		self["key_blue"].text = _("Startpagina")
+		self["key_green"].text = _("Favorite 1")
+		self["key_yellow"].text = _("Favorite 2")
+		self["key_blue"].text = _("Home")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Select a city")
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self,"AAFKeyActions",
 			{
-				"cancel": (self.Exit, "Exit - Beeindigen"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				"ok": (self.ok, "OK - Kies"),
-				"green": (self.green, "Groen - Favoriet 1"),
-				"yellow": (self.yellow, "Geel - Favoriet 2"),
-				"blue": (self.blue, "Blauw - Startpagina"),
-				"nextBouquet": (self.jump500_down, "Kanaal+ - 500 terug"),
-				"prevBouquet": (self.jump500_up, "Kanaal- - 500 verder"),
-				"volumeDown": (self.jump100_up, "Volume- - 100 verder"),
-				"volumeUp": (self.jump100_down, "Volume+ - 100 terug")
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"ok": (self.ok, _("OK - Select")),
+				"green": (self.green, _("Green - Favorite 1")),
+				"yellow": (self.yellow, _("Yellow - Favorite 2")),
+				"blue": (self.blue, _("Blue - Home")),
+				"nextBouquet": (self.jump500_down, _("Channel+ - 500 back")),
+				"prevBouquet": (self.jump500_up, _("Channel- - 500 forward")),
+				"volumeDown": (self.jump100_up, _("Volume- - 100 forward")),
+				"volumeUp": (self.jump100_down, _("Volume+ - 100 back"))
 			}, -2)
 
 	def jump500_up(self):
@@ -847,34 +902,34 @@ class CityPanel(Screen, HelpableScreen):
 	def ok(self):
 		global city
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
-		##print "druk op OK", city
+		##print "Press OK", city
 		self.close()
 
 	def blue(self):
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
-		fwrite = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/startservice.cfg", "w")
+		fwrite = open(USR_PATH + "/startservice.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		message = "%s %s" % (_("Deze stad is als Startpagina opgeslagen!\n\n                       "), city)
+		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
 	def green(self):
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
-		fwrite = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav1.cfg", "w")
+		fwrite = open(USR_PATH + "/fav1.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		message = "%s %s" % (_("Deze stad is als favoriet 1 opgeslagen!\n\n                       "), city)
+		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
 	def yellow(self):
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
-		fwrite = open("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/fav2.cfg", "w")
+		fwrite = open(USR_PATH + "/fav2.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		message = "%s %s" % (_("Deze stad is als favoriet 2 opgeslagen!\n\n                       "), city)
+		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
 	def CityEntryItem(self,entry):
@@ -896,7 +951,7 @@ class CityPanel(Screen, HelpableScreen):
 		return res
 
 #------------------------------------------------------------------------------------------
-#    Europa Kaarten
+#    Europe Maps
 # -----------------------------------------------------------------------------------------
 
 class SatPanelList(MenuList):
@@ -921,62 +976,70 @@ class SatPanel(Screen, HelpableScreen):
 		self.ort = ort
 
 		if (getDesktop(0).size().width() == 1280):
-			self.skin = """<screen name="SatPanel" position="center,center" size="630,500" title="Satellietfoto's" backgroundColor="#40000000">
-				<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPanel\" position=\"center,center\" size=\"630,500\" title=\"" + _("Satellite photos") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 				<eLabel position="0,445" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-				<widget source="key_yellow" render="Label" position="220,450" zPosition="2" size="239,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<widget source="key_blue" render="Label" position="493,450" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<widget source="key_red" render="Label" position="52,450" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<ePixmap position="12,460" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-				<ePixmap position="455,460" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-				<ePixmap position="178,460" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-			</screen>"""
+				<widget source="key_red" render="Label" position="40,450" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_green" render="Label" position="198,450" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_yellow" render="Label" position="338,450" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_blue" render="Label" position="498,450" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<ePixmap position="2,460" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
+				<ePixmap position="160,460" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
+				<ePixmap position="300,460" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
+				<ePixmap position="460,460" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+				</screen>"""
 		else:
-			self.skin = """<screen name="SatPanel" position="center,center" size="630,440" title="Satellietfoto's" backgroundColor="#252525">
-				<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPanel\" position=\"center,center\" size=\"630,440\" title=\"" + _("Satellite photos") + "\" backgroundColor=\"#252525\">"
+			self.skin += """<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 				<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-				<widget source="key_red" render="Label" position="150,397" zPosition="2" size="290,30" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<widget source="key_blue" render="Label" position="260,397" zPosition="2" size="290,30" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<ePixmap position="90,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-				<ePixmap position="200,400" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-			</screen>"""
+				<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<ePixmap position="2,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
+				<ePixmap position="160,400" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
+				<ePixmap position="300,400" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
+				<ePixmap position="460,400" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+				</screen>"""
 
 		Screen.__init__(self, session)
 		self.Mlist = []
 
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('satelliet'), _("Weerkaart Video"), 'satelliet')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('neerslag'), _("Buienradar Video"), 'neerslag')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bewolking'), _("Bewolking Video"), 'bewolking')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('satelliet'), _("Weather map Video"), 'satelliet')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('neerslag'), _("Showerradar Video"), 'neerslag')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bewolking'), _("Cloudcover Video"), 'bewolking')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('eumetsat'), _("Eumetsat"), 'eumetsat')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('luchtdruk'), _("Luchtdruk"), 'luchtdruk')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('infrarotmetoffice'), _("Infrarood"), 'infrarotmetoffice')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('luchtdruk'), _("Air pressure"), 'luchtdruk')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('infrarotmetoffice'), _("Infrared"), 'infrarotmetoffice')))
                 
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelList([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_red"] = StaticText()
-		self["key_red"].text = _("Continenten")
+		self["key_red"].text = _("Continents")
 		self["key_green"] = StaticText()
-		self["key_green"].text = _("Europa")
+		self["key_green"].text = _("Europe")
 		self["key_yellow"] = StaticText()
-		self["key_yellow"].text = _("Duitsland")
+		self["key_yellow"].text = _("Germany")
 		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Instellingen")
+		self["key_blue"].text = _("Settings")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Satellite photos")
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.Exit, "Exit - Beeindigen"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				"red": (self.SatPanelc, "Rood - Continenten"),
-				"green": (self.SatPaneld, "Groen - Europa"),
-				"yellow": (self.SatPanelb, "Geel - Duitsland"),
-				"blue": (self.PicSetupMenu, "Blauw - Instellingen"),
-				"ok": (self.ok, "OK - Toon"),
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"red": (self.SatPanelc, _("Red - Continents")),
+				"green": (self.SatPaneld, _("Green - Europe")),
+				"yellow": (self.SatPanelb, _("Yellow - Germany")),
+				"blue": (self.PicSetupMenu, _("Blue - Settings")),
+				"ok": (self.ok, _("OK - Show")),
 			}, -2)
 
 	def up(self):
@@ -1001,12 +1064,12 @@ class SatPanel(Screen, HelpableScreen):
 	def ok(self):
 		#global menu
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		##print "druk op OK", menu
+		##print "Press OK", menu
 		#self.close()
 		self.SatBild()
 
 	def SatEntryComponent(self,file):
-		png = LoadPixmap("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/" + file + ".png")
+		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/thumb/" + file + ".png")
 		res = (png)
 		return res
 
@@ -1026,37 +1089,37 @@ class SatPanel(Screen, HelpableScreen):
 
 	def SatBild(self):
 
-		#message = "%s" % (_("Satellietfoto's worden geladen .....\n\n                       "))
+		#message = "%s" % (_("Satellitephotos are being loaded .....\n\n                       "))
 		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
 		if menu == "satelliet":
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.nl/" + self.ort + "?map=sat"
+			url = _("http://www.foreca.com") + "/" + self.ort + "?map=sat"
 
 #------------------------------------------------------------------------------------------
 
 		if menu == "neerslag":
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.nl/" + self.ort + "?map=rain"
+			url = _("http://www.foreca.com") + "/" + self.ort + "?map=rain"
 
 #------------------------------------------------------------------------------------------
 
 		if menu == "bewolking":
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.nl/" + self.ort + "?map=cloud"
+			url = _("http://www.foreca.com") + "/" + self.ort + "?map=cloud"
 
 #------------------------------------------------------------------------------------------
 
 		if menu == "luchtdruk":
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.at/" + self.ort + "?map=pressure"
+			url = _("http://www.foreca.com") + "/" + self.ort + "?map=pressure"
 
 #------------------------------------------------------------------------------------------
 
 		if menu == "satelliet" or menu == "neerslag" or menu == "bewolking" or menu == "luchtdruk":
-			# Lade Kategorie Seite und suche BildLink
+			# Load site for category and search Picture link
 			h = urllib.urlretrieve(url, devicepath)
 			fd=open(devicepath)
 			html=fd.read()
@@ -1067,8 +1130,8 @@ class SatPanel(Screen, HelpableScreen):
 			PicLink = PressureLink[0]
 			PicLink = "http://cache-" +	PicLink
 
-			# Lade Bilder fuer Slideshow
-			devicepath = "/usr/lib/enigma2/python/Plugins/Extensions/Foreca/bilder/sat"
+			# Load Picture for Slideshow
+			devicepath = resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder/"
 			max = int(len(PressureLink))-2
 			print "max= ", str(max)
 			zehner = "1"
@@ -1087,7 +1150,7 @@ class SatPanel(Screen, HelpableScreen):
 				file = file + 2
 				print str(file)
 				file = str(file)
-				file2 = file[2:4]+"-"+file[0:2]+" - "+file[4:6]+" uur"
+				file2 = file[2:4]+"-"+file[0:2]+" - "+file[4:6]+" "+_("h")
 				print file2
 				h = urllib.urlretrieve(url, devicepath + file2 + ".jpg")
 				x = x + 1
@@ -1177,12 +1240,12 @@ class SatPanelb(Screen, HelpableScreen):
 		self.ort = ort
 
 		if (getDesktop(0).size().width() == 1280):
-			self.skin = """<screen name="SatPanelb" position="center,center" size="630,500" title="Duitsland" backgroundColor="#40000000">
-				<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPanelb\" position=\"center,center\" size=\"630,500\" title=\"" + _("Germany") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			</screen>"""
 		else:
-			self.skin = """<screen name="SatPanelb" position="center,center" size="630,440" title="Satelietfoto's" backgroundColor="#40000000">
-				<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPanelb\" position=\"center,center\" size=\"630,440\" title=\"" + _("Germany") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			</screen>"""
 
 
@@ -1190,39 +1253,41 @@ class SatPanelb(Screen, HelpableScreen):
 		self.Mlist = []
 
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('badenwuerttemberg'), _("Baden-Wuerttemberg"), 'badenwuerttemberg')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bayern'), _("Bayern"), 'bayern')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bayern'), _("Bavaria"), 'bayern')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('berlin'), _("Berlin"), 'berlin')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('brandenburg'), _("Brandenburg"), 'brandenburg')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bremen'), _("Bremen"), 'bremen')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('hamburg'), _("Hamburg"), 'hamburg')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('hessen'), _("Hessen"), 'hessen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('hessen'), _("Hesse"), 'hessen')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('mecklenburgvorpommern'), _("Mecklenburg-Vorpommern"), 'mecklenburgvorpommern')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('niedersachsen'), _("Niedersachsen"), 'niedersachsen')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('nordrheinwestfalen'), _("Nordrhein-Westfalen"), 'nordrheinwestfalen')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('rheinlandpfalz'), _("Rheinland-Pfalz"), 'rheinlandpfalz')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('niedersachsen'), _("Lower Saxony"), 'niedersachsen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('nordrheinwestfalen'), _("North Rhine-Westphalia"), 'nordrheinwestfalen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('rheinlandpfalz'), _("Rhineland-Palatine"), 'rheinlandpfalz')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('saarland'), _("Saarland"), 'saarland')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sachsen'), _("Sachsen"), 'sachsen')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sachsenanhalt'), _("Sachsen-Anhalt"), 'sachsenanhalt')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sachsen'), _("Saxony"), 'sachsen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sachsenanhalt'), _("Saxony-Anhalt"), 'sachsenanhalt')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('schleswigholstein'), _("Schleswig-Holstein"), 'schleswigholstein')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('thueringen'), _("Thueringen"), 'thueringen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('thueringen'), _("Thuringia"), 'thueringen')))
 
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Instellingen")
+		self["key_blue"].text = _("Settings")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Germany")
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.Exit, "Exit - Beeindigen"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				"blue": (self.PicSetupMenu, "Blauw - Instellingen"),
-				"ok": (self.ok, "OK - Toon"),
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"blue": (self.PicSetupMenu, _("Blue - Settings")),
+				"ok": (self.ok, _("OK - Show")),
 			}, -2)
 
 	def up(self):
@@ -1247,12 +1312,12 @@ class SatPanelb(Screen, HelpableScreen):
 	def ok(self):
 		#global menu
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		##print "druecke OK", menu
+		##print "Press OK", menu
 		#self.close()
 		self.SatBild()
 
 	def SatEntryComponent(self,file):
-		png = LoadPixmap("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/bundesland/" + file + ".png")
+		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bundesland/" + file + ".png")
 		res = (png)
 		return res
 
@@ -1263,7 +1328,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 	def SatBild(self):
 
-		#message = "%s" % (_("Satelietfoto's worden geladen .....\n\n                       "))
+		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
 		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
@@ -1278,42 +1343,42 @@ class SatPanelb(Screen, HelpableScreen):
 		if menu == "bayern":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/bayern0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/bayern0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "berlin":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/berlin0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/berlin0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "brandenburg":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/brandenburg0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/brandenburg0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "bremen":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/bremen0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/bremen0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "hamburg":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/hamburg0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/hamburg0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "hessen":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/hessen0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/hessen0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
@@ -1334,49 +1399,49 @@ class SatPanelb(Screen, HelpableScreen):
 		if menu == "nordrheinwestfalen":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/nordrheinwestfalen0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/nordrheinwestfalen0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "rheinlandpfalz":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/rheinlandpfalz0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/rheinlandpfalz0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "saarland":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/saarland0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/saarland0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "sachsen":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/sachsen0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/sachsen0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "sachsenanhalt":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/sachsenanhalt0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/sachsenanhalt0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "schleswigholstein":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/schleswigholstein0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/schleswigholstein0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "thueringen":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/thueringen0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/thueringen0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
@@ -1407,7 +1472,7 @@ class SatPanelb(Screen, HelpableScreen):
 		return res
 
 #------------------------------------------------------------------------------------------
-# Weltkarte - Kontinente
+# Worldmap - Continents
 # -------------------------------------------------------------------
 
 class SatPanelListc(MenuList):
@@ -1431,47 +1496,49 @@ class SatPanelc(Screen, HelpableScreen):
 		self.ort = ort
 
 		if (getDesktop(0).size().width() == 1280):
-			self.skin = """<screen name="SatPanelc" position="center,center" size="630,500" title="Wereldkaart - Continenten" backgroundColor="#40000000">
-				<widget name="Mlist" position="1,20" size="627,460" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPanelc\" position=\"center,center\" size=\"630,500\" title=\"" + _("Continents") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="1,20" size="627,460" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			</screen>"""                                  
 		else:
-			self.skin = """<screen name="SatPanelc" position="center,center" size="630,440" title="Wereldkaart - Continenten" backgroundColor="#252525">
-				<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
-		</screen>"""
+			self.skin = "<screen name=\"SatPanelc\" position=\"center,center\" size=\"630,440\" title=\"" + _("Continents") + "\" backgroundColor=\"#252525\">"
+			self.skin += """<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			</screen>"""
 
 
 		Screen.__init__(self, session)
 		self.Mlist = []
 
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('europa'), _("Europa"), 'europa')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-nord'), _("Noord Afrika"), 'afrika-nord')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-sued'), _("Zuid Afrika"), 'afrika-sued')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('nordamerika'), _("Noord Amerika"), 'nordamerika')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('mittelamerika'), _("Midden Amerika"), 'mittelamerika')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedamerika'), _("Zuid Amerika"), 'suedamerika')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('naherosten'), _("Midden Oosten"), 'naherosten')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('ostasien'), _("Oost Azie"), 'ostasien')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedostasien'), _("Zuidoost Azie"), 'suedostasien')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('zentralasien'), _("Midden Azie"), 'zentralasien')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('australienundozeanien'), _("Australie"), 'australienundozeanien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('europa'), _("Europe"), 'europa')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-nord'), _("North Africa"), 'afrika-nord')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-sued'), _("South Africa"), 'afrika-sued')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('nordamerika'), _("North America"), 'nordamerika')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('mittelamerika'), _("Middle America"), 'mittelamerika')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedamerika'), _("South America"), 'suedamerika')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('naherosten'), _("Middle East"), 'naherosten')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('ostasien'), _("East Asia"), 'ostasien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedostasien'), _("Southeast Asia"), 'suedostasien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('zentralasien'), _("Middle Asia"), 'zentralasien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('australienundozeanien'), _("Australia"), 'australienundozeanien')))
                 
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelListc([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		#self["key_blue"] = StaticText()
-		#self["key_blue"].text = _("Einstellungen")
+		#self["key_blue"].text = _("Settings")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Continents")
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.Exit, "Exit - Beeindigen"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				#"blue": (self.PicSetupMenu, "Blauw - Instellingen"),
-				"ok": (self.ok, "OK - Toon"),
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				#"blue": (self.PicSetupMenu, _("Blue - Settings")),
+				"ok": (self.ok, _("OK - Show")),
 			}, -2)
 
 	def up(self):
@@ -1496,12 +1563,12 @@ class SatPanelc(Screen, HelpableScreen):
 	def ok(self):
 		#global menu
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		##print "druk op OK", menu
+		##print "Press OK", menu
 		#self.close()
 		self.SatBild()
 
 	def SatEntryComponent(self,file):
-		png = LoadPixmap("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/kontinent/" + file + ".png")
+		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/kontinent/" + file + ".png")
 		res = (png)
 		return res
 
@@ -1512,7 +1579,7 @@ class SatPanelc(Screen, HelpableScreen):
 
 	def SatBild(self):
 
-		#message = "%s" % (_("Satelietfoto's worden geladen .....\n\n                       "))
+		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
 		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
@@ -1527,35 +1594,35 @@ class SatPanelc(Screen, HelpableScreen):
 		if menu == "afrika-nord":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/afrika_nord0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/afrika_nord0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "afrika-sued":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/afrika_sued0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/afrika_sued0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
                         
 		if menu == "nordamerika":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/nordamerika0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/nordamerika0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "mittelamerika":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/mittelamerika0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/mittelamerika0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "suedamerika":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/suedamerika0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/suedamerika0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
@@ -1576,21 +1643,21 @@ class SatPanelc(Screen, HelpableScreen):
 		if menu == "suedostasien":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/suedostasien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/suedostasien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "zentralasien":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/zentralasien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/zentralasien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "australienundozeanien":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/australienundozeanien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/australienundozeanien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
@@ -1620,7 +1687,7 @@ class SatPanelc(Screen, HelpableScreen):
 		return res
 
 #------------------------------------------------------------------------------------------
-# Europa - Kaarten
+# Europe - Maps
 # -------------------------------------------------------------------
 
 class SatPanelListd(MenuList):
@@ -1645,48 +1712,50 @@ class SatPaneld(Screen, HelpableScreen):
 		self.ort = ort
 
 		if (getDesktop(0).size().width() == 1280):
-			self.skin = """<screen name="SatPaneld" position="center,center" size="630,500" title="Europa" backgroundColor="#40000000">
-				<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPaneld\" position=\"center,center\" size=\"630,500\" title=\"" + _("Europe") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			</screen>"""
 		else:
-			self.skin = """<screen name="SatPaneld" position="center,center" size="630,440" title="Europa" backgroundColor="#40000000">
-				<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
+			self.skin = "<screen name=\"SatPaneld\" position=\"center,center\" size=\"630,440\" title=\"" + _("Europe") + "\" backgroundColor=\"#40000000\">"
+			self.skin += """<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" scrollbarMode="showOnDemand" />
 			</screen>"""
 
 		Screen.__init__(self, session)
 		self.Mlist = []
 
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorBE'), _("Belgie"), 'wetterkontorBE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDN'), _("Denemarken"), 'wetterkontorDN')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDE'), _("Duitsland"), 'wetterkontorDE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorFR'), _("Frankrijk"), 'wetterkontorFR')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorGB'), _("Groot Brittannie"), 'wetterkontorGB')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIE'), _("Ierland"), 'wetterkontorIE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIT'), _("Italie"), 'wetterkontorIT')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorLU'), _("Luxemburg"), 'wetterkontorLU')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorNL'), _("Nederland"), 'wetterkontorNL')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorAT'), _("Oostenrijk"), 'wetterkontorAT')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorAT'), _("Austria"), 'wetterkontorAT')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorBE'), _("Belgium"), 'wetterkontorBE')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDN'), _("Denmark"), 'wetterkontorDN')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorFR'), _("France"), 'wetterkontorFR')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDE'), _("Germany"), 'wetterkontorDE')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorGB'), _("Great Britain"), 'wetterkontorGB')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIE'), _("Ireland"), 'wetterkontorIE')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIT'), _("Italy"), 'wetterkontorIT')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorLU'), _("Luxembourg"), 'wetterkontorLU')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorNL'), _("Netherlands"), 'wetterkontorNL')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorPO'), _("Portugal"), 'wetterkontorPO')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorES'), _("Spanje"), 'wetterkontorES')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorCH'), _("Zwitserland"), 'wetterkontorCH')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorES'), _("Spain"), 'wetterkontorES')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorCH'), _("Switzerland"), 'wetterkontorCH')))
                 
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Instellingen")
+		self["key_blue"].text = _("Settings")
+		self["Title"] = StaticText()
+		self["Title"].text = _("Europe")
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.Exit, "Exit - Beeindigen"),
-				"left": (self.left, "Links - Pagina verder"),
-				"right": (self.right, "Rechts - Pagina terug"),
-				"up": (self.up, "Op - Omhoog"),
-				"down": (self.down, "Neer - Omlaag"),
-				"blue": (self.PicSetupMenu, "Blauw - Instellingen"),
-				"ok": (self.ok, "OK - Toon"),
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"blue": (self.PicSetupMenu, _("Blue - Settings")),
+				"ok": (self.ok, _("OK - Show")),
 			}, -2)
 
 	def up(self):
@@ -1711,12 +1780,12 @@ class SatPaneld(Screen, HelpableScreen):
 	def ok(self):
 		#global menu
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		##print "druecke OK", menu
+		##print "Press OK", menu
 		#self.close()
 		self.SatBild()
 
 	def SatEntryComponent(self,file):
-		png = LoadPixmap("/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/" + file + ".png")
+		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/thumb/" + file + ".png")
 		res = (png)
 		return res
 
@@ -1727,7 +1796,7 @@ class SatPaneld(Screen, HelpableScreen):
 
 	def SatBild(self):
 
-		#message = "%s" % (_("Satelietfoto's worden geladen .....\n\n                       "))
+		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
 		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
@@ -1742,84 +1811,84 @@ class SatPaneld(Screen, HelpableScreen):
 		if menu == "wetterkontorAT":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/oesterreich0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/oesterreich0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorNL":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/niederlande0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/niederlande0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorDN":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/daenemark0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/daenemark0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorCH":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/schweiz0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/schweiz0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorBE":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/belgien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/belgien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorIT":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/italien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/italien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorES":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/spanien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/spanien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorGB":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/grossbritannien0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/grossbritannien0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorFR":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/frankreich0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/frankreich0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorIE":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/irland0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/irland0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorLU":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/luxemburg0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/luxemburg0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
 		if menu == "wetterkontorPO":
 			devicepath = "/tmp/meteogram.png"
 			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.at/maps/portugal0.jpg", devicepath)
+			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/portugal0.jpg", devicepath)
 			filelist = devicepath
 			self.session.open(PicView, filelist, 0, path, False)
 
@@ -1849,7 +1918,7 @@ class SatPaneld(Screen, HelpableScreen):
 		return res
 
 #------------------------------------------------------------------------------------------
-#-------------------------- Bildbetrachter der Grossbilder --------------------------------
+#-------------------------- Picture viewer for large pictures -----------------------------
 #------------------------------------------------------------------------------------------
 
 class PicView(Screen):
@@ -1863,7 +1932,9 @@ class PicView(Screen):
 
 		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
-			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /><widget name=\"pic\" position=\"" + str(space) + "," + str(space) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)) + "\" zPosition=\"1\" alphatest=\"on\" /></screen>"
+			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /> \
+			<widget name=\"pic\" position=\"" + str(space) + "," + str(space) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)) + "\" zPosition=\"1\" alphatest=\"on\" /> \
+			</screen>"
 
 		Screen.__init__(self, session)
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "MovieSelectionActions", "MenuActions", "SetupActions"],
@@ -1924,10 +1995,12 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 
 		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
-			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /><widget name=\"pic\" position=\"" + str(space) + "," + str(space+40) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)-40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
-			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/record.png\" alphatest=\"on\" /> \
-			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"/usr/lib/enigma2/python/Plugins/Extensions/Foreca/thumb/ico_mp_play.png\"  alphatest=\"on\" /> \
-			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + ",25\" font=\"Regular;20\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /></screen>"
+			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /> \
+			<widget name=\"pic\" position=\"" + str(space) + "," + str(space+40) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)-40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
+			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + resolveFilename(SCOPE_PLUGINS)+ "Extensions/Foreca/thumb/record.png\" alphatest=\"on\" /> \
+			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + resolveFilename(SCOPE_PLUGINS)+ "Extensions/Foreca/thumb/ico_mp_play.png\"  alphatest=\"on\" /> \
+			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + ",25\" font=\"Regular;20\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
+			</screen>"
 		Screen.__init__(self, session)
 
 		InfoBarAspectSelection.__init__(self)
@@ -1942,7 +2015,7 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 		self["point"] = Pixmap()
 		self["pic"] = Pixmap()
 		self["play_icon"] = Pixmap()
-		self["file"] = Label(_("Een ogenblik geduld, foto wordt geladen..."))
+		self["file"] = Label(_("Please wait, photo is being loaded ..."))
 		self.old_index = 0
 		self.picfilelist = []
 		self.lastindex = pindex
@@ -2068,25 +2141,30 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 
 class PicSetup(Screen):
 
-	skin = """<screen position="center,center" size="480,260" title="Foreca SlideShow Settings" backgroundColor="#000000" >
-		<widget name="liste" position="5,5" size="470,250" scrollbarMode="showOnDemand" />
-		<eLabel backgroundColor="red" position="28,250" size="140,3" zPosition="2"/>
-		<eLabel backgroundColor="green" position="228,250" size="140,3" zPosition="2"/>
-		<widget name="key_red" position="28,218" zPosition="3" size="140,40" font="Regular;19" valign="center" halign="center" transparent="1" />
-		<widget name="key_green" position="228,218" zPosition="3" size="140,40" font="Regular;19" valign="center" halign="center" transparent="1" />
-	</screen>"""
+	skin = "<screen position=\"center,center\" size=\"480,260\" title=\"" + _("SlideShow Settings") + "\" backgroundColor=\"#000000\" >"
+	skin +=	"""<widget name="liste" position="5,5" size="470,250" scrollbarMode="showOnDemand" /> 
+		<widget source="key_red" render="Label" position="39,215" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
+		<widget source="key_green" render="Label" position="159,215" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
+		<ePixmap position="2,225" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
+		<ePixmap position="122,225" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
+		</screen>"""
 
 	def __init__(self, session):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
-		self["key_red"] = Button(_("Back"))
-		self["key_green"] = Button(_("Save"))
+		self["key_red"] = StaticText()
+		self["key_red"].text = _("Cancel")
+		self["key_green"] = StaticText()
+		self["key_green"].text = _("Save")
+		self["Title"] = StaticText()
+		self["Title"].text = _("SlideShow Settings")
 		self["actions"] = NumberActionMap(["SetupActions", "ColorActions"],
 			{
 				"ok": self.save,
+				"save": self.save,
 				"green": self.save,
-				"cancel": self.close,
-				"red": self.close,
+				"cancel": self.cancel,
+				"red": self.cancel,
 				"left": self.keyLeft,
 				"right": self.keyRight,
 				"0": self.keyNumber,
@@ -2120,6 +2198,11 @@ class PicSetup(Screen):
 		config.save()
 		self.close()
 
+	def cancel(self):
+		for x in self["liste"].list:
+			x[1].cancel()
+		self.close(False,self.session)
+
 	def keyLeft(self):
 		self["liste"].handleKey(KEY_LEFT)
 
@@ -2130,11 +2213,11 @@ class PicSetup(Screen):
 		self["liste"].handleKey(KEY_0 + number)
 
 #------------------------------------------------------------------------------------------
-#------------------------------------- Haupt Programm -------------------------------------
+#------------------------------------- Main Program ---------------------------------------
 #------------------------------------------------------------------------------------------
 
 def start(session, **kwargs):
 	session.open(ForecaPreview)
 
 def Plugins(**kwargs):
-	return PluginDescriptor(name="Foreca Weersverwachting", description="Weersverwachting 10 dagen", icon="foreca_logo.png", where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU], fnc=start)
+	return PluginDescriptor(name=_("Foreca Weather Forecast"), description=_("Weather forecast for the upcoming 10 days"), icon="foreca_logo.png", where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU], fnc=start)

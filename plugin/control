@@ -1,0 +1,10 @@
+Package: enigma2-plugin-extensions-foreca
+Version: 2.01
+Description: Foreca Plugin for E2.
+Section: extra
+Priority: optional
+Maintainer: Bauernbub
+Architecture: mipsel
+OE: enigma2-plugin-extensions-Foreca
+Depends: python-html
+Homepage: http://www.aaf-digital.info
