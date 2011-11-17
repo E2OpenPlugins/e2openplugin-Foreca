@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+﻿# -*- coding: UTF-8 -*-
 #-------------------------------------------------------
 #
 #              Foreca Weatherprognosis
@@ -6,12 +6,11 @@
 #   This Plugin retrieves the actual weather prediction
 #   for the next 10 days from the Foreca website.
 #
-#
 #        We wish all users wonderful weather!
 #
-#                 Version 2.01 Int
+#                 Version 2.2 Int
 #
-#                    12.11.2011
+#                    15.11.2011
 #
 #     Source of information: http://www.foreca.com
 #
@@ -87,9 +86,10 @@ config.plugins.foreca.remove = ConfigSelection(default="0", choices = [("0", _("
 config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
 config.plugins.foreca.infoline = ConfigEnableDisable(default=True)
 config.plugins.foreca.loop = ConfigEnableDisable(default=False)
+config.plugins.foreca.citylabels = ConfigEnableDisable(default=False)
 
 global PluginVersion
-PluginVersion = "2.01 - 12-11-2011"
+PluginVersion = "2.2 - 15-11-2011"
 
 global MAIN_PAGE
 MAIN_PAGE = _("http://www.foreca.com")
@@ -99,10 +99,16 @@ deviceName = HardwareInfo().get_device_name()
 
 # Make Path for Slideshow
 if os.path.exists(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder") is False:
-	os.system("mkdir -p "+resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder")
+	try:
+		os.makedirs(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder", 755)
+	except:
+		pass
 # Make Path for user settings
 if os.path.exists(USR_PATH) is False:
-	os.system("mkdir -p " + USR_PATH)
+	try:
+		os.makedirs(USR_PATH, 755)
+	except:
+		pass
 
 #---------------------- Skin Functions ----------------------------------------------------
 def getAspect():
@@ -356,14 +362,33 @@ class ForecaPreview(Screen, HelpableScreen):
 		heute ="%04i%02i%02i" % (jahr,monat,tag)
 		self.tag = 0
 
+		# Get favorites
+		global fav1, fav2
+		if fileExists(USR_PATH + "/fav1.cfg"):
+			file = open(USR_PATH + "/fav1.cfg","r")
+			fav1 = str(file.readline().strip())
+			file.close()
+			fav1 = fav1[fav1.find("/")+1:len(fav1)]
+		else:
+			fav1 = _("New_York_City")
+		if fileExists(USR_PATH + "/fav2.cfg"):
+			file = open(USR_PATH + "/fav2.cfg","r")
+			fav2 = str(file.readline().strip())
+			file.close()
+			fav2 = fav2[fav2.find("/")+1:len(fav2)]
+		else:
+			fav2 = _("Moskva")
+
 		# Get home location
-		global city
+		global city, start
 		if fileExists(USR_PATH + "/startservice.cfg"):
 			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
+			start = self.ort[self.ort.find("/")+1:len(self.ort)]
 		else:
 			self.ort =_("United_Kingdom/London")
+			start = _("London")
 
 		# Get diacritics to handle
 		self.FILTERin = []
@@ -381,7 +406,7 @@ class ForecaPreview(Screen, HelpableScreen):
 						self.FILTERout.append(regel[17:].strip())
 		file.close
 		
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?details=" + heute + "&lang=" + self.taal + "&units=metrickmh&tf=24h"
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + heute + "&units=metrickmh&tf=24h"
 		
 		desktop = getDesktop(0)
 		size = desktop.size()
@@ -432,24 +457,20 @@ class ForecaPreview(Screen, HelpableScreen):
 		#self["navigationTitle"] = Label(" ")
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
-		self["Titel2"] = StaticText()
-		self["Titel2"].text = _("Please wait ...")
-		self["key_green"] = StaticText()
-		self["key_yellow"] = StaticText()
-		self["key_red"] = StaticText()
-		self["key_blue"] = StaticText()
-		self["key_ok"] = StaticText()
-		self["key_red"].text = _("Week")
-		self["key_green"].text = _("Favorite 1")
-		self["key_yellow"].text = _("Favorite 2")
-		self["key_blue"].text = _("Home")
-		self["key_ok"].text = _("City")
-		self["key_info"] = StaticText()
-		self["key_info"].text = _("Legend")
-		self["key_menu"] = StaticText()
-		self["key_menu"].text = _("Maps")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Foreca Weather Forecast") + "    " + _("Version ") + PluginVersion
+		self["Titel2"] = StaticText(_("Please wait ..."))
+		self["key_red"] = StaticText(_("Week"))
+		self["key_ok"] = StaticText(_("City"))
+		if config.plugins.foreca.citylabels.value == True:
+			self["key_green"] = StaticText(fav1)
+			self["key_yellow"] = StaticText(fav2)
+			self["key_blue"] = StaticText(start)
+		else:
+			self["key_green"] = StaticText(_("Favorite 1"))
+			self["key_yellow"] = StaticText(_("Favorite 2"))
+			self["key_blue"] = StaticText(_("Home"))
+		self["key_info"] = StaticText(_("Legend"))
+		self["key_menu"] = StaticText(_("Maps"))
+		self["Title"] = StaticText(_("Foreca Weather Forecast") + "    " + _("Version ") + PluginVersion)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
@@ -518,7 +539,18 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.working = False
 
 	def exit(self):
-		os.system("rm /tmp/sat.jpg; rm /tmp/sat.html; rm /tmp/meteogram.png")
+		try:
+			os.unlink("/tmp/sat.jpg")
+		except:
+			pass
+		try:
+			os.unlink("/tmp/sat.html")
+		except:
+			pass
+		try:
+			os.unlink("/tmp/meteogram.png")
+		except:
+			pass
 		self.close()
 		self.deactivateCacheDialog()
 
@@ -553,30 +585,39 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.Zukunft(9)
 
 	def Fav0(self):
+		global start
 		if fileExists(USR_PATH + "/startservice.cfg"):
 			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
+			start = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
 			self.ort =_("United_Kingdom/London")
+			start = _("London")
 		self.Zukunft(0)
 
 	def Fav1(self):
+		global fav1
 		if fileExists(USR_PATH + "/fav1.cfg"):
 			file = open(USR_PATH + "/fav1.cfg","r")
 			self.ort = str(file.readline().strip())
+			fav1 = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
 			self.ort ="New_York/New_York_City"
+			fav1 = _("New_York_City")
 		self.Zukunft(0)
 
 	def Fav2(self):
+		global fav2
 		if fileExists(USR_PATH + "/fav2.cfg"):
 			file = open(USR_PATH + "/fav2.cfg","r")
 			self.ort = str(file.readline().strip())
+			fav2 = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
 			self.ort ="Russia/Moskva"
+			fav2 = _("Moskva")
 		self.Zukunft(0)
 
 	def Zukunft(self, ztag=0):
@@ -593,7 +634,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?details=" + morgen+ "&lang=" + self.taal + "&units=metrickmh&tf=24h"
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + morgen + "&units=metrickmh&tf=24h"
 		##print "Taglink ", MAIN_PAGE
 
 		# Show in Gui
@@ -610,16 +651,32 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OKCallback(self):
-		global city
+		global city, fav1, fav2
 		self.ort = city
 		self.Zukunft(0)
+		if config.plugins.foreca.citylabels.value == True:
+			self["key_green"].setText(fav1)
+			self["key_yellow"].setText(fav2)
+			self["key_blue"].setText(start)
+		else:
+			self["key_green"].setText(_("Favorite 1"))
+			self["key_yellow"].setText(_("Favorite 2"))
+			self["key_blue"].setText(_("Home"))
 		##print "MenuCallback "
 
 	def Menu(self):
 		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
 
 	def MenuCallback(self):
-		global menu
+		global menu, start, fav1, fav2
+		if config.plugins.foreca.citylabels.value == True:
+			self["key_green"].setText(fav1)
+			self["key_yellow"].setText(fav2)
+			self["key_blue"].setText(start)
+		else:
+			self["key_green"].setText(_("Favorite 1"))
+			self["key_yellow"].setText(_("Favorite 2"))
+			self["key_blue"].setText(_("Home"))
 
 #
 #------------------------------------------------------------------------------------------
@@ -827,14 +884,10 @@ class CityPanel(Screen, HelpableScreen):
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 
-		self["key_green"] = StaticText()
-		self["key_yellow"] = StaticText()
-		self["key_blue"] = StaticText()
-		self["key_green"].text = _("Favorite 1")
-		self["key_yellow"].text = _("Favorite 2")
-		self["key_blue"].text = _("Home")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Select a city")
+		self["key_green"] = StaticText(_("Favorite 1"))
+		self["key_yellow"] = StaticText(_("Favorite 2"))
+		self["key_blue"] = StaticText(_("Home"))
+		self["Title"] = StaticText(_("Select a city"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self,"AAFKeyActions",
@@ -906,29 +959,35 @@ class CityPanel(Screen, HelpableScreen):
 		self.close()
 
 	def blue(self):
+		global start
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
 		fwrite = open(USR_PATH + "/startservice.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
+		start = city[city.find("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
 	def green(self):
+		global fav1
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
 		fwrite = open(USR_PATH + "/fav1.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
+		fav1 = city[city.find("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
 	def yellow(self):
+		global fav2
 		city = self['Mlist'].l.getCurrentSelection()[0][0]
 		##print "[Foreca] Service:", city
 		fwrite = open(USR_PATH + "/fav2.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
+		fav2 = city[city.find("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
 
@@ -1016,16 +1075,11 @@ class SatPanel(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelList([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
-		self["key_red"] = StaticText()
-		self["key_red"].text = _("Continents")
-		self["key_green"] = StaticText()
-		self["key_green"].text = _("Europe")
-		self["key_yellow"] = StaticText()
-		self["key_yellow"].text = _("Germany")
-		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Settings")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Satellite photos")
+		self["key_red"] = StaticText(_("Continents"))
+		self["key_green"] = StaticText(_("Europe"))
+		self["key_yellow"] = StaticText(_("Germany"))
+		self["key_blue"] = StaticText(_("Settings"))
+		self["Title"] = StaticText(_("Satellite photos"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
@@ -1273,10 +1327,8 @@ class SatPanelb(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Settings")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Germany")
+		self["key_blue"] = StaticText(_("Settings"))
+		self["Title"] = StaticText(_("Germany"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
@@ -1524,10 +1576,8 @@ class SatPanelc(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelListc([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
-		#self["key_blue"] = StaticText()
-		#self["key_blue"].text = _("Settings")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Continents")
+		#self["key_blue"] = StaticText(_("Settings"))
+		self["Title"] = StaticText(_("Continents"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
@@ -1741,10 +1791,8 @@ class SatPaneld(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText()
-		self["key_blue"].text = _("Settings")
-		self["Title"] = StaticText()
-		self["Title"].text = _("Europe")
+		self["key_blue"] = StaticText(_("Settings"))
+		self["Title"] = StaticText(_("Europe"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
@@ -2152,12 +2200,9 @@ class PicSetup(Screen):
 	def __init__(self, session):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
-		self["key_red"] = StaticText()
-		self["key_red"].text = _("Cancel")
-		self["key_green"] = StaticText()
-		self["key_green"].text = _("Save")
-		self["Title"] = StaticText()
-		self["Title"].text = _("SlideShow Settings")
+		self["key_red"] = StaticText(_("Cancel"))
+		self["key_green"] = StaticText(_("Save"))
+		self["Title"] = StaticText(_("SlideShow Settings"))
 		self["actions"] = NumberActionMap(["SetupActions", "ColorActions"],
 			{
 				"ok": self.save,
@@ -2191,6 +2236,7 @@ class PicSetup(Screen):
 		self.list.append(getConfigListEntry(_("SlideTime"), config.plugins.foreca.slidetime))
 		self.list.append(getConfigListEntry(_("Show Infoline"), config.plugins.foreca.infoline))
 		self.list.append(getConfigListEntry(_("Slide picture in loop"), config.plugins.foreca.loop))
+		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
 
 	def save(self):
 		for x in self["liste"].list:

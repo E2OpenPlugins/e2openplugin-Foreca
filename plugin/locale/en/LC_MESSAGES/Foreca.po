@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-09 21:13+0100\n"
-"PO-Revision-Date: 2011-11-12 00:29+0100\n"
+"POT-Creation-Date: 2011-11-15 20:17+0100\n"
+"PO-Revision-Date: 2011-11-15 20:31+0100\n"
 "Last-Translator: Bag58\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,273 +14,294 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:92
+#: plugin.py:80
 msgid "...Plugins/Extensions/Foreca/"
 msgstr "...Plugins/Extensions/Foreca/"
 
-#: plugin.py:92
+#: plugin.py:80
 msgid "/media/hdd/Foreca/"
 msgstr "/media/hdd/Foreca/"
 
-#: plugin.py:92
+#: plugin.py:80
 msgid "/var/swap/Foreca/"
 msgstr "/var/swap/Foreca/"
 
-#: plugin.py:93
+#: plugin.py:81
 msgid "simple"
 msgstr "simple"
 
-#: plugin.py:93
+#: plugin.py:81
 msgid "better"
 msgstr "better"
 
-#: plugin.py:94
-#: plugin.py:95
+#: plugin.py:82
+#: plugin.py:83
 msgid "black"
 msgstr "black"
 
-#: plugin.py:94
-#: plugin.py:95
+#: plugin.py:82
+#: plugin.py:83
 msgid "blue"
 msgstr "blue"
 
-#: plugin.py:94
-#: plugin.py:95
+#: plugin.py:82
+#: plugin.py:83
 msgid "red"
 msgstr "red"
 
-#: plugin.py:94
-#: plugin.py:95
+#: plugin.py:82
+#: plugin.py:83
 msgid "yellow"
 msgstr "yellow"
 
-#: plugin.py:94
-#: plugin.py:95
+#: plugin.py:82
+#: plugin.py:83
 msgid "green"
 msgstr "green"
 
-#: plugin.py:97
+#: plugin.py:85
 msgid "Yes"
 msgstr "Yes"
 
-#: plugin.py:97
+#: plugin.py:85
 msgid "No"
 msgstr "No"
 
-#: plugin.py:103
-#: plugin.py:358
-#: plugin.py:376
-#: plugin.py:604
-#: plugin.py:665
-#: plugin.py:1101
-#: plugin.py:1107
-#: plugin.py:1113
-#: plugin.py:1119
+#: plugin.py:95
+#: plugin.py:356
+#: plugin.py:409
+#: plugin.py:637
+#: plugin.py:714
+#: plugin.py:1153
+#: plugin.py:1159
+#: plugin.py:1165
+#: plugin.py:1171
 msgid "http://www.foreca.com"
 msgstr "http://www.foreca.com"
 
-#: plugin.py:134
+#: plugin.py:132
 msgid "Aspect list..."
 msgstr "Aspect list..."
 
-#: plugin.py:164
+#: plugin.py:162
 msgid "Resolution"
 msgstr "Resolution"
 
-#: plugin.py:166
+#: plugin.py:164
 msgid "Letterbox"
 msgstr "Letterbox"
 
-#: plugin.py:167
+#: plugin.py:165
 msgid "PanScan"
 msgstr "PanScan"
 
-#: plugin.py:168
+#: plugin.py:166
 msgid "Non Linear"
 msgstr "Non Linear"
 
-#: plugin.py:169
+#: plugin.py:167
 msgid "Bestfit"
 msgstr "Bestfit"
 
-#: plugin.py:176
+#: plugin.py:174
 msgid "Please select an aspect ratio..."
 msgstr "Please select an aspect ratio..."
 
-#: plugin.py:374
-#: plugin.py:569
+#: plugin.py:373
+#: plugin.py:608
+msgid "New_York_City"
+msgstr "New_York_City"
+
+#: plugin.py:380
+#: plugin.py:620
+msgid "Moskva"
+msgstr "Moskva"
+
+#: plugin.py:390
+#: plugin.py:595
 msgid "United_Kingdom/London"
 msgstr "United_Kingdom/London"
 
-#: plugin.py:399
-#: plugin.py:417
-#: plugin.py:460
-#: plugin.py:2219
+#: plugin.py:391
+#: plugin.py:596
+msgid "London"
+msgstr "London"
+
+#: plugin.py:416
+#: plugin.py:438
+#: plugin.py:473
+#: plugin.py:2269
 msgid "Foreca Weather Forecast"
 msgstr "Foreca Weather Forecast"
 
-#: plugin.py:399
-msgid "Version "
-msgstr "Version "
-
-#: plugin.py:444
-#: plugin.py:503
+#: plugin.py:460
+#: plugin.py:516
 msgid "Please wait ..."
 msgstr "Please wait ..."
 
-#: plugin.py:450
+#: plugin.py:461
 msgid "Week"
 msgstr "Week"
 
-#: plugin.py:451
-#: plugin.py:841
-msgid "Favorite 1"
-msgstr "Favorite 1"
-
-#: plugin.py:452
-#: plugin.py:842
-msgid "Favorite 2"
-msgstr "Favorite 2"
-
-#: plugin.py:453
-#: plugin.py:843
-msgid "Home"
-msgstr "Home"
-
-#: plugin.py:454
+#: plugin.py:462
 msgid "City"
 msgstr "City"
 
-#: plugin.py:456
+#: plugin.py:468
+#: plugin.py:662
+#: plugin.py:677
+#: plugin.py:887
+msgid "Favorite 1"
+msgstr "Favorite 1"
+
+#: plugin.py:469
+#: plugin.py:663
+#: plugin.py:678
+#: plugin.py:888
+msgid "Favorite 2"
+msgstr "Favorite 2"
+
+#: plugin.py:470
+#: plugin.py:664
+#: plugin.py:679
+#: plugin.py:889
+msgid "Home"
+msgstr "Home"
+
+#: plugin.py:471
 msgid "Legend"
 msgstr "Legend"
 
-#: plugin.py:458
+#: plugin.py:472
 msgid "Maps"
 msgstr "Maps"
 
-#: plugin.py:465
-#: plugin.py:850
-#: plugin.py:1035
-#: plugin.py:1286
-#: plugin.py:1537
-#: plugin.py:1754
+#: plugin.py:473
+msgid "Version "
+msgstr "Version "
+
+#: plugin.py:478
+#: plugin.py:895
+#: plugin.py:1087
+#: plugin.py:1336
+#: plugin.py:1585
+#: plugin.py:1800
 msgid "Exit - End"
 msgstr "Exit - End"
 
-#: plugin.py:466
+#: plugin.py:479
 msgid "Menu - Weather maps"
 msgstr "Menu - Weather maps"
 
-#: plugin.py:467
+#: plugin.py:480
 msgid "Info - Legend"
 msgstr "Info - Legend"
 
-#: plugin.py:468
+#: plugin.py:481
 msgid "OK - City"
 msgstr "OK - City"
 
-#: plugin.py:469
-#: plugin.py:851
-#: plugin.py:1036
-#: plugin.py:1287
-#: plugin.py:1538
-#: plugin.py:1755
+#: plugin.py:482
+#: plugin.py:896
+#: plugin.py:1088
+#: plugin.py:1337
+#: plugin.py:1586
+#: plugin.py:1801
 msgid "Left - Previous page"
 msgstr "Left - Previous page"
 
-#: plugin.py:470
-#: plugin.py:852
-#: plugin.py:1037
-#: plugin.py:1288
-#: plugin.py:1539
-#: plugin.py:1756
+#: plugin.py:483
+#: plugin.py:897
+#: plugin.py:1089
+#: plugin.py:1338
+#: plugin.py:1587
+#: plugin.py:1802
 msgid "Right - Next page"
 msgstr "Right - Next page"
 
-#: plugin.py:471
-#: plugin.py:853
-#: plugin.py:1038
-#: plugin.py:1289
-#: plugin.py:1540
-#: plugin.py:1757
+#: plugin.py:484
+#: plugin.py:898
+#: plugin.py:1090
+#: plugin.py:1339
+#: plugin.py:1588
+#: plugin.py:1803
 msgid "Up - Previous"
 msgstr "Up - Previous"
 
-#: plugin.py:472
-#: plugin.py:854
-#: plugin.py:1039
-#: plugin.py:1290
-#: plugin.py:1541
-#: plugin.py:1758
+#: plugin.py:485
+#: plugin.py:899
+#: plugin.py:1091
+#: plugin.py:1340
+#: plugin.py:1589
+#: plugin.py:1804
 msgid "Down - Next"
 msgstr "Down - Next"
 
-#: plugin.py:473
+#: plugin.py:486
 msgid "Red - Weekoverview"
 msgstr "Red - Weekoverview"
 
-#: plugin.py:474
-#: plugin.py:856
+#: plugin.py:487
+#: plugin.py:901
 msgid "Green - Favorite 1"
 msgstr "Green - Favorite 1"
 
-#: plugin.py:475
-#: plugin.py:857
+#: plugin.py:488
+#: plugin.py:902
 msgid "Yellow - Favorite 2"
 msgstr "Yellow - Favorite 2"
 
-#: plugin.py:476
-#: plugin.py:858
+#: plugin.py:489
+#: plugin.py:903
 msgid "Blue - Home"
 msgstr "Blue - Home"
 
-#: plugin.py:477
+#: plugin.py:490
 msgid "0 - Today"
 msgstr "0 - Today"
 
-#: plugin.py:478
+#: plugin.py:491
 msgid "1 - Today + 1 day"
 msgstr "1 - Today + 1 day"
 
-#: plugin.py:479
+#: plugin.py:492
 msgid "2 - Today + 2 days"
 msgstr "2 - Today + 2 days"
 
-#: plugin.py:480
+#: plugin.py:493
 msgid "3 - Today + 3 days"
 msgstr "3 - Today + 3 days"
 
-#: plugin.py:481
+#: plugin.py:494
 msgid "4 - Today + 4 days"
 msgstr "4 - Today + 4 days"
 
-#: plugin.py:482
+#: plugin.py:495
 msgid "5 - Today + 5 days"
 msgstr "5 - Today + 5 days"
 
-#: plugin.py:483
+#: plugin.py:496
 msgid "6 - Today + 6 days"
 msgstr "6 - Today + 6 days"
 
-#: plugin.py:484
+#: plugin.py:497
 msgid "7 - Today + 7 days"
 msgstr "7 - Today + 7 days"
 
-#: plugin.py:485
+#: plugin.py:498
 msgid "8 - Today + 8 days"
 msgstr "8 - Today + 8 days"
 
-#: plugin.py:486
+#: plugin.py:499
 msgid "9 - Today + 9 days"
 msgstr "9 - Today + 9 days"
 
-#: plugin.py:502
-#: plugin.py:774
+#: plugin.py:515
+#: plugin.py:823
 msgid "                                   "
 msgstr "                                   "
 
-#: plugin.py:617
+#: plugin.py:650
 msgid ""
 "\n"
 "0 - 9       =   Prognosis (x) days from now\n"
@@ -324,347 +345,351 @@ msgstr ""
 "\n"
 "Wind direction = Arrow to right: Wind from the West\n"
 
-#: plugin.py:810
-#: plugin.py:845
+#: plugin.py:859
+#: plugin.py:890
 msgid "Select a city"
 msgstr "Select a city"
 
-#: plugin.py:855
+#: plugin.py:900
 msgid "OK - Select"
 msgstr "OK - Select"
 
-#: plugin.py:859
+#: plugin.py:904
 msgid "Channel+ - 500 back"
 msgstr "Channel+ - 500 back"
 
-#: plugin.py:860
+#: plugin.py:905
 msgid "Channel- - 500 forward"
 msgstr "Channel- - 500 forward"
 
-#: plugin.py:861
+#: plugin.py:906
 msgid "Volume- - 100 forward"
 msgstr "Volume- - 100 forward"
 
-#: plugin.py:862
+#: plugin.py:907
 msgid "Volume+ - 100 back"
 msgstr "Volume+ - 100 back"
 
-#: plugin.py:922
+#: plugin.py:969
 msgid ""
 "This city is stored as home!\n"
 "\n"
 "                                  "
 msgstr ""
-" \n"
+"This city is stored as home!\n"
 "\n"
-"                      "
+"                                  "
 
-#: plugin.py:931
+#: plugin.py:980
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
 "                             "
 msgstr ""
-" \n"
+"This city is stored as favorite 1!\n"
 "\n"
-"                   "
+"                             "
 
-#: plugin.py:940
+#: plugin.py:991
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
 "                             "
 msgstr ""
-" \n"
+"This city is stored as favorite 2!\n"
 "\n"
-"                    "
+"                             "
 
-#: plugin.py:987
-#: plugin.py:998
-#: plugin.py:1030
+#: plugin.py:1038
+#: plugin.py:1051
+#: plugin.py:1082
 msgid "Satellite photos"
 msgstr "Satellite photos"
 
-#: plugin.py:1010
+#: plugin.py:1067
 msgid "Weather map Video"
 msgstr "Weather map Video"
 
-#: plugin.py:1011
+#: plugin.py:1068
 msgid "Showerradar Video"
 msgstr "Showerradar Video"
 
-#: plugin.py:1012
+#: plugin.py:1069
 msgid "Cloudcover Video"
 msgstr "Cloudcover Video"
 
-#: plugin.py:1013
+#: plugin.py:1070
 msgid "Eumetsat"
 msgstr "Eumetsat"
 
-#: plugin.py:1014
+#: plugin.py:1071
 msgid "Air pressure"
 msgstr "Air pressure"
 
-#: plugin.py:1015
+#: plugin.py:1072
 msgid "Infrared"
 msgstr "Infrared"
 
-#: plugin.py:1022
-#: plugin.py:1501
-#: plugin.py:1505
-#: plugin.py:1532
+#: plugin.py:1078
+#: plugin.py:1551
+#: plugin.py:1555
+#: plugin.py:1580
 msgid "Continents"
 msgstr "Continents"
 
-#: plugin.py:1024
-#: plugin.py:1513
-#: plugin.py:1717
-#: plugin.py:1721
-#: plugin.py:1749
+#: plugin.py:1079
+#: plugin.py:1563
+#: plugin.py:1765
+#: plugin.py:1769
+#: plugin.py:1795
 msgid "Europe"
 msgstr "Europe"
 
-#: plugin.py:1026
-#: plugin.py:1245
-#: plugin.py:1249
-#: plugin.py:1281
-#: plugin.py:1732
+#: plugin.py:1080
+#: plugin.py:1297
+#: plugin.py:1301
+#: plugin.py:1331
+#: plugin.py:1780
 msgid "Germany"
 msgstr "Germany"
 
-#: plugin.py:1028
-#: plugin.py:1279
-#: plugin.py:1747
+#: plugin.py:1081
+#: plugin.py:1330
+#: plugin.py:1794
 msgid "Settings"
 msgstr "Settings"
 
-#: plugin.py:1040
+#: plugin.py:1092
 msgid "Red - Continents"
 msgstr "Red - Continents"
 
-#: plugin.py:1041
+#: plugin.py:1093
 msgid "Green - Europe"
 msgstr "Green - Europe"
 
-#: plugin.py:1042
+#: plugin.py:1094
 msgid "Yellow - Germany"
 msgstr "Yellow - Germany"
 
-#: plugin.py:1043
-#: plugin.py:1291
-#: plugin.py:1759
+#: plugin.py:1095
+#: plugin.py:1341
+#: plugin.py:1805
 msgid "Blue - Settings"
 msgstr "Blue - Settings"
 
-#: plugin.py:1044
-#: plugin.py:1292
-#: plugin.py:1543
-#: plugin.py:1760
+#: plugin.py:1096
+#: plugin.py:1342
+#: plugin.py:1591
+#: plugin.py:1806
 msgid "OK - Show"
 msgstr "OK - Show"
 
-#: plugin.py:1155
+#: plugin.py:1207
 msgid "h"
 msgstr "h"
 
-#: plugin.py:1257
+#: plugin.py:1309
 msgid "Baden-Wuerttemberg"
 msgstr "Baden-Wuerttemberg"
 
-#: plugin.py:1258
+#: plugin.py:1310
 msgid "Bavaria"
 msgstr "Bavaria"
 
-#: plugin.py:1259
+#: plugin.py:1311
 msgid "Berlin"
 msgstr "Berlin"
 
-#: plugin.py:1260
+#: plugin.py:1312
 msgid "Brandenburg"
 msgstr "Brandenburg"
 
-#: plugin.py:1261
+#: plugin.py:1313
 msgid "Bremen"
 msgstr "Bremen"
 
-#: plugin.py:1262
+#: plugin.py:1314
 msgid "Hamburg"
 msgstr "Hamburg"
 
-#: plugin.py:1263
+#: plugin.py:1315
 msgid "Hesse"
 msgstr "Hesse"
 
-#: plugin.py:1264
+#: plugin.py:1316
 msgid "Mecklenburg-Vorpommern"
 msgstr "Mecklenburg-Vorpommern"
 
-#: plugin.py:1265
+#: plugin.py:1317
 msgid "Lower Saxony"
 msgstr "Lower Saxony"
 
-#: plugin.py:1266
+#: plugin.py:1318
 msgid "North Rhine-Westphalia"
 msgstr "North Rhine-Westphalia"
 
-#: plugin.py:1267
+#: plugin.py:1319
 msgid "Rhineland-Palatine"
 msgstr "Rhineland-Palatine"
 
-#: plugin.py:1268
+#: plugin.py:1320
 msgid "Saarland"
 msgstr "Saarland"
 
-#: plugin.py:1269
+#: plugin.py:1321
 msgid "Saxony"
 msgstr "Saxony"
 
-#: plugin.py:1270
+#: plugin.py:1322
 msgid "Saxony-Anhalt"
 msgstr "Saxony-Anhalt"
 
-#: plugin.py:1271
+#: plugin.py:1323
 msgid "Schleswig-Holstein"
 msgstr "Schleswig-Holstein"
 
-#: plugin.py:1272
+#: plugin.py:1324
 msgid "Thuringia"
 msgstr "Thuringia"
 
-#: plugin.py:1514
+#: plugin.py:1564
 msgid "North Africa"
 msgstr "North Africa"
 
-#: plugin.py:1515
+#: plugin.py:1565
 msgid "South Africa"
 msgstr "South Africa"
 
-#: plugin.py:1516
+#: plugin.py:1566
 msgid "North America"
 msgstr "North America"
 
-#: plugin.py:1517
+#: plugin.py:1567
 msgid "Middle America"
 msgstr "Middle America"
 
-#: plugin.py:1518
+#: plugin.py:1568
 msgid "South America"
 msgstr "South America"
 
-#: plugin.py:1519
+#: plugin.py:1569
 msgid "Middle East"
 msgstr "Middle East"
 
-#: plugin.py:1520
+#: plugin.py:1570
 msgid "East Asia"
 msgstr "East Asia"
 
-#: plugin.py:1521
+#: plugin.py:1571
 msgid "Southeast Asia"
 msgstr "Southeast Asia"
 
-#: plugin.py:1522
+#: plugin.py:1572
 msgid "Middle Asia"
 msgstr "Middle Asia"
 
-#: plugin.py:1523
+#: plugin.py:1573
 msgid "Australia"
 msgstr "Australia"
 
-#: plugin.py:1728
+#: plugin.py:1776
 msgid "Austria"
 msgstr "Austria"
 
-#: plugin.py:1729
+#: plugin.py:1777
 msgid "Belgium"
 msgstr "Belgium"
 
-#: plugin.py:1730
+#: plugin.py:1778
 msgid "Denmark"
 msgstr "Denmark"
 
-#: plugin.py:1731
+#: plugin.py:1779
 msgid "France"
 msgstr "France"
 
-#: plugin.py:1733
+#: plugin.py:1781
 msgid "Great Britain"
 msgstr "Great Britain"
 
-#: plugin.py:1734
+#: plugin.py:1782
 msgid "Ireland"
 msgstr "Ireland"
 
-#: plugin.py:1735
+#: plugin.py:1783
 msgid "Italy"
 msgstr "Italy"
 
-#: plugin.py:1736
+#: plugin.py:1784
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: plugin.py:1737
+#: plugin.py:1785
 msgid "Netherlands"
 msgstr "Netherlands"
 
-#: plugin.py:1738
+#: plugin.py:1786
 msgid "Portugal"
 msgstr "Portugal"
 
-#: plugin.py:1739
+#: plugin.py:1787
 msgid "Spain"
 msgstr "Spain"
 
-#: plugin.py:1740
+#: plugin.py:1788
 msgid "Switzerland"
 msgstr "Switzerland"
 
-#: plugin.py:2020
+#: plugin.py:2066
 msgid "Please wait, photo is being loaded ..."
 msgstr "Please wait, photo is being loaded ..."
 
-#: plugin.py:2146
-#: plugin.py:2162
+#: plugin.py:2192
+#: plugin.py:2205
 msgid "SlideShow Settings"
 msgstr "SlideShow Settings"
 
-#: plugin.py:2158
+#: plugin.py:2203
 msgid "Cancel"
 msgstr "Cancel"
 
-#: plugin.py:2160
+#: plugin.py:2204
 msgid "Save"
 msgstr "Save"
 
-#: plugin.py:2188
+#: plugin.py:2232
 msgid "Scaling Mode"
 msgstr "Scaling Mode"
 
-#: plugin.py:2189
+#: plugin.py:2233
 msgid "Frame size in full view"
 msgstr "Frame size in full view"
 
-#: plugin.py:2190
+#: plugin.py:2234
 msgid "Backgroundcolor"
 msgstr "Backgroundcolor"
 
-#: plugin.py:2191
+#: plugin.py:2235
 msgid "Textcolor"
 msgstr "Textcolor"
 
-#: plugin.py:2192
+#: plugin.py:2236
 msgid "SlideTime"
 msgstr "SlideTime"
 
-#: plugin.py:2193
+#: plugin.py:2237
 msgid "Show Infoline"
 msgstr "Show Infoline"
 
-#: plugin.py:2194
+#: plugin.py:2238
 msgid "Slide picture in loop"
 msgstr "Slide picture in loop"
 
-#: plugin.py:2219
+#: plugin.py:2239
+msgid "City names as labels in the Main screen"
+msgstr "City names as labels in the Main screen"
+
+#: plugin.py:2269
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "Weather forecast for the upcoming 10 days"
 
