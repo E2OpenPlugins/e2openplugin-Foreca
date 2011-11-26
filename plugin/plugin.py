@@ -8,9 +8,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.2 Int
+#                 Version 2.3 Int
 #
-#                    15.11.2011
+#                    24.11.2011
 #
 #     Source of information: http://www.foreca.com
 #
@@ -89,7 +89,7 @@ config.plugins.foreca.loop = ConfigEnableDisable(default=False)
 config.plugins.foreca.citylabels = ConfigEnableDisable(default=False)
 
 global PluginVersion
-PluginVersion = "2.2 - 15-11-2011"
+PluginVersion = "2.3 - 24-11-2011"
 
 global MAIN_PAGE
 MAIN_PAGE = _("http://www.foreca.com")
@@ -251,7 +251,7 @@ class MainMenuList(MenuList):
 		grau = 0x565656
 		schwarz = 0x000000
 
-		self.temptext = "Temp"
+		self.temptext = _("Temp")
 		self.tempcolor = hlila
 		if int(self.x[2]) >= 1:
 			self.tempcolor = mblau
@@ -276,12 +276,12 @@ class MainMenuList(MenuList):
 		self.res.append(MultiContentEntryText(pos=(10, 26), size=(70, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
 
 		# Temp
-		self.res.append(MultiContentEntryText(pos=(215, 13), size=(80, 24), font=0, text="Temp", color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(215, 13), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
 		self.res.append(MultiContentEntryText(pos=(207, 39), size=(80, 24), font=1, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(248, 39), size=(80, 24), font=1, text="°C",  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(248, 39), size=(80, 24), font=1, text=_("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
                 
 		# Wind
-		self.res.append(MultiContentEntryText(pos=(339, 13), size=(125, 24), font=0, text="Wind", color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(339, 13), size=(125, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
 		self.res.append(MultiContentEntryText(pos=(325, 39), size=(125, 24), font=1, text=self.x[4], color=mediumvioletred, color_sel=mediumvioletred))
 
 		# Text
@@ -512,7 +512,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.onLayoutFinish.append(self.getPage)
 
 	def StartPage(self):
-		self["Titel"].text = _("                                   ")
+		self["Titel"].text = "                                   "
 		self["Titel2"].text = _("Please wait ...")
 		self.working = False
 		print "[Foreca] MainList show:"
@@ -589,11 +589,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		if fileExists(USR_PATH + "/startservice.cfg"):
 			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
-			start = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
 			self.ort =_("United_Kingdom/London")
-			start = _("London")
+		start = self.ort[self.ort.find("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Fav1(self):
@@ -601,11 +600,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		if fileExists(USR_PATH + "/fav1.cfg"):
 			file = open(USR_PATH + "/fav1.cfg","r")
 			self.ort = str(file.readline().strip())
-			fav1 = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
-			self.ort ="New_York/New_York_City"
-			fav1 = _("New_York_City")
+			self.ort =_("United_States/New_York_City")
+		fav1 = self.ort[self.ort.find("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Fav2(self):
@@ -613,11 +611,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		if fileExists(USR_PATH + "/fav2.cfg"):
 			file = open(USR_PATH + "/fav2.cfg","r")
 			self.ort = str(file.readline().strip())
-			fav2 = self.ort[self.ort.find("/")+1:len(self.ort)]
 			file.close()
 		else:
-			self.ort ="Russia/Moskva"
-			fav2 = _("Moskva")
+			self.ort =_("Russia/Moskva")
+		fav2 = self.ort[self.ort.find("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Zukunft(self, ztag=0):
@@ -820,7 +817,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], Satz1, Satz2, Satz3])
 			x = x +1
 
-		self["Titel2"].text = _("                                   ")
+		self["Titel2"].text = "                                   "
 		datum = titel[0]
 		foundPos=datum.rfind(" ")
 		foundPos2=datum.find(" ")
