@@ -8,9 +8,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.3 Int
+#                 Version 2.4 Int
 #
-#                    24.11.2011
+#                    28.11.2011
 #
 #     Source of information: http://www.foreca.com
 #
@@ -89,7 +89,7 @@ config.plugins.foreca.loop = ConfigEnableDisable(default=False)
 config.plugins.foreca.citylabels = ConfigEnableDisable(default=False)
 
 global PluginVersion
-PluginVersion = "2.3 - 24-11-2011"
+PluginVersion = "2.4 - 28-11-2011"
 
 global MAIN_PAGE
 MAIN_PAGE = _("http://www.foreca.com")
@@ -511,6 +511,15 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.cacheDialog.start()
 		self.onLayoutFinish.append(self.getPage)
 
+	def if1730down(self):
+		lt = localtime()
+		jahr, monat, tag, stunde, minute = lt[0:5]
+		if not self.working and self.tag == 0:
+			if ((stunde * 60) + minute) >= ((17 * 60) + 30):
+				self["MainList"].pageUp()
+				self["MainList"].pageUp()
+				self["MainList"].pageDown()
+
 	def StartPage(self):
 		self["Titel"].text = "                                   "
 		self["Titel2"].text = _("Please wait ...")
@@ -650,6 +659,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def OKCallback(self):
 		global city, fav1, fav2
 		self.ort = city
+		self.tag = 0
 		self.Zukunft(0)
 		if config.plugins.foreca.citylabels.value == True:
 			self["key_green"].setText(fav1)
@@ -674,6 +684,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
+		self.if1730down()
 
 #
 #------------------------------------------------------------------------------------------
@@ -805,6 +816,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			titel3[x] = str(sub('<[^>]*>',"",titel3[x]))
 			#Text3 = titel3[x]
 			Satz3 = self.konvert_uml(titel3[x])
+			wind[x] = self.filter_dia(wind[x])
 			#print zeit[x]
 			#print tag[x]
 			#print temp[x]
@@ -828,17 +840,21 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(1)
 		self["MainList"].show
+		self.if1730down()
 
 #------------------------------------------------------------------------------------------
 	def konvert_uml(self,Satz):
+		Satz = self.filter_dia(Satz)
+		# remove remaining control characters and return
+		return Satz[Satz.rfind("\\t")+2:len(Satz)]	
+
+	def filter_dia(self, Satz):
 		# remove diacritics for selected country
 		tel = 0
 		while tel < self.FILTERidx:
 			Satz = string.replace(Satz, self.FILTERin[tel], self.FILTERout[tel])
 			tel += 1
-		# remove remaining control characters and return
-		return Satz[Satz.rfind("\\t")+2:len(Satz)]	
-
+		return Satz
 # -------------------------------------------------------------------
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
