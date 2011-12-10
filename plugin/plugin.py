@@ -1,4 +1,4 @@
-﻿# -*- coding: UTF-8 -*-
+# -*- coding: UTF-8 -*-
 #-------------------------------------------------------
 #
 #              Foreca Weatherprognosis
@@ -458,6 +458,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
 		self["Titel2"] = StaticText(_("Please wait ..."))
+		self["Titel3"] = StaticText()
 		self["key_red"] = StaticText(_("Week"))
 		self["key_ok"] = StaticText(_("City"))
 		if config.plugins.foreca.citylabels.value == True:
@@ -522,6 +523,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def StartPage(self):
 		self["Titel"].text = "                                   "
+		self["Titel3"].text = "                  \r\n                 "
 		self["Titel2"].text = _("Please wait ...")
 		self.working = False
 		print "[Foreca] MainList show:"
@@ -837,6 +839,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		foundPos=self.ort.find("/")
 		plaats=_(self.ort[0:foundPos]) + "-" + self.ort[foundPos+1:len(self.ort)]
 		self["Titel"].text = _(plaats) + "  -  " + datum2
+		self["Titel3"].text = _(self.ort[0:foundPos]) + "\r\n" + self.ort[foundPos+1:len(self.ort)] + "\r\n" + datum2
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(1)
 		self["MainList"].show
