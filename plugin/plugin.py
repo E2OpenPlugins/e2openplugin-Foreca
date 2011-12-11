@@ -522,8 +522,8 @@ class ForecaPreview(Screen, HelpableScreen):
 				self["MainList"].pageDown()
 
 	def StartPage(self):
-		self["Titel"].text = "                                   "
-		self["Titel3"].text = "                  \r\n                 "
+		self["Titel"].text = ""
+		self["Titel3"].text = ""
 		self["Titel2"].text = _("Please wait ...")
 		self.working = False
 		print "[Foreca] MainList show:"
@@ -835,11 +835,11 @@ class ForecaPreview(Screen, HelpableScreen):
 		datum = titel[0]
 		foundPos=datum.rfind(" ")
 		foundPos2=datum.find(" ")
-		datum2=datum[0:foundPos2]+datum[foundPos:len(datum)]+datum[foundPos2:foundPos]
+		datum2=datum[:foundPos2]+datum[foundPos:]+datum[foundPos2:foundPos]
 		foundPos=self.ort.find("/")
 		plaats=_(self.ort[0:foundPos]) + "-" + self.ort[foundPos+1:len(self.ort)]
 		self["Titel"].text = _(plaats) + "  -  " + datum2
-		self["Titel3"].text = _(self.ort[0:foundPos]) + "\r\n" + self.ort[foundPos+1:len(self.ort)] + "\r\n" + datum2
+		self["Titel3"].text = _(self.ort[:foundPos]) + "\r\n" + self.ort[foundPos+1:] + "\r\n" + datum2
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(1)
 		self["MainList"].show
