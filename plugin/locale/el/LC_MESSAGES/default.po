@@ -1,0 +1,810 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Foreca 2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-24 23:18+0100\n"
+"PO-Revision-Date: 2012-01-20 19:26+0200\n"
+"Last-Translator: Dimfil <dimfil.sat@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: plugin.py:80
+msgid "...Plugins/Extensions/Foreca/"
+msgstr "...Plugins/Extensions/Foreca/"
+
+#: plugin.py:80
+msgid "/media/hdd/Foreca/"
+msgstr "/media/hdd/Foreca/"
+
+#: plugin.py:80
+msgid "/var/swap/Foreca/"
+msgstr "/var/swap/Foreca/"
+
+#: plugin.py:81
+#, fuzzy
+msgid "simple"
+msgstr "απλό"
+
+#: plugin.py:81
+#, fuzzy
+msgid "better"
+msgstr "καλύτερα"
+
+#: plugin.py:82
+#: plugin.py:83
+#, fuzzy
+msgid "black"
+msgstr "μαύρο"
+
+#: plugin.py:82
+#: plugin.py:83
+#, fuzzy
+msgid "blue"
+msgstr "μπλε"
+
+#: plugin.py:82
+#: plugin.py:83
+#, fuzzy
+msgid "red"
+msgstr "κόκκινο"
+
+#: plugin.py:82
+#: plugin.py:83
+#, fuzzy
+msgid "yellow"
+msgstr "κίτρινο"
+
+#: plugin.py:82
+#: plugin.py:83
+#, fuzzy
+msgid "green"
+msgstr "πράσινο"
+
+#: plugin.py:85
+#, fuzzy
+msgid "Yes"
+msgstr "Ναι"
+
+#: plugin.py:85
+#, fuzzy
+msgid "No"
+msgstr "Όχι"
+
+#: plugin.py:95
+#: plugin.py:356
+#: plugin.py:409
+#: plugin.py:634
+#: plugin.py:711
+#: plugin.py:1150
+#: plugin.py:1156
+#: plugin.py:1162
+#: plugin.py:1168
+#, fuzzy
+msgid "http://www.foreca.com"
+msgstr "http://www.foreca.com"
+
+#: plugin.py:132
+#, fuzzy
+msgid "Aspect list..."
+msgstr "Aspect list..."
+
+#: plugin.py:162
+#, fuzzy
+msgid "Resolution"
+msgstr "Ανάλυση"
+
+#: plugin.py:164
+#, fuzzy
+msgid "Letterbox"
+msgstr "Letterbox"
+
+#: plugin.py:165
+#, fuzzy
+msgid "PanScan"
+msgstr "PanScan"
+
+#: plugin.py:166
+#, fuzzy
+msgid "Non Linear"
+msgstr "Μη γραμμική"
+
+#: plugin.py:167
+#, fuzzy
+msgid "Bestfit"
+msgstr "Bestfit"
+
+#: plugin.py:174
+#, fuzzy
+msgid "Please select an aspect ratio..."
+msgstr "Παρακαλώ επιλέξτε aspect ratio"
+
+#: plugin.py:254
+#: plugin.py:279
+#, fuzzy
+msgid "Temp"
+msgstr "Θερμ/σία"
+
+#: plugin.py:281
+msgid "°C"
+msgstr ""
+
+#: plugin.py:284
+#, fuzzy
+msgid "Wind"
+msgstr "Άνεμος "
+
+#: plugin.py:373
+msgid "New_York_City"
+msgstr ""
+
+#: plugin.py:380
+msgid "Moskva"
+msgstr ""
+
+#: plugin.py:390
+#: plugin.py:594
+msgid "United_Kingdom/London"
+msgstr ""
+
+#: plugin.py:391
+msgid "London"
+msgstr ""
+
+#: plugin.py:416
+#: plugin.py:438
+#: plugin.py:473
+#: plugin.py:2266
+msgid "Foreca Weather Forecast"
+msgstr "Foreca Πρόγνωση καιρού"
+
+#: plugin.py:460
+#: plugin.py:516
+#, fuzzy
+msgid "Please wait ..."
+msgstr "Παρακαλώ περιμένετε..."
+
+#: plugin.py:461
+#, fuzzy
+msgid "Week"
+msgstr "Εβδομάδα"
+
+#: plugin.py:462
+msgid "City"
+msgstr "Πόλη"
+
+#: plugin.py:468
+#: plugin.py:659
+#: plugin.py:674
+#: plugin.py:884
+msgid "Favorite 1"
+msgstr "Αγαπ. 1"
+
+#: plugin.py:469
+#: plugin.py:660
+#: plugin.py:675
+#: plugin.py:885
+msgid "Favorite 2"
+msgstr "Αγαπ. 2"
+
+#: plugin.py:470
+#: plugin.py:661
+#: plugin.py:676
+#: plugin.py:886
+msgid "Home"
+msgstr "Αρχική"
+
+#: plugin.py:471
+#, fuzzy
+msgid "Legend"
+msgstr "Legend"
+
+#: plugin.py:472
+#, fuzzy
+msgid "Maps"
+msgstr "Χάρτες"
+
+#: plugin.py:473
+#, fuzzy
+msgid "Version "
+msgstr "Έκδοση "
+
+#: plugin.py:478
+#: plugin.py:892
+#: plugin.py:1084
+#: plugin.py:1333
+#: plugin.py:1582
+#: plugin.py:1797
+#, fuzzy
+msgid "Exit - End"
+msgstr "Έξοδος - Τέλος"
+
+#: plugin.py:479
+#, fuzzy
+msgid "Menu - Weather maps"
+msgstr "Μενού - Χάρτες καιρού"
+
+#: plugin.py:480
+#, fuzzy
+msgid "Info - Legend"
+msgstr "Info - Legend"
+
+#: plugin.py:481
+#, fuzzy
+msgid "OK - City"
+msgstr "ΟΚ - Πόλη"
+
+#: plugin.py:482
+#: plugin.py:893
+#: plugin.py:1085
+#: plugin.py:1334
+#: plugin.py:1583
+#: plugin.py:1798
+#, fuzzy
+msgid "Left - Previous page"
+msgstr "Αριστερά - Προηγούμενη σελίδα"
+
+#: plugin.py:483
+#: plugin.py:894
+#: plugin.py:1086
+#: plugin.py:1335
+#: plugin.py:1584
+#: plugin.py:1799
+#, fuzzy
+msgid "Right - Next page"
+msgstr "Δεξιά - Επόμενη σελίδα"
+
+#: plugin.py:484
+#: plugin.py:895
+#: plugin.py:1087
+#: plugin.py:1336
+#: plugin.py:1585
+#: plugin.py:1800
+#, fuzzy
+msgid "Up - Previous"
+msgstr "Επάνω - Προηγούμενο"
+
+#: plugin.py:485
+#: plugin.py:896
+#: plugin.py:1088
+#: plugin.py:1337
+#: plugin.py:1586
+#: plugin.py:1801
+msgid "Down - Next"
+msgstr "Κάτω - Επόμενο"
+
+#: plugin.py:486
+#, fuzzy
+msgid "Red - Weekoverview"
+msgstr "Κόκκινο - Επισκόπηση εβδομάδας"
+
+#: plugin.py:487
+#: plugin.py:898
+#, fuzzy
+msgid "Green - Favorite 1"
+msgstr "Πράσινο - Αγαπημένο 1"
+
+#: plugin.py:488
+#: plugin.py:899
+#, fuzzy
+msgid "Yellow - Favorite 2"
+msgstr "Κίτρινο - Αγαπημένο 2"
+
+#: plugin.py:489
+#: plugin.py:900
+#, fuzzy
+msgid "Blue - Home"
+msgstr "Μπλέ - Αρχική"
+
+#: plugin.py:490
+#, fuzzy
+msgid "0 - Today"
+msgstr "0 - Σήμερα"
+
+#: plugin.py:491
+#, fuzzy
+msgid "1 - Today + 1 day"
+msgstr "1 - Σήμερα + 1 ημέρα"
+
+#: plugin.py:492
+#, fuzzy
+msgid "2 - Today + 2 days"
+msgstr "2 - Σήμερα + 2 ημέρες"
+
+#: plugin.py:493
+#, fuzzy
+msgid "3 - Today + 3 days"
+msgstr "3 - Σήμερα + 3 ημέρες"
+
+#: plugin.py:494
+#, fuzzy
+msgid "4 - Today + 4 days"
+msgstr "4 - Σήμερα + 4 ημέρες"
+
+#: plugin.py:495
+#, fuzzy
+msgid "5 - Today + 5 days"
+msgstr "5 - Σήμερα + 5 ημέρες"
+
+#: plugin.py:496
+#, fuzzy
+msgid "6 - Today + 6 days"
+msgstr "6 - Σήμερα + 6 ημέρες"
+
+#: plugin.py:497
+#, fuzzy
+msgid "7 - Today + 7 days"
+msgstr "7 - Σήμερα + 7 ημέρες"
+
+#: plugin.py:498
+#, fuzzy
+msgid "8 - Today + 8 days"
+msgstr "8 - Σήμερα + 8 ημέρες"
+
+#: plugin.py:499
+#, fuzzy
+msgid "9 - Today + 9 days"
+msgstr "9 - Σήμερα + 9 ημέρες"
+
+#: plugin.py:605
+msgid "United_States/New_York_City"
+msgstr ""
+
+#: plugin.py:616
+msgid "Russia/Moskva"
+msgstr ""
+
+#: plugin.py:647
+msgid ""
+"\n"
+"0 - 9       =   Prognosis (x) days from now\n"
+"\n"
+"VOL+/-  =   Fast scroll (City choice)\n"
+"\n"
+"<   >       =   Prognosis next/previous day\n"
+"\n"
+"Info        =   This information\n"
+"\n"
+"Menu     =   Satellite photos and maps\n"
+"\n"
+"Red        =   Temperature for the next 5 days\n"
+"\n"
+"Green    =   Go to Favorite 1\n"
+"\n"
+"Yellow    =   Go to Favorite 2\n"
+"\n"
+"Blue        =   Go to Home\n"
+"\n"
+"Wind direction = Arrow to right: Wind from the West\n"
+msgstr ""
+"\n"
+"0 - 9     =   Πρόγνωση (x) ημέρες\n"
+"\n"
+"VOL+/-    =   Γρήγορη κύλλιση (Επιλογή Πόλης)\n"
+"\n"
+"<   >     =   Πρόγνωση επόμενη/προηγούμενη ημέρα\n"
+"\n"
+"Info      =   \n"
+"\n"
+"Menu      =   \n"
+"\n"
+"Rood      =   \n"
+"\n"
+"Groen     =   \n"
+"\n"
+"Geel      =   \n"
+"\n"
+"Blauw     =   \n"
+"\n"
+"Wind richting      =  \n"
+
+#: plugin.py:856
+#: plugin.py:887
+#, fuzzy
+msgid "Select a city"
+msgstr "Επιλογή πόλης"
+
+#: plugin.py:897
+#, fuzzy
+msgid "OK - Select"
+msgstr "OK - Επιλογή"
+
+#: plugin.py:901
+#, fuzzy
+msgid "Channel+ - 500 back"
+msgstr "Channel+ - 500 πρίν"
+
+#: plugin.py:902
+#, fuzzy
+msgid "Channel- - 500 forward"
+msgstr "Channel- - 500 μετά"
+
+#: plugin.py:903
+#, fuzzy
+msgid "Volume- - 100 forward"
+msgstr "Volume- - 100 μετά"
+
+#: plugin.py:904
+#, fuzzy
+msgid "Volume+ - 100 back"
+msgstr "Volume+ - 100 πριν"
+
+#: plugin.py:966
+msgid ""
+"This city is stored as home!\n"
+"\n"
+"                                  "
+msgstr ""
+" Η πόλη ορίσθηκε ως αρχική!\n"
+"\n"
+"                      "
+
+#: plugin.py:977
+msgid ""
+"This city is stored as favorite 1!\n"
+"\n"
+"                             "
+msgstr ""
+" Η πόλη ορίσθηκε ως Αγαπημένο 1!\n"
+"\n"
+"                   "
+
+#: plugin.py:988
+msgid ""
+"This city is stored as favorite 2!\n"
+"\n"
+"                             "
+msgstr ""
+" Η πόλη ορίσθηκε ως Αγαπημένο 2!\n"
+"\n"
+"                    "
+
+#: plugin.py:1035
+#: plugin.py:1048
+#: plugin.py:1079
+#, fuzzy
+msgid "Satellite photos"
+msgstr "Φωτό δορυφόρου"
+
+#: plugin.py:1064
+#, fuzzy
+msgid "Weather map Video"
+msgstr "Video χάρτη καιρού"
+
+#: plugin.py:1065
+#, fuzzy
+msgid "Showerradar Video"
+msgstr "Video βροχόπτωσης"
+
+#: plugin.py:1066
+#, fuzzy
+msgid "Cloudcover Video"
+msgstr "Video νέφωσης"
+
+#: plugin.py:1067
+#, fuzzy
+msgid "Eumetsat"
+msgstr "Eumetsat"
+
+#: plugin.py:1068
+#, fuzzy
+msgid "Air pressure"
+msgstr "Ατμ. πίεση"
+
+#: plugin.py:1069
+#, fuzzy
+msgid "Infrared"
+msgstr "Υπέρυθρη"
+
+#: plugin.py:1075
+#: plugin.py:1548
+#: plugin.py:1552
+#: plugin.py:1577
+#, fuzzy
+msgid "Continents"
+msgstr "Ήπειροι"
+
+#: plugin.py:1076
+#: plugin.py:1560
+#: plugin.py:1762
+#: plugin.py:1766
+#: plugin.py:1792
+#, fuzzy
+msgid "Europe"
+msgstr "Ευρώπη"
+
+#: plugin.py:1077
+#: plugin.py:1294
+#: plugin.py:1298
+#: plugin.py:1328
+#: plugin.py:1777
+#, fuzzy
+msgid "Germany"
+msgstr "Γερμανία"
+
+#: plugin.py:1078
+#: plugin.py:1327
+#: plugin.py:1791
+#, fuzzy
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: plugin.py:1089
+#, fuzzy
+msgid "Red - Continents"
+msgstr "Κόκκινο - Ήπειροι"
+
+#: plugin.py:1090
+#, fuzzy
+msgid "Green - Europe"
+msgstr "Πράσινο - Ευρώπη"
+
+#: plugin.py:1091
+msgid "Yellow - Germany"
+msgstr "Κίτρινο - Γερμανία"
+
+#: plugin.py:1092
+#: plugin.py:1338
+#: plugin.py:1802
+#, fuzzy
+msgid "Blue - Settings"
+msgstr "Μπλε - Ρυθμίσεις"
+
+#: plugin.py:1093
+#: plugin.py:1339
+#: plugin.py:1588
+#: plugin.py:1803
+#, fuzzy
+msgid "OK - Show"
+msgstr "OK - Εμφάνιση"
+
+#: plugin.py:1204
+#, fuzzy
+msgid "h"
+msgstr "h"
+
+#: plugin.py:1306
+msgid "Baden-Wuerttemberg"
+msgstr ""
+
+#: plugin.py:1307
+msgid "Bavaria"
+msgstr ""
+
+#: plugin.py:1308
+msgid "Berlin"
+msgstr ""
+
+#: plugin.py:1309
+msgid "Brandenburg"
+msgstr ""
+
+#: plugin.py:1310
+msgid "Bremen"
+msgstr ""
+
+#: plugin.py:1311
+msgid "Hamburg"
+msgstr ""
+
+#: plugin.py:1312
+msgid "Hesse"
+msgstr ""
+
+#: plugin.py:1313
+msgid "Mecklenburg-Vorpommern"
+msgstr ""
+
+#: plugin.py:1314
+msgid "Lower Saxony"
+msgstr ""
+
+#: plugin.py:1315
+msgid "North Rhine-Westphalia"
+msgstr ""
+
+#: plugin.py:1316
+msgid "Rhineland-Palatine"
+msgstr ""
+
+#: plugin.py:1317
+msgid "Saarland"
+msgstr ""
+
+#: plugin.py:1318
+msgid "Saxony"
+msgstr ""
+
+#: plugin.py:1319
+msgid "Saxony-Anhalt"
+msgstr ""
+
+#: plugin.py:1320
+msgid "Schleswig-Holstein"
+msgstr ""
+
+#: plugin.py:1321
+msgid "Thuringia"
+msgstr ""
+
+#: plugin.py:1561
+#, fuzzy
+msgid "North Africa"
+msgstr "Βόρειος Αφρική"
+
+#: plugin.py:1562
+#, fuzzy
+msgid "South Africa"
+msgstr "Νότιος Αφρική"
+
+#: plugin.py:1563
+#, fuzzy
+msgid "North America"
+msgstr "Βόρειος Αμερική"
+
+#: plugin.py:1564
+#, fuzzy
+msgid "Middle America"
+msgstr "Κεντρική Αμερική"
+
+#: plugin.py:1565
+#, fuzzy
+msgid "South America"
+msgstr "Νότιος Αμερική"
+
+#: plugin.py:1566
+#, fuzzy
+msgid "Middle East"
+msgstr "Μέση Ανατολή"
+
+#: plugin.py:1567
+#, fuzzy
+msgid "East Asia"
+msgstr "Ανατολική Ασία"
+
+#: plugin.py:1568
+#, fuzzy
+msgid "Southeast Asia"
+msgstr "Νοτιοανατολική Ασία"
+
+#: plugin.py:1569
+#, fuzzy
+msgid "Middle Asia"
+msgstr "Κεντρική Ασία"
+
+#: plugin.py:1570
+#, fuzzy
+msgid "Australia"
+msgstr "Αυστραλία"
+
+#: plugin.py:1773
+#, fuzzy
+msgid "Austria"
+msgstr "Αυστρία"
+
+#: plugin.py:1774
+#, fuzzy
+msgid "Belgium"
+msgstr "Βέλγιο"
+
+#: plugin.py:1775
+#, fuzzy
+msgid "Denmark"
+msgstr "Δανία"
+
+#: plugin.py:1776
+#, fuzzy
+msgid "France"
+msgstr "Γαλλία"
+
+#: plugin.py:1778
+#, fuzzy
+msgid "Great Britain"
+msgstr "Μεγάλη Βρετανία"
+
+#: plugin.py:1779
+#, fuzzy
+msgid "Ireland"
+msgstr "Ιρλανδία"
+
+#: plugin.py:1780
+#, fuzzy
+msgid "Italy"
+msgstr "Ιταλία"
+
+#: plugin.py:1781
+#, fuzzy
+msgid "Luxembourg"
+msgstr "Λουξεμβούργο"
+
+#: plugin.py:1782
+#, fuzzy
+msgid "Netherlands"
+msgstr "Ολλανδία"
+
+#: plugin.py:1783
+#, fuzzy
+msgid "Portugal"
+msgstr "Πορτογαλία"
+
+#: plugin.py:1784
+#, fuzzy
+msgid "Spain"
+msgstr "Ισπανία"
+
+#: plugin.py:1785
+#, fuzzy
+msgid "Switzerland"
+msgstr "Ελβετία"
+
+#: plugin.py:2063
+#, fuzzy
+msgid "Please wait, photo is being loaded ..."
+msgstr "Παρακαλώ περιμένετε, λήψη φωτογραφίας ..."
+
+#: plugin.py:2189
+#: plugin.py:2202
+#, fuzzy
+msgid "SlideShow Settings"
+msgstr "SlideShow ρυθμίσεις"
+
+#: plugin.py:2200
+#, fuzzy
+msgid "Cancel"
+msgstr "Ακύρωση "
+
+#: plugin.py:2201
+#, fuzzy
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: plugin.py:2229
+#, fuzzy
+msgid "Scaling Mode"
+msgstr "Τύπος κλιμάκωσης"
+
+#: plugin.py:2230
+#, fuzzy
+msgid "Frame size in full view"
+msgstr "Μέγεθος πλαισίου σε πλήρη οθόνη"
+
+#: plugin.py:2231
+#, fuzzy
+msgid "Backgroundcolor"
+msgstr "Χρώμα φόντου"
+
+#: plugin.py:2232
+#, fuzzy
+msgid "Textcolor"
+msgstr "Χρώμα κειμένου"
+
+#: plugin.py:2233
+#, fuzzy
+msgid "SlideTime"
+msgstr "SlideTime"
+
+#: plugin.py:2234
+msgid "Show Infoline"
+msgstr "Εμφάνιση γραμμής πληροφοριών"
+
+#: plugin.py:2235
+#, fuzzy
+msgid "Slide picture in loop"
+msgstr "Slide picture in loop"
+
+#: plugin.py:2236
+msgid "City names as labels in the Main screen"
+msgstr ""
+
+#: plugin.py:2266
+#, fuzzy
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Πρόγνωση καιρού για επόμενες 10 ημέρες"
+
+#~ msgid "                                   "
+#~ msgstr "                                   "
