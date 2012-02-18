@@ -796,7 +796,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel3 = fulltext.findall(html)
 		#print "Title ", str(titel3).lstrip("\t").lstrip()
 
-		fulltext = re.compile(r'<div class="c2">.+?<img src="/img/symb-wind/(.+?).gif', re.DOTALL)
+		fulltext = re.compile(r'<div class="c2">.+?<img src="http://img.foreca.net/s/symb-wind/(.+?).gif', re.DOTALL)
 		windlink = fulltext.findall(html)
 		#print "Windlink ", str(windlink)
 
