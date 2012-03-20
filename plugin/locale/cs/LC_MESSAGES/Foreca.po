@@ -2,322 +2,277 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-24 22:18+0100\n"
-"PO-Revision-Date: 2011-11-27 22:35+0100\n"
-"Last-Translator: Bag58\n"
+"POT-Creation-Date: 2012-02-28 15:27+0100\n"
+"PO-Revision-Date: 2012-02-28 15:30+0100\n"
+"Last-Translator: JuSt611 <Software@Strasdas.de>\n"
 "Language-Team: ims\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-Basepath: ../../../\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:80
-msgid "...Plugins/Extensions/Foreca/"
-msgstr "...Plugins/Extensions/Foreca/"
-
-#: plugin.py:80
-msgid "/media/hdd/Foreca/"
-msgstr "/media/hdd/Foreca/"
-
-#: plugin.py:80
-msgid "/var/swap/Foreca/"
-msgstr "/var/swap/Foreca/"
-
-#: plugin.py:81
+#: plugin.py:97
 msgid "simple"
 msgstr "jednoduchý"
 
-#: plugin.py:81
+#: plugin.py:97
 msgid "better"
 msgstr "lepší"
 
-#: plugin.py:82
-#: plugin.py:83
+#: plugin.py:98
+#: plugin.py:99
 msgid "black"
 msgstr "černá"
 
-#: plugin.py:82
-#: plugin.py:83
+#: plugin.py:98
+#: plugin.py:99
 msgid "blue"
 msgstr "modrá"
 
-#: plugin.py:82
-#: plugin.py:83
+#: plugin.py:98
+#: plugin.py:99
 msgid "red"
 msgstr "červená"
 
-#: plugin.py:82
-#: plugin.py:83
+#: plugin.py:98
+#: plugin.py:99
 msgid "yellow"
 msgstr "žlutá"
 
-#: plugin.py:82
-#: plugin.py:83
+#: plugin.py:98
+#: plugin.py:99
 msgid "green"
 msgstr "zelená"
 
-#: plugin.py:85
-msgid "Yes"
-msgstr "Ano"
-
-#: plugin.py:85
-msgid "No"
-msgstr "Ne"
-
-#: plugin.py:95
-#: plugin.py:356
-#: plugin.py:409
-#: plugin.py:634
-#: plugin.py:711
-#: plugin.py:1150
-#: plugin.py:1156
-#: plugin.py:1162
-#: plugin.py:1168
+#: plugin.py:108
+#: plugin.py:369
+#: plugin.py:422
+#: plugin.py:659
+#: plugin.py:738
+#: plugin.py:1191
+#: plugin.py:1197
+#: plugin.py:1203
+#: plugin.py:1209
 msgid "http://www.foreca.com"
 msgstr "http://www.foreca.cz"
 
-#: plugin.py:132
+#: plugin.py:145
 msgid "Aspect list..."
 msgstr "Seznam aspektů..."
 
-#: plugin.py:162
+#: plugin.py:175
 msgid "Resolution"
 msgstr "Rozlišení"
 
-#: plugin.py:164
+#: plugin.py:177
 msgid "Letterbox"
 msgstr "Letterbox"
 
-#: plugin.py:165
+#: plugin.py:178
 msgid "PanScan"
 msgstr "Pan&Scan"
 
-#: plugin.py:166
+#: plugin.py:179
 msgid "Non Linear"
 msgstr "Nelineární"
 
-#: plugin.py:167
+#: plugin.py:180
 msgid "Bestfit"
 msgstr "Jen zvětšit"
 
-#: plugin.py:174
+#: plugin.py:187
 msgid "Please select an aspect ratio..."
 msgstr "Zvolte poměr stran..."
 
-#: plugin.py:254
-#: plugin.py:279
+#: plugin.py:267
+#: plugin.py:292
 msgid "Temp"
 msgstr "Teplota"
 
-#: plugin.py:281
+#: plugin.py:294
 msgid "°C"
 msgstr "°C"
 
-#: plugin.py:284
+#: plugin.py:297
 msgid "Wind"
 msgstr "Vítr"
 
-#: plugin.py:373
-msgid "New_York_City"
-msgstr "New_York"
-
-#: plugin.py:380
-msgid "Moskva"
-msgstr "Moskva"
-
-#: plugin.py:390
-#: plugin.py:594
-msgid "United_Kingdom/London"
-msgstr "Česká republika/Praha"
-
-#: plugin.py:391
-msgid "London"
-msgstr "Londýn"
-
-#: plugin.py:416
-#: plugin.py:438
-#: plugin.py:473
-#: plugin.py:2266
+#: plugin.py:425
+#: plugin.py:448
+#: plugin.py:486
+#: plugin.py:2307
 msgid "Foreca Weather Forecast"
 msgstr "Foreca -  předpověď počasí"
 
-#: plugin.py:460
-#: plugin.py:516
+#: plugin.py:470
+#: plugin.py:541
 msgid "Please wait ..."
 msgstr "Prosím, čekejte..."
 
-#: plugin.py:461
+#: plugin.py:474
 msgid "Week"
 msgstr "Týden"
 
-#: plugin.py:462
+#: plugin.py:475
 msgid "City"
 msgstr "Město"
 
-#: plugin.py:468
-#: plugin.py:659
-#: plugin.py:674
-#: plugin.py:884
+#: plugin.py:481
+#: plugin.py:685
+#: plugin.py:700
+#: plugin.py:922
 msgid "Favorite 1"
 msgstr "Favorit 1"
 
-#: plugin.py:469
-#: plugin.py:660
-#: plugin.py:675
-#: plugin.py:885
+#: plugin.py:482
+#: plugin.py:686
+#: plugin.py:701
+#: plugin.py:923
 msgid "Favorite 2"
 msgstr "Favorit 2"
 
-#: plugin.py:470
-#: plugin.py:661
-#: plugin.py:676
-#: plugin.py:886
+#: plugin.py:483
+#: plugin.py:687
+#: plugin.py:702
+#: plugin.py:924
 msgid "Home"
 msgstr "Domů"
 
-#: plugin.py:471
+#: plugin.py:484
 msgid "Legend"
 msgstr "Legenda"
 
-#: plugin.py:472
+#: plugin.py:485
 msgid "Maps"
 msgstr "Mapy"
 
-#: plugin.py:473
+#: plugin.py:486
 msgid "Version "
 msgstr "Verze"
 
-#: plugin.py:478
-#: plugin.py:892
-#: plugin.py:1084
-#: plugin.py:1333
-#: plugin.py:1582
-#: plugin.py:1797
+#: plugin.py:491
+#: plugin.py:931
+#: plugin.py:1125
+#: plugin.py:1374
+#: plugin.py:1623
+#: plugin.py:1838
 msgid "Exit - End"
 msgstr "Zavřít - Ukončit"
 
-#: plugin.py:479
+#: plugin.py:492
 msgid "Menu - Weather maps"
 msgstr "Menu - Mapy počasí"
 
-#: plugin.py:480
+#: plugin.py:493
 msgid "Info - Legend"
 msgstr "Info - Legenda"
 
-#: plugin.py:481
+#: plugin.py:494
 msgid "OK - City"
 msgstr "OK - Město"
 
-#: plugin.py:482
-#: plugin.py:893
-#: plugin.py:1085
-#: plugin.py:1334
-#: plugin.py:1583
-#: plugin.py:1798
+#: plugin.py:495
+#: plugin.py:932
+#: plugin.py:1126
+#: plugin.py:1375
+#: plugin.py:1624
+#: plugin.py:1839
 msgid "Left - Previous page"
 msgstr "Vlevo - Předchozí stránka"
 
-#: plugin.py:483
-#: plugin.py:894
-#: plugin.py:1086
-#: plugin.py:1335
-#: plugin.py:1584
-#: plugin.py:1799
+#: plugin.py:496
+#: plugin.py:933
+#: plugin.py:1127
+#: plugin.py:1376
+#: plugin.py:1625
+#: plugin.py:1840
 msgid "Right - Next page"
 msgstr "Vpravo - Další stránka"
 
-#: plugin.py:484
-#: plugin.py:895
-#: plugin.py:1087
-#: plugin.py:1336
-#: plugin.py:1585
-#: plugin.py:1800
+#: plugin.py:497
+#: plugin.py:934
+#: plugin.py:1128
+#: plugin.py:1377
+#: plugin.py:1626
+#: plugin.py:1841
 msgid "Up - Previous"
 msgstr "Nahoru - Předchozí"
 
-#: plugin.py:485
-#: plugin.py:896
-#: plugin.py:1088
-#: plugin.py:1337
-#: plugin.py:1586
-#: plugin.py:1801
+#: plugin.py:498
+#: plugin.py:935
+#: plugin.py:1129
+#: plugin.py:1378
+#: plugin.py:1627
+#: plugin.py:1842
 msgid "Down - Next"
 msgstr "Dolů - Další"
 
-#: plugin.py:486
+#: plugin.py:499
 msgid "Red - Weekoverview"
 msgstr "Červená - Týdenní přehled"
 
-#: plugin.py:487
-#: plugin.py:898
+#: plugin.py:500
+#: plugin.py:937
 msgid "Green - Favorite 1"
 msgstr "Zelená - Favorit 1"
 
-#: plugin.py:488
-#: plugin.py:899
+#: plugin.py:501
+#: plugin.py:938
 msgid "Yellow - Favorite 2"
 msgstr "Žlutá - Favorit 2"
 
-#: plugin.py:489
-#: plugin.py:900
+#: plugin.py:502
+#: plugin.py:939
 msgid "Blue - Home"
 msgstr "Modrá - Domů"
 
-#: plugin.py:490
+#: plugin.py:503
 msgid "0 - Today"
 msgstr "0 - Dnes"
 
-#: plugin.py:491
+#: plugin.py:504
 msgid "1 - Today + 1 day"
 msgstr "1 - Dnes + 1 den"
 
-#: plugin.py:492
+#: plugin.py:505
 msgid "2 - Today + 2 days"
 msgstr "2 - Dnes + 2 dny"
 
-#: plugin.py:493
+#: plugin.py:506
 msgid "3 - Today + 3 days"
 msgstr "3 - Dnes + 3 dny"
 
-#: plugin.py:494
+#: plugin.py:507
 msgid "4 - Today + 4 days"
 msgstr "4 - Dnes + 4 dny"
 
-#: plugin.py:495
+#: plugin.py:508
 msgid "5 - Today + 5 days"
 msgstr "5 - Dnes + 5 dnů"
 
-#: plugin.py:496
+#: plugin.py:509
 msgid "6 - Today + 6 days"
 msgstr "6 - Dnes + 6 dnů"
 
-#: plugin.py:497
+#: plugin.py:510
 msgid "7 - Today + 7 days"
 msgstr "7 - Dnes + 7 dnů"
 
-#: plugin.py:498
+#: plugin.py:511
 msgid "8 - Today + 8 days"
 msgstr "8 - Dnes + 8 dnů"
 
-#: plugin.py:499
+#: plugin.py:512
 msgid "9 - Today + 9 days"
 msgstr "9 - Dnes + 9 dnů"
 
-#: plugin.py:605
-msgid "United_States/New_York_City"
-msgstr "United_States/New_York_City"
-
-#: plugin.py:616
-msgid "Russia/Moskva"
-msgstr "Russia/Moskva"
-
-#: plugin.py:647
+#: plugin.py:672
 msgid ""
 "\n"
 "0 - 9       =   Prognosis (x) days from now\n"
@@ -331,14 +286,11 @@ msgid ""
 "Menu     =   Satellite photos and maps\n"
 "\n"
 "Red        =   Temperature for the next 5 days\n"
-"\n"
 "Green    =   Go to Favorite 1\n"
-"\n"
 "Yellow    =   Go to Favorite 2\n"
-"\n"
 "Blue        =   Go to Home\n"
 "\n"
-"Wind direction = Arrow to right: Wind from the West\n"
+"Wind direction = Arrow to right: Wind from the West"
 msgstr ""
 "\n"
 "0 - 9 = Prognóza na (x) dní\n"
@@ -352,41 +304,42 @@ msgstr ""
 "Menu = Satelitní snímky a mapy\n"
 "\n"
 "Červená = Teplota na dalších 5 dní\n"
-"\n"
 "Zelená = Přepnout na Favorit 1\n"
-"\n"
 "Žlutá = Přepnout na Favorit 2\n"
-"\n"
 "Modrá = Přepnout na Domů\n"
 "\n"
-"Směr větru = šipka doprava: vítr od západu\n"
+"Směr větru = šipka doprava: vítr od západu"
 
-#: plugin.py:856
-#: plugin.py:887
+#: plugin.py:891
+#: plugin.py:926
 msgid "Select a city"
 msgstr "Výběr města"
 
-#: plugin.py:897
+#: plugin.py:925
+msgid "Forecast"
+msgstr "Počasí "
+
+#: plugin.py:936
 msgid "OK - Select"
 msgstr "OK - Zvolte"
 
-#: plugin.py:901
+#: plugin.py:940
 msgid "Channel+ - 500 back"
 msgstr "Kanál+ - 500 zpět"
 
-#: plugin.py:902
+#: plugin.py:941
 msgid "Channel- - 500 forward"
 msgstr "Kanál- - 500 dále"
 
-#: plugin.py:903
+#: plugin.py:942
 msgid "Volume- - 100 forward"
 msgstr "Hlasitost- - 100 dále"
 
-#: plugin.py:904
+#: plugin.py:943
 msgid "Volume+ - 100 back"
 msgstr "Hlasitost+ - 100 zpět"
 
-#: plugin.py:966
+#: plugin.py:1007
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -396,7 +349,7 @@ msgstr ""
 "\n"
 "                                  "
 
-#: plugin.py:977
+#: plugin.py:1018
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
@@ -406,7 +359,7 @@ msgstr ""
 "\n"
 "                             "
 
-#: plugin.py:988
+#: plugin.py:1029
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -416,298 +369,332 @@ msgstr ""
 "\n"
 "                             "
 
-#: plugin.py:1035
-#: plugin.py:1048
-#: plugin.py:1079
+#: plugin.py:1076
+#: plugin.py:1089
+#: plugin.py:1120
 msgid "Satellite photos"
 msgstr "Satelitní snímky"
 
-#: plugin.py:1064
+#: plugin.py:1105
 msgid "Weather map Video"
 msgstr "Mapa počasí - video"
 
-#: plugin.py:1065
+#: plugin.py:1106
 msgid "Showerradar Video"
 msgstr "Srážkový radar - video"
 
-#: plugin.py:1066
+#: plugin.py:1107
 msgid "Cloudcover Video"
 msgstr "Oblačnost -  video"
 
-#: plugin.py:1067
+#: plugin.py:1108
 msgid "Eumetsat"
 msgstr "Eumetsat"
 
-#: plugin.py:1068
+#: plugin.py:1109
 msgid "Air pressure"
 msgstr "Tlak"
 
-#: plugin.py:1069
+#: plugin.py:1110
 msgid "Infrared"
 msgstr "Infračervené zobrazení"
 
-#: plugin.py:1075
-#: plugin.py:1548
-#: plugin.py:1552
-#: plugin.py:1577
+#: plugin.py:1116
+#: plugin.py:1589
+#: plugin.py:1593
+#: plugin.py:1618
 msgid "Continents"
 msgstr "Kontinenty"
 
-#: plugin.py:1076
-#: plugin.py:1560
-#: plugin.py:1762
-#: plugin.py:1766
-#: plugin.py:1792
+#: plugin.py:1117
+#: plugin.py:1601
+#: plugin.py:1803
+#: plugin.py:1807
+#: plugin.py:1833
 msgid "Europe"
 msgstr "Evropa"
 
-#: plugin.py:1077
-#: plugin.py:1294
-#: plugin.py:1298
-#: plugin.py:1328
-#: plugin.py:1777
+#: plugin.py:1118
+#: plugin.py:1335
+#: plugin.py:1339
+#: plugin.py:1369
+#: plugin.py:1818
 msgid "Germany"
 msgstr "Německo"
 
-#: plugin.py:1078
-#: plugin.py:1327
-#: plugin.py:1791
+#: plugin.py:1119
+#: plugin.py:1368
+#: plugin.py:1832
 msgid "Settings"
 msgstr "Nastavení"
 
-#: plugin.py:1089
+#: plugin.py:1130
 msgid "Red - Continents"
 msgstr "Červená - Kontinenty"
 
-#: plugin.py:1090
+#: plugin.py:1131
 msgid "Green - Europe"
 msgstr "Zelená - Evropa"
 
-#: plugin.py:1091
+#: plugin.py:1132
 msgid "Yellow - Germany"
 msgstr "Žlutá - Německo"
 
-#: plugin.py:1092
-#: plugin.py:1338
-#: plugin.py:1802
+#: plugin.py:1133
+#: plugin.py:1379
+#: plugin.py:1628
+#: plugin.py:1843
 msgid "Blue - Settings"
 msgstr "Modrá - Nastavení"
 
-#: plugin.py:1093
-#: plugin.py:1339
-#: plugin.py:1588
-#: plugin.py:1803
+#: plugin.py:1134
+#: plugin.py:1380
+#: plugin.py:1629
+#: plugin.py:1844
 msgid "OK - Show"
 msgstr "OK - Zobrazit"
 
-#: plugin.py:1204
+#: plugin.py:1245
 msgid "h"
 msgstr "h"
 
-#: plugin.py:1306
+#: plugin.py:1347
 msgid "Baden-Wuerttemberg"
 msgstr "Bádensko-Würtembersko"
 
-#: plugin.py:1307
+#: plugin.py:1348
 msgid "Bavaria"
 msgstr "Bavorsko"
 
-#: plugin.py:1308
+#: plugin.py:1349
 msgid "Berlin"
 msgstr "Berlín"
 
-#: plugin.py:1309
+#: plugin.py:1350
 msgid "Brandenburg"
 msgstr "Brandenbursko"
 
-#: plugin.py:1310
+#: plugin.py:1351
 msgid "Bremen"
 msgstr "Brémy"
 
-#: plugin.py:1311
+#: plugin.py:1352
 msgid "Hamburg"
 msgstr "Hamburk"
 
-#: plugin.py:1312
+#: plugin.py:1353
 msgid "Hesse"
 msgstr "Hesensko"
 
-#: plugin.py:1313
+#: plugin.py:1354
 msgid "Mecklenburg-Vorpommern"
 msgstr "Meklenbursko-Přední Pomořansko"
 
-#: plugin.py:1314
+#: plugin.py:1355
 msgid "Lower Saxony"
 msgstr "Dolní Sasko"
 
-#: plugin.py:1315
+#: plugin.py:1356
 msgid "North Rhine-Westphalia"
 msgstr "Severní Porýní-Vestfálsko"
 
-#: plugin.py:1316
+#: plugin.py:1357
 msgid "Rhineland-Palatine"
 msgstr "Porýní-Falc"
 
-#: plugin.py:1317
+#: plugin.py:1358
 msgid "Saarland"
 msgstr "Sársko"
 
-#: plugin.py:1318
+#: plugin.py:1359
 msgid "Saxony"
 msgstr "Sasko"
 
-#: plugin.py:1319
+#: plugin.py:1360
 msgid "Saxony-Anhalt"
 msgstr "Sasko-Anhaltsko"
 
-#: plugin.py:1320
+#: plugin.py:1361
 msgid "Schleswig-Holstein"
 msgstr "Šlesvicko-Holštýnsko"
 
-#: plugin.py:1321
+#: plugin.py:1362
 msgid "Thuringia"
 msgstr "Durinsko"
 
-#: plugin.py:1561
+#: plugin.py:1602
 msgid "North Africa"
 msgstr "Severní Afrika"
 
-#: plugin.py:1562
+#: plugin.py:1603
 msgid "South Africa"
 msgstr "Jižní Afrika"
 
-#: plugin.py:1563
+#: plugin.py:1604
 msgid "North America"
 msgstr "Severní Amerika"
 
-#: plugin.py:1564
+#: plugin.py:1605
 msgid "Middle America"
 msgstr "Střední Amerika"
 
-#: plugin.py:1565
+#: plugin.py:1606
 msgid "South America"
 msgstr "Jižní Amerika"
 
-#: plugin.py:1566
+#: plugin.py:1607
 msgid "Middle East"
 msgstr "Střední Východ"
 
-#: plugin.py:1567
+#: plugin.py:1608
 msgid "East Asia"
 msgstr "Východní Asie"
 
-#: plugin.py:1568
+#: plugin.py:1609
 msgid "Southeast Asia"
 msgstr "Jihovýchodní Asie"
 
-#: plugin.py:1569
+#: plugin.py:1610
 msgid "Middle Asia"
 msgstr "Střední Asie"
 
-#: plugin.py:1570
+#: plugin.py:1611
 msgid "Australia"
 msgstr "Austrálie"
 
-#: plugin.py:1773
+#: plugin.py:1814
 msgid "Austria"
 msgstr "Rakousko"
 
-#: plugin.py:1774
+#: plugin.py:1815
 msgid "Belgium"
 msgstr "Belgie"
 
-#: plugin.py:1775
+#: plugin.py:1816
 msgid "Denmark"
 msgstr "Dánsko"
 
-#: plugin.py:1776
+#: plugin.py:1817
 msgid "France"
 msgstr "Francie"
 
-#: plugin.py:1778
+#: plugin.py:1819
 msgid "Great Britain"
 msgstr "Velká Británie"
 
-#: plugin.py:1779
+#: plugin.py:1820
 msgid "Ireland"
 msgstr "Irsko"
 
-#: plugin.py:1780
+#: plugin.py:1821
 msgid "Italy"
 msgstr "Itálie"
 
-#: plugin.py:1781
+#: plugin.py:1822
 msgid "Luxembourg"
 msgstr "Lucembursko"
 
-#: plugin.py:1782
+#: plugin.py:1823
 msgid "Netherlands"
 msgstr "Nizozemí"
 
-#: plugin.py:1783
+#: plugin.py:1824
 msgid "Portugal"
 msgstr "Portugalsko"
 
-#: plugin.py:1784
+#: plugin.py:1825
 msgid "Spain"
 msgstr "Španělsko"
 
-#: plugin.py:1785
+#: plugin.py:1826
 msgid "Switzerland"
 msgstr "Švýcarsko"
 
-#: plugin.py:2063
+#: plugin.py:2104
 msgid "Please wait, photo is being loaded ..."
 msgstr "Čekejte, prosím, foto je načítáno..."
 
-#: plugin.py:2189
-#: plugin.py:2202
+#: plugin.py:2230
+#: plugin.py:2243
 msgid "SlideShow Settings"
 msgstr "Nastavení presentace"
 
-#: plugin.py:2200
+#: plugin.py:2241
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: plugin.py:2201
+#: plugin.py:2242
 msgid "Save"
 msgstr "Uložit"
 
-#: plugin.py:2229
+#: plugin.py:2270
 msgid "Scaling Mode"
 msgstr "Režim zvětšení"
 
-#: plugin.py:2230
+#: plugin.py:2271
 msgid "Frame size in full view"
 msgstr "Velikost snímku v plném zobrazení"
 
-#: plugin.py:2231
+#: plugin.py:2272
 msgid "Backgroundcolor"
 msgstr "Barva pozadí"
 
-#: plugin.py:2232
+#: plugin.py:2273
 msgid "Textcolor"
 msgstr "Barva textu"
 
-#: plugin.py:2233
+#: plugin.py:2274
 msgid "SlideTime"
 msgstr "Čas presentace"
 
-#: plugin.py:2234
+#: plugin.py:2275
 msgid "Show Infoline"
 msgstr "Zobrazit informační řádek"
 
-#: plugin.py:2235
+#: plugin.py:2276
 msgid "Slide picture in loop"
 msgstr "Opakovat presentaci"
 
-#: plugin.py:2236
+#: plugin.py:2277
 msgid "City names as labels in the Main screen"
 msgstr "Názvy měst jako popisy na hlavní obrazovce"
 
-#: plugin.py:2266
+#: plugin.py:2307
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "Prognóza počasí na následujících 10 dní"
+
+#~ msgid "...Plugins/Extensions/Foreca/"
+#~ msgstr "...Plugins/Extensions/Foreca/"
+
+#~ msgid "/media/hdd/Foreca/"
+#~ msgstr "/media/hdd/Foreca/"
+
+#~ msgid "/var/swap/Foreca/"
+#~ msgstr "/var/swap/Foreca/"
+
+#~ msgid "Yes"
+#~ msgstr "Ano"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "New_York_City"
+#~ msgstr "New_York"
+
+#~ msgid "Moskva"
+#~ msgstr "Moskva"
+
+#~ msgid "United_Kingdom/London"
+#~ msgstr "Česká republika/Praha"
+
+#~ msgid "London"
+#~ msgstr "Londýn"
+
+#~ msgid "United_States/New_York_City"
+#~ msgstr "United_States/New_York_City"
+
+#~ msgid "Russia/Moskva"
+#~ msgstr "Russia/Moskva"
 
 #~ msgid " "
 #~ msgstr " "
