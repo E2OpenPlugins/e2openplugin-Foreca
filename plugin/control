@@ -1,6 +1,6 @@
 Package: enigma2-plugin-extensions-foreca
 Version: 2.7
-Description: Foreca Weather Forecast
+Description: Weather forecast for the upcoming 10 days
 Section: extra
 Priority: optional
 Maintainer: Bauernbub
