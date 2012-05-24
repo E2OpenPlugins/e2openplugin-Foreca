@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.7 Int
+#                 Version 2.8 Int
 #
-#                    12.03.2012
+#                    23.05.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -84,10 +84,11 @@ import string
 # History:
 # 2.6 Various minor changes
 # 2.7 Wrap around mode enabled in screen-lists
-
-VERSION = "2.7"        
+# 2.8 Calculate next date based on displayed date when left/right key is pushed
+#	  after prior date jump using 0 - 9 keys was performed
+VERSION = "2.8"        
 global PluginVersion
-PluginVersion = VERSION + " - 2012-03-12"
+PluginVersion = VERSION + " - 2012-05-23"
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 debug = False # If set True, plugin will print some additional status info to track logic flow
@@ -569,46 +570,59 @@ class ForecaPreview(Screen, HelpableScreen):
 			os.unlink("/tmp/sat.jpg")
 		except:
 			pass
+			
 		try:
 			os.unlink("/tmp/sat.html")
 		except:
 			pass
+			
 		try:
 			os.unlink("/tmp/meteogram.png")
 		except:
 			pass
+			
 		self.close()
 		self.deactivateCacheDialog()
-
+		
 	def Tag0(self):
-		self.Zukunft(0)
+		self.tag = 0
+		self.Zukunft(self.tag)
 
 	def Tag1(self):
-		self.Zukunft(1)
+		self.tag = 1
+		self.Zukunft(self.tag)
 
 	def Tag2(self):
-		self.Zukunft(2)
+		self.tag = 2
+		self.Zukunft(self.tag)
 
 	def Tag3(self):
-		self.Zukunft(3)
+		self.tag = 3
+		self.Zukunft(self.tag)
 
 	def Tag4(self):
-		self.Zukunft(4)
+		self.tag = 4
+		self.Zukunft(self.tag)
 
 	def Tag5(self):
-		self.Zukunft(5)
+		self.tag = 5
+		self.Zukunft(self.tag)
 
 	def Tag6(self):
-		self.Zukunft(6)
+		self.tag = 6
+		self.Zukunft(self.tag)
 
 	def Tag7(self):
-		self.Zukunft(7)
+		self.tag = 7
+		self.Zukunft(self.tag)
 
 	def Tag8(self):
-		self.Zukunft(8)
+		self.tag = 8
+		self.Zukunft(self.tag)
 
 	def Tag9(self):
-		self.Zukunft(9)
+		self.tag = 9
+		self.Zukunft(self.tag)
 
 	def Fav0(self):
 		global start
@@ -935,9 +949,9 @@ class CityPanel(Screen, HelpableScreen):
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
 				"ok": (self.ok, _("OK - Select")),
-				"green": (self.green, _("Green - Favorite 1")),
-				"yellow": (self.yellow, _("Yellow - Favorite 2")),
-				"blue": (self.blue, _("Blue - Home")),
+				"green": (self.green, _("Green - Assign to Favorite 1")),
+				"yellow": (self.yellow, _("Yellow - Assign to Favorite 2")),
+				"blue": (self.blue, _("Blue - Assign to Home")),
 				"nextBouquet": (self.jump500_down, _("Channel+ - 500 back")),
 				"prevBouquet": (self.jump500_up, _("Channel- - 500 forward")),
 				"volumeDown": (self.jump100_up, _("Volume- - 100 forward")),
