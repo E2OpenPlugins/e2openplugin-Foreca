@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.8 Int
+#                 Version 2.9 Int
 #
-#                    23.05.2012
+#                    19.07.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -86,9 +86,13 @@ import string
 # 2.7 Wrap around mode enabled in screen-lists
 # 2.8 Calculate next date based on displayed date when left/right key is pushed
 #	  after prior date jump using 0 - 9 keys was performed
-VERSION = "2.8"        
+# 2.9 Fix: Show correct date and time in weather videos
+#     Main screen navigation modified to comply with standard usage:
+#	  scroll page up/down by left/right key
+#	  select previous/next day by left/right arrow key of numeric key group
+VERSION = "2.9"        
 global PluginVersion
-PluginVersion = VERSION + " - 2012-05-23"
+PluginVersion = VERSION
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 debug = False # If set True, plugin will print some additional status info to track logic flow
@@ -498,6 +502,8 @@ class ForecaPreview(Screen, HelpableScreen):
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
+				"previous": (self.previous, _("Left arrow - Previous day")),
+				"next": (self.next, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
 				"green": (self.Fav1, _("Green - Favorite 1")),
 				"yellow": (self.Fav2, _("Yellow - Favorite 2")),
@@ -730,14 +736,12 @@ class ForecaPreview(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 	def left(self):
-		if not self.working and self.tag >= 1:
-			self.tag = self.tag - 1
-			self.Zukunft(self.tag)
+		if not self.working:
+			self["MainList"].pageUp()
 
 	def right(self):
-		if not self.working and self.tag < 9:
-			self.tag = self.tag + 1
-			self.Zukunft(self.tag)
+		if not self.working:
+			self["MainList"].pageDown()
 
 	def up(self):
 		if not self.working:
@@ -746,6 +750,16 @@ class ForecaPreview(Screen, HelpableScreen):
 	def down(self):
 		if not self.working:
 			self["MainList"].down()
+
+	def previous(self):
+		if not self.working and self.tag >= 1:
+			self.tag = self.tag - 1
+			self.Zukunft(self.tag)
+
+	def next(self):
+		if not self.working and self.tag < 9:
+			self.tag = self.tag + 1
+			self.Zukunft(self.tag)
 
 	def red(self):
 		if not self.working:
@@ -1251,13 +1265,10 @@ class SatPanel(Screen, HelpableScreen):
 				if foundPos ==-1:
 					foundPos = url.find(".jpg")
 				if foundPos ==-1:
-					foundPos = url.find(".png")
-				file = int(url[foundPos-6:foundPos])
-				if debug: print pluginPrintname, str(file)
-				file = file + 2
-				#3print str(file)
-				file = str(file)
-				file2 = file[2:4]+"-"+file[0:2]+" - "+file[4:6]+" "+_("h")
+					foundPos = url.find(".png")			
+				file = url[foundPos-10:foundPos]
+				if debug: print pluginPrintname, file
+				file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
 				if debug: print pluginPrintname, file2
 				h = urllib.urlretrieve(url, devicepath + file2 + ".jpg")
 				x = x + 1
@@ -1629,7 +1640,7 @@ class SatPanelc(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelListc([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
-		#self["key_blue"] = StaticText(_("Settings"))
+		self["key_blue"] = StaticText(_("Settings"))
 		self["Title"] = StaticText(_("Continents"))
 
 		HelpableScreen.__init__(self)
