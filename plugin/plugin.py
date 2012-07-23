@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+﻿# -*- coding: UTF-8 -*-
 #
 #  $Id$
 #
@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9 Int
+#                 Version 2.9.1 Int
 #
-#                    19.07.2012
+#                    23.07.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -90,7 +90,8 @@ import string
 #     Main screen navigation modified to comply with standard usage:
 #	  scroll page up/down by left/right key
 #	  select previous/next day by left/right arrow key of numeric key group
-VERSION = "2.9"        
+# 2.9.1 Latvian cities and localization added. Thanks to muca
+VERSION = "2.9.1"        
 global PluginVersion
 PluginVersion = VERSION
 
@@ -297,7 +298,7 @@ class MainMenuList(MenuList):
 		# Temp
 		self.res.append(MultiContentEntryText(pos=(180, 13), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
 		self.res.append(MultiContentEntryText(pos=(172, 39), size=(80, 24), font=1, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(213, 39), size=(80, 24), font=1, text=_("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(213, 39), size=(80, 24), font=1, text=("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
                 
 		# Wind
 		self.res.append(MultiContentEntryText(pos=(304, 13), size=(125, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
