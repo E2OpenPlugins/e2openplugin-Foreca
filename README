@@ -1,0 +1,18 @@
+﻿Weltweite Wettervorhersage für 10 Tage mit Satellitenbildern, Wetter-Videos und vielem mehr. 
+
+Das Plugin zeigt Wetterprognosen bis maximal 9 Tage im voraus. Die Ausgabe erfolgt mit grafischen Symbolen und kurzen Erklärungen über die Wetterlage. Außerdem können Slideshows über Bewölkung und Niederschlag abgerufen werden. 
+
+Mit den Tasten 0 bis 9 wird die Vorhersage der nächsten 10 Tage aufgerufen: 0 = heute, 1 = morgen, 2 = übermorgen, 3 = in 3 Tagen usw. Mit "<" und ">" (Tasten neben der 0) kann zum vorherigen/nächsten Tag geblättert werden. Mit der roten Taste kann ein grafischer 5-Tages Temperatur- und Niederschlagsverlauf abgerufen werden. 
+
+Die OK-Taste liefert eine umfangreiche Liste, um den gewünschten Ort auszuwählen bzw. als Favorit zu speichern. Es kann hier der Heimatort (blaue Taste) und noch zwei weitere Favoriten (grüne und gelbe Taste) zum direkten Abruf gespeichert werden. Da die Liste bereits über 11.000 Städte umfasst, kann zum beschleunigten Navigieren mit den Tasten Bouquet +/- in 500er Schritten und mit Laustärke +/- in 100er Schritten gesprungen werden. Wer selbst Orte hinzuzufügen möchte, kann die Datei "/etc/enigma2/Foreca/City.cfg" ergänzen. Hierzu die exakte Bezeichnung durch eine Suche bei Foreca aus der URL entnehmen. Ortsnamen mit Umlauten, die in der URL mit a/o/u statt ä/ö/ü stehen, können in der "City.cfg" mit Umlauten (z. B. Düsseldorf für Dusseldorf) eingetragen werden und erscheinen dann in der Ortsauswahl und Überschrift der Prognosen in der korrekten schreibweise. Das funktioniert aber z. B. nicht bei Köln, weil es in der URL mit Doppellaut (Koeln) transkribiert ist. 
+
+Mit der Menütaste wird eine Übersicht aufgerufen, aus der sich verschiedene Slideshows starten lassen. Eine Slideshow besteht aus mehreren Einzelbildern, die als Zeitraffervideo abgespielt werden. Am Ende der Slideshow kann mit den Tasten links/rechts geblättert werden. 
+
+Aus dem Slideshow-Menü kann mit der blauen Taste die Grundeinstellung einiger Parameter verändert werden. Wird z. B. die Bild-Wechselzeit höher gestellt, läuft das Zeitraffervideo langsamer ab. Mit "Diashow wiederholen" kann eine Schleife eingestellt werden. 
+
+Die jeweiligen Tastenfunktionen werden durch Drücken der Help-Taste angezeigt. 
+
+Quelle der Prognosen und Wetterkarten ist das finnische Unternehmen Foreca. 
+
+Weitere Informationen und Screenshots gibt es bei Dreambox-Blog unter Foreca Wettervorhersage und Neue Foreca Version. 
+
