@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.1 Int
+#                 Version 2.9.2 Int
 #
-#                    23.07.2012
+#                    27.07.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -91,7 +91,8 @@ import string
 #	  scroll page up/down by left/right key
 #	  select previous/next day by left/right arrow key of numeric key group
 # 2.9.1 Latvian cities and localization added. Thanks to muca
-VERSION = "2.9.1"        
+# 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
+VERSION = "2.9.2"        
 global PluginVersion
 PluginVersion = VERSION
 
