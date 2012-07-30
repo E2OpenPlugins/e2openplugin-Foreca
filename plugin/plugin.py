@@ -1,4 +1,4 @@
-﻿# -*- coding: UTF-8 -*-
+# -*- coding: UTF-8 -*-
 #
 #  $Id$
 #
@@ -92,6 +92,7 @@ import string
 #	  select previous/next day by left/right arrow key of numeric key group
 # 2.9.1 Latvian cities and localization added. Thanks to muca
 # 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
+#	  Hungarian and Slovakian cities added. Thanks to torpe
 VERSION = "2.9.2"        
 global PluginVersion
 PluginVersion = VERSION
