@@ -298,8 +298,8 @@ class MainMenuList(MenuList):
 
 		# Temp
 		self.res.append(MultiContentEntryText(pos=(160, 15), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(150, 41), size=(80, 24), font=1, text=self.x[2]+_("°C"), color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(190, 41), size=(80, 24), font=1, text=,  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(150, 41), size=(80, 24), font=1, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(190, 41), size=(80, 24), font=1, text=_("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
 
 		# Wind
 		wind = self.x[4].split(' ')
