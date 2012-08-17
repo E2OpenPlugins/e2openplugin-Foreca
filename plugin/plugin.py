@@ -249,11 +249,6 @@ class MainMenuList(MenuList):
 		#list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], Satz1, Satz2, Satz3])
 		self.res = [(self.x[0], self.x[1])]
 
-		pngpic = LoadPixmap(self.thumb)
-		if pngpic is not None:
-			#self.res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHATEST, 100, 5, 80, 80, png))
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(80, 5), size=(80, 80), png=pngpic))
-
 		mediumvioletred = 0xC7D285
 		rot = 16711680
 		gruen = 0x4ad53b
@@ -294,26 +289,34 @@ class MainMenuList(MenuList):
 		if int(self.x[2]) <= -8:
 			self.tempcolor = ddblau
 
+		# forecast pictogram
+		pngpic = LoadPixmap(self.thumb)
+		if pngpic is not None:
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(70, 10), size=(80, 80), png=pngpic))
 		# Time
-		self.res.append(MultiContentEntryText(pos=(10, 26), size=(70, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(10, 34), size=(60, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
 
 		# Temp
-		self.res.append(MultiContentEntryText(pos=(180, 13), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(172, 39), size=(80, 24), font=1, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(213, 39), size=(80, 24), font=1, text=("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
-                
+		self.res.append(MultiContentEntryText(pos=(160, 15), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(150, 41), size=(80, 24), font=1, text=self.x[2]+_("°C"), color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(190, 41), size=(80, 24), font=1, text=,  color=self.tempcolor, color_sel=self.tempcolor))
+
 		# Wind
-		self.res.append(MultiContentEntryText(pos=(304, 13), size=(125, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(290, 39), size=(125, 24), font=1, text=self.x[4], color=mediumvioletred, color_sel=mediumvioletred))
+		wind = self.x[4].split(' ')
+		from enigma import RT_HALIGN_RIGHT
+		self.res.append(MultiContentEntryText(pos=(271, 15), size=(125, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(249, 41), size=(50, 24),  font=1, text=wind[0], flags = RT_HALIGN_RIGHT, color=mediumvioletred, color_sel=mediumvioletred))
+		self.res.append(MultiContentEntryText(pos=(302, 45), size=(50, 24),  font=0, text=wind[1], color=mediumvioletred, color_sel=mediumvioletred))
 
 		# Text
-		self.res.append(MultiContentEntryText(pos=(405, 5), size=(600, 28), font=3, text=self.x[5], color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(405, 31), size=(600, 24), font=2, text=self.x[6], color=mblau, color_sel=mblau))
-		self.res.append(MultiContentEntryText(pos=(405, 55), size=(600, 24), font=2, text=self.x[7], color=mblau, color_sel=mblau))
+		self.res.append(MultiContentEntryText(pos=(365, 5),  size=(600, 28), font=3, text=self.x[5], color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(365, 33), size=(600, 24), font=2, text=self.x[6], color=mblau, color_sel=mblau))
+		self.res.append(MultiContentEntryText(pos=(365, 59), size=(600, 24), font=2, text=self.x[7], color=mblau, color_sel=mblau))
 
+		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
 		if pngpic is not None:
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(253, 26), size=(27, 28), png=pngpic))
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(235, 26), size=(27, 28), png=pngpic))
 
 		self.listCompleted.append(self.res)
 		self.idx += 1
