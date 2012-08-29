@@ -1,9 +1,8 @@
 #!/bin/sh
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/Foreca
 echo "###################################################"
 echo "#                                                 #"
-echo "#           Foreca successfully removed!          #"
-echo "#           Please restart enigma2                #"
+echo "#         Foreca successfully installed!          #"
+echo "#         Please restart enigma2                  #"
 echo "#                                                 #"
 echo "###################################################"
 exit 0

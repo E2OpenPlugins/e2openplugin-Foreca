@@ -3,7 +3,7 @@ import setup_translate
 
 pkg = 'Extensions.Foreca'
 setup (name = 'enigma2-plugin-extensions-foreca',
-       version = '2.9.3',
+       version = '2.9.4',
        description = 'Weather forecast for the upcoming 10 days',
        packages = [pkg],
        package_dir = {pkg: 'plugin'},

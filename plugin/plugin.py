@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.2 Int
+#                 Version 2.9.4 Int
 #
-#                    27.07.2012
+#                    28.08.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -98,7 +98,9 @@ import string
 #	Some code cosmetics
 #	Translation code simplified: Setting the os LANGUAGE variable isn't needed anymore
 #	Typos in German localization fixed
-VERSION = "2.9.3"               
+# 2.9.4 Many world-wide cities added. Thanks to AnodA
+#	Hungarian and Slovakian localization added. Thanks to torpe
+VERSION = "2.9.4"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -306,7 +308,7 @@ class MainMenuList(MenuList):
 		# Temp
 		self.res.append(MultiContentEntryText(pos=(150, 15), size=(75, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
 		self.res.append(MultiContentEntryText(pos=(150, 45), size=(40, 24), font=3, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(190, 45), size=(35, 24), font=3, text=_("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(190, 45), size=(35, 24), font=3, text=_("ï¿½C"),  color=self.tempcolor, color_sel=self.tempcolor))
 
 		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
@@ -1352,7 +1354,7 @@ class SatPanel(Screen, HelpableScreen):
 		return res
 
 #------------------------------------------------------------------------------------------
-# Bundesländer - Karten
+# Bundeslï¿½nder - Karten
 # -------------------------------------------------------------------
 
 class SatPanelListb(MenuList):
