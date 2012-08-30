@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.4 Int
+#                 Version 2.9.5 Int
 #
-#                    28.08.2012
+#                    30.08.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -100,7 +100,8 @@ import string
 #	Typos in German localization fixed
 # 2.9.4 Many world-wide cities added. Thanks to AnodA
 #	Hungarian and Slovakian localization added. Thanks to torpe
-VERSION = "2.9.4"               
+# 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
+VERSION = "2.9.5"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -400,14 +401,14 @@ class ForecaPreview(Screen, HelpableScreen):
 			file = open(USR_PATH + "/fav1.cfg","r")
 			fav1 = str(file.readline().strip())
 			file.close()
-			fav1 = fav1[fav1.find("/")+1:len(fav1)]
+			fav1 = fav1[fav1.rfind("/")+1:len(fav1)]
 		else:
 			fav1 = "New_York_City"
 		if fileExists(USR_PATH + "/fav2.cfg"):
 			file = open(USR_PATH + "/fav2.cfg","r")
 			fav2 = str(file.readline().strip())
 			file.close()
-			fav2 = fav2[fav2.find("/")+1:len(fav2)]
+			fav2 = fav2[fav2.rfind("/")+1:len(fav2)]
 		else:
 			fav2 = "Moskva"
 
@@ -417,7 +418,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file = open(USR_PATH + "/startservice.cfg","r")
 			self.ort = str(file.readline().strip())
 			file.close()
-			start = self.ort[self.ort.find("/")+1:len(self.ort)]
+			start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		else:
 			self.ort = "United_Kingdom/London"
 			start = "London"
@@ -654,7 +655,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file.close()
 		else:
 			self.ort = "United_Kingdom/London"
-		start = self.ort[self.ort.find("/")+1:len(self.ort)]
+		start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Fav1(self):
@@ -665,7 +666,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file.close()
 		else:
 			self.ort = "United_States/New_York_City"
-		fav1 = self.ort[self.ort.find("/")+1:len(self.ort)]
+		fav1 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Fav2(self):
@@ -676,7 +677,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file.close()
 		else:
 			self.ort = "Russia/Moskva"
-		fav2 = self.ort[self.ort.find("/")+1:len(self.ort)]
+		fav2 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
 	def Zukunft(self, ztag=0):
@@ -1045,36 +1046,36 @@ class CityPanel(Screen, HelpableScreen):
 
 	def blue(self):
 		global start
-		city = self['Mlist'].l.getCurrentSelection()[0][1]
-		if debug: print pluginPrintname, "Service:", city
+		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if debug: print pluginPrintname, "Home:", city
 		fwrite = open(USR_PATH + "/startservice.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		start = city[city.find("/")+1:len(city)]
+		start = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
+		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def green(self):
 		global fav1
-		city = self['Mlist'].l.getCurrentSelection()[0][1]
-		if debug: print pluginPrintname, "Service:", city
+		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if debug: print pluginPrintname, "Fav1:", city
 		fwrite = open(USR_PATH + "/fav1.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		fav1 = city[city.find("/")+1:len(city)]
+		fav1 = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
+		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def yellow(self):
 		global fav2
-		city = self['Mlist'].l.getCurrentSelection()[0][0]
-		if debug: print pluginPrintname, "Service:", city
+		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if debug: print pluginPrintname, "Fav2:", city
 		fwrite = open(USR_PATH + "/fav2.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
-		fav2 = city[city.find("/")+1:len(city)]
+		fav2 = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=3)
+		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self,entry):
 		rot = 16711680
