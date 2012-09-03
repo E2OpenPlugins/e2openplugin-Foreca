@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.5 Int
+#                 Version 2.9.6 Int
 #
-#                    30.08.2012
+#                    03.09.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -101,7 +101,10 @@ import string
 # 2.9.4 Many world-wide cities added. Thanks to AnodA
 #	Hungarian and Slovakian localization added. Thanks to torpe
 # 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
-VERSION = "2.9.5"               
+# 2.9.6 Size of temperature item slightly extended to match with skins using italic font
+#	Grading of temperature colors reworked 
+
+VERSION = "2.9.6"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -257,46 +260,46 @@ class MainMenuList(MenuList):
 		#list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], Satz1, Satz2, Satz3])
 		self.res = [(self.x[0], self.x[1])]
 
-		mediumvioletred = 0xC7D285
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		hlila = 0xffbbff
-		hlila2 = 0xee30a7
-		drot = 0xc00000
-		hrot = 0xff3030
-		orange =0xf47d19
-		gelb =0xffff00
-		mblau = 0x87cefa
-		hblau = 0x00c5cd
-		dblau = 0x009acd
-		ddblau = 0x00688b
-		weiss = 0xffffff
-		hweiss =0xf7f7f7
-		grau = 0x565656
-		schwarz = 0x000000
+		violetred = 0xC7D285
+		violet    = 0xff40b3
+		gruen     = 0x77f424
+		dgruen    = 0x53c905
+		drot      = 0xff4040
+		mrot      = 0xff6640
+		hrot      = 0xff8c40
+		orange    = 0xffb340
+		gelb      = 0xffff40
+		ddblau    = 0x408cff
+		dblau     = 0x40b3ff
+		mblau     = 0x40d9ff
+		hblau     = 0x40ffff
+		weiss     = 0xffffff
 
 		self.centigrades = int(self.x[2])
-		if self.centigrades <= -10:
+		if self.centigrades <= -20:
 			self.tempcolor = ddblau
-		elif self.centigrades <= -5:
+		elif self.centigrades <= -15:
 			self.tempcolor = dblau
-		elif self.centigrades <= 0:
+		elif self.centigrades <= -10:
 			self.tempcolor = mblau
-		elif self.centigrades < 5:
+		elif self.centigrades <= -5:
 			self.tempcolor = hblau
-		elif self.centigrades < 10:
+		elif self.centigrades <= 0:
 			self.tempcolor = dgruen
-		elif self.centigrades < 15:
+		elif self.centigrades < 5:
 			self.tempcolor = gruen
-		elif self.centigrades < 20:
+		elif self.centigrades < 10:
 			self.tempcolor = gelb
-		elif self.centigrades < 25:
+		elif self.centigrades < 15:
 			self.tempcolor = orange
-		elif self.centigrades < 30:
+		elif self.centigrades < 20:
 			self.tempcolor = hrot
-		else:
+		elif self.centigrades < 25:
+			self.tempcolor = mrot
+		elif self.centigrades < 30:
 			self.tempcolor = drot
+		else:
+			self.tempcolor = violet
 
 		# Time
 		self.res.append(MultiContentEntryText(pos=(10, 34), size=(60, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
@@ -304,12 +307,11 @@ class MainMenuList(MenuList):
 		# forecast pictogram
 		pngpic = LoadPixmap(self.thumb)
 		if pngpic is not None:
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(75, 10), size=(70, 70), png=pngpic))
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(70, 10), size=(70, 70), png=pngpic))
 
 		# Temp
-		self.res.append(MultiContentEntryText(pos=(150, 15), size=(75, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(150, 45), size=(40, 24), font=3, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))
-		self.res.append(MultiContentEntryText(pos=(190, 45), size=(35, 24), font=3, text=_("°C"),  color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(145, 15), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(145, 45), size=(80, 24), font=3, text=self.x[2] + _("°C"), color=self.tempcolor, color_sel=self.tempcolor))
 
 		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
@@ -318,7 +320,7 @@ class MainMenuList(MenuList):
 
 		# Wind
 		self.res.append(MultiContentEntryText(pos=(265, 15), size=(95, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(265, 45), size=(95, 24), font=3, text=self.x[4], color=mediumvioletred, color_sel=mediumvioletred))
+		self.res.append(MultiContentEntryText(pos=(265, 45), size=(95, 24), font=3, text=self.x[4], color=violetred, color_sel=violetred))
 		
 		# Text
 		self.res.append(MultiContentEntryText(pos=(365, 5),  size=(600, 28), font=3, text=self.x[5], color=weiss, color_sel=weiss))
@@ -445,8 +447,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
 					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,40" font="Regular;30" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
-					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,40" font="Regular;28" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
+					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,60" font="Regular;24" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
+					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,60" font="Regular;26" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,70" zPosition="2" size="980,1" backgroundColor="#FFFFFF" />
 					<widget source="key_red" render="Label" position="39,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_green" render="Label" position="177,463" zPosition="2" size="110,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
@@ -469,8 +471,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.skin = """
 				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#40000000" >
 					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,40" font="Regular;30" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
-					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,40" font="Regular;28" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
+					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,50" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
+					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,50" font="Regular;22" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,55" zPosition="2" size="710,1" backgroundColor="#FFFFFF" />
 					<widget source="key_red" render="Label" position="50,438" zPosition="2" size="120,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_green" render="Label" position="210,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
