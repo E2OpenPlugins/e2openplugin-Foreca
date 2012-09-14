@@ -1,8 +1,8 @@
 #!/bin/sh
 echo "###################################################"
 echo "#                                                 #"
-echo "#         Foreca successfully installed!          #"
-echo "#         Please restart enigma2                  #"
+echo "#  Foreca successfully installed.                 #"
+echo "#  Please restart enigma2 to activate the plugin! #"
 echo "#                                                 #"
 echo "###################################################"
 exit 0

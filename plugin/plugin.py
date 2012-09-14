@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.6 Int
+#                 Version 2.9.7 Int
 #
-#                    03.09.2012
+#                    14.09.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -93,7 +93,7 @@ import string
 # 2.9.1 Latvian cities and localization added. Thanks to muca
 # 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
 #	Hungarian and Slovakian cities added. Thanks to torpe
-# 2.9.3 Detail line in forecast condensed to show more text in SD screen
+# 2.9.3 Detail line in main screen condensed to show more text in SD screen
 #	Grading of temperature colors reworked 
 #	Some code cosmetics
 #	Translation code simplified: Setting the os LANGUAGE variable isn't needed anymore
@@ -102,9 +102,14 @@ import string
 #	Hungarian and Slovakian localization added. Thanks to torpe
 # 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
 # 2.9.6 Size of temperature item slightly extended to match with skins using italic font
-#	Grading of temperature colors reworked 
+#	Grading of temperature colors reworked
+# 2.9.7 Use specified "Frame size in full view" value when showing "5 day forecast" chart 
+#	Info screen reworked
+#	False temperature colors fixed
+#	Up/down keys now scroll by page in main screen (without highlighting selection)
+#	Unresolved: Crash when scrolling in help screen of city panel
 
-VERSION = "2.9.6"               
+VERSION = "2.9.7"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -265,13 +270,13 @@ class MainMenuList(MenuList):
 		gruen     = 0x77f424
 		dgruen    = 0x53c905
 		drot      = 0xff4040
-		mrot      = 0xff6640
-		hrot      = 0xff8c40
+		rot       = 0xff6640
 		orange    = 0xffb340
 		gelb      = 0xffff40
-		ddblau    = 0x408cff
-		dblau     = 0x40b3ff
-		mblau     = 0x40d9ff
+		ddblau    = 0x3b62ff
+		dblau     = 0x408cff
+		mblau     = 0x40b3ff
+		blau      = 0x40d9ff
 		hblau     = 0x40ffff
 		weiss     = 0xffffff
 
@@ -283,19 +288,19 @@ class MainMenuList(MenuList):
 		elif self.centigrades <= -10:
 			self.tempcolor = mblau
 		elif self.centigrades <= -5:
-			self.tempcolor = hblau
+			self.tempcolor = blau
 		elif self.centigrades <= 0:
-			self.tempcolor = dgruen
+			self.tempcolor = hblau
 		elif self.centigrades < 5:
-			self.tempcolor = gruen
+			self.tempcolor = dgruen
 		elif self.centigrades < 10:
-			self.tempcolor = gelb
+			self.tempcolor = gruen
 		elif self.centigrades < 15:
-			self.tempcolor = orange
+			self.tempcolor = gelb
 		elif self.centigrades < 20:
-			self.tempcolor = hrot
+			self.tempcolor = orange
 		elif self.centigrades < 25:
-			self.tempcolor = mrot
+			self.tempcolor = rot
 		elif self.centigrades < 30:
 			self.tempcolor = drot
 		else:
@@ -446,7 +451,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		if (getDesktop(0).size().width() >= 1280):
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,60" font="Regular;24" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,60" font="Regular;26" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,70" zPosition="2" size="980,1" backgroundColor="#FFFFFF" />
@@ -470,7 +475,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,50" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,50" font="Regular;22" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,55" zPosition="2" size="710,1" backgroundColor="#FFFFFF" />
@@ -519,8 +524,8 @@ class ForecaPreview(Screen, HelpableScreen):
 				"ok": (self.OK, _("OK - City")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
+				"up": (self.left, _("Up - Previous page")),
+				"down": (self.right, _("Down - Next page")),
 				"previous": (self.previous, _("Left arrow - Previous day")),
 				"next": (self.next, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
@@ -709,7 +714,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.openWithCallback(self.OKCallback, CityPanel,panelmenu)
 
 	def info(self):
-		message = "%s" % (_("\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll (City choice)\n\n<   >       =   Prognosis next/previous day\n\nInfo        =   This information\n\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature for the next 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
+		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OKCallback(self):
@@ -762,13 +767,13 @@ class ForecaPreview(Screen, HelpableScreen):
 		if not self.working:
 			self["MainList"].pageDown()
 
-	def up(self):
-		if not self.working:
-			self["MainList"].up()
+	#def up(self):
+	#	if not self.working:
+	#		self["MainList"].up()
 
-	def down(self):
-		if not self.working:
-			self["MainList"].down()
+	#def down(self):
+	#	if not self.working:
+	#		self["MainList"].down()
 
 	def previous(self):
 		if not self.working and self.tag >= 1:
@@ -978,7 +983,7 @@ class CityPanel(Screen, HelpableScreen):
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self,"AAFKeyActions",
 			{
-				"cancel": (self.Exit, _("Exit - End")),
+				"cancel": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
@@ -1035,7 +1040,7 @@ class CityPanel(Screen, HelpableScreen):
 	def right(self):
 		self["Mlist"].pageDown()
 
-	def Exit(self):
+	def exit(self):
 		global menu
 		menu = "stop"
 		self.close()
@@ -1175,7 +1180,7 @@ class SatPanel(Screen, HelpableScreen):
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
 			{
-				"cancel": (self.Exit, _("Exit - End")),
+				"cancel": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
@@ -1201,7 +1206,7 @@ class SatPanel(Screen, HelpableScreen):
 	def right(self):
 		self["Mlist"].pageDown()
 
-	def Exit(self):
+	def exit(self):
 		global menu
 		menu = "stop"
 		self.close()
@@ -2071,7 +2076,7 @@ class PicView(Screen):
 	def __init__(self, session, filelist, index, path, startslide):
 		self.session = session
 		self.bgcolor = "#00000000"
-		space = 5
+		space = config.plugins.foreca.framesize.value
 		size_w = getDesktop(0).size().width()
 		size_h = getDesktop(0).size().height()
 
@@ -2102,7 +2107,7 @@ class PicView(Screen):
 
 	def setPicloadConf(self):
 		sc = getScale()
-		self.picload.setPara([self["pic"].instance.size().width(), self["pic"].instance.size().height(), sc[0], sc[1], 0, 1, self.bgcolor])
+		self.picload.setPara([self["pic"].instance.size().width(), self["pic"].instance.size().height(), sc[0], sc[1], 0, int(config.plugins.foreca.resize.value), self.bgcolor])
 		self.start_decode()
 
 	def ShowPicture(self):
@@ -2365,4 +2370,4 @@ def main(session, **kwargs):
 	session.open(ForecaPreview)
 
 def Plugins(**kwargs):
-	return PluginDescriptor(name=_("Foreca Weather Forecast")  + " " + VERSION, description=_("Weather forecast for the upcoming 10 days"), icon="foreca_logo.png", where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU], fnc=main)
+	return PluginDescriptor(name=_("Foreca Weather Forecast"), description=_("Weather forecast for the upcoming 10 days"), icon="foreca_logo.png", where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU], fnc=main)
