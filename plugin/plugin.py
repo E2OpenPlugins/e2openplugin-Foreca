@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 2.9.7 Int
+#                 Version 3.0.0 Int
 #
-#                    14.09.2012
+#                    22.09.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -107,9 +107,16 @@ import string
 #	Info screen reworked
 #	False temperature colors fixed
 #	Up/down keys now scroll by page in main screen (without highlighting selection)
-#	Unresolved: Crash when scrolling in help screen of city panel
+# 3.0.0 Option added to select measurement units. Thanks to muca
+#	Option added to select time format.
+#	Setup menu reworked.
+#   Main screen navigation modified: Select previous/next day by left/right key
+#	Many Italian cities added and Italian localization updated. Thanks to mat8861
+#	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
+#
+# Unresolved: Crash when scrolling in help screen of city panel
 
-VERSION = "2.9.7"               
+VERSION = "3.0.0"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -123,11 +130,12 @@ config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.framesize = ConfigInteger(default=5, limits=(5, 99))
-config.plugins.foreca.remove = ConfigYesNo(default = False)
 config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
-config.plugins.foreca.infoline = ConfigEnableDisable(default=True)
-config.plugins.foreca.loop = ConfigEnableDisable(default=False)
+config.plugins.foreca.infoline = ConfigYesNo(default=True)
+config.plugins.foreca.loop = ConfigYesNo(default=False)
 config.plugins.foreca.citylabels = ConfigEnableDisable(default=False)
+config.plugins.foreca.units = ConfigSelection(default="metrickmh", choices = [("metric", _("Metric (C, m/s)")), ("metrickmh", _("Metric (C, km/h)")), ("imperial", _("Imperial (C, mph)")), ("us", _("US (F, mph)"))])
+config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _("12 h")), ("24h", _("24 h"))])
 
 global MAIN_PAGE
 MAIN_PAGE = _("http://www.foreca.com")
@@ -280,7 +288,12 @@ class MainMenuList(MenuList):
 		hblau     = 0x40ffff
 		weiss     = 0xffffff
 
-		self.centigrades = int(self.x[2])
+		if config.plugins.foreca.units.value == "us":
+			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
+			tempUnit = _("°F")
+		else:
+			self.centigrades = int(self.x[2])
+			tempUnit = _("°C")
 		if self.centigrades <= -20:
 			self.tempcolor = ddblau
 		elif self.centigrades <= -15:
@@ -316,7 +329,7 @@ class MainMenuList(MenuList):
 
 		# Temp
 		self.res.append(MultiContentEntryText(pos=(145, 15), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(145, 45), size=(80, 24), font=3, text=self.x[2] + _("°C"), color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(145, 45), size=(80, 24), font=3, text=self.x[2] + tempUnit, color=self.tempcolor, color_sel=self.tempcolor))
 
 		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
@@ -446,15 +459,16 @@ class ForecaPreview(Screen, HelpableScreen):
 						self.FILTERout.append(regel[17:].strip())
 		file.close
 		
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + heute + "&units=metrickmh&tf=24h"
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		
 		if (getDesktop(0).size().width() >= 1280):
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,60" font="Regular;24" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,60" font="Regular;26" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
-					<eLabel position="5,70" zPosition="2" size="980,1" backgroundColor="#FFFFFF" />
+					<eLabel position="5,70" zPosition="2" size="970,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
+					<eLabel position="5,460" zPosition="2" size="970,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
 					<widget source="key_red" render="Label" position="39,463" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_green" render="Label" position="177,463" zPosition="2" size="110,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_yellow" render="Label" position="325,463" zPosition="2" size="110,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
@@ -470,15 +484,15 @@ class ForecaPreview(Screen, HelpableScreen):
 					<ePixmap position="692,470" size="36,25" pixmap="skin_default/buttons/key_menu.png" transparent="1" alphatest="on" />
 					<ePixmap position="815,470" size="36,25" pixmap="skin_default/buttons/key_info.png" transparent="1" alphatest="on" />
 					<ePixmap position="938,470" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" transparent="1" alphatest="on" />
-					<eLabel position="5,460" zPosition="2" size="970,2" backgroundColor="#FFFFFF" />
 				</screen>"""
 		else:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" selectionDisabled="1" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,50" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,50" font="Regular;22" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
-					<eLabel position="5,55" zPosition="2" size="710,1" backgroundColor="#FFFFFF" />
+					<eLabel position="5,55" zPosition="2" size="710,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
+					<eLabel position="5,437" zPosition="2" size="710,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
 					<widget source="key_red" render="Label" position="50,438" zPosition="2" size="120,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_green" render="Label" position="210,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="key_yellow" render="Label" position="350,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
@@ -489,7 +503,6 @@ class ForecaPreview(Screen, HelpableScreen):
 					<ePixmap position="310,442" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
 					<ePixmap position="450,442" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
 					<ePixmap position="590,442" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
-					<eLabel position="5,437" zPosition="2" size="710,2" backgroundColor="#FFFFFF" />
 				</screen>"""
 
 		Screen.__init__(self, session)
@@ -522,10 +535,10 @@ class ForecaPreview(Screen, HelpableScreen):
 				"menu": (self.Menu, _("Menu - Weather maps")),
 				"showEventInfo": (self.info, _("Info - Legend")),
 				"ok": (self.OK, _("OK - City")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.left, _("Up - Previous page")),
-				"down": (self.right, _("Down - Next page")),
+				"left": (self.left, _("Left - Previous day")),
+				"right": (self.right, _("Right - Next day")),
+				"up": (self.up, _("Up - Previous page")),
+				"down": (self.down, _("Down - Next page")),
 				"previous": (self.previous, _("Left arrow - Previous day")),
 				"next": (self.next, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
@@ -701,7 +714,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + morgen + "&units=metrickmh&tf=24h"
+		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		if debug: print pluginPrintname, "Taglink ", MAIN_PAGE
 
 		# Show in Gui
@@ -760,20 +773,22 @@ class ForecaPreview(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 	def left(self):
+		if not self.working and self.tag >= 1:
+			self.tag = self.tag - 1
+			self.Zukunft(self.tag)
+
+	def right(self):
+		if not self.working and self.tag < 9:
+			self.tag = self.tag + 1
+			self.Zukunft(self.tag)
+
+	def up(self):
 		if not self.working:
 			self["MainList"].pageUp()
 
-	def right(self):
+	def down(self):
 		if not self.working:
 			self["MainList"].pageDown()
-
-	#def up(self):
-	#	if not self.working:
-	#		self["MainList"].up()
-
-	#def down(self):
-	#	if not self.working:
-	#		self["MainList"].down()
 
 	def previous(self):
 		if not self.working and self.tag >= 1:
@@ -788,7 +803,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#self.loc_id = current id
-			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&lang=" + self.taal + "&units=metrickmh/meteogram.png"
+			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&lang=" + self.taal + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 # ----------------------------------------------------------------------
@@ -944,7 +959,7 @@ class CityPanel(Screen, HelpableScreen):
 		self.skin = """
 			<screen name="CityPanel" position="center,60" size="660,500" title="Select a city" backgroundColor="#40000000" >
 				<widget name="Mlist" position="10,10" size="640,450" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				<eLabel position="0,465" zPosition="2" size="676,1" backgroundColor="#c1cdc1" />
+				<eLabel position="0,465" zPosition="2" size="676,2" foregroundColor="#c3c3c9" backgroundColor="#c1cdc1" />
 				<widget source="key_green" render="Label" position="50,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 				<widget source="key_yellow" render="Label" position="200,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 				<widget source="key_blue" render="Label" position="350,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
@@ -1143,8 +1158,8 @@ class SatPanel(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#252525" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" >
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
 					<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
@@ -1650,8 +1665,8 @@ class SatPanelc(Screen, HelpableScreen):
 				</screen>"""                                  
 		else:
 			self.skin = """
-				<screen name="SatPanelc" position="center,center" size="630,440" title="Continents" backgroundColor="#252525" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#252525"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="SatPanelc" position="center,center" size="630,440" title="Continents" backgroundColor="#40000000" >
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				</screen>"""
 
 
@@ -2292,12 +2307,12 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 class PicSetup(Screen):
 
 	skin = """
-		<screen name="PicSetup" position="center,center" size="580,260" title= "SlideShow Settings" backgroundColor="#000000" >
-			<widget name="Mlist" position="5,5" size="570,250" scrollbarMode="showOnDemand" /> 
-			<widget source="key_red" render="Label" position="39,215" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
-			<widget source="key_green" render="Label" position="259,215" zPosition="2" size="102,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
-			<ePixmap position="2,225" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
-			<ePixmap position="222,225" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
+		<screen name="PicSetup" position="center,center" size="660,310" title= "SlideShow Settings" backgroundColor="#000000" >
+			<widget name="Mlist" position="5,5" size="650,255" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" /> 
+			<widget source="key_red" render="Label" position="50,265" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
+			<widget source="key_green" render="Label" position="285,265" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
+			<ePixmap position="5,275" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
+			<ePixmap position="240,275" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
 		</screen>"""
 
 	def __init__(self, session):
@@ -2331,16 +2346,17 @@ class PicSetup(Screen):
 		self["Mlist"] = ConfigList(self.list)
 
 		#self.list.append(getConfigListEntry(_("Picture Y moving"), config.plugins.foreca.max_offsety))
-		#self.list.append(getConfigListEntry(_("Delete cached Pictures"), config.plugins.foreca.remove))
 		#self.list.append(getConfigListEntry(_("Picture Cache"), config.plugins.foreca.Device))
-		self.list.append(getConfigListEntry(_("Scaling Mode"), config.plugins.foreca.resize))
-		self.list.append(getConfigListEntry(_("Frame size in full view"), config.plugins.foreca.framesize))
-		self.list.append(getConfigListEntry(_("Backgroundcolor"), config.plugins.foreca.bgcolor))
-		self.list.append(getConfigListEntry(_("Textcolor"), config.plugins.foreca.textcolor))
-		self.list.append(getConfigListEntry(_("SlideTime"), config.plugins.foreca.slidetime))
-		self.list.append(getConfigListEntry(_("Show Infoline"), config.plugins.foreca.infoline))
-		self.list.append(getConfigListEntry(_("Slide picture in loop"), config.plugins.foreca.loop))
+		self.list.append(getConfigListEntry(_("Select units"), config.plugins.foreca.units))
+		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
+		self.list.append(getConfigListEntry(_("Frame size in full view"), config.plugins.foreca.framesize))
+		self.list.append(getConfigListEntry(_("Scaling Mode"), config.plugins.foreca.resize))
+		self.list.append(getConfigListEntry(_("Slide Time (seconds)"), config.plugins.foreca.slidetime))
+		self.list.append(getConfigListEntry(_("Show Infoline"), config.plugins.foreca.infoline))
+		self.list.append(getConfigListEntry(_("Textcolor"), config.plugins.foreca.textcolor))
+		self.list.append(getConfigListEntry(_("Backgroundcolor"), config.plugins.foreca.bgcolor))
+		self.list.append(getConfigListEntry(_("Slide picture in loop"), config.plugins.foreca.loop))
 
 	def save(self):
 		for x in self["Mlist"].list:
