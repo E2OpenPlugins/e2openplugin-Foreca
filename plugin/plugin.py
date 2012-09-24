@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 3.0.0 Int
+#                 Version 3.0.1 Int
 #
-#                    22.09.2012
+#                    23.09.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -110,13 +110,15 @@ import string
 # 3.0.0 Option added to select measurement units. Thanks to muca
 #	Option added to select time format.
 #	Setup menu reworked.
-#   Main screen navigation modified: Select previous/next day by left/right key
+#	Main screen navigation modified: Select previous/next day by left/right key
 #	Many Italian cities added and Italian localization updated. Thanks to mat8861
 #	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
+# 3.0.1 Fix broken transliteration 
+#	Disable selection in main screen.
 #
 # Unresolved: Crash when scrolling in help screen of city panel
 
-VERSION = "3.0.0"               
+VERSION = "3.0.1"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -251,7 +253,7 @@ class MainMenuList(MenuList):
 #--------------------------- Go through all list entries ----------------------------------
 
 	def buildEntries(self):
-		if debug: print pluginPrintname, "buildEntries:", len(self.list)
+		#if debug: print pluginPrintname, "buildEntries:", len(self.list)
 		if self.idx == len(self.list):
 			self.setList(self.listCompleted)
 			if self.callback:
@@ -569,15 +571,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.cacheDialog.start()
 		self.onLayoutFinish.append(self.getPage)
 
-#	def if1730down(self):
-#		lt = localtime()
-#		jahr, monat, tag, stunde, minute = lt[0:5]
-#		if not self.working and self.tag == 0:
-#			if ((stunde * 60) + minute) >= ((17 * 60) + 30):
-#				self["MainList"].pageUp()
-#				self["MainList"].pageUp()
-#				self["MainList"].pageDown()
-
 	def StartPage(self):
 		self["Titel"].text = ""
 		self["Titel3"].text = ""
@@ -758,7 +751,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
-#		self.if1730down()
 
 #
 #------------------------------------------------------------------------------------------
@@ -803,7 +795,8 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#self.loc_id = current id
-			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&lang=" + self.taal + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
+			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + self.taal + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 # ----------------------------------------------------------------------
@@ -845,72 +838,57 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = re.compile(r'<a href="(.+?)".+?', re.DOTALL)
 		taglink = str(fulltext.findall(html))
 		#taglink = konvert_uml(taglink)
-		#print "Daylink ", taglink
+		if debug: print pluginPrintname, "Daylink ", taglink
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = fulltext.findall(html)
-		#print "Day ", str(tag)
+		if debug: print pluginPrintname,  "Day", str(tag)
 
 		# <div class="c0"> <strong>17:00</strong></div>
 		fulltime = re.compile(r'<div class="c0"> <strong>(.+?)<.+?', re.DOTALL)
 		zeit = fulltime.findall(html)
-		#print "Time ", str(zeit)
+		if debug: print pluginPrintname,  "Time", str(zeit)
 
 		#<div class="c4">
 		#<span class="warm"><strong>+15&deg;</strong></span><br />
 		fulltime = re.compile(r'<div class="c4">.*?<strong>(.+?)&.+?', re.DOTALL)
 		temp = fulltime.findall(html)
-		#print "Temp ", str(temp)
+		if debug: print pluginPrintname,  "Temp", str(temp)
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
 		fulltext = re.compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', re.DOTALL)
 		thumbnails = fulltext.findall(html)
 
 		fulltext = re.compile(r'<div class="c3">.+? (.+?)<br />.+?', re.DOTALL)
-		titel1 = fulltext.findall(html)
-		#print "Titel1 ", str(titel1).lstrip("\t").lstrip()
+		weather1 = fulltext.findall(html)
+		if debug: print pluginPrintname,  "Weather1", str(weather1).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', re.DOTALL)
-		titel2 = fulltext.findall(html)
-		#print "Titel2 ", str(titel2).lstrip("\t").lstrip()
+		weather2 = fulltext.findall(html)
+		if debug: print pluginPrintname,  "Weather2", str(weather2).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
-		titel3 = fulltext.findall(html)
-		#print "Titel3 ", str(titel3).lstrip("\t").lstrip()
+		weather3 = fulltext.findall(html)
+		if debug: print pluginPrintname,  "Weather3" , str(weather3).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c2">.+?<img src="http://img.foreca.net/s/symb-wind/(.+?).gif', re.DOTALL)
 		windlink = fulltext.findall(html)
-		#print "Windlink ", str(windlink)
+		if debug: print pluginPrintname,  "Windlink", str(windlink)
 
 		fulltext = re.compile(r'<div class="c2">.+?<strong>(.+?)<.+?', re.DOTALL)
 		wind = fulltext.findall(html)
-		#print "Wind ", str(wind)
-		#print "--------------------------------------------"
+		if debug: print pluginPrintname,  "Wind", str(wind)
 
-		wert = len(zeit)
-		#print "Aantal tijden ", str(wert)
+		timeEntries = len(zeit)
+		#print "Aantal tijden ", str(timeEntries)
 		x = 0
-		while x < wert:
-			titel1[x] = str(sub('<[^>]*>',"",titel1[x]))
-			#Text1 = titel1[x]
-			Satz1 = self.konvert_uml(titel1[x])
-			titel2[x] = str(sub('<[^>]*>',"",titel2[x]))
-			#Text2 = titel2[x]
-			Satz2 = self.konvert_uml(titel2[x])
-			titel3[x] = str(sub('<[^>]*>',"",titel3[x]))
-			#Text3 = titel3[x]
-			Satz3 = self.konvert_uml(titel3[x])
+		while x < timeEntries:
+			weather1[x] = self.konvert_uml(str(sub('<[^>]*>',"",weather1[x])))
+			weather2[x] = self.konvert_uml(str(sub('<[^>]*>',"",weather2[x])))
+			weather3[x] = self.konvert_uml(str(sub('<[^>]*>',"",weather3[x])))
 			wind[x] = self.filter_dia(wind[x])
-			#print zeit[x]
-			#print tag[x]
-			#print temp[x]
-			#print windlink[x]
-			#print wind[x]
-			#print Satz1
-			#print Satz2
-			#print Satz3
-			#print "--------------------------------------------"
-			list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], Satz1, Satz2, Satz3])
+			if debug: print pluginPrintname, "Weather", zeit[x], temp[x], windlink[x], wind[x], weather1[x], weather2[x] , weather3[x]
+			list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], weather1[x], weather2[x] , weather3[x]])
 			x += 1
 
 		self["Titel2"].text = ""
@@ -925,23 +903,22 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["Titel5"].text = datum2
 		self["Titel3"].text = string.replace(self.ort[:foundPos], "_", " ") + "\r\n" + string.replace(self.ort[foundPos+1:], "_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(list)
-		self["MainList"].selectionEnabled(1)
+		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
-#		self.if1730down()
 
 #------------------------------------------------------------------------------------------
-	def konvert_uml(self,Satz):
-		Satz = self.filter_dia(Satz)
+	def konvert_uml(self,text):
+		text = self.filter_dia(text)
 		# remove remaining control characters and return
-		return Satz[Satz.rfind("\\t")+2:len(Satz)]	
+		return text[text.rfind("\\t")+2:len(text)]	
 
-	def filter_dia(self, Satz):
+	def filter_dia(self, text):
 		# remove diacritics for selected country
-		tel = 0
-		while tel < self.FILTERidx:
-			Satz = string.replace(Satz, self.FILTERin[tel], self.FILTERout[tel])
-			tel += 1
-		return Satz
+		filterItem = 0
+		while filterItem < self.FILTERidx:
+			text = string.replace(text, self.FILTERin[filterItem], self.FILTERout[filterItem])
+			filterItem += 1
+		return text
 # -------------------------------------------------------------------
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
