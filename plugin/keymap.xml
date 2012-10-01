@@ -1,5 +1,5 @@
 <keymap>
-	<map context="AAFKeyActions">
+	<map context="ForecaActions">
 		<key id="KEY_UP" mapto="up" flags="m" />
 		<key id="KEY_DOWN" mapto="down" flags="m" />
 		<key id="KEY_LEFT" mapto="left" flags="m" />
@@ -10,7 +10,8 @@
 		<key id="KEY_LEFT" mapto="leftRepeated" flags="r" />
 		<key id="KEY_RIGHT" mapto="rightRepeated" flags="r" />
 
-		<key id="KEY_RED" mapto="red" flags="m" />
+		<key id="KEY_RED" mapto="red" flags="b" />
+		<key id="KEY_RED" mapto="shift_red" flags="l" />
 		<key id="KEY_GREEN" mapto="green" flags="m" />
 		<key id="KEY_YELLOW" mapto="yellow" flags="m" />
 		<key id="KEY_BLUE" mapto="blue" flags="m" />

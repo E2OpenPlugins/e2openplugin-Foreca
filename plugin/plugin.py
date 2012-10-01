@@ -11,7 +11,7 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 3.0.1 Int
+#                 Version 3.0.2 Int
 #
 #                    23.09.2012
 #
@@ -115,10 +115,15 @@ import string
 #	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
 # 3.0.1 Fix broken transliteration 
 #	Disable selection in main screen.
+# 3.0.2 Weather maps of Czech Republic, Greece, Hungary, Latvia, Poland, Russia, Slovakia added
+#	Temperature Satellite video added
+#	Control key assignment in slide show reworked to comply with Media Player standard
+#	Unused code removed, redundant code purged
+#	Localization updated
 #
 # Unresolved: Crash when scrolling in help screen of city panel
 
-VERSION = "3.0.1"               
+VERSION = "3.0.2"               
 global PluginVersion
 PluginVersion = VERSION
 
@@ -127,7 +132,6 @@ debug = False # If set True, plugin will print some additional status info to tr
 ###############################################################################
 
 config.plugins.foreca = ConfigSubsection()
-config.plugins.foreca.Device = ConfigSelection(default="/var/cache/Foreca/", choices = [("/var/cache/Foreca/", "/var/cache/Foreca/"), (resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bilder", "...Plugins/Extensions/Foreca/"), ("/media/hdd/Foreca/", "/media/hdd/Foreca/")])
 config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("simple")), ("1", _("better"))])
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
@@ -141,14 +145,14 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _
 
 global MAIN_PAGE
 MAIN_PAGE = _("http://www.foreca.com")
-PNG_PATH = resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/picon/"
 USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
 deviceName = HardwareInfo().get_device_name()
 
 # Make Path for Slideshow
-if os.path.exists(config.plugins.foreca.Device.value) is False:
+CACHE_PATH = "/var/cache/Foreca/"
+if os.path.exists(CACHE_PATH) is False:
 	try:
-		os.makedirs(config.plugins.foreca.Device.value, 755)
+		os.makedirs(CACHE_PATH, 755)
 	except:
 		pass
 # Make Path for user settings
@@ -159,77 +163,10 @@ if os.path.exists(USR_PATH) is False:
 		pass
 
 #---------------------- Skin Functions ----------------------------------------------------
-def getAspect():
-	val = AVSwitch().getAspectRatioSetting()
-	return val/2
 
 def getScale():
 	return AVSwitch().getFramebufferScale()
 
-#------------------------------------------------------------------------------------------
-#---------------------- class InfoBarAspectSelection --------------------------------------
-#------------------------------------------------------------------------------------------
-
-class InfoBarAspectSelection:
-	STATE_HIDDEN = 0
-	STATE_ASPECT = 1
-	STATE_RESOLUTION = 2
-	def __init__(self):
-		self["AspectSelectionAction"] = HelpableActionMap(self, "InfobarAspectSelectionActions",
-			{
-				"aspectSelection": (self.ExGreen_toggleGreen, _("Aspect list...")),
-			})
-		self.__ExGreen_state = self.STATE_HIDDEN
-
-	def ExGreen_doAspect(self):
-		self.__ExGreen_state = self.STATE_ASPECT
-		self.aspectSelection()
-
-	def ExGreen_doResolution(self):
-		self.__ExGreen_state = self.STATE_RESOLUTION
-		self.resolutionSelection()
-
-	def ExGreen_doHide(self):
-		self.__ExGreen_state = self.STATE_HIDDEN
-
-	def ExGreen_toggleGreen(self, arg=""):
-		if debug: print pluginPrintname, self.__ExGreen_state
-		if self.__ExGreen_state == self.STATE_HIDDEN:
-			if debug: print pluginPrintname, "self.STATE_HIDDEN"
-			self.ExGreen_doAspect()
-		elif self.__ExGreen_state == self.STATE_ASPECT:
-			if debug: print pluginPrintname, "self.STATE_ASPECT"
-			self.ExGreen_doResolution()
-		elif self.__ExGreen_state == self.STATE_RESOLUTION:
-			if debug: print pluginPrintname, "self.STATE_RESOLUTION"
-			self.ExGreen_doHide()
-
-	def aspectSelection(self):
-		selection = 0
-		tlist = []
-		tlist.append((_("Resolution"), "resolution"))
-		tlist.append(("", ""))
-		tlist.append((_("Letterbox"), "letterbox"))
-		tlist.append((_("PanScan"), "panscan"))
-		tlist.append((_("Non Linear"), "non"))
-		tlist.append((_("Bestfit"), "bestfit"))
-		mode = open("/proc/stb/video/policy").read()[:-1]
-		if debug: print pluginPrintname, mode
-		for x in range(len(tlist)):
-			if tlist[x][1] == mode:
-				selection = x
-		keys = ["green", "",  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
-		self.session.openWithCallback(self.aspectSelected, ChoiceBox, title=_("Please select an aspect ratio..."), list = tlist, selection = selection, keys = keys)
-
-	def aspectSelected(self, aspect):
-		if not aspect is None:
-			if isinstance(aspect[1], str):
-				if aspect[1] == "resolution":
-					self.ExGreen_toggleGreen()
-				else:
-					open("/proc/stb/video/policy", "w").write(aspect[1])
-					self.ExGreen_doHide()
-		return
 
 #------------------------------------------------------------------------------------------
 #----------------------------------  MainMenuList   ---------------------------------------
@@ -272,7 +209,6 @@ class MainMenuList(MenuList):
 
 	def buildEntry(self, picInfo=None):
 		self.x = self.list[self.idx]
-		#list.append([thumbnails[x], zeit[x], temp[x], windlink[x], wind[x], Satz1, Satz2, Satz3])
 		self.res = [(self.x[0], self.x[1])]
 
 		violetred = 0xC7D285
@@ -396,7 +332,7 @@ class ForecaPreviewCache(Screen):
 		self.curr += 1
 		if self.curr > 10:
 			self.curr = 0
-		png = LoadPixmap(cached=True, path=PNG_PATH + str(self.curr) + ".png")
+		png = LoadPixmap(cached=True, path=PICON_PATH + str(self.curr) + ".png")
 		self["spinner"].instance.setPixmap(png)
 
 #------------------------------------------------------------------------------------------
@@ -466,7 +402,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		if (getDesktop(0).size().width() >= 1280):
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,60" font="Regular;24" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,60" font="Regular;26" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,70" zPosition="2" size="970,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
@@ -490,7 +426,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,50" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,50" font="Regular;22" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,55" zPosition="2" size="710,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
@@ -508,7 +444,6 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 
 		Screen.__init__(self, session)
-		#self["navigationTitle"] = Label(" ")
 		self.setup_title = _("Foreca Weather Forecast")
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
@@ -531,7 +466,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["Title"] = StaticText(_("Foreca Weather Forecast") + "    " + _("Version ") + PluginVersion)
 
 		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
+		self["actions"] = HelpableActionMap(self, "ForecaActions",
 			{
 				"cancel": (self.exit, _("Exit - End")),
 				"menu": (self.Menu, _("Menu - Weather maps")),
@@ -544,6 +479,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				"previous": (self.previous, _("Left arrow - Previous day")),
 				"next": (self.next, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
+				#"shift_red": (self.shift_red, _("Red long - 10 day forecast")),
 				"green": (self.Fav1, _("Green - Favorite 1")),
 				"yellow": (self.Fav2, _("Yellow - Favorite 2")),
 				"blue": (self.Fav0, _("Blue - Home")),
@@ -710,18 +646,19 @@ class ForecaPreview(Screen, HelpableScreen):
 		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + self.taal + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		if debug: print pluginPrintname, "Taglink ", MAIN_PAGE
 
-		# Show in Gui
+		# Show in GUI
 		self.StartPage()
+
+	def info(self):
+		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
+		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
+
 
 	def OK(self):
 		global city
 		panelmenu = ""
 		city = self.ort
 		self.session.openWithCallback(self.OKCallback, CityPanel,panelmenu)
-
-	def info(self):
-		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OKCallback(self):
 		global city, fav1, fav2
@@ -737,33 +674,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
 		if debug: print pluginPrintname, "MenuCallback "
-
-	def Menu(self):
-		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
-
-	def MenuCallback(self):
-		global menu, start, fav1, fav2
-		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"].setText(string.replace(fav1, "_", " "))
-			self["key_yellow"].setText(string.replace(fav2, "_", " "))
-			self["key_blue"].setText(string.replace(start, "_", " "))
-		else:
-			self["key_green"].setText(_("Favorite 1"))
-			self["key_yellow"].setText(_("Favorite 2"))
-			self["key_blue"].setText(_("Home"))
-
-#
-#------------------------------------------------------------------------------------------
-
-	def loadPicture(self,url=""):
-		devicepath = "/tmp/meteogram.png"
-		path = "/tmp"
-		h = urllib.urlretrieve(url, devicepath)
-		filelist = devicepath
-		self.session.open(PicView, filelist, 0, path, False)
-
-#------------------------------------------------------------------------------------------
-
 	def left(self):
 		if not self.working and self.tag >= 1:
 			self.tag = self.tag - 1
@@ -794,28 +704,48 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def red(self):
 		if not self.working:
-			#self.loc_id = current id
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
 			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + self.taal + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
-# ----------------------------------------------------------------------
+	def shift_red(self):
+		pass
+		#self.session.openWithCallback(self.MenuCallback, Foreca10Days, self.ort)
+
+	def Menu(self):
+		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
+
+	def MenuCallback(self):
+		global menu, start, fav1, fav2
+		if config.plugins.foreca.citylabels.value == True:
+			self["key_green"].setText(string.replace(fav1, "_", " "))
+			self["key_yellow"].setText(string.replace(fav2, "_", " "))
+			self["key_blue"].setText(string.replace(start, "_", " "))
+		else:
+			self["key_green"].setText(_("Favorite 1"))
+			self["key_yellow"].setText(_("Favorite 2"))
+			self["key_blue"].setText(_("Home"))
+
+	def loadPicture(self,url=""):
+		devicepath = "/tmp/meteogram.png"
+		h = urllib.urlretrieve(url, devicepath)
+		self.session.open(PicView, devicepath, 0, False)
 
 	def getForecaPage(self,html):
 		#new Ajax.Request('/lv?id=102772400', {
 		fulltext = re.compile(r"new Ajax.Request.+?lv.+?id=(.+?)'", re.DOTALL)
 		id = fulltext.findall(html)
+		if debug: print pluginPrintname, "fulltext=", fulltext, "id=", id
 		self.loc_id = str(id[0])
 
 		# <!-- START -->
 		#<h6><span>Tuesday</span> March 29</h6>
-
 		if debug: print pluginPrintname, "Start:" + str(len(html))
 		fulltext = re.compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', re.DOTALL)
 		titel = fulltext.findall(html)
+		if debug: print pluginPrintname, "fulltext=", fulltext, "titel=", titel
 		titel[0] = str(sub('<[^>]*>',"",titel[0]))
-		#print titel[0]
-		#self["Titel"].setText(titel[0])
+		if debug: print pluginPrintname, "titel[0]=", titel[0]
 
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
@@ -919,7 +849,11 @@ class ForecaPreview(Screen, HelpableScreen):
 			text = string.replace(text, self.FILTERin[filterItem], self.FILTERout[filterItem])
 			filterItem += 1
 		return text
-# -------------------------------------------------------------------
+
+#------------------------------------------------------------------------------------------
+#------------------------------ City Panel ------------------------------------------------
+#------------------------------------------------------------------------------------------
+
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
@@ -973,7 +907,7 @@ class CityPanel(Screen, HelpableScreen):
 		self["Title"] = StaticText(_("Select a city"))
 
 		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self,"AAFKeyActions",
+		self["actions"] = HelpableActionMap(self,"ForecaActions",
 			{
 				"cancel": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
@@ -1040,7 +974,6 @@ class CityPanel(Screen, HelpableScreen):
 	def ok(self):
 		global city
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
-		#print "Press OK", city
 		self.close()
 
 	def blue(self):
@@ -1077,33 +1010,24 @@ class CityPanel(Screen, HelpableScreen):
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self,entry):
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		drot = 0xf47d19
 		mblau = 8900346
-		hblau = 11592447
-		dblau = 5215437
 		weiss = 0xffffff
-		orange = 0xf47d19
 		grau = 0x565656
 
 		res = [entry]
-		#return (eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, color, color_sel, backcolor, backcolor_sel, border_width, border_color)
-		#res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 5), size=(100, 60), png=entry[0]))  # png vorn
 		res.append(MultiContentEntryText(pos=(30, 6), size=(600, 35), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau))
 		return res
 
 #------------------------------------------------------------------------------------------
-#    Europe Maps
-# -----------------------------------------------------------------------------------------
+#------------------------------ Satellite photos ------------------------------------------
+#------------------------------------------------------------------------------------------
 
 class SatPanelList(MenuList):
 
 	if (getDesktop(0).size().width() >= 1280):
-		ItemSkin = 142
+		ItemSkin = 143
 	else:
-		ItemSkin = 122
+		ItemSkin = 123
 
 	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
@@ -1152,11 +1076,12 @@ class SatPanel(Screen, HelpableScreen):
 		self.setup_title = _("Satellite photos")
 		self.Mlist = []
 
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('satelliet'), _("Weather map Video"), 'satelliet')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('neerslag'), _("Showerradar Video"), 'neerslag')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bewolking'), _("Cloudcover Video"), 'bewolking')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sat'), _("Weather map Video"), 'sat')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('rain'), _("Showerradar Video"), 'rain')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('temp'), _("Temperature Video"), 'temp')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('cloud'), _("Cloudcover Video"), 'cloud')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('pressure'), _("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('eumetsat'), _("Eumetsat"), 'eumetsat')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('luchtdruk'), _("Air pressure"), 'luchtdruk')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('infrarotmetoffice'), _("Infrared"), 'infrarotmetoffice')))
                 
 		self.onChangedEntry = []
@@ -1170,16 +1095,16 @@ class SatPanel(Screen, HelpableScreen):
 		self["Title"] = StaticText(_("Satellite photos"))
 
 		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
+		self["actions"] = HelpableActionMap(self, "ForecaActions",
 			{
 				"cancel": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
-				"red": (self.SatPanelc, _("Red - Continents")),
-				"green": (self.SatPaneld, _("Green - Europe")),
-				"yellow": (self.SatPanelb, _("Yellow - Germany")),
+				"red": (self.MapsContinents, _("Red - Continents")),
+				"green": (self.MapsEurope, _("Green - Europe")),
+				"yellow": (self.MapsGermany, _("Yellow - Germany")),
 				"blue": (self.PicSetupMenu, _("Blue - Settings")),
 				"ok": (self.ok, _("OK - Show")),
 			}, -2)
@@ -1204,10 +1129,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.close()
 
 	def ok(self):
-		#global menu
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		#print "Press OK", menu
-		#self.close()
 		self.SatBild()
 
 	def SatEntryComponent(self,file):
@@ -1215,185 +1137,8 @@ class SatPanel(Screen, HelpableScreen):
 		res = (png)
 		return res
 
-	def SatPanelb(self):
-		self.session.open(SatPanelb, self.ort)
-
-	def SatPanelc(self):
-		self.session.open(SatPanelc, self.ort)
-
-	def SatPaneld(self):
-		self.session.open(SatPaneld, self.ort)
-
-	def PicSetupMenu(self):
-		self.session.open(PicSetup)
-
-#------------------------------------------------------------------------------------------
-
-	def SatBild(self):
-
-		#message = "%s" % (_("Satellitephotos are being loaded .....\n\n                       "))
-		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
-
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		if menu == "satelliet":
-			# http://www.foreca.de/Austria/Linz?map=sat
-			devicepath = "/tmp/sat.html"
-			url = _("http://www.foreca.com") + "/" + self.ort + "?map=sat"
-
-#------------------------------------------------------------------------------------------
-
-		elif menu == "neerslag":
-			devicepath = "/tmp/sat.html"
-			url = _("http://www.foreca.com") + "/" + self.ort + "?map=rain"
-
-#------------------------------------------------------------------------------------------
-
-		elif menu == "bewolking":
-			devicepath = "/tmp/sat.html"
-			url = _("http://www.foreca.com") + "/" + self.ort + "?map=cloud"
-
-#------------------------------------------------------------------------------------------
-
-		elif menu == "luchtdruk":
-			devicepath = "/tmp/sat.html"
-			url = _("http://www.foreca.com") + "/" + self.ort + "?map=pressure"
-
-#------------------------------------------------------------------------------------------
-
-		if menu == "satelliet" or menu == "neerslag" or menu == "bewolking" or menu == "luchtdruk":
-			# Load site for category and search Picture link
-			h = urllib.urlretrieve(url, devicepath)
-			fd=open(devicepath)
-			html=fd.read()
-			fd.close()
-
-			fulltext = re.compile(r'http://cache-(.+?) ', re.DOTALL)
-			PressureLink = fulltext.findall(html)
-			PicLink = PressureLink[0]
-			PicLink = "http://cache-" +	PicLink
-
-			# Load Picture for Slideshow
-			devicepath = config.plugins.foreca.Device.value
-			max = int(len(PressureLink))-2
-			if debug: print pluginPrintname, "max= ", str(max)
-			zehner = "1"
-			x = 0
-			while x < max:
-				url = "http://cache-" + PressureLink[x]
-				if debug: print pluginPrintname, str(x), url
-				foundPos = url.find("0000.jpg")
-				if debug: print pluginPrintname, foundPos
-				if foundPos ==-1:
-					foundPos = url.find(".jpg")
-				if foundPos ==-1:
-					foundPos = url.find(".png")			
-				file = url[foundPos-10:foundPos]
-				if debug: print pluginPrintname, file
-				file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
-				if debug: print pluginPrintname, file2
-				h = urllib.urlretrieve(url, devicepath + file2 + ".jpg")
-				x = x + 1
-				if x > 9:
-					zehner = "2"
-
-			self.session.open(View_Slideshow, 0, True)
-
-		else:
-			if menu == "eumetsat":
-				devicepath = "/tmp/meteogram.png"
-				path = "/tmp"
-				h = urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
-				filelist = devicepath
-				self.session.open(PicView, filelist, 0, path, False)
-
-			if menu == "infrarotmetoffice":
-				# http://www.metoffice.gov.uk/satpics/latest_IR.html
-				devicepath = "/tmp/sat.html"
-				url = "http://www.metoffice.gov.uk/satpics/latest_IR.html"
-				path = "/tmp"
-				h = urllib.urlretrieve(url, devicepath)
-				fd=open(devicepath)
-				html=fd.read()
-				fd.close()
-
-				#http://www.metoffice.gov.uk/weather/images/eurir_sat_201104251500.jpg
-				# <img src='/weather/images/eurir_sat_201104251500.jpg' name="sat"
-				fulltext = re.compile(r'<img src=\'(.+?)\' name="sat"', re.DOTALL)
-				PressureLink = fulltext.findall(html)
-				PicLink = "http://www.metoffice.gov.uk" + PressureLink[0]
-				if debug: print pluginPrintname, PicLink
-				devicepath = "/tmp/meteogram.png"
-				path = "/tmp"
-				h = urllib.urlretrieve(PicLink, devicepath)
-				filelist = devicepath
-				self.session.open(PicView, filelist, 0, path, False)
-
-#------------------------------------------------------------------------------------------
-
-	def SatEntryItem(self,entry):
-		if (getDesktop(0).size().width() >= 1280):
-			ItemSkin = 142
-		else:
-			ItemSkin = 122
-
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		tpschwarz = 99000000
-		drot = 0xf47d19
-		mblau = 8900346
-		hblau = 11592447
-		dblau = 5215437
-		weiss = 0xffffff
-		orange = 0xf47d19
-		grau = 0x565656
-		res = [entry]
-		#return (eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, color, color_sel, backcolor, backcolor_sel, border_width, border_color)
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 5), size=(200,ItemSkin -2), png=entry[0]))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[1], color=weiss, color_sel=mblau, backcolor_sel=grau))
-		return res
-
-#------------------------------------------------------------------------------------------
-# Bundesländer - Karten
-# -------------------------------------------------------------------
-
-class SatPanelListb(MenuList):
-
-	if (getDesktop(0).size().width() >= 1280):
-		ItemSkin = 142
-	else:
-		ItemSkin = 122
-
-	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
-		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
-
-# -------------------------------------------------------------------
-
-class SatPanelb(Screen, HelpableScreen):
-
-	def __init__(self, session, ort):
-		self.session = session
-		self.ort = ort
-
-		if (getDesktop(0).size().width() >= 1280):
-			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="630,500" title="Germany" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""
-		else:
-			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="630,440" title="Germany" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""
-
-
-		Screen.__init__(self, session)
-		self.setup_title = _("Germany")
+	def MapsGermany(self):
 		self.Mlist = []
-
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('badenwuerttemberg'), _("Baden-Wuerttemberg"), 'badenwuerttemberg')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('bayern'), _("Bavaria"), 'bayern')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('berlin'), _("Berlin"), 'berlin')))
@@ -1410,250 +1155,37 @@ class SatPanelb(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('sachsenanhalt'), _("Saxony-Anhalt"), 'sachsenanhalt')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('schleswigholstein'), _("Schleswig-Holstein"), 'schleswigholstein')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('thueringen'), _("Thuringia"), 'thueringen')))
+		self.session.open(SatPanelb, self.ort, _("Germany"), self.Mlist)
 
-		self.onChangedEntry = []
-		self["Mlist"] = SatPanelListb([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(_("Germany"))
-
-		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
-			{
-				"cancel": (self.Exit, _("Exit - End")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
-				"blue": (self.PicSetupMenu, _("Blue - Settings")),
-				"ok": (self.ok, _("OK - Show")),
-			}, -2)
-
-	def up(self):
-		self["Mlist"].up()
-		self["Mlist"].selectionEnabled(1)
-
-	def down(self):
-		self["Mlist"].down()
-		self["Mlist"].selectionEnabled(1)
-
-	def left(self):
-		self["Mlist"].pageUp()
-
-	def right(self):
-		self["Mlist"].pageDown()
-
-	def Exit(self):
-		global menu
-		menu = "stop"
-		self.close()
-
-	def ok(self):
-		#global menu
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		#print "Press OK", menu
-		#self.close()
-		self.SatBild()
-
-	def SatEntryComponent(self,file):
-		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/bundesland/" + file + ".png")
-		res = (png)
-		return res
-
-	def PicSetupMenu(self):
-		self.session.open(PicSetup)
-
-#------------------------------------------------------------------------------------------
-
-	def SatBild(self):
-
-		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
-		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
-
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-
-		if menu == "badenwuerttemberg":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/badenwuerttemberg0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "bayern":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/bayern0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "berlin":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/berlin0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "brandenburg":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/brandenburg0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "bremen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/bremen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "hamburg":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/hamburg0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "hessen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/hessen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "mecklenburgvorpommern":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/mecklenburgvorpommern0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "niedersachsen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/niedersachsen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "nordrheinwestfalen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/nordrheinwestfalen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "rheinlandpfalz":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/rheinlandpfalz0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "saarland":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/saarland0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "sachsen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/sachsen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "sachsenanhalt":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/sachsenanhalt0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "schleswigholstein":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/schleswigholstein0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "thueringen":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/thueringen0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-
-#------------------------------------------------------------------------------------------
-
-	def SatEntryItem(self,entry):
-		if (getDesktop(0).size().width() >= 1280):
-			ItemSkin = 142
-		else:
-			ItemSkin = 122
-
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		tpschwarz = 99000000
-		drot = 0xf47d19
-		mblau = 8900346
-		hblau = 11592447
-		dblau = 5215437
-		weiss = 0xffffff
-		orange = 0xf47d19
-		grau = 0x565656
-		res = [entry]
-		#return (eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, color, color_sel, backcolor, backcolor_sel, border_width, border_color)
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 5), size=(200,ItemSkin -2), png=entry[0]))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[1], color=weiss, color_sel=mblau, backcolor_sel=grau))
-		return res
-
-#------------------------------------------------------------------------------------------
-# Worldmap - Continents
-# -------------------------------------------------------------------
-
-class SatPanelListc(MenuList):
-
-	if (getDesktop(0).size().width() >= 1280):
-		ItemSkin = 92
-	else:
-		ItemSkin = 92
-
-	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
-		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
-
-# -------------------------------------------------------------------
-
-class SatPanelc(Screen, HelpableScreen):
-	def __init__(self, session, ort):
-		self.session = session
-		self.ort = ort
-
-		if (getDesktop(0).size().width() >= 1280):
-			self.skin = """
-				<screen name="SatPanelc" position="center,center" size="630,500" title="Continents" backgroundColor="#40000000" >
-					<widget name="Mlist" position="1,20" size="627,460" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""                                  
-		else:
-			self.skin = """
-				<screen name="SatPanelc" position="center,center" size="630,440" title="Continents" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""
-
-
-		Screen.__init__(self, session)
-		self.setup_title = _("Continents")
+	def MapsEurope(self):
 		self.Mlist = []
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('oesterreich'), _("Austria"), 'oesterreich')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('belgien'), _("Belgium"), 'belgien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('tschechien'), _("Czech Republic"), 'tschechien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('daenemark'), _("Denmark"), 'daenemark')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('frankreich'), _("France"), 'frankreich')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('deutschland'), _("Germany"), 'deutschland')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('griechenland'), _("Greece"), 'griechenland')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('grossbritannien'), _("Great Britain"), 'grossbritannien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('ungarn'), _("Hungary"), 'ungarn')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('irland'), _("Ireland"), 'irland')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('italien'), _("Italy"), 'italien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('lettland'), _("Latvia"), 'lettland')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('luxemburg'), _("Luxembourg"), 'luxemburg')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('niederlande'), _("Netherlands"), 'niederlande')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('polen'), _("Poland"), 'polen')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('portugal'), _("Portugal"), 'portugal')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('russland'), _("Russia"), 'russland')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('slowakei'), _("Slovakia"), 'slowakei')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('spanien'), _("Spain"), 'spanien')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('schweiz'), _("Switzerland"), 'schweiz')))
+		self.session.open(SatPanelb, self.ort, _("Europe"), self.Mlist)
 
+	def MapsContinents(self):
+		self.Mlist = []
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('europa'), _("Europe"), 'europa')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-nord'), _("North Africa"), 'afrika-nord')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika-sued'), _("South Africa"), 'afrika-sued')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika_nord'), _("North Africa"), 'afrika_nord')))
+		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('afrika_sued'), _("South Africa"), 'afrika_sued')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('nordamerika'), _("North America"), 'nordamerika')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('mittelamerika'), _("Middle America"), 'mittelamerika')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedamerika'), _("South America"), 'suedamerika')))
@@ -1662,269 +1194,24 @@ class SatPanelc(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('suedostasien'), _("Southeast Asia"), 'suedostasien')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('zentralasien'), _("Middle Asia"), 'zentralasien')))
 		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('australienundozeanien'), _("Australia"), 'australienundozeanien')))
-                
-		self.onChangedEntry = []
-		self["Mlist"] = SatPanelListc([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(_("Continents"))
-
-		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
-			{
-				"cancel": (self.Exit, _("Exit - End")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
-				"blue": (self.PicSetupMenu, _("Blue - Settings")),
-				"ok": (self.ok, _("OK - Show")),
-			}, -2)
-
-	def up(self):
-		self["Mlist"].up()
-		self["Mlist"].selectionEnabled(1)
-
-	def down(self):
-		self["Mlist"].down()
-		self["Mlist"].selectionEnabled(1)
-
-	def left(self):
-		self["Mlist"].pageUp()
-
-	def right(self):
-		self["Mlist"].pageDown()
-
-	def Exit(self):
-		global menu
-		menu = "stop"
-		self.close()
-
-	def ok(self):
-		#global menu
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		#print "Press OK", menu
-		#self.close()
-		self.SatBild()
-
-	def SatEntryComponent(self,file):
-		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/kontinent/" + file + ".png")
-		res = (png)
-		return res
-
-	def PicSetupMenu(self):
-		self.session.open(PicSetup)
-
-#------------------------------------------------------------------------------------------
-
-	def SatBild(self):
-
-		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
-		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
-
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-
-		if menu == "europa":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/europa0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "afrika-nord":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/afrika_nord0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "afrika-sued":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/afrika_sued0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-                        
-		elif menu == "nordamerika":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/nordamerika0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "mittelamerika":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/mittelamerika0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "suedamerika":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/suedamerika0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "naherosten":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/naherosten0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "ostasien":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/ostasien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "suedostasien":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/suedostasien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "zentralasien":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/zentralasien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
-
-		elif menu == "australienundozeanien":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/australienundozeanien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+		self.session.open(SatPanelb, self.ort, _("Continents"), self.Mlist)
 
 #------------------------------------------------------------------------------------------
 
 	def SatEntryItem(self,entry):
 		if (getDesktop(0).size().width() >= 1280):
-			ItemSkin = 92
+			ItemSkin = 143
 		else:
-			ItemSkin = 92
+			ItemSkin = 123
 
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		tpschwarz = 99000000
-		drot = 0xf47d19
 		mblau = 8900346
-		hblau = 11592447
-		dblau = 5215437
 		weiss = 0xffffff
-		orange = 0xf47d19
 		grau = 0x565656
+
 		res = [entry]
-		#return (eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, color, color_sel, backcolor, backcolor_sel, border_width, border_color)
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(0, 2), size=(200,92), png=entry[0]))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 27), size=(380, 50), font=0, text=entry[1], color=weiss, color_sel=mblau, backcolor_sel=grau))
+		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(200,ItemSkin), png=entry[0]))  # png vorn
+		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[1], color=weiss, color_sel=mblau, backcolor_sel=grau))
 		return res
-
-#------------------------------------------------------------------------------------------
-# Europe - Maps
-# -------------------------------------------------------------------
-
-class SatPanelListd(MenuList):
-
-	if (getDesktop(0).size().width() >= 1280):
-		ItemSkin = 142
-	else:
-		ItemSkin = 122
-
-	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
-		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
-
-# -------------------------------------------------------------------
-
-class SatPaneld(Screen, HelpableScreen):
-
-	def __init__(self, session, ort):
-		self.session = session
-		self.ort = ort
-
-		if (getDesktop(0).size().width() >= 1280):
-			self.skin = """
-				<screen name="SatPaneld" position="center,center" size="630,500" title="Europe" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,25" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""
-		else:
-			self.skin = """
-				<screen name="SatPaneld" position="center,center" size="630,440" title="Europe" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				</screen>"""
-
-		Screen.__init__(self, session)
-		self.setup_title = _("Europe")
-		self.Mlist = []
-
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorAT'), _("Austria"), 'wetterkontorAT')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorBE'), _("Belgium"), 'wetterkontorBE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDN'), _("Denmark"), 'wetterkontorDN')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorFR'), _("France"), 'wetterkontorFR')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorDE'), _("Germany"), 'wetterkontorDE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorGB'), _("Great Britain"), 'wetterkontorGB')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIE'), _("Ireland"), 'wetterkontorIE')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorIT'), _("Italy"), 'wetterkontorIT')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorLU'), _("Luxembourg"), 'wetterkontorLU')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorNL'), _("Netherlands"), 'wetterkontorNL')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorPO'), _("Portugal"), 'wetterkontorPO')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorES'), _("Spain"), 'wetterkontorES')))
-		self.Mlist.append(self.SatEntryItem((self.SatEntryComponent('wetterkontorCH'), _("Switzerland"), 'wetterkontorCH')))
-                
-		self.onChangedEntry = []
-		self["Mlist"] = SatPanelListb([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(_("Europe"))
-
-		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "AAFKeyActions",
-			{
-				"cancel": (self.Exit, _("Exit - End")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
-				"blue": (self.PicSetupMenu, _("Blue - Settings")),
-				"ok": (self.ok, _("OK - Show")),
-			}, -2)
-
-	def up(self):
-		self["Mlist"].up()
-		self["Mlist"].selectionEnabled(1)
-
-	def down(self):
-		self["Mlist"].down()
-		self["Mlist"].selectionEnabled(1)
-
-	def left(self):
-		self["Mlist"].pageUp()
-
-	def right(self):
-		self["Mlist"].pageDown()
-
-	def Exit(self):
-		global menu
-		menu = "stop"
-		self.close()
-
-	def ok(self):
-		#global menu
-		menu = self['Mlist'].l.getCurrentSelection()[0][2]
-		#print "Press OK", menu
-		#self.close()
-		self.SatBild()
 
 	def SatEntryComponent(self,file):
 		png = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/thumb/" + file + ".png")
@@ -1938,126 +1225,160 @@ class SatPaneld(Screen, HelpableScreen):
 
 	def SatBild(self):
 
-		#message = "%s" % (_("Satelitephotos are being loaded .....\n\n                       "))
-		#self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=4)
-
 		menu = self['Mlist'].l.getCurrentSelection()[0][2]
 
-		if menu == "wetterkontorDE":
+		if menu == "eumetsat":
 			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/deutschland0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+			h = urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
+			self.session.open(PicView, devicepath, 0, False)
 
-		elif menu == "wetterkontorAT":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/oesterreich0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+		elif menu == "infrarotmetoffice":
+			# http://www.metoffice.gov.uk/satpics/latest_IR.html
+			devicepath = "/tmp/sat.html"
+			h = urllib.urlretrieve("http://www.metoffice.gov.uk/satpics/latest_IR.html", devicepath)
+			fd=open(devicepath)
+			html=fd.read()
+			fd.close()
 
-		elif menu == "wetterkontorNL":
+			#http://www.metoffice.gov.uk/weather/images/eurir_sat_201104251500.jpg
+			# <img src='/weather/images/eurir_sat_201104251500.jpg' name="sat"
+			fulltext = re.compile(r'<img src=\'(.+?)\' name="sat"', re.DOTALL)
+			PressureLink = fulltext.findall(html)
 			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/niederlande0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+			h = urllib.urlretrieve("http://www.metoffice.gov.uk" + PressureLink[0], devicepath)
+			self.session.open(PicView, devicepath, 0, False)
+		
+		else:
+			# http://www.foreca.de/Austria/Linz?map=sat
+			devicepath = "/tmp/sat.html"
+			url = _("http://www.foreca.com") + "/" + self.ort + "?map=" + menu
+			# Load site for category and search Picture link
+			h = urllib.urlretrieve(url, devicepath)
+			fd=open(devicepath)
+			html=fd.read()
+			fd.close()
 
-		elif menu == "wetterkontorDN":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/daenemark0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+			fulltext = re.compile(r'http://cache-(.+?) ', re.DOTALL)
+			PressureLink = fulltext.findall(html)
+			PicLink = PressureLink[0]
+			PicLink = "http://cache-" +	PicLink
 
-		elif menu == "wetterkontorCH":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/schweiz0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+			# Load Picture for Slideshow
+			max = int(len(PressureLink))-2
+			if debug: print pluginPrintname, "max= ", str(max)
+			zehner = "1"
+			x = 0
+			while x < max:
+				url = "http://cache-" + PressureLink[x]
+				foundPos = url.find("0000.jpg")
+				if debug: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
+				if foundPos ==-1:
+					foundPos = url.find(".jpg")
+				if foundPos ==-1:
+					foundPos = url.find(".png")			
+				file = url[foundPos-10:foundPos]
+				file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
+				if debug: print pluginPrintname, "file=", file, "file2=", file2
+				h = urllib.urlretrieve(url, CACHE_PATH + file2 + ".jpg")
+				x = x + 1
+				if x > 9:
+					zehner = "2"
+			self.session.open(View_Slideshow, 0, True)
 
-		elif menu == "wetterkontorBE":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/belgien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+#------------------------------------------------------------------------------------------
+#------------------------------ Weather Maps ----------------------------------------------
+#------------------------------------------------------------------------------------------
 
-		elif menu == "wetterkontorIT":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/italien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+class SatPanelListb(MenuList):
 
-		elif menu == "wetterkontorES":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/spanien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+	if (getDesktop(0).size().width() >= 1280):
+		ItemSkin = 143
+	else:
+		ItemSkin = 123
 
-		elif menu == "wetterkontorGB":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/grossbritannien0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
+		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
+		self.l.setFont(0, gFont("Regular", font0))
+		self.l.setFont(1, gFont("Regular", font1))
+		self.l.setItemHeight(itemHeight)
 
-		elif menu == "wetterkontorFR":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/frankreich0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+# -------------------------------------------------------------------
 
-		elif menu == "wetterkontorIE":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/irland0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+class SatPanelb(Screen, HelpableScreen):
 
-		elif menu == "wetterkontorLU":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/luxemburg0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+	def __init__(self, session, ort, title, mlist):
+		self.session = session
+		self.ort = ort
 
-		elif menu == "wetterkontorPO":
-			devicepath = "/tmp/meteogram.png"
-			path = "/tmp"
-			h = urllib.urlretrieve("http://www.wetterkontor.de/maps/portugal0.jpg", devicepath)
-			filelist = devicepath
-			self.session.open(PicView, filelist, 0, path, False)
+		if (getDesktop(0).size().width() >= 1280):
+			self.skin = """
+				<screen name="SatPanelb" position="center,center" size="620,500" backgroundColor="#40000000" >
+					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				</screen>"""
+		else:
+			self.skin = """
+				<screen name="SatPanelb" position="center,center" size="630,440" backgroundColor="#40000000" >
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				</screen>"""
+
+
+		Screen.__init__(self, session)
+		self.setup_title = title
+		self.Mlist = mlist
+
+		self.onChangedEntry = []
+		self["Mlist"] = SatPanelListb([])
+		self["Mlist"].l.setList(self.Mlist)
+		self["Mlist"].selectionEnabled(1)
+		self["key_blue"] = StaticText(_("Settings"))
+		self["Title"] = StaticText(title)
+
+		HelpableScreen.__init__(self)
+		self["actions"] = HelpableActionMap(self, "ForecaActions",
+			{
+				"cancel": (self.Exit, _("Exit - End")),
+				"left": (self.left, _("Left - Previous page")),
+				"right": (self.right, _("Right - Next page")),
+				"up": (self.up, _("Up - Previous")),
+				"down": (self.down, _("Down - Next")),
+				"blue": (self.PicSetupMenu, _("Blue - Settings")),
+				"ok": (self.ok, _("OK - Show")),
+			}, -2)
+
+	def up(self):
+		self["Mlist"].up()
+		self["Mlist"].selectionEnabled(1)
+
+	def down(self):
+		self["Mlist"].down()
+		self["Mlist"].selectionEnabled(1)
+
+	def left(self):
+		self["Mlist"].pageUp()
+
+	def right(self):
+		self["Mlist"].pageDown()
+
+	def Exit(self):
+		global menu
+		menu = "stop"
+		self.close()
+
+	def ok(self):
+		menu = self['Mlist'].l.getCurrentSelection()[0][2]
+		self.SatBild()
+
+	def PicSetupMenu(self):
+		self.session.open(PicSetup)
 
 #------------------------------------------------------------------------------------------
 
-	def SatEntryItem(self,entry):
-		if (getDesktop(0).size().width() >= 1280):
-			ItemSkin = 142
-		else:
-			ItemSkin = 122
+	def SatBild(self):
 
-		rot = 16711680
-		gruen = 0x4ad53b
-		dgruen = 0x339229
-		tpschwarz = 99000000
-		drot = 0xf47d19
-		mblau = 8900346
-		hblau = 11592447
-		dblau = 5215437
-		weiss = 0xffffff
-		orange = 0xf47d19
-		grau = 0x565656
-		res = [entry]
-		#return (eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, color, color_sel, backcolor, backcolor_sel, border_width, border_color)
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 5), size=(200,ItemSkin -2), png=entry[0]))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[1], color=weiss, color_sel=mblau, backcolor_sel=grau))
-		return res
+		menu = self['Mlist'].l.getCurrentSelection()[0][2]
+		devicepath = "/tmp/meteogram.png"
+		h = urllib.urlretrieve("http://www.wetterkontor.de/maps/" + menu + "0.jpg", devicepath)
+		self.session.open(PicView, devicepath, 0, False)
 
 #------------------------------------------------------------------------------------------
 #-------------------------- Picture viewer for large pictures -----------------------------
@@ -2065,9 +1386,9 @@ class SatPaneld(Screen, HelpableScreen):
 
 class PicView(Screen):
 
-	def __init__(self, session, filelist, index, path, startslide):
+	def __init__(self, session, filelist, index, startslide):
 		self.session = session
-		self.bgcolor = "#00000000"
+		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
 		size_w = getDesktop(0).size().width()
 		size_h = getDesktop(0).size().height()
@@ -2079,9 +1400,10 @@ class PicView(Screen):
 			</screen>"
 
 		Screen.__init__(self, session)
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "MovieSelectionActions", "MenuActions", "SetupActions"],
+		self["actions"] = ActionMap(["OkCancelActions", "MediaPlayerActions"],
 			{
 				"cancel": self.Exit,
+				"stop": self.Exit,
 			}, -1)
 
 		self["pic"] = Pixmap()
@@ -2122,8 +1444,10 @@ class PicView(Screen):
 		self.close(self.lastindex + self.dirlistcount)
 
 #------------------------------------------------------------------------------------------
+#------------------------------ Slide Show ------------------------------------------------
+#------------------------------------------------------------------------------------------
 
-class View_Slideshow(Screen, InfoBarAspectSelection):
+class View_Slideshow(Screen):
 
 	def __init__(self, session, pindex, startslide):
 
@@ -2145,14 +1469,14 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 			</screen>"
 		Screen.__init__(self, session)
 
-		InfoBarAspectSelection.__init__(self)
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "MovieSelectionActions"],
+		self["actions"] = ActionMap(["OkCancelActions", "MediaPlayerActions"],
 			{
 				"cancel": self.Exit,
-				"yellow": self.PlayPause,
-				"blue": self.sleepTimer,
-				"left": self.prevPic,
-				"right": self.nextPic,
+				"stop": self.Exit,
+				"pause": self.PlayPause,
+				"play": self.PlayPause,
+				"previous": self.prevPic,
+				"next": self.nextPic,
 			}, -1)
 		self["point"] = Pixmap()
 		self["pic"] = Pixmap()
@@ -2165,13 +1489,11 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 		self.shownow = True
 		self.dirlistcount = 0
 
-		devicepath = config.plugins.foreca.Device.value
-		currDir = devicepath
-		self.filelist = FileList(currDir, showDirectories = False, matchingPattern = "^.*\.(jpg)", useServiceRef = False)
+		self.filelist = FileList(CACHE_PATH, showDirectories = False, matchingPattern = "^.*\.(jpg)", useServiceRef = False)
 
 		for x in self.filelist.getFileList():
 			if x[0][1] == False:
-				self.picfilelist.append(currDir + x[0][0])
+				self.picfilelist.append(CACHE_PATH + x[0][0])
 			else:
 				self.dirlistcount += 1
 
@@ -2267,15 +1589,12 @@ class View_Slideshow(Screen, InfoBarAspectSelection):
 		del self.picload
 		for file in self.picfilelist:
 			try:
-				if debug: print pluginPrintname, file
+				if debug: print pluginPrintname, "file=", file
 				os.unlink(file)
 			except:
 				pass
 		self.close(self.lastindex + self.dirlistcount)
 
-	def sleepTimer(self):
-		from Screens.SleepTimerEdit import SleepTimerEdit
-		self.session.open(SleepTimerEdit)
 
 #------------------------------------------------------------------------------------------
 #-------------------------------- Foreca Settings -----------------------------------------
@@ -2322,8 +1641,6 @@ class PicSetup(Screen):
 		self.list = []
 		self["Mlist"] = ConfigList(self.list)
 
-		#self.list.append(getConfigListEntry(_("Picture Y moving"), config.plugins.foreca.max_offsety))
-		#self.list.append(getConfigListEntry(_("Picture Cache"), config.plugins.foreca.Device))
 		self.list.append(getConfigListEntry(_("Select units"), config.plugins.foreca.units))
 		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
@@ -2362,5 +1679,8 @@ class PicSetup(Screen):
 def main(session, **kwargs):
 	session.open(ForecaPreview)
 
-def Plugins(**kwargs):
+def Plugins(path, **kwargs):
+	global PICON_PATH
+	PICON_PATH = path + "/picon/"
+	
 	return PluginDescriptor(name=_("Foreca Weather Forecast"), description=_("Weather forecast for the upcoming 10 days"), icon="foreca_logo.png", where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU], fnc=main)
