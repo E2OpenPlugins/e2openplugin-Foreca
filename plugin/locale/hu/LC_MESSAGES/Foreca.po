@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Torpe Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 07:51+0100\n"
-"PO-Revision-Date: 2012-09-22 08:01+0100\n"
+"POT-Creation-Date: 2012-10-08 19:23+0100\n"
+"PO-Revision-Date: 2012-10-08 19:32+0100\n"
 "Last-Translator: JuSt611 <Software@Strasdas.de>\n"
 "Language-Team: torpe\n"
 "Language: hu_HU\n"
@@ -13,247 +13,219 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.3\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:130
+#: plugin.py:134
 msgid "simple"
 msgstr "egyszerű"
 
-#: plugin.py:130
+#: plugin.py:134
 msgid "better"
 msgstr "jobb"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "black"
 msgstr "fekete"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "blue"
 msgstr "kék"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "red"
 msgstr "piros"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "yellow"
 msgstr "sárga"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "green"
 msgstr "zöld"
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Metric (C, m/s)"
-msgstr ""
+msgstr "Metrikus (C, m/s)"
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Metric (C, km/h)"
-msgstr ""
+msgstr "Metrikus (C, km/h)"
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Imperial (C, mph)"
-msgstr ""
+msgstr "Angolszász (C, mph)"
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "US (F, mph)"
 msgstr ""
 
-#: plugin.py:139
+#: plugin.py:143
 msgid "12 h"
 msgstr ""
 
-#: plugin.py:139
+#: plugin.py:143
 msgid "24 h"
 msgstr ""
 
-#: plugin.py:142 plugin.py:410 plugin.py:463 plugin.py:718 plugin.py:807
-#: plugin.py:1265 plugin.py:1271 plugin.py:1277 plugin.py:1283
+#: plugin.py:147 plugin.py:365 plugin.py:402 plugin.py:648 plugin.py:711
+#: plugin.py:1263
 msgid "http://www.foreca.com"
 msgstr "http://www.foreca.hu"
 
-#: plugin.py:179
-msgid "Aspect list..."
-msgstr "Nézőpont"
-
-#: plugin.py:209
-msgid "Resolution"
-msgstr "Felbontás"
-
-#: plugin.py:211
-msgid "Letterbox"
-msgstr "Letterbox"
-
-#: plugin.py:212
-msgid "PanScan"
-msgstr "Pan&Scan"
-
-#: plugin.py:213
-msgid "Non Linear"
-msgstr "Nem lineáris"
-
-#: plugin.py:214
-msgid "Bestfit"
-msgstr "Csak nagyítani"
-
-#: plugin.py:221
-msgid "Please select an aspect ratio..."
-msgstr "Válasszon felbontást..."
-
-#: plugin.py:294
+#: plugin.py:249
 msgid "°F"
 msgstr ""
 
-#: plugin.py:297
+#: plugin.py:252
 msgid "°C"
 msgstr ""
 
-#: plugin.py:332
+#: plugin.py:287
 msgid "Temp"
 msgstr "Hőmérséklet"
 
-#: plugin.py:341
+#: plugin.py:296
 msgid "Wind"
 msgstr "Szél"
 
-#: plugin.py:511 plugin.py:530 plugin.py:2390
+#: plugin.py:449 plugin.py:468 plugin.py:1699
 msgid "Foreca Weather Forecast"
 msgstr "Foreca -  időjárás előrejelzés"
 
-#: plugin.py:514 plugin.py:587
+#: plugin.py:452 plugin.py:517
 msgid "Please wait ..."
 msgstr "Kérem várjon..."
 
-#: plugin.py:518
+#: plugin.py:456
 msgid "Week"
 msgstr "Hét"
 
-#: plugin.py:519
+#: plugin.py:457
 msgid "City"
 msgstr "Város"
 
-#: plugin.py:525 plugin.py:744 plugin.py:759 plugin.py:993
+#: plugin.py:463 plugin.py:675 plugin.py:728 plugin.py:907
 msgid "Favorite 1"
 msgstr "Kedvenc 1"
 
-#: plugin.py:526 plugin.py:745 plugin.py:760 plugin.py:994
+#: plugin.py:464 plugin.py:676 plugin.py:729 plugin.py:908
 msgid "Favorite 2"
 msgstr "Kedvenc 2"
 
-#: plugin.py:527 plugin.py:746 plugin.py:761 plugin.py:995
+#: plugin.py:465 plugin.py:677 plugin.py:730 plugin.py:909
 msgid "Home"
 msgstr "Haza"
 
-#: plugin.py:528
+#: plugin.py:466
 msgid "Legend"
 msgstr "Jelmagyarázat"
 
-#: plugin.py:529
+#: plugin.py:467
 msgid "Maps"
 msgstr "Térképek"
 
-#: plugin.py:530
+#: plugin.py:468
 msgid "Version "
 msgstr "Verzió"
 
-#: plugin.py:535 plugin.py:1002 plugin.py:1199 plugin.py:1448 plugin.py:1700
-#: plugin.py:1918
+#: plugin.py:473 plugin.py:916 plugin.py:1104 plugin.py:1348
 msgid "Exit - End"
 msgstr "Bezár"
 
-#: plugin.py:536
+#: plugin.py:474
 msgid "Menu - Weather maps"
 msgstr "Menü - Időjárás térképek"
 
-#: plugin.py:537
+#: plugin.py:475
 msgid "Info - Legend"
 msgstr "Jelmagyarázat"
 
-#: plugin.py:538
+#: plugin.py:476
 msgid "OK - City"
 msgstr "OK - Város"
 
-#: plugin.py:539
+#: plugin.py:477
 msgid "Left - Previous day"
 msgstr "Balra - Eőző nap"
 
-#: plugin.py:540
+#: plugin.py:478
 msgid "Right - Next day"
 msgstr "Jobbra -Következő nap"
 
-#: plugin.py:541
+#: plugin.py:479
 msgid "Up - Previous page"
 msgstr "Fel - Eőző oldal"
 
-#: plugin.py:542
+#: plugin.py:480
 msgid "Down - Next page"
 msgstr "Le - Következő oldal"
 
-#: plugin.py:543
+#: plugin.py:481
 msgid "Left arrow - Previous day"
 msgstr "Balra - Eőző nap"
 
-#: plugin.py:544
+#: plugin.py:482
 msgid "Right arrow - Next day"
 msgstr "Jobbra - Következő nap"
 
-#: plugin.py:545
+#: plugin.py:483
 msgid "Red - Weekoverview"
 msgstr "Piros - Heti áttekintés"
 
-#: plugin.py:546
+#: plugin.py:485
 msgid "Green - Favorite 1"
 msgstr "Zöld - Kedvenc 1"
 
-#: plugin.py:547
+#: plugin.py:486
 msgid "Yellow - Favorite 2"
 msgstr "Sárga - Kedvenc 2"
 
-#: plugin.py:548
+#: plugin.py:487
 msgid "Blue - Home"
 msgstr "Kék - Haza"
 
-#: plugin.py:549
+#: plugin.py:488
 msgid "0 - Today"
 msgstr "0 - Ma"
 
-#: plugin.py:550
+#: plugin.py:489
 msgid "1 - Today + 1 day"
 msgstr "1 - Ma + 1 nap"
 
-#: plugin.py:551
+#: plugin.py:490
 msgid "2 - Today + 2 days"
 msgstr "2 - Ma + 2 nap"
 
-#: plugin.py:552
+#: plugin.py:491
 msgid "3 - Today + 3 days"
 msgstr "3 - Ma + 3 nap"
 
-#: plugin.py:553
+#: plugin.py:492
 msgid "4 - Today + 4 days"
 msgstr "4 - Ma + 4 nap"
 
-#: plugin.py:554
+#: plugin.py:493
 msgid "5 - Today + 5 days"
 msgstr "5 - Ma + 5 nap"
 
-#: plugin.py:555
+#: plugin.py:494
 msgid "6 - Today + 6 days"
 msgstr "6 - Ma + 6 nap"
 
-#: plugin.py:556
+#: plugin.py:495
 msgid "7 - Today + 7 days"
 msgstr "7 - Ma + 7 nap"
 
-#: plugin.py:557
+#: plugin.py:496
 msgid "8 - Today + 8 days"
 msgstr "8 - Ma + 8 nap"
 
-#: plugin.py:558
+#: plugin.py:497
 msgid "9 - Today + 9 days"
 msgstr "9 - Ma + 9 nap"
 
-#: plugin.py:731
+#: plugin.py:655
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -289,63 +261,63 @@ msgstr ""
 "\n"
 "Szél iránya = a nyilacska jobbra: nyugati szél"
 
-#: plugin.py:976 plugin.py:997
+#: plugin.py:890 plugin.py:911
 msgid "Select a city"
 msgstr "Város választása"
 
-#: plugin.py:996
+#: plugin.py:910
 msgid "Forecast"
 msgstr "Időjárás"
 
-#: plugin.py:1003 plugin.py:1200 plugin.py:1449 plugin.py:1701 plugin.py:1919
+#: plugin.py:917 plugin.py:1105 plugin.py:1349
 msgid "Left - Previous page"
 msgstr "Balra - Eőző oldal"
 
-#: plugin.py:1004 plugin.py:1201 plugin.py:1450 plugin.py:1702 plugin.py:1920
+#: plugin.py:918 plugin.py:1106 plugin.py:1350
 msgid "Right - Next page"
 msgstr "Jobbra - Következő oldal"
 
-#: plugin.py:1005 plugin.py:1202 plugin.py:1451 plugin.py:1703 plugin.py:1921
+#: plugin.py:919 plugin.py:1107 plugin.py:1351
 msgid "Up - Previous"
 msgstr "Fel - Eőző"
 
-#: plugin.py:1006 plugin.py:1203 plugin.py:1452 plugin.py:1704 plugin.py:1922
+#: plugin.py:920 plugin.py:1108 plugin.py:1352
 msgid "Down - Next"
 msgstr "Le - Következő"
 
-#: plugin.py:1007
+#: plugin.py:921
 msgid "OK - Select"
 msgstr "OK - Rendben"
 
-#: plugin.py:1008
+#: plugin.py:922
 msgid "Green - Assign to Favorite 1"
 msgstr "Zöld - Kedvenc 1"
 
-#: plugin.py:1009
+#: plugin.py:923
 msgid "Yellow - Assign to Favorite 2"
 msgstr "Sárga - Kedvenc 2"
 
-#: plugin.py:1010
+#: plugin.py:924
 msgid "Blue - Assign to Home"
 msgstr "Kék - Haza"
 
-#: plugin.py:1011
+#: plugin.py:925
 msgid "Channel+ - 500 back"
 msgstr "Csatorna+ - 500 vissza"
 
-#: plugin.py:1012
+#: plugin.py:926
 msgid "Channel- - 500 forward"
 msgstr "Csatornal- - 500 tovább"
 
-#: plugin.py:1013
+#: plugin.py:927
 msgid "Volume- - 100 forward"
 msgstr "Hangerő- - 100 tovább"
 
-#: plugin.py:1014
+#: plugin.py:928
 msgid "Volume+ - 100 back"
 msgstr "Hangerő+ - 100 vissza"
 
-#: plugin.py:1078
+#: plugin.py:992
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -355,7 +327,7 @@ msgstr ""
 "\n"
 "                                  "
 
-#: plugin.py:1089
+#: plugin.py:1003
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
@@ -365,7 +337,7 @@ msgstr ""
 "\n"
 "                             "
 
-#: plugin.py:1100
+#: plugin.py:1014
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -375,282 +347,318 @@ msgstr ""
 "\n"
 "                             "
 
-#: plugin.py:1176 plugin.py:1194
+#: plugin.py:1081 plugin.py:1099
 msgid "Satellite photos"
 msgstr "Műhold képek"
 
-#: plugin.py:1179
+#: plugin.py:1083
 msgid "Weather map Video"
 msgstr "Időjárás térkép - videó"
 
-#: plugin.py:1180
+#: plugin.py:1084
 msgid "Showerradar Video"
 msgstr "Csapadék térkép - videó"
 
-#: plugin.py:1181
+#: plugin.py:1085
+msgid "Temperature Video"
+msgstr "Hőmérséklet Videó "
+
+#: plugin.py:1086
 msgid "Cloudcover Video"
 msgstr "Felhőtérkép -  video"
 
-#: plugin.py:1182
-msgid "Eumetsat"
-msgstr "Eumetsat"
-
-#: plugin.py:1183
+#: plugin.py:1087
 msgid "Air pressure"
 msgstr "Légnyomás"
 
-#: plugin.py:1184
+#: plugin.py:1088
+msgid "Eumetsat"
+msgstr "Eumetsat"
+
+#: plugin.py:1089
 msgid "Infrared"
 msgstr "Infravörös megjelenítés"
 
-#: plugin.py:1190 plugin.py:1675 plugin.py:1695
+#: plugin.py:1095 plugin.py:1207
 msgid "Continents"
 msgstr "Kontinensek"
 
-#: plugin.py:1191 plugin.py:1678 plugin.py:1891 plugin.py:1913
+#: plugin.py:1096 plugin.py:1192 plugin.py:1196
 msgid "Europe"
 msgstr "Európa"
 
-#: plugin.py:1192 plugin.py:1418 plugin.py:1443 plugin.py:1898
+#: plugin.py:1097 plugin.py:1163 plugin.py:1172
 msgid "Germany"
 msgstr "Németország"
 
-#: plugin.py:1193 plugin.py:1442 plugin.py:1694 plugin.py:1912
+#: plugin.py:1098 plugin.py:1342
 msgid "Settings"
 msgstr "Beállítasok"
 
-#: plugin.py:1204
+#: plugin.py:1109
 msgid "Red - Continents"
 msgstr "Vörös kontinens"
 
-#: plugin.py:1205
+#: plugin.py:1110
 msgid "Green - Europe"
 msgstr "Zöld - Európa"
 
-#: plugin.py:1206
+#: plugin.py:1111
 msgid "Yellow - Germany"
 msgstr "Sárga - Németország"
 
-#: plugin.py:1207 plugin.py:1453 plugin.py:1705 plugin.py:1923
+#: plugin.py:1112 plugin.py:1353
 msgid "Blue - Settings"
 msgstr "Kék - Beállítások"
 
-#: plugin.py:1208 plugin.py:1454 plugin.py:1706 plugin.py:1924
+#: plugin.py:1113 plugin.py:1354
 msgid "OK - Show"
 msgstr "OK - Megjelenít"
 
-#: plugin.py:1316
-msgid "h"
-msgstr ""
-
-#: plugin.py:1421
+#: plugin.py:1142
 msgid "Baden-Wuerttemberg"
 msgstr "Báden-Würtemberg"
 
-#: plugin.py:1422
+#: plugin.py:1143
 msgid "Bavaria"
 msgstr "Bavaria"
 
-#: plugin.py:1423
+#: plugin.py:1144
 msgid "Berlin"
 msgstr "Berlin"
 
-#: plugin.py:1424
+#: plugin.py:1145
 msgid "Brandenburg"
 msgstr "Brandenburg"
 
-#: plugin.py:1425
+#: plugin.py:1146
 msgid "Bremen"
 msgstr "Bremen"
 
-#: plugin.py:1426
+#: plugin.py:1147
 msgid "Hamburg"
 msgstr "Hamburg"
 
-#: plugin.py:1427
+#: plugin.py:1148
 msgid "Hesse"
 msgstr "Hesse"
 
-#: plugin.py:1428
+#: plugin.py:1149
 msgid "Mecklenburg-Vorpommern"
 msgstr "Mecklenburg-Vorpommern"
 
-#: plugin.py:1429
+#: plugin.py:1150
 msgid "Lower Saxony"
 msgstr "Alsó Saxony"
 
-#: plugin.py:1430
+#: plugin.py:1151
 msgid "North Rhine-Westphalia"
 msgstr "North Rhine-Westphalia"
 
-#: plugin.py:1431
+#: plugin.py:1152
 msgid "Rhineland-Palatine"
 msgstr "Rhineland-Palatine"
 
-#: plugin.py:1432
+#: plugin.py:1153
 msgid "Saarland"
 msgstr "Saarland"
 
-#: plugin.py:1433
+#: plugin.py:1154
 msgid "Saxony"
 msgstr "Saxony"
 
-#: plugin.py:1434
+#: plugin.py:1155
 msgid "Saxony-Anhalt"
 msgstr "Saxony-Anhalt"
 
-#: plugin.py:1435
+#: plugin.py:1156
 msgid "Schleswig-Holstein"
 msgstr "Schleswig-Holstein"
 
-#: plugin.py:1436
+#: plugin.py:1157
 msgid "Thuringia"
 msgstr "Thuringia"
 
-#: plugin.py:1679
-msgid "North Africa"
-msgstr "Észak Afrika"
-
-#: plugin.py:1680
-msgid "South Africa"
-msgstr "Dél Afrika"
-
-#: plugin.py:1681
-msgid "North America"
-msgstr "Észak Amerika"
-
-#: plugin.py:1682
-msgid "Middle America"
-msgstr "Közép Amerika"
-
-#: plugin.py:1683
-msgid "South America"
-msgstr "Dél Amerika"
-
-#: plugin.py:1684
-msgid "Middle East"
-msgstr "Középkelet"
-
-#: plugin.py:1685
-msgid "East Asia"
-msgstr "Kelet Ázsia"
-
-#: plugin.py:1686
-msgid "Southeast Asia"
-msgstr "Délkelet Ázsia"
-
-#: plugin.py:1687
-msgid "Middle Asia"
-msgstr "Közép Ázsia"
-
-#: plugin.py:1688
-msgid "Australia"
-msgstr "Austrália"
-
-#: plugin.py:1894
+#: plugin.py:1167
 msgid "Austria"
 msgstr "Ausztria"
 
-#: plugin.py:1895
+#: plugin.py:1168
 msgid "Belgium"
 msgstr "Belgium"
 
-#: plugin.py:1896
+#: plugin.py:1169
+msgid "Czech Republic"
+msgstr "Cseh Köztársaság "
+
+#: plugin.py:1170
 msgid "Denmark"
 msgstr "Dánia"
 
-#: plugin.py:1897
+#: plugin.py:1171
 msgid "France"
 msgstr "Franciaország"
 
-#: plugin.py:1899
+#: plugin.py:1173
+msgid "Greece"
+msgstr "Görögország "
+
+#: plugin.py:1174
 msgid "Great Britain"
 msgstr "Nagy Britannia"
 
-#: plugin.py:1900
+#: plugin.py:1175
+msgid "Hungary"
+msgstr "Magyarország "
+
+#: plugin.py:1176
 msgid "Ireland"
 msgstr "Írország"
 
-#: plugin.py:1901
+#: plugin.py:1177
 msgid "Italy"
 msgstr "Olaszország"
 
-#: plugin.py:1902
+#: plugin.py:1178
+msgid "Latvia"
+msgstr "Lettország "
+
+#: plugin.py:1179
 msgid "Luxembourg"
 msgstr "Luxemburg"
 
-#: plugin.py:1903
+#: plugin.py:1180
 msgid "Netherlands"
 msgstr "Hollandia"
 
-#: plugin.py:1904
+#: plugin.py:1181
+msgid "Poland"
+msgstr "Lengyelország "
+
+#: plugin.py:1182
 msgid "Portugal"
 msgstr "Portugália"
 
-#: plugin.py:1905
+#: plugin.py:1183
+msgid "Russia"
+msgstr "Oroszország "
+
+#: plugin.py:1184
+msgid "Slovakia"
+msgstr "Szlovákia "
+
+#: plugin.py:1185
 msgid "Spain"
 msgstr "Spanyolország"
 
-#: plugin.py:1906
+#: plugin.py:1186
 msgid "Switzerland"
 msgstr "Svájc"
 
-#: plugin.py:2184
+#: plugin.py:1197
+msgid "North Africa"
+msgstr "Észak Afrika"
+
+#: plugin.py:1198
+msgid "South Africa"
+msgstr "Dél Afrika"
+
+#: plugin.py:1199
+msgid "North America"
+msgstr "Észak Amerika"
+
+#: plugin.py:1200
+msgid "Middle America"
+msgstr "Közép Amerika"
+
+#: plugin.py:1201
+msgid "South America"
+msgstr "Dél Amerika"
+
+#: plugin.py:1202
+msgid "Middle East"
+msgstr "Középkelet"
+
+#: plugin.py:1203
+msgid "East Asia"
+msgstr "Kelet Ázsia"
+
+#: plugin.py:1204
+msgid "Southeast Asia"
+msgstr "Délkelet Ázsia"
+
+#: plugin.py:1205
+msgid "Middle Asia"
+msgstr "Közép Ázsia"
+
+#: plugin.py:1206
+msgid "Australia"
+msgstr "Austrália"
+
+#: plugin.py:1289
+msgid "h"
+msgstr ""
+
+#: plugin.py:1494
 msgid "Please wait, photo is being loaded ..."
 msgstr "Fénykép betöltése..."
 
-#: plugin.py:2322 plugin.py:2325
+#: plugin.py:1627 plugin.py:1630
 msgid "SlideShow Settings"
 msgstr "Prezentáció beállítása"
 
-#: plugin.py:2323
+#: plugin.py:1628
 msgid "Cancel"
 msgstr "Elvet"
 
-#: plugin.py:2324
+#: plugin.py:1629
 msgid "Save"
 msgstr "Ment"
 
-#: plugin.py:2351
+#: plugin.py:1654
 msgid "Select units"
 msgstr "Mértékegységek kiválasztása"
 
-#: plugin.py:2352
+#: plugin.py:1655
 msgid "Select time format"
 msgstr "Időformátum kiválasztása"
 
-#: plugin.py:2353
+#: plugin.py:1656
 msgid "City names as labels in the Main screen"
 msgstr "Városnevek megjelenítése a fő képenyőn"
 
-#: plugin.py:2354
+#: plugin.py:1657
 msgid "Frame size in full view"
 msgstr "Kép mérete teljes megjelenítésben"
 
-#: plugin.py:2355
+#: plugin.py:1658
 msgid "Scaling Mode"
 msgstr "Nagyítás"
 
-#: plugin.py:2356
+#: plugin.py:1659
 msgid "Slide Time (seconds)"
 msgstr "Prezentáció"
 
-#: plugin.py:2357
+#: plugin.py:1660
 msgid "Show Infoline"
 msgstr "Információs sor megjelenítése"
 
-#: plugin.py:2358
+#: plugin.py:1661
 msgid "Textcolor"
 msgstr "Szöveg szine"
 
-#: plugin.py:2359
+#: plugin.py:1662
 msgid "Backgroundcolor"
 msgstr "Háttér szine"
 
-#: plugin.py:2360
+#: plugin.py:1663
 msgid "Slide picture in loop"
 msgstr "Prezentáció ismétlése"
 
-#: plugin.py:2390
+#: plugin.py:1664
+msgid "Debug"
+msgstr ""
+
+#: plugin.py:1699
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "Előrejelzés a következő 10 napra"

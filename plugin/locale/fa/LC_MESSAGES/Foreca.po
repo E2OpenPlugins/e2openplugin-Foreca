@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca Persian Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 07:42+0100\n"
-"PO-Revision-Date: 2012-09-22 07:44+0100\n"
+"POT-Creation-Date: 2012-10-08 19:56+0100\n"
+"PO-Revision-Date: 2012-10-08 19:57+0100\n"
 "Last-Translator: JuSt611 <Software@Strasdas.de>\n"
 "Language-Team: Persian Professionals <persianpros@yahoo.com>\n"
 "Language: fa_IR\n"
@@ -13,249 +13,221 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.3\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:130
+#: plugin.py:134
 msgid "simple"
 msgstr "ساده"
 
-#: plugin.py:130
+#: plugin.py:134
 msgid "better"
 msgstr "بهتر"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "black"
 msgstr "سیاه"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "blue"
 msgstr "آبی"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "red"
 msgstr "قرمز"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "yellow"
 msgstr "زرد"
 
-#: plugin.py:131 plugin.py:132
+#: plugin.py:135 plugin.py:136
 msgid "green"
 msgstr "سبز"
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Metric (C, m/s)"
 msgstr ""
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Metric (C, km/h)"
 msgstr ""
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "Imperial (C, mph)"
 msgstr ""
 
-#: plugin.py:138
+#: plugin.py:142
 msgid "US (F, mph)"
 msgstr ""
 
-#: plugin.py:139
+#: plugin.py:143
 msgid "12 h"
 msgstr ""
 
-#: plugin.py:139
+#: plugin.py:143
 msgid "24 h"
 msgstr ""
 
-#: plugin.py:142 plugin.py:410 plugin.py:463 plugin.py:718 plugin.py:807
-#: plugin.py:1265 plugin.py:1271 plugin.py:1277 plugin.py:1283
+#: plugin.py:147 plugin.py:365 plugin.py:402 plugin.py:648 plugin.py:711
+#: plugin.py:1263
 msgid "http://www.foreca.com"
 msgstr ""
 
-#: plugin.py:179
-msgid "Aspect list..."
-msgstr "سیمای فهرست"
-
-#: plugin.py:209
-msgid "Resolution"
-msgstr "رزولیشن یا تفکیک پذیری"
-
-#: plugin.py:211
-msgid "Letterbox"
-msgstr "کادر نامه ها"
-
-#: plugin.py:212
-msgid "PanScan"
-msgstr "پن اسکن مخصوص فیلم های باند باریک"
-
-#: plugin.py:213
-msgid "Non Linear"
-msgstr "غیر خطی"
-
-#: plugin.py:214
-msgid "Bestfit"
-msgstr "بهترین جا"
-
-#: plugin.py:221
-msgid "Please select an aspect ratio..."
-msgstr "لطفا نسبت ابعاد را انتخاب کنید"
-
-#: plugin.py:294
+#: plugin.py:249
 msgid "°F"
 msgstr ""
 
-#: plugin.py:297
+#: plugin.py:252
 msgid "°C"
 msgstr "بر حسب سانتی گراد"
 
-#: plugin.py:332
+#: plugin.py:287
 msgid "Temp"
 msgstr "دما"
 
-#: plugin.py:341
+#: plugin.py:296
 msgid "Wind"
 msgstr "شدت وزش باد"
 
-#: plugin.py:511 plugin.py:530 plugin.py:2390
+#: plugin.py:449 plugin.py:468 plugin.py:1699
 msgid "Foreca Weather Forecast"
 msgstr "Foreca  پیش بینی آب و هوا"
 
-#: plugin.py:514 plugin.py:587
+#: plugin.py:452 plugin.py:517
 msgid "Please wait ..."
 msgstr "لطفا صبر کنید ..."
 
-#: plugin.py:518
+#: plugin.py:456
 msgid "Week"
 msgstr "هفته"
 
-#: plugin.py:519
+#: plugin.py:457
 msgid "City"
 msgstr "شهر"
 
-#: plugin.py:525 plugin.py:744 plugin.py:759 plugin.py:993
+#: plugin.py:463 plugin.py:675 plugin.py:728 plugin.py:907
 msgid "Favorite 1"
 msgstr "منتخب اول"
 
-#: plugin.py:526 plugin.py:745 plugin.py:760 plugin.py:994
+#: plugin.py:464 plugin.py:676 plugin.py:729 plugin.py:908
 msgid "Favorite 2"
 msgstr "منتخب دوم"
 
-#: plugin.py:527 plugin.py:746 plugin.py:761 plugin.py:995
+#: plugin.py:465 plugin.py:677 plugin.py:730 plugin.py:909
 msgid "Home"
 msgstr "خانه"
 
-#: plugin.py:528
+#: plugin.py:466
 msgid "Legend"
 msgstr "علائم و اختصارات"
 
-#: plugin.py:529
+#: plugin.py:467
 msgid "Maps"
 msgstr "نقشه"
 
-#: plugin.py:530
+#: plugin.py:468
 msgid "Version "
 msgstr "نسخه"
 
-#: plugin.py:535 plugin.py:1002 plugin.py:1199 plugin.py:1448 plugin.py:1700
-#: plugin.py:1918
+#: plugin.py:473 plugin.py:916 plugin.py:1104 plugin.py:1348
 msgid "Exit - End"
 msgstr "خروج و اتمام کار"
 
-#: plugin.py:536
+#: plugin.py:474
 msgid "Menu - Weather maps"
 msgstr "منو - نقشه آب و هوا"
 
-#: plugin.py:537
+#: plugin.py:475
 msgid "Info - Legend"
 msgstr "اطلاعات - علائم و اختصارات"
 
-#: plugin.py:538
+#: plugin.py:476
 msgid "OK - City"
 msgstr "تایید - شهر"
 
-#: plugin.py:539
+#: plugin.py:477
 #, fuzzy
 msgid "Left - Previous day"
 msgstr "چپ - صفحه قبلی"
 
-#: plugin.py:540
+#: plugin.py:478
 #, fuzzy
 msgid "Right - Next day"
 msgstr "راست - صفحه بعدی"
 
-#: plugin.py:541
+#: plugin.py:479
 msgid "Up - Previous page"
 msgstr "بالا - صفحه قبلی"
 
-#: plugin.py:542
+#: plugin.py:480
 msgid "Down - Next page"
 msgstr "پایین - صفحه بعدی"
 
-#: plugin.py:543
+#: plugin.py:481
 msgid "Left arrow - Previous day"
 msgstr ""
 
-#: plugin.py:544
+#: plugin.py:482
 msgid "Right arrow - Next day"
 msgstr ""
 
-#: plugin.py:545
+#: plugin.py:483
 msgid "Red - Weekoverview"
 msgstr "قرمز - بازنگری تحولات هفته"
 
-#: plugin.py:546
+#: plugin.py:485
 msgid "Green - Favorite 1"
 msgstr "سبز - منتخب اول"
 
-#: plugin.py:547
+#: plugin.py:486
 msgid "Yellow - Favorite 2"
 msgstr "زرد - منتخب دوم"
 
-#: plugin.py:548
+#: plugin.py:487
 msgid "Blue - Home"
 msgstr "آبی - خانه "
 
-#: plugin.py:549
+#: plugin.py:488
 msgid "0 - Today"
 msgstr "حالت پیش فرض : فقط امروز"
 
-#: plugin.py:550
+#: plugin.py:489
 msgid "1 - Today + 1 day"
 msgstr "حالت اول : امروز + یک روز"
 
-#: plugin.py:551
+#: plugin.py:490
 msgid "2 - Today + 2 days"
 msgstr "حالت دوم : امروز + دو روز"
 
-#: plugin.py:552
+#: plugin.py:491
 msgid "3 - Today + 3 days"
 msgstr "حالت سوم : امروز + سه روز"
 
-#: plugin.py:553
+#: plugin.py:492
 msgid "4 - Today + 4 days"
 msgstr "حالت چهارم : امروز + چهار روز"
 
-#: plugin.py:554
+#: plugin.py:493
 msgid "5 - Today + 5 days"
 msgstr "حالت پنجم : امروز + پنج روز"
 
-#: plugin.py:555
+#: plugin.py:494
 msgid "6 - Today + 6 days"
 msgstr "حالت ششم : امروز + شش روز"
 
-#: plugin.py:556
+#: plugin.py:495
 msgid "7 - Today + 7 days"
 msgstr "حالت هفتم : امروز + هفت روز"
 
-#: plugin.py:557
+#: plugin.py:496
 msgid "8 - Today + 8 days"
 msgstr "حالت هشتم : امروز + هشت روز"
 
-#: plugin.py:558
+#: plugin.py:497
 msgid "9 - Today + 9 days"
 msgstr "حالت نهم : امروز + نه روز"
 
-#: plugin.py:731
+#: plugin.py:655
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -275,77 +247,77 @@ msgid ""
 "Wind direction = Arrow to right: Wind from the West"
 msgstr ""
 
-#: plugin.py:976 plugin.py:997
+#: plugin.py:890 plugin.py:911
 msgid "Select a city"
 msgstr "انتخاب شهر مورد نظر"
 
-#: plugin.py:996
+#: plugin.py:910
 msgid "Forecast"
 msgstr ""
 
-#: plugin.py:1003 plugin.py:1200 plugin.py:1449 plugin.py:1701 plugin.py:1919
+#: plugin.py:917 plugin.py:1105 plugin.py:1349
 msgid "Left - Previous page"
 msgstr "چپ - صفحه قبلی"
 
-#: plugin.py:1004 plugin.py:1201 plugin.py:1450 plugin.py:1702 plugin.py:1920
+#: plugin.py:918 plugin.py:1106 plugin.py:1350
 msgid "Right - Next page"
 msgstr "راست - صفحه بعدی"
 
-#: plugin.py:1005 plugin.py:1202 plugin.py:1451 plugin.py:1703 plugin.py:1921
+#: plugin.py:919 plugin.py:1107 plugin.py:1351
 msgid "Up - Previous"
 msgstr "بالا - قبلی"
 
-#: plugin.py:1006 plugin.py:1203 plugin.py:1452 plugin.py:1704 plugin.py:1922
+#: plugin.py:920 plugin.py:1108 plugin.py:1352
 msgid "Down - Next"
 msgstr "پایین - بعدی"
 
-#: plugin.py:1007
+#: plugin.py:921
 msgid "OK - Select"
 msgstr "تایید و انتخاب"
 
-#: plugin.py:1008
+#: plugin.py:922
 msgid "Green - Assign to Favorite 1"
 msgstr ""
 
-#: plugin.py:1009
+#: plugin.py:923
 msgid "Yellow - Assign to Favorite 2"
 msgstr ""
 
-#: plugin.py:1010
+#: plugin.py:924
 msgid "Blue - Assign to Home"
 msgstr ""
 
-#: plugin.py:1011
+#: plugin.py:925
 msgid "Channel+ - 500 back"
 msgstr ""
 
-#: plugin.py:1012
+#: plugin.py:926
 msgid "Channel- - 500 forward"
 msgstr ""
 
-#: plugin.py:1013
+#: plugin.py:927
 msgid "Volume- - 100 forward"
 msgstr ""
 
-#: plugin.py:1014
+#: plugin.py:928
 msgid "Volume+ - 100 back"
 msgstr ""
 
-#: plugin.py:1078
+#: plugin.py:992
 msgid ""
 "This city is stored as home!\n"
 "\n"
 "                                  "
 msgstr ""
 
-#: plugin.py:1089
+#: plugin.py:1003
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
 "                             "
 msgstr ""
 
-#: plugin.py:1100
+#: plugin.py:1014
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -355,282 +327,318 @@ msgstr ""
 " این شهر به عنوان انتخاب اول شما ذخیره شد \n"
 "                              "
 
-#: plugin.py:1176 plugin.py:1194
+#: plugin.py:1081 plugin.py:1099
 msgid "Satellite photos"
 msgstr "تصاوی ماهواره ای"
 
-#: plugin.py:1179
+#: plugin.py:1083
 msgid "Weather map Video"
 msgstr "نقشه ویدئویی آب و هوا"
 
-#: plugin.py:1180
+#: plugin.py:1084
 msgid "Showerradar Video"
 msgstr "نقشه ویدئویی از رادار هواشناسی"
 
-#: plugin.py:1181
+#: plugin.py:1085
+msgid "Temperature Video"
+msgstr ""
+
+#: plugin.py:1086
 msgid "Cloudcover Video"
 msgstr "ویدئو از میزان پوشش ابر"
 
-#: plugin.py:1182
-msgid "Eumetsat"
-msgstr "Eumetsat ماهواره"
-
-#: plugin.py:1183
+#: plugin.py:1087
 msgid "Air pressure"
 msgstr "فشارات جوی"
 
-#: plugin.py:1184
+#: plugin.py:1088
+msgid "Eumetsat"
+msgstr "Eumetsat ماهواره"
+
+#: plugin.py:1089
 msgid "Infrared"
 msgstr "مادون قرمز"
 
-#: plugin.py:1190 plugin.py:1675 plugin.py:1695
+#: plugin.py:1095 plugin.py:1207
 msgid "Continents"
 msgstr "قاره ها"
 
-#: plugin.py:1191 plugin.py:1678 plugin.py:1891 plugin.py:1913
+#: plugin.py:1096 plugin.py:1192 plugin.py:1196
 msgid "Europe"
 msgstr "اروپا"
 
-#: plugin.py:1192 plugin.py:1418 plugin.py:1443 plugin.py:1898
+#: plugin.py:1097 plugin.py:1163 plugin.py:1172
 msgid "Germany"
 msgstr "آلمان"
 
-#: plugin.py:1193 plugin.py:1442 plugin.py:1694 plugin.py:1912
+#: plugin.py:1098 plugin.py:1342
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: plugin.py:1204
+#: plugin.py:1109
 msgid "Red - Continents"
 msgstr "قرمز - قاره ها "
 
-#: plugin.py:1205
+#: plugin.py:1110
 msgid "Green - Europe"
 msgstr "سبز - اروپا"
 
-#: plugin.py:1206
+#: plugin.py:1111
 msgid "Yellow - Germany"
 msgstr "زرد - آلمان"
 
-#: plugin.py:1207 plugin.py:1453 plugin.py:1705 plugin.py:1923
+#: plugin.py:1112 plugin.py:1353
 msgid "Blue - Settings"
 msgstr "آبی - تنظیمات"
 
-#: plugin.py:1208 plugin.py:1454 plugin.py:1706 plugin.py:1924
+#: plugin.py:1113 plugin.py:1354
 msgid "OK - Show"
 msgstr "تایید - نمایش"
 
-#: plugin.py:1316
-msgid "h"
-msgstr ""
-
-#: plugin.py:1421
+#: plugin.py:1142
 msgid "Baden-Wuerttemberg"
 msgstr ""
 
-#: plugin.py:1422
+#: plugin.py:1143
 msgid "Bavaria"
 msgstr ""
 
-#: plugin.py:1423
+#: plugin.py:1144
 msgid "Berlin"
 msgstr ""
 
-#: plugin.py:1424
+#: plugin.py:1145
 msgid "Brandenburg"
 msgstr ""
 
-#: plugin.py:1425
+#: plugin.py:1146
 msgid "Bremen"
 msgstr ""
 
-#: plugin.py:1426
+#: plugin.py:1147
 msgid "Hamburg"
 msgstr ""
 
-#: plugin.py:1427
+#: plugin.py:1148
 msgid "Hesse"
 msgstr ""
 
-#: plugin.py:1428
+#: plugin.py:1149
 msgid "Mecklenburg-Vorpommern"
 msgstr ""
 
-#: plugin.py:1429
+#: plugin.py:1150
 msgid "Lower Saxony"
 msgstr ""
 
-#: plugin.py:1430
+#: plugin.py:1151
 msgid "North Rhine-Westphalia"
 msgstr ""
 
-#: plugin.py:1431
+#: plugin.py:1152
 msgid "Rhineland-Palatine"
 msgstr ""
 
-#: plugin.py:1432
+#: plugin.py:1153
 msgid "Saarland"
 msgstr ""
 
-#: plugin.py:1433
+#: plugin.py:1154
 msgid "Saxony"
 msgstr ""
 
-#: plugin.py:1434
+#: plugin.py:1155
 msgid "Saxony-Anhalt"
 msgstr ""
 
-#: plugin.py:1435
+#: plugin.py:1156
 msgid "Schleswig-Holstein"
 msgstr ""
 
-#: plugin.py:1436
+#: plugin.py:1157
 msgid "Thuringia"
 msgstr ""
 
-#: plugin.py:1679
-msgid "North Africa"
-msgstr "شمال آفریقا"
-
-#: plugin.py:1680
-msgid "South Africa"
-msgstr "جنوب آفریقا"
-
-#: plugin.py:1681
-msgid "North America"
-msgstr "آمریکای شمالی"
-
-#: plugin.py:1682
-msgid "Middle America"
-msgstr "آمریکای مرکزی"
-
-#: plugin.py:1683
-msgid "South America"
-msgstr "آمریکای جنوبی"
-
-#: plugin.py:1684
-msgid "Middle East"
-msgstr "خاورمیانه"
-
-#: plugin.py:1685
-msgid "East Asia"
-msgstr "آسیایی شرقی"
-
-#: plugin.py:1686
-msgid "Southeast Asia"
-msgstr "جنوب شرق آسیا"
-
-#: plugin.py:1687
-msgid "Middle Asia"
-msgstr "آسیای میانه"
-
-#: plugin.py:1688
-msgid "Australia"
-msgstr "استرالیا"
-
-#: plugin.py:1894
+#: plugin.py:1167
 msgid "Austria"
 msgstr "اتریش"
 
-#: plugin.py:1895
+#: plugin.py:1168
 msgid "Belgium"
 msgstr "بلژیک"
 
-#: plugin.py:1896
+#: plugin.py:1169
+msgid "Czech Republic"
+msgstr ""
+
+#: plugin.py:1170
 msgid "Denmark"
 msgstr "دانمارک"
 
-#: plugin.py:1897
+#: plugin.py:1171
 msgid "France"
 msgstr "فرانسه"
 
-#: plugin.py:1899
+#: plugin.py:1173
+msgid "Greece"
+msgstr ""
+
+#: plugin.py:1174
 msgid "Great Britain"
 msgstr "انگلیس کبیر یا بریتانیا"
 
-#: plugin.py:1900
+#: plugin.py:1175
+msgid "Hungary"
+msgstr ""
+
+#: plugin.py:1176
 msgid "Ireland"
 msgstr "ایرلند"
 
-#: plugin.py:1901
+#: plugin.py:1177
 msgid "Italy"
 msgstr "ایتالیا"
 
-#: plugin.py:1902
+#: plugin.py:1178
+msgid "Latvia"
+msgstr ""
+
+#: plugin.py:1179
 msgid "Luxembourg"
 msgstr "لوکزامبورگ"
 
-#: plugin.py:1903
+#: plugin.py:1180
 msgid "Netherlands"
 msgstr "هلند"
 
-#: plugin.py:1904
+#: plugin.py:1181
+msgid "Poland"
+msgstr ""
+
+#: plugin.py:1182
 msgid "Portugal"
 msgstr "پرتغال"
 
-#: plugin.py:1905
+#: plugin.py:1183
+msgid "Russia"
+msgstr ""
+
+#: plugin.py:1184
+msgid "Slovakia"
+msgstr ""
+
+#: plugin.py:1185
 msgid "Spain"
 msgstr "اسپانیا"
 
-#: plugin.py:1906
+#: plugin.py:1186
 msgid "Switzerland"
 msgstr "سویس"
 
-#: plugin.py:2184
+#: plugin.py:1197
+msgid "North Africa"
+msgstr "شمال آفریقا"
+
+#: plugin.py:1198
+msgid "South Africa"
+msgstr "جنوب آفریقا"
+
+#: plugin.py:1199
+msgid "North America"
+msgstr "آمریکای شمالی"
+
+#: plugin.py:1200
+msgid "Middle America"
+msgstr "آمریکای مرکزی"
+
+#: plugin.py:1201
+msgid "South America"
+msgstr "آمریکای جنوبی"
+
+#: plugin.py:1202
+msgid "Middle East"
+msgstr "خاورمیانه"
+
+#: plugin.py:1203
+msgid "East Asia"
+msgstr "آسیایی شرقی"
+
+#: plugin.py:1204
+msgid "Southeast Asia"
+msgstr "جنوب شرق آسیا"
+
+#: plugin.py:1205
+msgid "Middle Asia"
+msgstr "آسیای میانه"
+
+#: plugin.py:1206
+msgid "Australia"
+msgstr "استرالیا"
+
+#: plugin.py:1289
+msgid "h"
+msgstr ""
+
+#: plugin.py:1494
 msgid "Please wait, photo is being loaded ..."
 msgstr "لطفا صبر نمایید عکس ها در حال بارگذاری هستند ..."
 
-#: plugin.py:2322 plugin.py:2325
+#: plugin.py:1627 plugin.py:1630
 msgid "SlideShow Settings"
 msgstr "منو تنظیمات نمایش اسلایدها "
 
-#: plugin.py:2323
+#: plugin.py:1628
 msgid "Cancel"
 msgstr "لغو کردن"
 
-#: plugin.py:2324
+#: plugin.py:1629
 msgid "Save"
 msgstr "ذخیره سازی کردن"
 
-#: plugin.py:2351
+#: plugin.py:1654
 msgid "Select units"
 msgstr ""
 
-#: plugin.py:2352
+#: plugin.py:1655
 msgid "Select time format"
 msgstr ""
 
-#: plugin.py:2353
+#: plugin.py:1656
 msgid "City names as labels in the Main screen"
 msgstr "نام شهر بصورت برچسپ در صفحه اصلی "
 
-#: plugin.py:2354
+#: plugin.py:1657
 msgid "Frame size in full view"
 msgstr "اندازه قاب در حالت نمایش کامل تصویر"
 
-#: plugin.py:2355
+#: plugin.py:1658
 msgid "Scaling Mode"
 msgstr "حالت پوسته پوسته شدن"
 
-#: plugin.py:2356
+#: plugin.py:1659
 msgid "Slide Time (seconds)"
 msgstr "زمان نمایش اسلایدها"
 
-#: plugin.py:2357
+#: plugin.py:1660
 msgid "Show Infoline"
 msgstr "نمایش خطوط اطلاع رسانی "
 
-#: plugin.py:2358
+#: plugin.py:1661
 msgid "Textcolor"
 msgstr "رنگ متن"
 
-#: plugin.py:2359
+#: plugin.py:1662
 msgid "Backgroundcolor"
 msgstr "رنگ پس زمینه"
 
-#: plugin.py:2360
+#: plugin.py:1663
 msgid "Slide picture in loop"
 msgstr "ایجاد لوپ یا حلقه در نمایش تصاویر"
 
-#: plugin.py:2390
+#: plugin.py:1664
+msgid "Debug"
+msgstr ""
+
+#: plugin.py:1699
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "پیش بینی وضع آب و هوا در 10 روز آینده"
