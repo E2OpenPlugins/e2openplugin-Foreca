@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 3.0.2 Int
+#                 Version 3.0.4 Int
 #
-#                    23.09.2012
+#                    10.10.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -123,10 +123,11 @@ import locale
 # 3.0.3 List of German states and list of European countries sorted
 #	Code cosmetics
 #	Localization updated
+# 3.0.4 Language determination improved
 #
 # Unresolved: Crash when scrolling in help screen of city panel
 
-VERSION = "3.0.3" 
+VERSION = "3.0.4" 
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
@@ -169,8 +170,20 @@ if os.path.exists(USR_PATH) is False:
 FILTERin = []
 FILTERout = []
 FILTERidx = 0
-LANGUAGE = language.getLanguage()[:2]
-locale.setlocale(locale.LC_ALL, language.getLanguage())
+try:
+	LANGUAGE = language.getActiveLanguage()[:2]
+	locale.setlocale(locale.LC_COLLATE, language.getLanguage())
+	print pluginPrintname, "Language (determined by getLanguage):", LANGUAGE
+except:
+	lang = locale.getlocale()
+	if lang[0] is None:
+		LANGUAGE = "en"
+		print pluginPrintname, "Language undeterminable; set to default:", LANGUAGE	
+	else:
+		LANGUAGE = lang[0][:2]
+		locale.setlocale(locale.LC_COLLATE, lang)
+		print pluginPrintname, "Language (determined by getlocale):", lang
+
 if fileExists(USR_PATH + "/Filter.cfg"):
 	file = open(USR_PATH + "/Filter.cfg","r")
 	for line in file:
@@ -370,6 +383,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Extract the Tuple, Date
 		jahr, monat, tag = lt[0:3]
 		heute ="%04i%02i%02i" % (jahr,monat,tag)
+		if DEBUG: print pluginPrintname, "determined local date:", heute
 		self.tag = 0
 
 		# Get favorites
