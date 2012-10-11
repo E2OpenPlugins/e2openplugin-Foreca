@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 3.0.4 Int
+#                 Version 3.0.5 Int
 #
-#                    10.10.2012
+#                    11.10.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -124,10 +124,20 @@ import locale
 #	Code cosmetics
 #	Localization updated
 # 3.0.4 Language determination improved
+# 3.0.5 Setup of collating sequence reworked
 #
 # Unresolved: Crash when scrolling in help screen of city panel
+#
+# Planned:
+#	Add 10 day forecast on green key press
+#	City search at Foreca website on yellow key press. This will eliminate complete city DB. 
+#	Option to add unlimited cities to a favorite list and to manage this favorite list (add & delete city, sort list).
+#	Show home city (first entry of favorite list) on OK key press.
+#	Skip to next/previous favorite city on left/right arrow key.
+#	Show weather videos and maps on blue key
+#	Show setup menu on Menu key
 
-VERSION = "3.0.4" 
+VERSION = "3.0.5" 
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
@@ -170,19 +180,12 @@ if os.path.exists(USR_PATH) is False:
 FILTERin = []
 FILTERout = []
 FILTERidx = 0
+
+LANGUAGE = language.getActiveLanguage()[:2]
 try:
-	LANGUAGE = language.getActiveLanguage()[:2]
 	locale.setlocale(locale.LC_COLLATE, language.getLanguage())
-	print pluginPrintname, "Language (determined by getLanguage):", LANGUAGE
 except:
-	lang = locale.getlocale()
-	if lang[0] is None:
-		LANGUAGE = "en"
-		print pluginPrintname, "Language undeterminable; set to default:", LANGUAGE	
-	else:
-		LANGUAGE = lang[0][:2]
-		locale.setlocale(locale.LC_COLLATE, lang)
-		print pluginPrintname, "Language (determined by getlocale):", lang
+	print pluginPrintname, "Collating sequence undeterminable; default used"
 
 if fileExists(USR_PATH + "/Filter.cfg"):
 	file = open(USR_PATH + "/Filter.cfg","r")
