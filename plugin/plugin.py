@@ -11,7 +11,7 @@
 #
 #        We wish all users wonderful weather!
 #
-#                 Version 3.0.5 Int
+VERSION = "3.0.6" 
 #
 #                    11.10.2012
 #
@@ -25,6 +25,69 @@
 #
 #  Provided with no warranties of any sort.
 #
+#-------------------------------------------------------
+#
+# History:
+# 2.6 Various minor changes
+# 2.7 Wrap around mode enabled in screen-lists
+# 2.8 Calculate next date based on displayed date when left/right key is pushed
+#	  after prior date jump using 0 - 9 keys was performed
+# 2.9 Fix: Show correct date and time in weather videos
+#     Main screen navigation modified to comply with standard usage:
+#	  scroll page up/down by left/right key
+#	  select previous/next day by left/right arrow key of numeric key group
+# 2.9.1 Latvian cities and localization added. Thanks to muca
+# 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
+#	Hungarian and Slovakian cities added. Thanks to torpe
+# 2.9.3 Detail line in main screen condensed to show more text in SD screen
+#	Grading of temperature colors reworked 
+#	Some code cosmetics
+#	Translation code simplified: Setting the os LANGUAGE variable isn't needed anymore
+#	Typos in German localization fixed
+# 2.9.4 Many world-wide cities added. Thanks to AnodA
+#	Hungarian and Slovakian localization added. Thanks to torpe
+# 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
+# 2.9.6 Size of temperature item slightly extended to match with skins using italic font
+#	Grading of temperature colors reworked
+# 2.9.7 Use specified "Frame size in full view" value when showing "5 day forecast" chart 
+#	Info screen reworked
+#	False temperature colors fixed
+#	Up/down keys now scroll by page in main screen (without highlighting selection)
+# 3.0.0 Option added to select measurement units. Thanks to muca
+#	Option added to select time format.
+#	Setup menu reworked.
+#	Main screen navigation modified: Select previous/next day by left/right key
+#	Many Italian cities added and Italian localization updated. Thanks to mat8861
+#	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
+# 3.0.1 Fix broken transliteration 
+#	Disable selection in main screen.
+# 3.0.2 Weather maps of Czech Republic, Greece, Hungary, Latvia, Poland, Russia, Slovakia added
+#	Temperature Satellite video added
+#	Control key assignment in slide show reworked to comply with Media Player standard
+#	Some Italian cities added
+#	Thumbnail folders compacted
+#	Unused code removed, redundant code purged
+#	Localization updated
+# 3.0.3 List of German states and list of European countries sorted
+#	Code cosmetics
+#	Localization updated
+# 3.0.4 Language determination improved
+# 3.0.5 Setup of collating sequence reworked
+# 3.0.6 Weather data in Russian version obtained from foreca.com instead of foreca.ru due
+#	  to structural discrepancy of Russian web site
+#	Code cosmetics
+#
+# Unresolved: Crash when scrolling in help screen of city panel
+#
+# Planned:
+#	Add 10 day forecast on green key press
+#	City search at Foreca website on yellow key press. This will eliminate complete city DB. 
+#	Option to add unlimited cities to a favorite list and to manage this favorite list (add & delete city, sort list).
+#	Show home city (first entry of favorite list) on OK key press.
+#	Skip to next/previous favorite city on left/right arrow key.
+#	Show weather videos and maps on blue key
+#	Show setup menu on Menu key
+
 
 # for localized messages
 from . import _
@@ -80,65 +143,6 @@ from re import sub, split, search, match, findall
 import string
 import locale
 
-###############################################################################
-# History:
-# 2.6 Various minor changes
-# 2.7 Wrap around mode enabled in screen-lists
-# 2.8 Calculate next date based on displayed date when left/right key is pushed
-#	  after prior date jump using 0 - 9 keys was performed
-# 2.9 Fix: Show correct date and time in weather videos
-#     Main screen navigation modified to comply with standard usage:
-#	  scroll page up/down by left/right key
-#	  select previous/next day by left/right arrow key of numeric key group
-# 2.9.1 Latvian cities and localization added. Thanks to muca
-# 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
-#	Hungarian and Slovakian cities added. Thanks to torpe
-# 2.9.3 Detail line in main screen condensed to show more text in SD screen
-#	Grading of temperature colors reworked 
-#	Some code cosmetics
-#	Translation code simplified: Setting the os LANGUAGE variable isn't needed anymore
-#	Typos in German localization fixed
-# 2.9.4 Many world-wide cities added. Thanks to AnodA
-#	Hungarian and Slovakian localization added. Thanks to torpe
-# 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
-# 2.9.6 Size of temperature item slightly extended to match with skins using italic font
-#	Grading of temperature colors reworked
-# 2.9.7 Use specified "Frame size in full view" value when showing "5 day forecast" chart 
-#	Info screen reworked
-#	False temperature colors fixed
-#	Up/down keys now scroll by page in main screen (without highlighting selection)
-# 3.0.0 Option added to select measurement units. Thanks to muca
-#	Option added to select time format.
-#	Setup menu reworked.
-#	Main screen navigation modified: Select previous/next day by left/right key
-#	Many Italian cities added and Italian localization updated. Thanks to mat8861
-#	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
-# 3.0.1 Fix broken transliteration 
-#	Disable selection in main screen.
-# 3.0.2 Weather maps of Czech Republic, Greece, Hungary, Latvia, Poland, Russia, Slovakia added
-#	Temperature Satellite video added
-#	Control key assignment in slide show reworked to comply with Media Player standard
-#	Unused code removed, redundant code purged
-#	Localization updated
-# 3.0.3 List of German states and list of European countries sorted
-#	Code cosmetics
-#	Localization updated
-# 3.0.4 Language determination improved
-# 3.0.5 Setup of collating sequence reworked
-#
-# Unresolved: Crash when scrolling in help screen of city panel
-#
-# Planned:
-#	Add 10 day forecast on green key press
-#	City search at Foreca website on yellow key press. This will eliminate complete city DB. 
-#	Option to add unlimited cities to a favorite list and to manage this favorite list (add & delete city, sort list).
-#	Show home city (first entry of favorite list) on OK key press.
-#	Skip to next/previous favorite city on left/right arrow key.
-#	Show weather videos and maps on blue key
-#	Show setup menu on Menu key
-
-VERSION = "3.0.5" 
-
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
 
@@ -158,6 +162,7 @@ config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 MAIN_PAGE = _("http://www.foreca.com")
 USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
+THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 deviceName = HardwareInfo().get_device_name()
 DEBUG = config.plugins.foreca.debug.value
 
@@ -175,6 +180,14 @@ if os.path.exists(USR_PATH) is False:
 		os.makedirs(USR_PATH, 755)
 	except:
 		pass
+
+# Get screen size
+size_w = getDesktop(0).size().width()
+size_h = getDesktop(0).size().height()
+if size_w < 1280:
+	HD = False
+else:
+	HD = True
 
 # Get diacritics to handle
 FILTERin = []
@@ -236,8 +249,8 @@ class MainMenuList(MenuList):
 	def downloadThumbnail(self):
 		thumbUrl = self.list[self.idx][0]
 		windDirection = self.list[self.idx][3]
-		self.thumb = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/" + str(thumbUrl+ ".png")
-		self.wind = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/" + str(windDirection)
+		self.thumb = THUMB_PATH + str(thumbUrl+ ".png")
+		self.wind = THUMB_PATH + str(windDirection)
 		self.buildEntry(None)
 
 #----------------------------------- Build entries for list -------------------------------
@@ -419,7 +432,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		
 		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		
-		if (getDesktop(0).size().width() >= 1280):
+		if HD:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
 					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
@@ -1047,7 +1060,7 @@ class CityPanel(Screen, HelpableScreen):
 
 class SatPanelList(MenuList):
 
-	if (getDesktop(0).size().width() >= 1280):
+	if HD:
 		ItemSkin = 143
 	else:
 		ItemSkin = 123
@@ -1066,7 +1079,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.session = session
 		self.ort = ort
 
-		if (getDesktop(0).size().width() >= 1280):
+		if HD:
 			self.skin = """
 				<screen name="SatPanel" position="center,center" size="630,500" title="Satellite photos" backgroundColor="#40000000" >
 					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
@@ -1227,7 +1240,7 @@ class SatPanel(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 	def SatEntryItem(self,entry):
-		if (getDesktop(0).size().width() >= 1280):
+		if HD:
 			ItemSkin = 143
 		else:
 			ItemSkin = 123
@@ -1238,7 +1251,7 @@ class SatPanel(Screen, HelpableScreen):
 
 		res = [entry]
 		#if DEBUG: print pluginPrintname, "entry=", entry
-		thumb = LoadPixmap(resolveFilename(SCOPE_PLUGINS)+"Extensions/Foreca/thumb/" + entry[1] + ".png")
+		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
 		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(200,ItemSkin), png=thumb))  # png vorn
 		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau))
 		return res
@@ -1318,7 +1331,7 @@ class SatPanel(Screen, HelpableScreen):
 
 class SatPanelListb(MenuList):
 
-	if (getDesktop(0).size().width() >= 1280):
+	if HD:
 		ItemSkin = 143
 	else:
 		ItemSkin = 123
@@ -1337,7 +1350,7 @@ class SatPanelb(Screen, HelpableScreen):
 		self.session = session
 		self.ort = ort
 
-		if (getDesktop(0).size().width() >= 1280):
+		if HD:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="620,500" backgroundColor="#40000000" >
 					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
@@ -1418,8 +1431,6 @@ class PicView(Screen):
 		self.session = session
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
-		size_w = getDesktop(0).size().width()
-		size_h = getDesktop(0).size().height()
 
 		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
@@ -1484,15 +1495,13 @@ class View_Slideshow(Screen):
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
-		size_w = getDesktop(0).size().width()
-		size_h = getDesktop(0).size().height()
 
 		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space+40) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)-40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
-			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + resolveFilename(SCOPE_PLUGINS)+ "Extensions/Foreca/thumb/record.png\" alphatest=\"on\" /> \
-			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + resolveFilename(SCOPE_PLUGINS)+ "Extensions/Foreca/thumb/ico_mp_play.png\"  alphatest=\"on\" /> \
+			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "record.png\" alphatest=\"on\" /> \
+			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"  alphatest=\"on\" /> \
 			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + ",25\" font=\"Regular;20\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
 			</screen>"
 		Screen.__init__(self, session)
