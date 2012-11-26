@@ -1,11 +1,11 @@
 Package: enigma2-plugin-extensions-foreca
-Version: 3.0.6
+Version: 3.0.7
 Description: Weather forecast for the upcoming 10 days
 Section: extra
 Priority: optional
 Maintainer: Bauernbub
 Architecture: all
 OE: enigma2-plugin-extensions-foreca
-Depends: enigma2 (>= 2.6git20090615), python-html
+Depends: enigma2 (>= 2.6git20090615), python-html, python-twisted-web
 Homepage: http://www.aaf-digital.info
 Source: https://github.com/E2OpenPlugins/e2openplugin-Foreca

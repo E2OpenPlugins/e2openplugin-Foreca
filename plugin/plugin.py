@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.0.6" 
+VERSION = "3.0.7" 
 #
-#                    11.10.2012
+#                    25.11.2012
 #
 #     Source of information: http://www.foreca.com
 #
@@ -76,6 +76,8 @@ VERSION = "3.0.6"
 # 3.0.6 Weather data in Russian version obtained from foreca.com instead of foreca.ru due
 #	  to structural discrepancy of Russian web site
 #	Code cosmetics
+# 3.0.7 Turkish cities updated. Thanks to atsiz77 
+#	Debug state noted in log file
 #
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -165,6 +167,8 @@ USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 deviceName = HardwareInfo().get_device_name()
 DEBUG = config.plugins.foreca.debug.value
+if DEBUG: print pluginPrintname, "Debug enabled"
+else: print pluginPrintname, "Debug disabled"
 
 # Make Path for Slideshow
 CACHE_PATH = "/var/cache/Foreca/"
@@ -209,7 +213,7 @@ if fileExists(USR_PATH + "/Filter.cfg"):
 				FILTERidx += 1
 				FILTERin.append(regel[7:15].strip())
 				FILTERout.append(regel[17:].strip())
-file.close
+	file.close
 
 #---------------------- Skin Functions ----------------------------------------------------
 
@@ -1696,6 +1700,8 @@ class PicSetup(Screen):
 		config.save()
 		global DEBUG
 		DEBUG = config.plugins.foreca.debug.value
+		if DEBUG: print pluginPrintname, "Debug enabled"
+		else: print pluginPrintname, "Debug disabled"
 		self.close()
 
 	def cancel(self):
