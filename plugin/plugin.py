@@ -771,7 +771,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def getForecaPage(self,html):
 		#new Ajax.Request('/lv?id=102772400', {
-		fulltext = re.compile(r"new Ajax.Request.+?lv.+?id=(.+?)'", re.DOTALL)
+		fulltext = re.compile(r"id: '(.*?)'", re.DOTALL)
 		id = fulltext.findall(html)
 		if DEBUG: print pluginPrintname, "fulltext=", fulltext, "id=", id
 		self.loc_id = str(id[0])
