@@ -1303,16 +1303,16 @@ class SatPanel(Screen, HelpableScreen):
 			html=fd.read()
 			fd.close()
 
-			fulltext = re.compile(r'http://cache-(.+?) ', re.DOTALL)
+			fulltext = re.compile(r'http://cache-(.+?)\'', re.DOTALL)
 			PressureLink = fulltext.findall(html)
 
 			# Load Picture for Slideshow
-			max = int(len(PressureLink))-2
+			max = int(len(PressureLink))
 			if DEBUG: print pluginPrintname, "max= ", str(max)
 			zehner = "1"
 			x = 0
 			while x < max:
-				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu).replace("',", "").replace("\"", "")
+				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu)
 				foundPos = url.find("0000.jpg")
 				if DEBUG: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
 				if foundPos ==-1:
