@@ -11,7 +11,7 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.0.7" 
+VERSION = "3.0.8" 
 #
 #                    25.11.2012
 #
@@ -78,6 +78,7 @@ VERSION = "3.0.7"
 #	Code cosmetics
 # 3.0.7 Turkish cities updated. Thanks to atsiz77 
 #	Debug state noted in log file
+# 3.0.8 Fixed for Foreca's pages changes
 #
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -1304,8 +1305,6 @@ class SatPanel(Screen, HelpableScreen):
 
 			fulltext = re.compile(r'http://cache-(.+?) ', re.DOTALL)
 			PressureLink = fulltext.findall(html)
-			PicLink = PressureLink[0]
-			PicLink = "http://cache-" +	PicLink
 
 			# Load Picture for Slideshow
 			max = int(len(PressureLink))-2
@@ -1313,7 +1312,7 @@ class SatPanel(Screen, HelpableScreen):
 			zehner = "1"
 			x = 0
 			while x < max:
-				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu)
+				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu).replace("',", "").replace("\"", "")
 				foundPos = url.find("0000.jpg")
 				if DEBUG: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
 				if foundPos ==-1:
