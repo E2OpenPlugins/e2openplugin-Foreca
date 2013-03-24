@@ -1313,7 +1313,7 @@ class SatPanel(Screen, HelpableScreen):
 			zehner = "1"
 			x = 0
 			while x < max:
-				url = "http://cache-" + PressureLink[x]
+				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu)
 				foundPos = url.find("0000.jpg")
 				if DEBUG: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
 				if foundPos ==-1:
