@@ -13,7 +13,7 @@
 #
 VERSION = "3.0.9" 
 #
-#                    25.11.2012
+#                    27.06.2013
 #
 #     Source of information: http://www.foreca.com
 #
@@ -79,7 +79,9 @@ VERSION = "3.0.9"
 # 3.0.7 Turkish cities updated. Thanks to atsiz77 
 #	Debug state noted in log file
 # 3.0.8 Fixed for Foreca's pages changes
-#
+# 3.0.9 Path for weather map regions updated after change of Wetterkontor's pages. Thanks to Bag58.
+#	Add missing spinner icon
+
 # Unresolved: Crash when scrolling in help screen of city panel
 #
 # Planned:
@@ -383,7 +385,7 @@ class ForecaPreviewCache(Screen):
 
 	def showNextSpinner(self):
 		self.curr += 1
-		if self.curr > 10:
+		if self.curr > 11:
 			self.curr = 0
 		png = LoadPixmap(cached=True, path=PICON_PATH + str(self.curr) + ".png")
 		self["spinner"].instance.setPixmap(png)
@@ -416,6 +418,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			fav1 = fav1[fav1.rfind("/")+1:len(fav1)]
 		else:
 			fav1 = "New_York_City"
+		print pluginPrintname, "fav1 location:", fav1
 		if fileExists(USR_PATH + "/fav2.cfg"):
 			file = open(USR_PATH + "/fav2.cfg","r")
 			fav2 = str(file.readline().strip())
@@ -423,6 +426,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			fav2 = fav2[fav2.rfind("/")+1:len(fav2)]
 		else:
 			fav2 = "Moskva"
+		print pluginPrintname, "fav2 location:", fav2
 
 		# Get home location
 		global city, start
@@ -434,8 +438,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "United_Kingdom/London"
 			start = "London"
+		print pluginPrintname, "home location:", self.ort
 		
 		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		print pluginPrintname, "initial link:" , MAIN_PAGE
 		
 		if HD:
 			self.skin = """
@@ -563,7 +569,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		if not page:
 			page = ""
 		url = "%s%s"%(MAIN_PAGE, page)
-		print pluginPrintname, "Url:" , url
+		print pluginPrintname, "page link:" , url
 		getPage(url).addCallback(self.getForecaPage).addErrback(self.error)
 
 	def error(self, err=""):
@@ -642,6 +648,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file.close()
 		else:
 			self.ort = "United_Kingdom/London"
+		print pluginPrintname, "home location:", self.ort
 		start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
@@ -654,6 +661,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "United_States/New_York_City"
 		fav1 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
+		print pluginPrintname, "fav1 location:", fav1
 		self.Zukunft(0)
 
 	def Fav2(self):
@@ -665,6 +673,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "Russia/Moskva"
 		fav2 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
+		print pluginPrintname, "fav2 location:", fav2
 		self.Zukunft(0)
 
 	def Zukunft(self, ztag=0):
@@ -682,7 +691,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
 		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
-		if DEBUG: print pluginPrintname, "Taglink ", MAIN_PAGE
+		print pluginPrintname, "day link:", MAIN_PAGE
 
 		# Show in GUI
 		self.StartPage()
