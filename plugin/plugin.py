@@ -11,7 +11,7 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.0.8" 
+VERSION = "3.0.9" 
 #
 #                    25.11.2012
 #
@@ -1421,7 +1421,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 		region = self['Mlist'].l.getCurrentSelection()[0][1]
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve("http://www.wetterkontor.de/maps/" + region + "0.jpg", devicepath)
+		urllib.urlretrieve("http://img.wetterkontor.de/karten/" + region + "0.jpg", devicepath)
 		self.session.open(PicView, devicepath, 0, False)
 
 #------------------------------------------------------------------------------------------
