@@ -127,7 +127,7 @@ msgstr "Mapy"
 
 #: plugin.py:468
 msgid "Version "
-msgstr "Verze"
+msgstr "Verze "
 
 #: plugin.py:473 plugin.py:916 plugin.py:1104 plugin.py:1348
 msgid "Exit - End"
