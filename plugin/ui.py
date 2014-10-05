@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.0.9" 
+VERSION = "3.1.0" 
 #
-#                    27.06.2013
+#                    04.10.2014
 #
 #     Source of information: http://www.foreca.com
 #
@@ -81,10 +81,14 @@ VERSION = "3.0.9"
 # 3.0.8 Fixed for Foreca's pages changes
 # 3.0.9 Path for weather map regions updated after change of Wetterkontor's pages. Thanks to Bag58.
 #	Add missing spinner icon
+# 3.1.0 Plugin splitted into a loader and UI part, as Foreca needs quite a while to load. Hence 
+#	  actual load postponed until the user requests for it.
+#	Finnish localization added. Thanks to kjuntara
+#	Ukrainian localization added. Thanks to Irkoff
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
-# Planned:
+# To do:
 #	Add 10 day forecast on green key press
 #	City search at Foreca website on yellow key press. This will eliminate complete city DB. 
 #	Option to add unlimited cities to a favorite list and to manage this favorite list (add & delete city, sort list).
