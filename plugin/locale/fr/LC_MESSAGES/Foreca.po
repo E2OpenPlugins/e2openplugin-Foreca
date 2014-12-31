@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Foreca 3.0.0\n"
+"Project-Id-Version: Foreca 3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-08 15:19+0100\n"
-"PO-Revision-Date: 2012-10-08 15:23+0100\n"
-"Last-Translator: JuSt611 <Software@Strasdas.de>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2014-12-31 11:20+0100\n"
+"Last-Translator: soupalonion <sabrosa@free.fr>\n"
+"Language-Team: french\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.7.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: plugin.py:134
@@ -30,7 +30,7 @@ msgstr "noir"
 
 #: plugin.py:135 plugin.py:136
 msgid "blue"
-msgstr "blue"
+msgstr "bleu"
 
 #: plugin.py:135 plugin.py:136
 msgid "red"
@@ -91,11 +91,11 @@ msgstr "Vent"
 
 #: plugin.py:449 plugin.py:468 plugin.py:1699
 msgid "Foreca Weather Forecast"
-msgstr "Foreca Prévision Météo"
+msgstr "Prévision Météo Foreca"
 
 #: plugin.py:452 plugin.py:517
 msgid "Please wait ..."
-msgstr "Attendez s.v.p...."
+msgstr "Patientez SVP ..."
 
 #: plugin.py:456
 msgid "Week"
@@ -107,19 +107,19 @@ msgstr "Ville"
 
 #: plugin.py:463 plugin.py:675 plugin.py:728 plugin.py:907
 msgid "Favorite 1"
-msgstr "Favorite 1"
+msgstr "Favori 1"
 
 #: plugin.py:464 plugin.py:676 plugin.py:729 plugin.py:908
 msgid "Favorite 2"
-msgstr "Favorite 2"
+msgstr "Favori 2"
 
 #: plugin.py:465 plugin.py:677 plugin.py:730 plugin.py:909
 msgid "Home"
-msgstr "Acceuil"
+msgstr "Accueil"
 
 #: plugin.py:466
 msgid "Legend"
-msgstr "Legende"
+msgstr "Légende"
 
 #: plugin.py:467
 msgid "Maps"
@@ -135,11 +135,11 @@ msgstr "Sortie - Fin"
 
 #: plugin.py:474
 msgid "Menu - Weather maps"
-msgstr "Menu - Cartes Météo"
+msgstr "Menu - Cartes météo"
 
 #: plugin.py:475
 msgid "Info - Legend"
-msgstr "Info - Legende"
+msgstr "Infos - Légende"
 
 #: plugin.py:476
 msgid "OK - City"
@@ -147,11 +147,11 @@ msgstr "OK - Ville"
 
 #: plugin.py:477
 msgid "Left - Previous day"
-msgstr "Gauche - Jour précédente"
+msgstr "Gauche - Jour précédent"
 
 #: plugin.py:478
 msgid "Right - Next day"
-msgstr "Droite - Jour suivante"
+msgstr "Droite - Jour suivant"
 
 #: plugin.py:479
 msgid "Up - Previous page"
@@ -163,27 +163,27 @@ msgstr "Bas - Page suivante"
 
 #: plugin.py:481
 msgid "Left arrow - Previous day"
-msgstr "Flèche gauche - Jour précédente"
+msgstr "Flèche gauche - Jour précédent"
 
 #: plugin.py:482
 msgid "Right arrow - Next day"
-msgstr "Flèche  droite - Jour suivante"
+msgstr "Flèche  droite - Jour suivant"
 
 #: plugin.py:483
 msgid "Red - Weekoverview"
-msgstr "Rouge - Aperçu semaines"
+msgstr "Rouge - Aperçu semaine"
 
 #: plugin.py:485
 msgid "Green - Favorite 1"
-msgstr "Vert - Favorite 1"
+msgstr "Vert - Favori 1"
 
 #: plugin.py:486
 msgid "Yellow - Favorite 2"
-msgstr "Jaune Favorite 2"
+msgstr "Jaune - Favori 2"
 
 #: plugin.py:487
 msgid "Blue - Home"
-msgstr "Blue - Acceuil"
+msgstr "Bleu - Accueil"
 
 #: plugin.py:488
 msgid "0 - Today"
@@ -245,8 +245,8 @@ msgid ""
 "Wind direction = Arrow to right: Wind from the West"
 msgstr ""
 "\n"
-"<   >       =   Pronostic jour prochaine/précédente\n"
-"0 - 9       =    Pronostic (x) jour de maintenant\n"
+"<   >       =   Prévision jour prochain/précédent\n"
+"0 - 9       =    Prévision sur (x) jour à partir de maintenant\n"
 "\n"
 "VOL+/-  =   Défilement rapide 100 (Choix de ville)\n"
 "Bouquet+/- =   Défilement rapide 500 (Choix de ville)\n"
@@ -254,12 +254,12 @@ msgstr ""
 "Info        =   Cette information\n"
 "Menu     =   Photos et cartes satellites\n"
 "\n"
-"Red        =   Temperature pour les prochain 5 jours\n"
-"Green    =   Aller à Favorite 1\n"
-"Yellow    =   Aller à Favorite 2\n"
-"Blue        =   Aller à Acceuil\n"
+"Red        =   Température sur les 5 prochains jours\n"
+"Green    =   Aller à Favori 1\n"
+"Yellow    =   Aller à Favori 2\n"
+"Blue        =   Aller à Accueil\n"
 "\n"
-"Direction du vent = Flèche a droite: Vent du l'Ouest"
+"Direction du vent = Flèche de droite: Vent d'Ouest"
 
 #: plugin.py:890 plugin.py:911
 msgid "Select a city"
@@ -279,11 +279,11 @@ msgstr "Droite - Page suivante"
 
 #: plugin.py:919 plugin.py:1107 plugin.py:1351
 msgid "Up - Previous"
-msgstr "Haut - Précédente"
+msgstr "Haut - Précédent"
 
 #: plugin.py:920 plugin.py:1108 plugin.py:1352
 msgid "Down - Next"
-msgstr "Bas - Suivante"
+msgstr "Bas - Suivant"
 
 #: plugin.py:921
 msgid "OK - Select"
@@ -291,31 +291,31 @@ msgstr "OK - Sélectionnez"
 
 #: plugin.py:922
 msgid "Green - Assign to Favorite 1"
-msgstr "Vert - Enregistre á Favorite 1"
+msgstr "Vert - Assigne à Favori 1"
 
 #: plugin.py:923
 msgid "Yellow - Assign to Favorite 2"
-msgstr "Jaune - Enregistre á Favorite 2"
+msgstr "Jaune - Assigne à Favori 2"
 
 #: plugin.py:924
 msgid "Blue - Assign to Home"
-msgstr "Blue - Enregistre á Acceuil"
+msgstr "Blue - Assigne à Accueil"
 
 #: plugin.py:925
 msgid "Channel+ - 500 back"
-msgstr "Canal+ - 500 retour"
+msgstr "Canal+ - en arrière de 500"
 
 #: plugin.py:926
 msgid "Channel- - 500 forward"
-msgstr "Canal- - 500 avant"
+msgstr "Canal- - en avant de 500"
 
 #: plugin.py:927
 msgid "Volume- - 100 forward"
-msgstr "Volume- - 100 avant"
+msgstr "Volume- - en avant de 100"
 
 #: plugin.py:928
 msgid "Volume+ - 100 back"
-msgstr "Volume+ - 100 retour"
+msgstr "Volume+ - en arrière de 100"
 
 #: plugin.py:992
 msgid ""
@@ -323,7 +323,7 @@ msgid ""
 "\n"
 "                                  "
 msgstr ""
-"Cette ville est enregistré comme Acceuil!\n"
+"Cette ville est enregistrée comme Accueil!\n"
 "\n"
 "                      "
 
@@ -333,7 +333,7 @@ msgid ""
 "\n"
 "                             "
 msgstr ""
-"Cette ville est enregistré comme Favorite 1\n"
+"Cette ville est enregistrée comme Favori 1\n"
 "\n"
 "                   "
 
@@ -343,7 +343,7 @@ msgid ""
 "\n"
 "                             "
 msgstr ""
-"Cette ville est enregistré comme Favorite 2\n"
+"Cette ville est enregistrée comme Favori 2\n"
 "\n"
 "                    "
 
@@ -353,31 +353,31 @@ msgstr "Photos satellites"
 
 #: plugin.py:1083
 msgid "Weather map Video"
-msgstr "Video Cartes de Météo"
+msgstr "Vidéo des cartes météo"
 
 #: plugin.py:1084
 msgid "Showerradar Video"
-msgstr "Video radars précipitations"
+msgstr "Vidéo radar de précipitations"
 
 #: plugin.py:1085
 msgid "Temperature Video"
-msgstr "Vidéo de Température"
+msgstr "Vidéo des températures"
 
 #: plugin.py:1086
 msgid "Cloudcover Video"
-msgstr "Video nuages"
+msgstr "Vidéo des nuages"
 
 #: plugin.py:1087
 msgid "Air pressure"
-msgstr "Pression d'air"
+msgstr "Pression de l'air"
 
 #: plugin.py:1088
 msgid "Eumetsat"
-msgstr "Eumetsat"
+msgstr "Photo satellite Eumetsat"
 
 #: plugin.py:1089
 msgid "Infrared"
-msgstr "Infrarouges"
+msgstr "Photo infrarouge"
 
 #: plugin.py:1095 plugin.py:1207
 msgid "Continents"
@@ -393,7 +393,7 @@ msgstr "Allemagne"
 
 #: plugin.py:1098 plugin.py:1342
 msgid "Settings"
-msgstr "Paramètres"
+msgstr "Réglages"
 
 #: plugin.py:1109
 msgid "Red - Continents"
@@ -409,11 +409,11 @@ msgstr "Jaune - Allemagne"
 
 #: plugin.py:1112 plugin.py:1353
 msgid "Blue - Settings"
-msgstr "Blue - Paramètres"
+msgstr "Blue - Réglages"
 
 #: plugin.py:1113 plugin.py:1354
 msgid "OK - Show"
-msgstr "OK - Montrer"
+msgstr "OK - Afficher"
 
 #: plugin.py:1142
 msgid "Baden-Wuerttemberg"
@@ -601,11 +601,11 @@ msgstr ""
 
 #: plugin.py:1494
 msgid "Please wait, photo is being loaded ..."
-msgstr "Attendre s.v.p., la photo est chargée... "
+msgstr "Patientez SVP, chargement de la photo ..."
 
 #: plugin.py:1627 plugin.py:1630
 msgid "SlideShow Settings"
-msgstr "Paramètres diaporama"
+msgstr "Réglages du diaporama"
 
 #: plugin.py:1628
 msgid "Cancel"
@@ -617,7 +617,7 @@ msgstr "Enregistrer"
 
 #: plugin.py:1654
 msgid "Select units"
-msgstr "Sélectionner l'unité"
+msgstr "Sélectionner les unités"
 
 #: plugin.py:1655
 msgid "Select time format"
@@ -625,11 +625,11 @@ msgstr "Format de l'heure"
 
 #: plugin.py:1656
 msgid "City names as labels in the Main screen"
-msgstr "Noms des villes comme des labels dans le menu principal"
+msgstr "Noms des villes comme labels dans le menu principal"
 
 #: plugin.py:1657
 msgid "Frame size in full view"
-msgstr "Taille de l'image en pleine vue"
+msgstr "Taille de l'image en plein écran"
 
 #: plugin.py:1658
 msgid "Scaling Mode"
@@ -641,7 +641,7 @@ msgstr "Temps d'affichage"
 
 #: plugin.py:1660
 msgid "Show Infoline"
-msgstr "Montres ligne d'information"
+msgstr "Afficher la ligne d'information"
 
 #: plugin.py:1661
 msgid "Textcolor"
@@ -653,7 +653,7 @@ msgstr "Couleur de fond"
 
 #: plugin.py:1663
 msgid "Slide picture in loop"
-msgstr "Répéter diaporama"
+msgstr "Répéter le diaporama"
 
 #: plugin.py:1664
 msgid "Debug"
@@ -661,4 +661,4 @@ msgstr ""
 
 #: plugin.py:1699
 msgid "Weather forecast for the upcoming 10 days"
-msgstr "Prévision météo pour les prochaines 10 jours"
+msgstr "Prévision météo pour les 10 prochains jours"
