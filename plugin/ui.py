@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.0" 
+VERSION = "3.1.1" 
 #
-#                    04.10.2014
+#                    12.02.2015
 #
 #     Source of information: http://www.foreca.com
 #
@@ -199,11 +199,9 @@ if os.path.exists(USR_PATH) is False:
 size_w = getDesktop(0).size().width()
 size_h = getDesktop(0).size().height()
 
-HD = False
+HD = True
 if size_w < 1280:
 	HD = False
-else:
-	HD = True
 
 # Get diacritics to handle
 FILTERin = []
