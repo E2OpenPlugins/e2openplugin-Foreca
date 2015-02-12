@@ -85,6 +85,7 @@ VERSION = "3.1.0"
 #	  actual load postponed until the user requests for it.
 #	Finnish localization added. Thanks to kjuntara
 #	Ukrainian localization added. Thanks to Irkoff
+# 3.1.1 ForecaPreview skineable
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -114,6 +115,8 @@ from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixm
 from Components.Pixmap import Pixmap
 from Components.PluginComponent import plugins
 from Components.Console import Console
+from Components.GUIComponent import GUIComponent
+from skin import parseFont
 
 # Configuration
 from Components.config import *
@@ -123,7 +126,7 @@ from Components.ConfigList import ConfigList, ConfigListScreen
 import os
 
 # Enigma
-from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT
+from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, BT_SCALE , BT_KEEP_ASPECT_RATIO
 
 # Plugin definition
 from Plugins.Plugin import PluginDescriptor
@@ -195,6 +198,8 @@ if os.path.exists(USR_PATH) is False:
 # Get screen size
 size_w = getDesktop(0).size().width()
 size_h = getDesktop(0).size().height()
+
+HD = False
 if size_w < 1280:
 	HD = False
 else:
@@ -235,10 +240,28 @@ class MainMenuList(MenuList):
 
 	def __init__(self):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", 20))
-		self.l.setFont(1, gFont("Regular", 24))
-		self.l.setFont(2, gFont("Regular", 18))
-		self.l.setFont(3, gFont("Regular", 22))
+		GUIComponent.__init__(self)
+
+		#default values:
+		self.font0 = gFont("Regular",20)
+		self.font1 = gFont("Regular",24)
+		self.font2 = gFont("Regular",18)
+		self.font3 = gFont("Regular",22)
+		self.itemHeight = 90
+		self.valTime = 10,34,60,24
+		self.valPict = 70,10,70,70
+		self.valPictScale = 0
+		self.valTemp = 145,15,80,24
+		self.valTempUnits = 145,45,80,24
+		self.valWindPict = 230,36,28,28
+		self.valWindPictScale = 0
+		self.valWind = 265,15,95,24
+		self.valWindUnits = 265,45,95,24
+		self.valText1 = 365,5,600,28
+		self.valText2 = 365,33,600,28
+		self.valText3 = 365,59,600,28
+		###
+
 		self.listCompleted = []
 		self.callback = None
 		self.idx = 0
@@ -246,8 +269,88 @@ class MainMenuList(MenuList):
 		self.pos = 20
 		print pluginPrintname, "MainMenuList..."
 
-#--------------------------- Go through all list entries ----------------------------------
+#--------------------------- get skin attribs ---------------------------------------------
+	def applySkin(self, desktop, parent):
+		def warningWrongSkinParameter(string, wanted, given):
+			print "[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given)
+		def font0(value):
+			self.font0 = parseFont(value, ((1,1),(1,1)))
+		def font1(value):
+			self.font1 = parseFont(value, ((1,1),(1,1)))
+		def font2(value):
+			self.font2 = parseFont(value, ((1,1),(1,1)))
+		def font3(value):
+			self.font3 = parseFont(value, ((1,1),(1,1)))
+		def itemHeight(value):
+			self.itemHeight = int(value)
+		def setTime(value):
+			self.valTime = map(int, value.split(","))
+			l = len(self.valTime)
+			if l != 4:
+				warningWrongSkinParameter(attrib,4, l)
+		def setPict(value):
+			self.valPict = map(int, value.split(","))
+			l = len(self.valPict)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def setPictScale(value):
+			self.valPictScale = int(value)
+		def setTemp(value):
+			self.valTemp = map(int, value.split(","))
+			l = len(self.valTemp)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def setTempUnits(value):
+			self.valTempUnits = map(int, value.split(","))
+			l = len(self.valTempUnits)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def setWindPict(value):
+			self.valWindPict = map(int, value.split(","))
+			l = len(self.valWindPict)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def setWindPictScale(value):
+			self.valWindPictScale = int(value)
+		def setWind(value):
+			self.valWind = map(int, value.split(","))
+			l = len(self.valWind)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, )
+		def setWindUnits(value):
+			self.valWindUnits = map(int, value.split(","))
+			l = len(self.valWindUnits)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def text1Pos(value):
+			self.valText1 = map(int, value.split(","))
+			l = len(self.valText1)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def text2Pos(value):
+			self.valText2 = map(int, value.split(","))
+			l = len(self.valText2)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+		def text3Pos(value):
+			self.valText3 = map(int, value.split(","))
+			l = len(self.valText3)
+			if l != 4:
+				warningWrongSkinParameter(attrib,4, l)
+		for (attrib, value) in list(self.skinAttributes):
+			try:
+				locals().get(attrib)(value)
+				self.skinAttributes.remove((attrib, value))
+			except:
+				pass
+		self.l.setFont(0, self.font0)
+		self.l.setFont(1, self.font1)
+		self.l.setFont(2, self.font2)
+		self.l.setFont(3, self.font3)
+		self.l.setItemHeight(self.itemHeight)
+		return GUIComponent.applySkin(self, desktop, parent)
 
+#--------------------------- Go through all list entries ----------------------------------
 	def buildEntries(self):
 		#if DEBUG: print pluginPrintname, "buildEntries:", len(self.list)
 		if self.idx == len(self.list):
@@ -317,30 +420,46 @@ class MainMenuList(MenuList):
 			self.tempcolor = violet
 
 		# Time
-		self.res.append(MultiContentEntryText(pos=(10, 34), size=(60, 24), font=0, text=self.x[1], color=weiss, color_sel=weiss))
+		x, y, w, h = self.valTime
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=self.x[1], color=weiss, color_sel=weiss))
 
 		# forecast pictogram
 		pngpic = LoadPixmap(self.thumb)
 		if pngpic is not None:
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(70, 10), size=(70, 70), png=pngpic))
+			x, y, w, h = self.valPict
+			flags = 0
+			if self.valPictScale:
+				flags = BT_SCALE | BT_KEEP_ASPECT_RATIO
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic, flags = flags ))
 
 		# Temp
-		self.res.append(MultiContentEntryText(pos=(145, 15), size=(80, 24), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(145, 45), size=(80, 24), font=3, text=self.x[2] + tempUnit, color=self.tempcolor, color_sel=self.tempcolor))
+		x, y, w, h = self.valTemp
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
+		x, y, w, h = self.valTempUnits
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[2] + tempUnit, color=self.tempcolor, color_sel=self.tempcolor))
 
 		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
 		if pngpic is not None:
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(230, 36), size=(28, 28), png=pngpic))
+			x, y, w, h = self.valWindPict
+			flags = 0
+			if self.valWindPictScale:
+				flags = BT_SCALE | BT_KEEP_ASPECT_RATIO
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic, flags = flags))
 
 		# Wind
-		self.res.append(MultiContentEntryText(pos=(265, 15), size=(95, 24), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(265, 45), size=(95, 24), font=3, text=self.x[4], color=violetred, color_sel=violetred))
+		x, y, w, h = self.valWind
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
+		x, y, w, h = self.valWindUnits
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[4], color=violetred, color_sel=violetred))
 		
 		# Text
-		self.res.append(MultiContentEntryText(pos=(365, 5),  size=(600, 28), font=3, text=self.x[5], color=weiss, color_sel=weiss))
-		self.res.append(MultiContentEntryText(pos=(365, 33), size=(600, 24), font=2, text=self.x[6], color=mblau, color_sel=mblau))
-		self.res.append(MultiContentEntryText(pos=(365, 59), size=(600, 24), font=2, text=self.x[7], color=mblau, color_sel=mblau))
+		x, y, w, h = self.valText1
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[5], color=weiss, color_sel=weiss))
+		x, y, w, h = self.valText2
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[6], color=mblau, color_sel=mblau))
+		x, y, w, h = self.valText3
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
 
 		self.listCompleted.append(self.res)
 		self.idx += 1
@@ -351,7 +470,7 @@ class MainMenuList(MenuList):
 	def SetList(self, l):
 		if DEBUG: print pluginPrintname, "SetList"
 		self.list = l
-		self.l.setItemHeight(90)
+		#self.l.setItemHeight(90)
 		del self.listCompleted
 		self.listCompleted = []
 		self.idx = 0
