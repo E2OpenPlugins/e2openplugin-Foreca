@@ -126,7 +126,7 @@ from Components.ConfigList import ConfigList, ConfigListScreen
 import os
 
 # Enigma
-from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, BT_SCALE , BT_KEEP_ASPECT_RATIO
+from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, BT_SCALE , BT_KEEP_ASPECT_RATIO, RT_VALIGN_CENTER
 
 # Plugin definition
 from Plugins.Plugin import PluginDescriptor
@@ -1027,10 +1027,30 @@ class ForecaPreview(Screen, HelpableScreen):
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
-
+#		self.l.setFont(0, gFont("Regular", font0))
+#		self.l.setFont(1, gFont("Regular", font1))
+#		self.l.setItemHeight(itemHeight)
+		self.font0 = gFont("Regular",font0)
+		self.font1 = gFont("Regular",font1)
+		self.itemHeight = itemHeight
+#--------------------------- get skin attribs ---------------------------------------------
+	def applySkin(self, desktop, parent):
+		def font(value):
+			self.font0 = parseFont(value, ((1,1),(1,1)))
+		def font1(value):
+			self.font1 = parseFont(value, ((1,1),(1,1)))
+		def itemHeight(value):
+			self.itemHeight = int(value)
+		for (attrib, value) in list(self.skinAttributes):
+			try:
+				locals().get(attrib)(value)
+				self.skinAttributes.remove((attrib, value))
+			except:
+				pass
+		self.l.setFont(0, self.font0)
+		self.l.setFont(1, self.font1)
+		self.l.setItemHeight(self.itemHeight)
+		return GUIComponent.applySkin(self, desktop, parent)
 # -------------------------------------------------------------------
 
 class CityPanel(Screen, HelpableScreen):
@@ -1202,11 +1222,28 @@ class SatPanelList(MenuList):
 
 	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
+		self.font0 = gFont("Regular",font0)
+		self.font1 = gFont("Regular",font1)
+		self.itemHeight = itemHeight
 
-# -----------------------------------------------------------------------------------------
+	def applySkin(self, desktop, parent):
+		def font(value):
+			self.font0 = parseFont(value, ((1,1),(1,1)))
+		def font1(value):
+			self.font1 = parseFont(value, ((1,1),(1,1)))
+		def itemHeight(value):
+			self.itemHeight = int(value)
+		for (attrib, value) in list(self.skinAttributes):
+			try:
+				locals().get(attrib)(value)
+				self.skinAttributes.remove((attrib, value))
+			except:
+				pass
+		self.l.setFont(0, self.font0)
+		self.l.setFont(1, self.font1)
+		self.l.setItemHeight(self.itemHeight)
+		return GUIComponent.applySkin(self, desktop, parent)
+
 
 class SatPanel(Screen, HelpableScreen):
 
@@ -1253,7 +1290,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
 		self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
-                
+
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelList([])
 		self["Mlist"].l.setList(self.Mlist)
@@ -1388,7 +1425,7 @@ class SatPanel(Screen, HelpableScreen):
 		#if DEBUG: print pluginPrintname, "entry=", entry
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
 		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(200,ItemSkin), png=thumb))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau))
+		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
 
 	def PicSetupMenu(self):
@@ -1471,9 +1508,27 @@ class SatPanelListb(MenuList):
 
 	def __init__(self, list, font0 = 24, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.l.setFont(0, gFont("Regular", font0))
-		self.l.setFont(1, gFont("Regular", font1))
-		self.l.setItemHeight(itemHeight)
+		self.font0 = gFont("Regular",font0)
+		self.font1 = gFont("Regular",font1)
+		self.itemHeight = itemHeight
+
+	def applySkin(self, desktop, parent):
+		def font(value):
+			self.font0 = parseFont(value, ((1,1),(1,1)))
+		def font1(value):
+			self.font1 = parseFont(value, ((1,1),(1,1)))
+		def itemHeight(value):
+			self.itemHeight = int(value)
+		for (attrib, value) in list(self.skinAttributes):
+			try:
+				locals().get(attrib)(value)
+				self.skinAttributes.remove((attrib, value))
+			except:
+				pass
+		self.l.setFont(0, self.font0)
+		self.l.setFont(1, self.font1)
+		self.l.setItemHeight(self.itemHeight)
+		return GUIComponent.applySkin(self, desktop, parent)
 
 # -------------------------------------------------------------------
 
