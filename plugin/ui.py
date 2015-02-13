@@ -1027,9 +1027,6 @@ class ForecaPreview(Screen, HelpableScreen):
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-#		self.l.setFont(0, gFont("Regular", font0))
-#		self.l.setFont(1, gFont("Regular", font1))
-#		self.l.setItemHeight(itemHeight)
 		self.font0 = gFont("Regular",font0)
 		self.font1 = gFont("Regular",font1)
 		self.itemHeight = itemHeight
