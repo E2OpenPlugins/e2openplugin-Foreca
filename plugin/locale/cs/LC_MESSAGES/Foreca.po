@@ -666,4 +666,4 @@ msgid "Weather forecast for the upcoming 10 days"
 msgstr "Prognóza počasí na následujících 10 dní"
 
 msgid "Font size in slideshow"
-+msgstr "Velikost písma v prezentaci"
+msgstr "Velikost písma v prezentaci"
