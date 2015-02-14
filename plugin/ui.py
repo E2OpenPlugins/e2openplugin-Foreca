@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.1" 
+VERSION = "3.1.2" 
 #
-#                    12.02.2015
+#                    14.02.2015
 #
 #     Source of information: http://www.foreca.com
 #
@@ -86,6 +86,7 @@ VERSION = "3.1.1"
 #	Finnish localization added. Thanks to kjuntara
 #	Ukrainian localization added. Thanks to Irkoff
 # 3.1.1 ForecaPreview skineable
+# 3.1.2 Next screens skineable
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -116,7 +117,7 @@ from Components.Pixmap import Pixmap
 from Components.PluginComponent import plugins
 from Components.Console import Console
 from Components.GUIComponent import GUIComponent
-from skin import parseFont
+from skin import parseFont, parseColor
 
 # Configuration
 from Components.config import *
@@ -1027,9 +1028,15 @@ class ForecaPreview(Screen, HelpableScreen):
 class CityPanelList(MenuList):
 	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
+		GUIComponent.__init__(self)
 		self.font0 = gFont("Regular",font0)
 		self.font1 = gFont("Regular",font1)
 		self.itemHeight = itemHeight
+		self.foregroundColorSelected = 8900346
+		self.foregroundColor = 0xffffff
+		self.backgroundColorSelected = 0x565656
+		self.column = 30
+
 #--------------------------- get skin attribs ---------------------------------------------
 	def applySkin(self, desktop, parent):
 		def font(value):
@@ -1038,6 +1045,14 @@ class CityPanelList(MenuList):
 			self.font1 = parseFont(value, ((1,1),(1,1)))
 		def itemHeight(value):
 			self.itemHeight = int(value)
+		def foregroundColor(value):
+			self.foregroundColor = parseColor(value).argb()
+		def foregroundColorSelected(value):
+			self.foregroundColorSelected = parseColor(value).argb()
+		def backgroundColorSelected(value):
+			self.backgroundColorSelected = parseColor(value).argb()
+		def column(value):
+			self.column = int(value)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -1056,7 +1071,7 @@ class CityPanel(Screen, HelpableScreen):
 		self.session = session
 		self.skin = """
 			<screen name="CityPanel" position="center,60" size="660,500" title="Select a city" backgroundColor="#40000000" >
-				<widget name="Mlist" position="10,10" size="640,450" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<widget name="Mlist" position="10,10" size="640,450" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				<eLabel position="0,465" zPosition="2" size="676,2" foregroundColor="#c3c3c9" backgroundColor="#c1cdc1" />
 				<widget source="key_green" render="Label" position="50,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 				<widget source="key_yellow" render="Label" position="200,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
@@ -1072,20 +1087,9 @@ class CityPanel(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		self.setup_title = _("Select a city")
 		self.Mlist = []
-
-		self.maxidx = 0
-		if fileExists(USR_PATH + "/City.cfg"):
-			file = open(USR_PATH + "/City.cfg", "r")
-			for line in file:
-				text = line.strip()
-				self.maxidx += 1
-				self.Mlist.append(self.CityEntryItem((string.replace(text, "_", " "), text)))
-			file.close
+		self["Mlist"] = CityPanelList([])
 
 		self.onChangedEntry = []
-		self["Mlist"] = CityPanelList([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
 
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -1110,6 +1114,20 @@ class CityPanel(Screen, HelpableScreen):
 				"volumeDown": (self.jump100_up, _("Volume- - 100 forward")),
 				"volumeUp": (self.jump100_down, _("Volume+ - 100 back"))
 			}, -2)
+
+		self.onShown.append(self.prepare)
+
+	def prepare(self):
+		self.maxidx = 0
+		if fileExists(USR_PATH + "/City.cfg"):
+			file = open(USR_PATH + "/City.cfg", "r")
+			for line in file:
+				text = line.strip()
+				self.maxidx += 1
+				self.Mlist.append(self.CityEntryItem((string.replace(text, "_", " "), text)))
+			file.close
+		self["Mlist"].l.setList(self.Mlist)
+		self["Mlist"].selectionEnabled(1)
 
 	def jump500_up(self):
 		cur = self["Mlist"].l.getCurrentSelectionIndex()
@@ -1198,12 +1216,17 @@ class CityPanel(Screen, HelpableScreen):
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self,entry):
-		mblau = 8900346
-		weiss = 0xffffff
-		grau = 0x565656
+		mblau = self["Mlist"].foregroundColorSelected
+		weiss = self["Mlist"].foregroundColor
+		grau = self["Mlist"].backgroundColorSelected
 
+		itemHeight = self["Mlist"].itemHeight
+
+		col = self["Mlist"].column
+		
 		res = [entry]
-		res.append(MultiContentEntryText(pos=(30, 6), size=(600, 35), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau))
+		res.append(MultiContentEntryText(pos=(0, 0), size=(col, itemHeight), font=0, text="", color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
+		res.append(MultiContentEntryText(pos=(col, 0), size=(1000, itemHeight), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
 
 #------------------------------------------------------------------------------------------
@@ -1219,17 +1242,38 @@ class SatPanelList(MenuList):
 
 	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
+		GUIComponent.__init__(self)
 		self.font0 = gFont("Regular",font0)
 		self.font1 = gFont("Regular",font1)
 		self.itemHeight = itemHeight
+		self.pictScale = 0
+		self.foregroundColorSelected = 8900346
+		self.foregroundColor = 0xffffff
+		self.backgroundColorSelected = 0x565656
+		self.textPos = 230, 45, 380, 50
 
 	def applySkin(self, desktop, parent):
+		def warningWrongSkinParameter(string, wanted, given):
+			print "[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given)
 		def font(value):
 			self.font0 = parseFont(value, ((1,1),(1,1)))
 		def font1(value):
 			self.font1 = parseFont(value, ((1,1),(1,1)))
 		def itemHeight(value):
 			self.itemHeight = int(value)
+		def setPictScale(value):
+			self.pictScale = int(value)
+		def foregroundColor(value):
+			self.foregroundColor = parseColor(value).argb()
+		def foregroundColorSelected(value):
+			self.foregroundColorSelected = parseColor(value).argb()
+		def backgroundColorSelected(value):
+			self.backgroundColorSelected = parseColor(value).argb()
+		def textPos(value):
+			self.textPos = map(int, value.split(","))
+			l = len(self.self.textPos)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -1280,18 +1324,10 @@ class SatPanel(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
 		self.Mlist = []
-		self.Mlist.append(self.SatEntryItem((_("Weather map Video"), 'sat')))
-		self.Mlist.append(self.SatEntryItem((_("Showerradar Video"), 'rain')))
-		self.Mlist.append(self.SatEntryItem((_("Temperature Video"), 'temp')))
-		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
-		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
-		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
-		self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
+		self["Mlist"] = SatPanelList([])
 
 		self.onChangedEntry = []
-		self["Mlist"] = SatPanelList([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
+
 		self["key_red"] = StaticText(_("Continents"))
 		self["key_green"] = StaticText(_("Europe"))
 		self["key_yellow"] = StaticText(_("Germany"))
@@ -1312,6 +1348,19 @@ class SatPanel(Screen, HelpableScreen):
 				"blue": (self.PicSetupMenu, _("Blue - Settings")),
 				"ok": (self.ok, _("OK - Show")),
 			}, -2)
+		self.onShown.append(self.prepare)
+
+	def prepare(self):
+		self.Mlist.append(self.SatEntryItem((_("Weather map Video"), 'sat')))
+		self.Mlist.append(self.SatEntryItem((_("Showerradar Video"), 'rain')))
+		self.Mlist.append(self.SatEntryItem((_("Temperature Video"), 'temp')))
+		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
+		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
+		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
+		self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
+		
+		self["Mlist"].l.setList(self.Mlist)
+		self["Mlist"].selectionEnabled(1)
 
 	def up(self):
 		self["Mlist"].up()
@@ -1409,20 +1458,27 @@ class SatPanel(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 	def SatEntryItem(self,entry):
-		if HD:
-			ItemSkin = 143
-		else:
-			ItemSkin = 123
+		flags = 0
+		pict_scale = self["Mlist"].pictScale
+		if pict_scale:
+			flags = BT_SCALE # need stretch to height, due it is missing BT_KEEP_ASPECT_RATIO
 
-		mblau = 8900346
-		weiss = 0xffffff
-		grau = 0x565656
+		ItemSkin = self["Mlist"].itemHeight
+
+		mblau = self["Mlist"].foregroundColorSelected
+		weiss = self["Mlist"].foregroundColor
+		grau = self["Mlist"].backgroundColorSelected
+
 
 		res = [entry]
 		#if DEBUG: print pluginPrintname, "entry=", entry
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(200,ItemSkin), png=thumb))  # png vorn
-		res.append(MultiContentEntryText(pos=(230, 45), size=(380, 50), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
+		thumb_width = 200
+		if pict_scale:
+			thumb_width = thumb.size().width()
+		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin-4), png=thumb, flags=flags))  # png vorn
+		x,y,w,h = self["Mlist"].textPos
+		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
 
 	def PicSetupMenu(self):
