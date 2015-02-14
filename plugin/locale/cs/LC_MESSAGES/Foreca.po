@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Foreca 3.0.0\n"
+"Project-Id-Version: Foreca 3.1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-08 15:04+0100\n"
 "PO-Revision-Date: 2012-10-08 15:12+0100\n"
@@ -664,3 +664,6 @@ msgstr ""
 #: plugin.py:1699
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "Prognóza počasí na následujících 10 dní"
+
+msgid "Font size in slideshow"
++msgstr "Velikost písma v prezentaci"
