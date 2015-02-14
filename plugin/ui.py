@@ -1325,7 +1325,6 @@ class SatPanel(Screen, HelpableScreen):
 
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
-		self.Mlist = []
 		self["Mlist"] = SatPanelList([])
 
 		self.onChangedEntry = []
@@ -1353,6 +1352,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.onShown.append(self.prepare)
 
 	def prepare(self):
+		self.Mlist = []
 		self.Mlist.append(self.SatEntryItem((_("Weather map Video"), 'sat')))
 		self.Mlist.append(self.SatEntryItem((_("Showerradar Video"), 'rain')))
 		self.Mlist.append(self.SatEntryItem((_("Temperature Video"), 'temp')))
