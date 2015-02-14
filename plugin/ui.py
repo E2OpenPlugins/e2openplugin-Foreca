@@ -11,7 +11,7 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.2" 
+VERSION = "3.1.3" 
 #
 #                    14.02.2015
 #
@@ -87,6 +87,7 @@ VERSION = "3.1.2"
 #	Ukrainian localization added. Thanks to Irkoff
 # 3.1.1 ForecaPreview skineable
 # 3.1.2 Next screens skineable
+# 3.1.3 Added font size for slideshow into setting
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -164,6 +165,7 @@ config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.framesize = ConfigInteger(default=5, limits=(5, 99))
+config.plugins.foreca.fontsize = ConfigInteger(default=20, limits=(20, 30))
 config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
 config.plugins.foreca.infoline = ConfigYesNo(default=True)
 config.plugins.foreca.loop = ConfigYesNo(default=False)
@@ -1736,6 +1738,7 @@ class View_Slideshow(Screen):
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
+		fontsize = config.plugins.foreca.fontsize.value
 
 		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
@@ -1743,7 +1746,7 @@ class View_Slideshow(Screen):
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space+40) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)-40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
 			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "record.png\" alphatest=\"on\" /> \
 			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"  alphatest=\"on\" /> \
-			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + ",25\" font=\"Regular;20\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
+			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + "," + str(fontsize+5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
 			</screen>"
 		Screen.__init__(self, session)
 
@@ -1923,6 +1926,7 @@ class PicSetup(Screen):
 		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
 		self.list.append(getConfigListEntry(_("Frame size in full view"), config.plugins.foreca.framesize))
+		self.list.append(getConfigListEntry(_("Font size in slideshow"), config.plugins.foreca.fontsize))
 		self.list.append(getConfigListEntry(_("Scaling Mode"), config.plugins.foreca.resize))
 		self.list.append(getConfigListEntry(_("Slide Time (seconds)"), config.plugins.foreca.slidetime))
 		self.list.append(getConfigListEntry(_("Show Infoline"), config.plugins.foreca.infoline))
