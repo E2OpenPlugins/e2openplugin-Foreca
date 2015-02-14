@@ -607,7 +607,7 @@ msgstr "Čekejte, prosím, foto je načítáno..."
 
 #: plugin.py:1627 plugin.py:1630
 msgid "SlideShow Settings"
-msgstr "Nastavení presentace"
+msgstr "Nastavení prezentace"
 
 #: plugin.py:1628
 msgid "Cancel"
@@ -639,7 +639,7 @@ msgstr "Režim zvětšení"
 
 #: plugin.py:1659
 msgid "Slide Time (seconds)"
-msgstr "Čas presentace"
+msgstr "Čas prezentace"
 
 #: plugin.py:1660
 msgid "Show Infoline"
@@ -655,7 +655,7 @@ msgstr "Barva pozadí"
 
 #: plugin.py:1663
 msgid "Slide picture in loop"
-msgstr "Opakovat presentaci"
+msgstr "Opakovat prezentaci"
 
 #: plugin.py:1664
 msgid "Debug"
