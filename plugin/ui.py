@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.3" 
+VERSION = "3.1.4" 
 #
-#                    14.02.2015
+#                    15.02.2015
 #
 #     Source of information: http://www.foreca.com
 #
@@ -88,6 +88,7 @@ VERSION = "3.1.3"
 # 3.1.1 ForecaPreview skineable
 # 3.1.2 Next screens skineable
 # 3.1.3 Added font size for slideshow into setting
+# 3.1.4 rem /www.metoffice.gov.uk due non existing infrared on this pages more
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -1358,7 +1359,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
 		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
-		self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
+		#self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
 		
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
