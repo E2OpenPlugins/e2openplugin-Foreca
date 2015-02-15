@@ -160,7 +160,6 @@ import locale
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
 
-config.plugins.foreca = ConfigSubsection()
 config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("simple")), ("1", _("better"))])
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
@@ -1933,6 +1932,7 @@ class PicSetup(Screen):
 		self.list.append(getConfigListEntry(_("Textcolor"), config.plugins.foreca.textcolor))
 		self.list.append(getConfigListEntry(_("Backgroundcolor"), config.plugins.foreca.bgcolor))
 		self.list.append(getConfigListEntry(_("Slide picture in loop"), config.plugins.foreca.loop))
+		self.list.append(getConfigListEntry(_("Display in extensions menu"),config.plugins.foreca.extmenu))
 		self.list.append(getConfigListEntry(_("Debug"), config.plugins.foreca.debug))
 
 	def save(self):
@@ -1943,6 +1943,7 @@ class PicSetup(Screen):
 		DEBUG = config.plugins.foreca.debug.value
 		if DEBUG: print pluginPrintname, "Debug enabled"
 		else: print pluginPrintname, "Debug disabled"
+		self.refreshPlugins()
 		self.close()
 
 	def cancel(self):
@@ -1959,3 +1960,8 @@ class PicSetup(Screen):
 	def keyNumber(self, number):
 		self["Mlist"].handleKey(KEY_0 + number)
 
+	def refreshPlugins(self):
+		from Components.PluginComponent import plugins
+		from Tools.Directories import SCOPE_PLUGINS, resolveFilename
+		plugins.clearPluginList()
+		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))

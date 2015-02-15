@@ -667,3 +667,7 @@ msgstr "Prognóza počasí na následujících 10 dní"
 
 msgid "Font size in slideshow"
 msgstr "Velikost písma v prezentaci"
+
+msgid "Display in extensions menu"
+msgstr "Zobrazovat v menu rozšíření"
+

@@ -625,3 +625,6 @@ msgstr ""
 
 msgid "Font size in slideshow"
 msgstr ""
+
+msgid "Display in extensions menu"
+msgstr ""
