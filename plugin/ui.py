@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.4" 
+VERSION = "3.1.6" 
 #
-#                    15.02.2015
+#                    17.09.2015
 #
 #     Source of information: http://www.foreca.com
 #
@@ -175,7 +175,7 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 
-MAIN_PAGE = _("http://www.foreca.com")
+MAIN_PAGE = _("http://www.foreca.com/")
 USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 deviceName = HardwareInfo().get_device_name()
@@ -523,7 +523,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		MAIN_PAGE = _("http://www.foreca.com")
+		MAIN_PAGE = _("http://www.foreca.com/")
 
 		# actual, local Time as Tuple
 		lt = localtime()
@@ -564,7 +564,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print pluginPrintname, "home location:", self.ort
 		
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = _("http://www.foreca.com/") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "initial link:" , MAIN_PAGE
 		
 		if HD:
@@ -814,7 +814,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = _("http://www.foreca.com") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = _("http://www.foreca.com/") + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "day link:", MAIN_PAGE
 
 		# Show in GUI
@@ -877,7 +877,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url=_("http://www.foreca.com") + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			self.url=_("http://www.foreca.com/") + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -1287,6 +1287,7 @@ class SatPanelList(MenuList):
 		self.l.setItemHeight(self.itemHeight)
 		return GUIComponent.applySkin(self, desktop, parent)
 
+# -----------------------------------------------------------------------------------------
 
 class SatPanel(Screen, HelpableScreen):
 
@@ -1518,7 +1519,7 @@ class SatPanel(Screen, HelpableScreen):
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = _("http://www.foreca.com") + "/" + self.ort + "?map=" + menu
+			url = _("http://www.foreca.com/") + "/" + self.ort + "?map=" + menu
 			# Load site for category and search Picture link
 			urllib.urlretrieve(url, devicepath)
 			fd=open(devicepath)
