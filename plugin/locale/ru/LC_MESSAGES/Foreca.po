@@ -2,19 +2,233 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-21 09:30+0100\n"
-"PO-Revision-Date: 2015-02-15 18:44+0200\n"
-"Last-Translator: Dimitrij <Dima-73@inbox.lv>\n"
+"POT-Creation-Date: 2016-05-06 13:58+0200\n"
+"PO-Revision-Date: 2016-05-06 13:58+0200\n"
+"Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
 "Language-Team: n.a.\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#: plugin.py:21 plugin.py:27 ui.py:615 ui.py:634
+msgid "Foreca Weather Forecast"
+msgstr "Foreca - прогноз погоды"
+
+#: plugin.py:22 plugin.py:28
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Прогноз погоды на ближайшие 10 дней"
+
+#: ui.py:164
+msgid "simple"
+msgstr "простой"
+
+#: ui.py:164
+msgid "better"
+msgstr "лучше"
+
+#: ui.py:165 ui.py:166
+msgid "black"
+msgstr "черный"
+
+#: ui.py:165 ui.py:166
+msgid "blue"
+msgstr "синий"
+
+#: ui.py:165 ui.py:166
+msgid "red"
+msgstr "красный"
+
+#: ui.py:165 ui.py:166
+msgid "yellow"
+msgstr "желтый"
+
+#: ui.py:165 ui.py:166
+msgid "green"
+msgstr "зеленый"
+
+#: ui.py:173
+msgid "Metric (C, m/s)"
+msgstr "Система измерений (С, м/с)"
+
+#: ui.py:173
+msgid "Metric (C, km/h)"
+msgstr "Система измерений (С, км/ч)"
+
+#: ui.py:173
+msgid "Imperial (C, mph)"
+msgstr "Английская система измерения (С, миль/ч)"
+
+#: ui.py:173
+msgid "US (F, mph)"
+msgstr "Система измерения США (F, миль/ч)"
+
+#: ui.py:174
+msgid "12 h"
+msgstr "12 часов"
+
+#: ui.py:174
+msgid "24 h"
+msgstr "24 часа"
+
+#: ui.py:178 ui.py:526 ui.py:567 ui.py:817 ui.py:880 ui.py:1522
+msgid "http://www.foreca.com/"
+msgstr ""
+
+#: ui.py:394
+msgid "°F"
+msgstr "°F"
+
+#: ui.py:397
+msgid "°C"
+msgstr "°C"
+
+#: ui.py:438
+msgid "Temp"
+msgstr "Температура"
+
+#: ui.py:453
+msgid "Wind"
+msgstr "Ветер"
+
+#: ui.py:618 ui.py:683
+msgid "Please wait ..."
+msgstr "Пожалуйста, подождите..."
+
+#: ui.py:622
+msgid "Week"
+msgstr "Неделя"
+
+#: ui.py:623
+msgid "City"
+msgstr "Город"
+
+#: ui.py:629 ui.py:844 ui.py:897 ui.py:1096
+msgid "Favorite 1"
+msgstr "Фаворит 1"
+
+#: ui.py:630 ui.py:845 ui.py:898 ui.py:1097
+msgid "Favorite 2"
+msgstr "Фаворит 2"
+
+#: ui.py:631 ui.py:846 ui.py:899 ui.py:1098
+msgid "Home"
+msgstr "Домой"
+
+#: ui.py:632
+msgid "Legend"
+msgstr "Помощь"
+
+#: ui.py:633
+msgid "Maps"
+msgstr "Карты"
+
+#: ui.py:634
+msgid "Version "
+msgstr "Версия "
+
+#: ui.py:639 ui.py:1105 ui.py:1342 ui.py:1623
+msgid "Exit - End"
+msgstr "Выход - закрыть"
+
+#: ui.py:640
+msgid "Menu - Weather maps"
+msgstr "Меню - карты погоды"
+
+#: ui.py:641
+msgid "Info - Legend"
+msgstr "Инфо - помощь"
+
+#: ui.py:642
+msgid "OK - City"
+msgstr "ОК - город"
+
+#: ui.py:643
+msgid "Left - Previous day"
+msgstr "Влево - предыдущий день"
+
+#: ui.py:644
+msgid "Right - Next day"
+msgstr "Вправо - следующая день"
+
+#: ui.py:645
+msgid "Up - Previous page"
+msgstr "Вверх - предыдущая страница"
+
+#: ui.py:646
+msgid "Down - Next page"
+msgstr "Вниз - следующая страница"
+
+#: ui.py:647
+msgid "Left arrow - Previous day"
+msgstr "Стрелка влево - предыдущий день"
+
+#: ui.py:648
+msgid "Right arrow - Next day"
+msgstr "Стрелка вправо - следующий день"
+
+#: ui.py:649
+msgid "Red - Weekoverview"
+msgstr "Красная - обзор недели"
+
+#: ui.py:651
+msgid "Green - Favorite 1"
+msgstr "Зеленая - фаворит 1"
+
+#: ui.py:652
+msgid "Yellow - Favorite 2"
+msgstr "Желтая - фаворит 2"
+
+#: ui.py:653
+msgid "Blue - Home"
+msgstr "Синяя - домой"
+
+#: ui.py:654
+msgid "0 - Today"
+msgstr "0 - сегодня"
+
+#: ui.py:655
+msgid "1 - Today + 1 day"
+msgstr "1 - сегодня + 1 день"
+
+#: ui.py:656
+msgid "2 - Today + 2 days"
+msgstr "2 - сегодня + 2 дня"
+
+#: ui.py:657
+msgid "3 - Today + 3 days"
+msgstr "3 - сегодня + 3 дня"
+
+#: ui.py:658
+msgid "4 - Today + 4 days"
+msgstr "4 - Ссегодня + 4 дня"
+
+#: ui.py:659
+msgid "5 - Today + 5 days"
+msgstr "5 - сегодня + 5 дней"
+
+#: ui.py:660
+msgid "6 - Today + 6 days"
+msgstr "6 - сегодня + 6 дней"
+
+#: ui.py:661
+msgid "7 - Today + 7 days"
+msgstr "7 - сегодня + 7 дней"
+
+#: ui.py:662
+msgid "8 - Today + 8 days"
+msgstr "8 - сегодня + 8 дней"
+
+#: ui.py:663
+msgid "9 - Today + 9 days"
+msgstr "9 - сегодня + 9 дней"
+
+#: ui.py:824
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -50,385 +264,63 @@ msgstr ""
 "\n"
 "Направление ветра = стрелка вправо: ветер с запада"
 
-msgid "0 - Today"
-msgstr "0 - сегодня"
-
-msgid "1 - Today + 1 day"
-msgstr "1 - сегодня + 1 день"
-
-msgid "12 h"
-msgstr "12 часов"
-
-msgid "2 - Today + 2 days"
-msgstr "2 - сегодня + 2 дня"
-
-msgid "24 h"
-msgstr "24 часа"
-
-msgid "3 - Today + 3 days"
-msgstr "3 - сегодня + 3 дня"
-
-msgid "4 - Today + 4 days"
-msgstr "4 - Ссегодня + 4 дня"
-
-msgid "5 - Today + 5 days"
-msgstr "5 - сегодня + 5 дней"
-
-msgid "6 - Today + 6 days"
-msgstr "6 - сегодня + 6 дней"
-
-msgid "7 - Today + 7 days"
-msgstr "7 - сегодня + 7 дней"
-
-msgid "8 - Today + 8 days"
-msgstr "8 - сегодня + 8 дней"
-
-msgid "9 - Today + 9 days"
-msgstr "9 - сегодня + 9 дней"
-
-msgid "Air pressure"
-msgstr "Атмосферное давление"
-
-msgid "Aspect list..."
-msgstr "Список соотношений сторон..."
-
-msgid "Australia"
-msgstr "Австралия"
-
-msgid "Austria"
-msgstr "Австрия"
-
-msgid "Backgroundcolor"
-msgstr "Цвет фона"
-
-msgid "Baden-Wuerttemberg"
-msgstr "Баден-Вюртемберг"
-
-msgid "Bavaria"
-msgstr "Бавария"
-
-msgid "Belgium"
-msgstr "Бельгия"
-
-msgid "Berlin"
-msgstr "Берлин"
-
-msgid "Bestfit"
-msgstr "Bestfit"
-
-msgid "Blue - Assign to Home"
-msgstr "Синий - добавить для дома"
-
-msgid "Blue - Home"
-msgstr "Синяя - домой"
-
-msgid "Blue - Settings"
-msgstr "Синяя - настройки"
-
-msgid "Brandenburg"
-msgstr "Бранденбург"
-
-msgid "Bremen"
-msgstr "Бремен"
-
-msgid "Cancel"
-msgstr "Отмена"
-
-msgid "Channel+ - 500 back"
-msgstr "Канал+ - 500 назад"
-
-msgid "Channel- - 500 forward"
-msgstr "Канал- - 500 вперед"
-
-msgid "City"
-msgstr "Город"
-
-msgid "City names as labels in the Main screen"
-msgstr "Названия городов в качестве меток в главном окне"
-
-msgid "Cloudcover Video"
-msgstr "Облачность - видео"
-
-msgid "Temperature Video"
-msgstr "Температура - видео"
-
-msgid "Continents"
-msgstr "Континенты"
-
-msgid "Debug"
-msgstr "Отладка"
-
-msgid "Denmark"
-msgstr "Дания"
-
-msgid "Display in extensions menu"
-msgstr "Показать в меню дополнений"
-
-msgid "Down - Next"
-msgstr "Вниз - следующая"
-
-msgid "Down - Next page"
-msgstr "Вниз - следующая страница"
-
-msgid "East Asia"
-msgstr "Восточная Азия"
-
-msgid "Eumetsat"
-msgstr "Сайт Eumetsat"
-
-msgid "Europe"
-msgstr "Европа"
-
-msgid "Exit - End"
-msgstr "Выход - закрыть"
-
-msgid "Favorite 1"
-msgstr "Фаворит 1"
-
-msgid "Favorite 2"
-msgstr "Фаворит 2"
-
-msgid "Font size in slideshow"
-msgstr "Размер шрифта в слайд-шоу"
-
-msgid "Foreca Weather Forecast"
-msgstr "Foreca - прогноз погоды"
-
-msgid "Forecast"
-msgstr "Прогноз"
-
-msgid "Frame size in full view"
-msgstr "Размер кадра в полноэкранном режиме"
-
-msgid "Germany"
-msgstr "Германия"
-
-msgid "Great Britain"
-msgstr "Великобритания"
-
-msgid "Green - Assign to Favorite 1"
-msgstr "Зеленая - добавить фаворит 1"
-
-msgid "Green - Europe"
-msgstr "Зеленая - Увропа"
-
-msgid "Green - Favorite 1"
-msgstr "Зеленая - фаворит 1"
-
-msgid "Hamburg"
-msgstr "Гамбург"
-
-msgid "Hesse"
-msgstr "Гессе"
-
-msgid "Home"
-msgstr "Домой"
-
-msgid "Imperial (C, mph)"
-msgstr "Английская система измерения (С, миль/ч)"
-
-msgid "Info - Legend"
-msgstr "Инфо - помощь"
-
-msgid "Infrared"
-msgstr "Инфракрасный"
-
-msgid "Ireland"
-msgstr "Ирландия"
-
-msgid "Italy"
-msgstr "Италия"
-
-msgid "Left - Previous page"
-msgstr "Влево - предыдущая страница"
-
-msgid "Left arrow - Previous day"
-msgstr "Стрелка влево - предыдущий день"
-
-msgid "Legend"
-msgstr "Помощь"
-
-msgid "Letterbox"
-msgstr "Letterbox"
-
-msgid "Lower Saxony"
-msgstr "Нижняя Саксония"
-
-msgid "Luxembourg"
-msgstr "Люксембург"
-
-msgid "Maps"
-msgstr "Карты"
-
-msgid "Mecklenburg-Vorpommern"
-msgstr "Мекленбург-передняя Померания"
-
-msgid "Menu - Weather maps"
-msgstr "Меню - карты погоды"
-
-msgid "Metric (C, km/h)"
-msgstr "Система измерений (С, км/ч)"
-
-msgid "Metric (C, m/s)"
-msgstr "Система измерений (С, м/с)"
-
-msgid "Middle America"
-msgstr "Центральная Америка"
-
-msgid "Middle Asia"
-msgstr "Средняя Азия"
-
-msgid "Middle East"
-msgstr "Средний Восток"
-
-msgid "Netherlands"
-msgstr "Нидерланды"
-
-msgid "Non Linear"
-msgstr "Non Linear"
-
-msgid "North Africa"
-msgstr "Северная Африка"
-
-msgid "North America"
-msgstr "Северная Америка"
-
-msgid "North Rhine-Westphalia"
-msgstr "Северный Рейн-Вестфалия"
-
-msgid "OK - City"
-msgstr "ОК - город"
-
-msgid "OK - Select"
-msgstr "OK - выбор"
-
-msgid "OK - Show"
-msgstr "OK - показать"
-
-msgid "PanScan"
-msgstr "PanScan"
-
-msgid "Please select an aspect ratio..."
-msgstr "Пожалуйста, выберите соотношение сторон..."
-
-msgid "Please wait ..."
-msgstr "Пожалуйста, подождите..."
-
-msgid "Please wait, photo is being loaded ..."
-msgstr "Пожалуйста, подождите, загрузка фото..."
-
-msgid "Portugal"
-msgstr "Португалия"
-
-msgid "Red - Continents"
-msgstr "Красная - континенты"
-
-msgid "Red - Weekoverview"
-msgstr "Красная - обзор недели"
-
-msgid "Resolution"
-msgstr "Разрешение"
-
-msgid "Left - Previous day"
-msgstr "Влево - предыдущий день"
-
-#: plugin.py:507
-msgid "Right - Next day"
-msgstr "Вправо - следующая день"
-
-msgid "Right - Next page"
-msgstr "Вправо - следующая страница"
-
-msgid "Right arrow - Next day"
-msgstr "Стрелка вправо - следующий день"
-
-msgid "Saarland"
-msgstr "Саарланд"
-
-msgid "Satellite photos"
-msgstr "Фото со спутника"
-
-msgid "Save"
-msgstr "Сохранить"
-
-msgid "Saxony"
-msgstr "Саксония"
-
-msgid "Saxony-Anhalt"
-msgstr "Саксония-Ангальт"
-
-msgid "Scaling Mode"
-msgstr "Режим масштабирования"
-
-msgid "Schleswig-Holstein"
-msgstr "Шлезвиг-Гольштейн"
-
+#: ui.py:1090 ui.py:1100
 msgid "Select a city"
 msgstr "Выбор города"
 
-msgid "Select time format"
-msgstr "Выбор формата времени"
+#: ui.py:1099
+msgid "Forecast"
+msgstr "Прогноз"
 
-msgid "Select units"
-msgstr "Выбор единиц измерения"
+#: ui.py:1106 ui.py:1343 ui.py:1624
+msgid "Left - Previous page"
+msgstr "Влево - предыдущая страница"
 
-msgid "Settings"
-msgstr "Настройки"
+#: ui.py:1107 ui.py:1344 ui.py:1625
+msgid "Right - Next page"
+msgstr "Вправо - следующая страница"
 
-msgid "Show Infoline"
-msgstr "Показать инфо строку"
+#: ui.py:1108 ui.py:1345 ui.py:1626
+msgid "Up - Previous"
+msgstr "Вверх - предыдущая"
 
-msgid "Showerradar Video"
-msgstr "Радар осадков - видео"
+#: ui.py:1109 ui.py:1346 ui.py:1627
+msgid "Down - Next"
+msgstr "Вниз - следующая"
 
-msgid "Slide Time (seconds)"
-msgstr "Время смены слайдов (в сек.)"
+#: ui.py:1110
+msgid "OK - Select"
+msgstr "OK - выбор"
 
-msgid "Slide picture in loop"
-msgstr "Картинка слайдов в цикле"
+#: ui.py:1111
+msgid "Green - Assign to Favorite 1"
+msgstr "Зеленая - добавить фаворит 1"
 
-msgid "SlideShow Settings"
-msgstr "Настройки слайд-шоу"
+#: ui.py:1112
+msgid "Yellow - Assign to Favorite 2"
+msgstr "Желтая - добавить фаворит 2"
 
-msgid "South Africa"
-msgstr "Южная Африка"
+#: ui.py:1113
+msgid "Blue - Assign to Home"
+msgstr "Синий - добавить для дома"
 
-msgid "South America"
-msgstr "Южная Америка"
+#: ui.py:1114
+msgid "Channel+ - 500 back"
+msgstr "Канал+ - 500 назад"
 
-msgid "Southeast Asia"
-msgstr "Юго-восточная Азия"
+#: ui.py:1115
+msgid "Channel- - 500 forward"
+msgstr "Канал- - 500 вперед"
 
-msgid "Spain"
-msgstr "Испания"
+#: ui.py:1116
+msgid "Volume- - 100 forward"
+msgstr "Громкость- - 100 вперед"
 
-msgid "Switzerland"
-msgstr "Швейцария"
+#: ui.py:1117
+msgid "Volume+ - 100 back"
+msgstr "Громкость+ - 100 назад"
 
-msgid "Temp"
-msgstr "Температура"
-
-msgid "Textcolor"
-msgstr "Цвет текста"
-
-msgid ""
-"This city is stored as favorite 1!\n"
-"\n"
-"                             "
-msgstr ""
-"Это город сохранен в фаворит 1!\n"
-"\n"
-"                             "
-
-msgid ""
-"This city is stored as favorite 2!\n"
-"\n"
-"                             "
-msgstr ""
-"Это город сохранен в фаворит 2!\n"
-"\n"
-"                             "
-
+#: ui.py:1195
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -438,77 +330,365 @@ msgstr ""
 "\n"
 "                                  "
 
-msgid "Thuringia"
-msgstr "Тюрингия"
+#: ui.py:1206
+msgid ""
+"This city is stored as favorite 1!\n"
+"\n"
+"                             "
+msgstr ""
+"Это город сохранен в фаворит 1!\n"
+"\n"
+"                             "
 
-msgid "US (F, mph)"
-msgstr "Система измерения США (F, миль/ч)"
+#: ui.py:1217
+msgid ""
+"This city is stored as favorite 2!\n"
+"\n"
+"                             "
+msgstr ""
+"Это город сохранен в фаворит 2!\n"
+"\n"
+"                             "
 
-msgid "Up - Previous"
-msgstr "Вверх - предыдущая"
+#: ui.py:1328 ui.py:1337
+msgid "Satellite photos"
+msgstr "Фото со спутника"
 
-msgid "Up - Previous page"
-msgstr "Вверх - предыдущая страница"
+#: ui.py:1333 ui.py:1459
+msgid "Continents"
+msgstr "Континенты"
 
-msgid "Version "
-msgstr "Версия "
+#: ui.py:1334 ui.py:1444 ui.py:1448
+msgid "Europe"
+msgstr "Европа"
 
-msgid "Volume+ - 100 back"
-msgstr "Громкость+ - 100 назад"
+#: ui.py:1335 ui.py:1415 ui.py:1424
+msgid "Germany"
+msgstr "Германия"
 
-msgid "Volume- - 100 forward"
-msgstr "Громкость- - 100 вперед"
+#: ui.py:1336 ui.py:1617
+msgid "Settings"
+msgstr "Настройки"
 
-msgid "Weather forecast for the upcoming 10 days"
-msgstr "Прогноз погоды на ближайшие 10 дней"
+#: ui.py:1347
+msgid "Red - Continents"
+msgstr "Красная - континенты"
 
-msgid "Weather map Video"
-msgstr "Карта погоды - видео"
+#: ui.py:1348
+msgid "Green - Europe"
+msgstr "Зеленая - Увропа"
 
-msgid "Week"
-msgstr "Неделя"
-
-msgid "Wind"
-msgstr "Ветер"
-
-msgid "Yellow - Assign to Favorite 2"
-msgstr "Желтая - добавить фаворит 2"
-
-msgid "Yellow - Favorite 2"
-msgstr "Желтая - фаворит 2"
-
+#: ui.py:1349
 msgid "Yellow - Germany"
 msgstr "Желтая - Германия"
 
-msgid "better"
-msgstr "лучше"
+#: ui.py:1350 ui.py:1628
+msgid "Blue - Settings"
+msgstr "Синяя - настройки"
 
-msgid "black"
-msgstr "черный"
+#: ui.py:1351 ui.py:1629
+msgid "OK - Show"
+msgstr "OK - показать"
 
-msgid "blue"
-msgstr "синий"
+#: ui.py:1357
+msgid "Weather map Video"
+msgstr "Карта погоды - видео"
 
-msgid "green"
-msgstr "зеленый"
+#: ui.py:1358
+msgid "Showerradar Video"
+msgstr "Радар осадков - видео"
 
+#: ui.py:1359
+msgid "Temperature Video"
+msgstr "Температура - видео"
+
+#: ui.py:1360
+msgid "Cloudcover Video"
+msgstr "Облачность - видео"
+
+#: ui.py:1361
+msgid "Air pressure"
+msgstr "Атмосферное давление"
+
+#: ui.py:1362
+msgid "Eumetsat"
+msgstr "Сайт Eumetsat"
+
+#: ui.py:1394
+msgid "Baden-Wuerttemberg"
+msgstr "Баден-Вюртемберг"
+
+#: ui.py:1395
+msgid "Bavaria"
+msgstr "Бавария"
+
+#: ui.py:1396
+msgid "Berlin"
+msgstr "Берлин"
+
+#: ui.py:1397
+msgid "Brandenburg"
+msgstr "Бранденбург"
+
+#: ui.py:1398
+msgid "Bremen"
+msgstr "Бремен"
+
+#: ui.py:1399
+msgid "Hamburg"
+msgstr "Гамбург"
+
+#: ui.py:1400
+msgid "Hesse"
+msgstr "Гессе"
+
+#: ui.py:1401
+msgid "Mecklenburg-Vorpommern"
+msgstr "Мекленбург-передняя Померания"
+
+#: ui.py:1402
+msgid "Lower Saxony"
+msgstr "Нижняя Саксония"
+
+#: ui.py:1403
+msgid "North Rhine-Westphalia"
+msgstr "Северный Рейн-Вестфалия"
+
+#: ui.py:1404
+msgid "Rhineland-Palatine"
+msgstr ""
+
+#: ui.py:1405
+msgid "Saarland"
+msgstr "Саарланд"
+
+#: ui.py:1406
+msgid "Saxony"
+msgstr "Саксония"
+
+#: ui.py:1407
+msgid "Saxony-Anhalt"
+msgstr "Саксония-Ангальт"
+
+#: ui.py:1408
+msgid "Schleswig-Holstein"
+msgstr "Шлезвиг-Гольштейн"
+
+#: ui.py:1409
+msgid "Thuringia"
+msgstr "Тюрингия"
+
+#: ui.py:1419
+msgid "Austria"
+msgstr "Австрия"
+
+#: ui.py:1420
+msgid "Belgium"
+msgstr "Бельгия"
+
+#: ui.py:1421
+msgid "Czech Republic"
+msgstr ""
+
+#: ui.py:1422
+msgid "Denmark"
+msgstr "Дания"
+
+#: ui.py:1423
+msgid "France"
+msgstr ""
+
+#: ui.py:1425
+msgid "Greece"
+msgstr ""
+
+#: ui.py:1426
+msgid "Great Britain"
+msgstr "Великобритания"
+
+#: ui.py:1427
+msgid "Hungary"
+msgstr ""
+
+#: ui.py:1428
+msgid "Ireland"
+msgstr "Ирландия"
+
+#: ui.py:1429
+msgid "Italy"
+msgstr "Италия"
+
+#: ui.py:1430
+msgid "Latvia"
+msgstr ""
+
+#: ui.py:1431
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+#: ui.py:1432
+msgid "Netherlands"
+msgstr "Нидерланды"
+
+#: ui.py:1433
+msgid "Poland"
+msgstr ""
+
+#: ui.py:1434
+msgid "Portugal"
+msgstr "Португалия"
+
+#: ui.py:1435
+msgid "Russia"
+msgstr ""
+
+#: ui.py:1436
+msgid "Slovakia"
+msgstr ""
+
+#: ui.py:1437
+msgid "Spain"
+msgstr "Испания"
+
+#: ui.py:1438
+msgid "Switzerland"
+msgstr "Швейцария"
+
+#: ui.py:1449
+msgid "North Africa"
+msgstr "Северная Африка"
+
+#: ui.py:1450
+msgid "South Africa"
+msgstr "Южная Африка"
+
+#: ui.py:1451
+msgid "North America"
+msgstr "Северная Америка"
+
+#: ui.py:1452
+msgid "Middle America"
+msgstr "Центральная Америка"
+
+#: ui.py:1453
+msgid "South America"
+msgstr "Южная Америка"
+
+#: ui.py:1454
+msgid "Middle East"
+msgstr "Средний Восток"
+
+#: ui.py:1455
+msgid "East Asia"
+msgstr "Восточная Азия"
+
+#: ui.py:1456
+msgid "Southeast Asia"
+msgstr "Юго-восточная Азия"
+
+#: ui.py:1457
+msgid "Middle Asia"
+msgstr "Средняя Азия"
+
+#: ui.py:1458
+msgid "Australia"
+msgstr "Австралия"
+
+#: ui.py:1546
 msgid "h"
 msgstr "ч"
 
-msgid "http://www.foreca.com"
-msgstr "http://www.foreca.com"
+#: ui.py:1766
+msgid "Please wait, photo is being loaded ..."
+msgstr "Пожалуйста, подождите, загрузка фото..."
 
-msgid "red"
-msgstr "красный"
+#: ui.py:1899 ui.py:1902
+msgid "SlideShow Settings"
+msgstr "Настройки слайд-шоу"
 
-msgid "simple"
-msgstr "простой"
+#: ui.py:1900
+msgid "Cancel"
+msgstr "Отмена"
 
-msgid "yellow"
-msgstr "желтый"
+#: ui.py:1901
+msgid "Save"
+msgstr "Сохранить"
 
-msgid "°C"
-msgstr "°C"
+#: ui.py:1926
+msgid "Select units"
+msgstr "Выбор единиц измерения"
 
-msgid "°F"
-msgstr "°F"
+#: ui.py:1927
+msgid "Select time format"
+msgstr "Выбор формата времени"
+
+#: ui.py:1928
+msgid "City names as labels in the Main screen"
+msgstr "Названия городов в качестве меток в главном окне"
+
+#: ui.py:1929
+msgid "Frame size in full view"
+msgstr "Размер кадра в полноэкранном режиме"
+
+#: ui.py:1930
+msgid "Font size in slideshow"
+msgstr "Размер шрифта в слайд-шоу"
+
+#: ui.py:1931
+msgid "Scaling Mode"
+msgstr "Режим масштабирования"
+
+#: ui.py:1932
+msgid "Slide Time (seconds)"
+msgstr "Время смены слайдов (в сек.)"
+
+#: ui.py:1933
+msgid "Show Infoline"
+msgstr "Показать инфо строку"
+
+#: ui.py:1934
+msgid "Textcolor"
+msgstr "Цвет текста"
+
+#: ui.py:1935
+msgid "Backgroundcolor"
+msgstr "Цвет фона"
+
+#: ui.py:1936
+msgid "Slide picture in loop"
+msgstr "Картинка слайдов в цикле"
+
+#: ui.py:1937
+msgid "Display in extensions menu"
+msgstr "Показать в меню дополнений"
+
+#: ui.py:1938
+msgid "Debug"
+msgstr "Отладка"
+
+#~ msgid "Aspect list..."
+#~ msgstr "Список соотношений сторон..."
+
+#~ msgid "Bestfit"
+#~ msgstr "Bestfit"
+
+#~ msgid "Infrared"
+#~ msgstr "Инфракрасный"
+
+#~ msgid "Letterbox"
+#~ msgstr "Letterbox"
+
+#~ msgid "Non Linear"
+#~ msgstr "Non Linear"
+
+#~ msgid "PanScan"
+#~ msgstr "PanScan"
+
+#~ msgid "Please select an aspect ratio..."
+#~ msgstr "Пожалуйста, выберите соотношение сторон..."
+
+#~ msgid "Resolution"
+#~ msgstr "Разрешение"
+
+#~ msgid "http://www.foreca.com"
+#~ msgstr "http://www.foreca.com"
