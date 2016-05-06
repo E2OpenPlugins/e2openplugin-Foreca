@@ -2,230 +2,233 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-08 19:36+0100\n"
-"PO-Revision-Date: 2012-10-08 19:39+0100\n"
-"Last-Translator: JuSt611 <Software@Strasdas.de>\n"
+"POT-Creation-Date: 2016-05-06 13:58+0200\n"
+"PO-Revision-Date: 2016-05-06 13:58+0200\n"
+"Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
 "Language-Team: \n"
 "Language: lv_LV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: ../../../\n"
+"X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:134
-msgid "simple"
-msgstr "vienkāršs"
-
-#: plugin.py:134
-msgid "better"
-msgstr "labāks"
-
-#: plugin.py:135 plugin.py:136
-msgid "black"
-msgstr "melns"
-
-#: plugin.py:135 plugin.py:136
-msgid "blue"
-msgstr "zils"
-
-#: plugin.py:135 plugin.py:136
-msgid "red"
-msgstr "sarkans"
-
-#: plugin.py:135 plugin.py:136
-msgid "yellow"
-msgstr "dzeltens"
-
-#: plugin.py:135 plugin.py:136
-msgid "green"
-msgstr "zaļš"
-
-#: plugin.py:142
-msgid "Metric (C, m/s)"
-msgstr "Metriskās (C, m/s)"
-
-#: plugin.py:142
-msgid "Metric (C, km/h)"
-msgstr "Metriskās (C, km/st.)"
-
-#: plugin.py:142
-msgid "Imperial (C, mph)"
-msgstr "Britu (C, jūdzes/st.)"
-
-#: plugin.py:142
-msgid "US (F, mph)"
-msgstr "ASV (F, jūdzes/st.)"
-
-#: plugin.py:143
-msgid "12 h"
-msgstr "12 st."
-
-#: plugin.py:143
-msgid "24 h"
-msgstr "24 st."
-
-#: plugin.py:147 plugin.py:365 plugin.py:402 plugin.py:648 plugin.py:711
-#: plugin.py:1263
-msgid "http://www.foreca.com"
-msgstr "http://www.foreca.lv"
-
-#: plugin.py:249
-msgid "°F"
-msgstr ""
-
-#: plugin.py:252
-msgid "°C"
-msgstr ""
-
-#: plugin.py:287
-msgid "Temp"
-msgstr "Temp"
-
-#: plugin.py:296
-msgid "Wind"
-msgstr "Vējš"
-
-#: plugin.py:449 plugin.py:468 plugin.py:1699
+#: plugin.py:21 plugin.py:27 ui.py:615 ui.py:634
 msgid "Foreca Weather Forecast"
 msgstr "Foreca Laika ziņas"
 
-#: plugin.py:452 plugin.py:517
+#: plugin.py:22 plugin.py:28
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Laika ziņas tuvākajām 10 dienām"
+
+#: ui.py:164
+msgid "simple"
+msgstr "vienkāršs"
+
+#: ui.py:164
+msgid "better"
+msgstr "labāks"
+
+#: ui.py:165 ui.py:166
+msgid "black"
+msgstr "melns"
+
+#: ui.py:165 ui.py:166
+msgid "blue"
+msgstr "zils"
+
+#: ui.py:165 ui.py:166
+msgid "red"
+msgstr "sarkans"
+
+#: ui.py:165 ui.py:166
+msgid "yellow"
+msgstr "dzeltens"
+
+#: ui.py:165 ui.py:166
+msgid "green"
+msgstr "zaļš"
+
+#: ui.py:173
+msgid "Metric (C, m/s)"
+msgstr "Metriskās (C, m/s)"
+
+#: ui.py:173
+msgid "Metric (C, km/h)"
+msgstr "Metriskās (C, km/st.)"
+
+#: ui.py:173
+msgid "Imperial (C, mph)"
+msgstr "Britu (C, jūdzes/st.)"
+
+#: ui.py:173
+msgid "US (F, mph)"
+msgstr "ASV (F, jūdzes/st.)"
+
+#: ui.py:174
+msgid "12 h"
+msgstr "12 st."
+
+#: ui.py:174
+msgid "24 h"
+msgstr "24 st."
+
+#: ui.py:178 ui.py:526 ui.py:567 ui.py:817 ui.py:880 ui.py:1522
+msgid "http://www.foreca.com/"
+msgstr ""
+
+#: ui.py:394
+msgid "°F"
+msgstr ""
+
+#: ui.py:397
+msgid "°C"
+msgstr ""
+
+#: ui.py:438
+msgid "Temp"
+msgstr "Temp"
+
+#: ui.py:453
+msgid "Wind"
+msgstr "Vējš"
+
+#: ui.py:618 ui.py:683
 msgid "Please wait ..."
 msgstr "Lūdzu uzgaidiet..."
 
-#: plugin.py:456
+#: ui.py:622
 msgid "Week"
 msgstr "Nedēļa"
 
-#: plugin.py:457
+#: ui.py:623
 msgid "City"
 msgstr "Pilsēta"
 
-#: plugin.py:463 plugin.py:675 plugin.py:728 plugin.py:907
+#: ui.py:629 ui.py:844 ui.py:897 ui.py:1096
 msgid "Favorite 1"
 msgstr "Favorīts 1"
 
-#: plugin.py:464 plugin.py:676 plugin.py:729 plugin.py:908
+#: ui.py:630 ui.py:845 ui.py:898 ui.py:1097
 msgid "Favorite 2"
 msgstr "Favorīts 2"
 
-#: plugin.py:465 plugin.py:677 plugin.py:730 plugin.py:909
+#: ui.py:631 ui.py:846 ui.py:899 ui.py:1098
 msgid "Home"
 msgstr "Mājas"
 
-#: plugin.py:466
+#: ui.py:632
 msgid "Legend"
 msgstr "Skaidroj."
 
-#: plugin.py:467
+#: ui.py:633
 msgid "Maps"
 msgstr "Kartes"
 
-#: plugin.py:468
+#: ui.py:634
 msgid "Version "
 msgstr "Versija "
 
-#: plugin.py:473 plugin.py:916 plugin.py:1104 plugin.py:1348
+#: ui.py:639 ui.py:1105 ui.py:1342 ui.py:1623
 msgid "Exit - End"
 msgstr "Exit - Beigt"
 
-#: plugin.py:474
+#: ui.py:640
 msgid "Menu - Weather maps"
 msgstr "Menu - Kartes"
 
-#: plugin.py:475
+#: ui.py:641
 msgid "Info - Legend"
 msgstr "Info - Skaidrojumi"
 
-#: plugin.py:476
+#: ui.py:642
 msgid "OK - City"
 msgstr "OK - Pilsēta"
 
-#: plugin.py:477
+#: ui.py:643
 msgid "Left - Previous day"
 msgstr "Pa kreisi -  Iepriekšējā diena"
 
-#: plugin.py:478
+#: ui.py:644
 msgid "Right - Next day"
 msgstr "Pa labi - Nākošā diena"
 
-#: plugin.py:479
+#: ui.py:645
 msgid "Up - Previous page"
 msgstr "Augšup - Iepriekšējā lapa"
 
-#: plugin.py:480
+#: ui.py:646
 msgid "Down - Next page"
 msgstr "Lejup - nākošā lapa"
 
-#: plugin.py:481
+#: ui.py:647
 msgid "Left arrow - Previous day"
 msgstr "Pa kreisi - Iepriekšējā diena"
 
-#: plugin.py:482
+#: ui.py:648
 msgid "Right arrow - Next day"
 msgstr "Pa labi - Nākamā diena"
 
-#: plugin.py:483
+#: ui.py:649
 msgid "Red - Weekoverview"
 msgstr "Sakranā - Nedēļas pārskats"
 
-#: plugin.py:485
+#: ui.py:651
 msgid "Green - Favorite 1"
 msgstr "Zaļā - Favorīts 1"
 
-#: plugin.py:486
+#: ui.py:652
 msgid "Yellow - Favorite 2"
 msgstr "Dzeltanā - Favorīts 2"
 
-#: plugin.py:487
+#: ui.py:653
 msgid "Blue - Home"
 msgstr "Zilā - Mājas"
 
-#: plugin.py:488
+#: ui.py:654
 msgid "0 - Today"
 msgstr "0 - Šodien"
 
-#: plugin.py:489
+#: ui.py:655
 msgid "1 - Today + 1 day"
 msgstr "1 - Šodien + 1 Diena"
 
-#: plugin.py:490
+#: ui.py:656
 msgid "2 - Today + 2 days"
 msgstr "2 - Šodien + 2 Dienas"
 
-#: plugin.py:491
+#: ui.py:657
 msgid "3 - Today + 3 days"
 msgstr "3 - Šodien + 3 Dienas"
 
-#: plugin.py:492
+#: ui.py:658
 msgid "4 - Today + 4 days"
 msgstr "4 - Šodien + 4 Dienas"
 
-#: plugin.py:493
+#: ui.py:659
 msgid "5 - Today + 5 days"
 msgstr "5 - Šodien + 5 Dienas"
 
-#: plugin.py:494
+#: ui.py:660
 msgid "6 - Today + 6 days"
 msgstr "6 - Šodien + 6 Dienas"
 
-#: plugin.py:495
+#: ui.py:661
 msgid "7 - Today + 7 days"
 msgstr "7 - Šodien + 7 Dienas"
 
-#: plugin.py:496
+#: ui.py:662
 msgid "8 - Today + 8 days"
 msgstr "8 - Šodien + 8 Dienas"
 
-#: plugin.py:497
+#: ui.py:663
 msgid "9 - Today + 9 days"
 msgstr "9 - Šodien + 9 Dienas"
 
-#: plugin.py:655
+#: ui.py:824
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -261,63 +264,63 @@ msgstr ""
 "\n"
 "Vēja virziens = piem. Bultiņa pa labi: Rietumu vējšs"
 
-#: plugin.py:890 plugin.py:911
+#: ui.py:1090 ui.py:1100
 msgid "Select a city"
 msgstr "Izvēlieties pilsētu"
 
-#: plugin.py:910
+#: ui.py:1099
 msgid "Forecast"
 msgstr "Prognoze"
 
-#: plugin.py:917 plugin.py:1105 plugin.py:1349
+#: ui.py:1106 ui.py:1343 ui.py:1624
 msgid "Left - Previous page"
 msgstr "Pa kreisi - Iepriekšējā lapa"
 
-#: plugin.py:918 plugin.py:1106 plugin.py:1350
+#: ui.py:1107 ui.py:1344 ui.py:1625
 msgid "Right - Next page"
 msgstr "Pa labi - Nākošā lapa"
 
-#: plugin.py:919 plugin.py:1107 plugin.py:1351
+#: ui.py:1108 ui.py:1345 ui.py:1626
 msgid "Up - Previous"
 msgstr "Agšup - iepriekšejais"
 
-#: plugin.py:920 plugin.py:1108 plugin.py:1352
+#: ui.py:1109 ui.py:1346 ui.py:1627
 msgid "Down - Next"
 msgstr "Lejup - nākošais"
 
-#: plugin.py:921
+#: ui.py:1110
 msgid "OK - Select"
 msgstr "OK - Izvēlēties"
 
-#: plugin.py:922
+#: ui.py:1111
 msgid "Green - Assign to Favorite 1"
 msgstr "Zaļā - piešķirt Favorītam 1"
 
-#: plugin.py:923
+#: ui.py:1112
 msgid "Yellow - Assign to Favorite 2"
 msgstr "Dzeltenā - piešķirt Favorītam 2"
 
-#: plugin.py:924
+#: ui.py:1113
 msgid "Blue - Assign to Home"
 msgstr "Zilā - piešķirt Mājas"
 
-#: plugin.py:925
+#: ui.py:1114
 msgid "Channel+ - 500 back"
 msgstr "Kanāls+ - 500 atpakaļ"
 
-#: plugin.py:926
+#: ui.py:1115
 msgid "Channel- - 500 forward"
 msgstr "Kanāls- - 500 uz priekšu"
 
-#: plugin.py:927
+#: ui.py:1116
 msgid "Volume- - 100 forward"
 msgstr "Skaļums- - 100 uz priekšu"
 
-#: plugin.py:928
+#: ui.py:1117
 msgid "Volume+ - 100 back"
 msgstr "Skaļums+ - 100 atpakaļ"
 
-#: plugin.py:992
+#: ui.py:1195
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -327,7 +330,7 @@ msgstr ""
 "\n"
 "                      "
 
-#: plugin.py:1003
+#: ui.py:1206
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
@@ -337,7 +340,7 @@ msgstr ""
 "\n"
 "                   "
 
-#: plugin.py:1014
+#: ui.py:1217
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -347,318 +350,324 @@ msgstr ""
 "\n"
 "                    "
 
-#: plugin.py:1081 plugin.py:1099
+#: ui.py:1328 ui.py:1337
 msgid "Satellite photos"
 msgstr "Satelītattēli"
 
-#: plugin.py:1083
-msgid "Weather map Video"
-msgstr "Laika ziņu kartes video"
-
-#: plugin.py:1084
-msgid "Showerradar Video"
-msgstr "Lietus kartes video"
-
-#: plugin.py:1085
-msgid "Temperature Video"
-msgstr "Temperatūras Video"
-
-#: plugin.py:1086
-msgid "Cloudcover Video"
-msgstr "Mākoņu kartes video"
-
-#: plugin.py:1087
-msgid "Air pressure"
-msgstr "Atmosfēras spiediens"
-
-#: plugin.py:1088
-msgid "Eumetsat"
-msgstr "Eumetsat"
-
-#: plugin.py:1089
-msgid "Infrared"
-msgstr "Infrasarkanais"
-
-#: plugin.py:1095 plugin.py:1207
+#: ui.py:1333 ui.py:1459
 msgid "Continents"
 msgstr "Kontinenti"
 
-#: plugin.py:1096 plugin.py:1192 plugin.py:1196
+#: ui.py:1334 ui.py:1444 ui.py:1448
 msgid "Europe"
 msgstr "Eiropa"
 
-#: plugin.py:1097 plugin.py:1163 plugin.py:1172
+#: ui.py:1335 ui.py:1415 ui.py:1424
 msgid "Germany"
 msgstr "Vācija"
 
-#: plugin.py:1098 plugin.py:1342
+#: ui.py:1336 ui.py:1617
 msgid "Settings"
 msgstr "Iestatījumi"
 
-#: plugin.py:1109
+#: ui.py:1347
 msgid "Red - Continents"
 msgstr "Sarkanā - Kontinenti"
 
-#: plugin.py:1110
+#: ui.py:1348
 msgid "Green - Europe"
 msgstr "Zaļā - Eiropa"
 
-#: plugin.py:1111
+#: ui.py:1349
 msgid "Yellow - Germany"
 msgstr "Dzeltenā - Vācija"
 
-#: plugin.py:1112 plugin.py:1353
+#: ui.py:1350 ui.py:1628
 msgid "Blue - Settings"
 msgstr "Zilā - Iestatījumi"
 
-#: plugin.py:1113 plugin.py:1354
+#: ui.py:1351 ui.py:1629
 msgid "OK - Show"
 msgstr "OK - Rādīt"
 
-#: plugin.py:1142
+#: ui.py:1357
+msgid "Weather map Video"
+msgstr "Laika ziņu kartes video"
+
+#: ui.py:1358
+msgid "Showerradar Video"
+msgstr "Lietus kartes video"
+
+#: ui.py:1359
+msgid "Temperature Video"
+msgstr "Temperatūras Video"
+
+#: ui.py:1360
+msgid "Cloudcover Video"
+msgstr "Mākoņu kartes video"
+
+#: ui.py:1361
+msgid "Air pressure"
+msgstr "Atmosfēras spiediens"
+
+#: ui.py:1362
+msgid "Eumetsat"
+msgstr "Eumetsat"
+
+#: ui.py:1394
 msgid "Baden-Wuerttemberg"
 msgstr "Bādene-Virtemberga"
 
-#: plugin.py:1143
+#: ui.py:1395
 msgid "Bavaria"
 msgstr "Bavārija"
 
-#: plugin.py:1144
+#: ui.py:1396
 msgid "Berlin"
 msgstr "Berlīne"
 
-#: plugin.py:1145
+#: ui.py:1397
 msgid "Brandenburg"
 msgstr "Brandenburga"
 
-#: plugin.py:1146
+#: ui.py:1398
 msgid "Bremen"
 msgstr "Brēmene"
 
-#: plugin.py:1147
+#: ui.py:1399
 msgid "Hamburg"
 msgstr "Hamburga"
 
-#: plugin.py:1148
+#: ui.py:1400
 msgid "Hesse"
 msgstr "Hessene"
 
-#: plugin.py:1149
+#: ui.py:1401
 msgid "Mecklenburg-Vorpommern"
 msgstr "Meklenburga-Priekšpomerānija"
 
-#: plugin.py:1150
+#: ui.py:1402
 msgid "Lower Saxony"
 msgstr "Lejassaksija"
 
-#: plugin.py:1151
+#: ui.py:1403
 msgid "North Rhine-Westphalia"
 msgstr "Ziemeļreina-Vestfāle"
 
-#: plugin.py:1152
+#: ui.py:1404
 msgid "Rhineland-Palatine"
 msgstr "Reinzeme-Pfalca"
 
-#: plugin.py:1153
+#: ui.py:1405
 msgid "Saarland"
 msgstr "Zāra"
 
-#: plugin.py:1154
+#: ui.py:1406
 msgid "Saxony"
 msgstr "Saksija"
 
-#: plugin.py:1155
+#: ui.py:1407
 msgid "Saxony-Anhalt"
 msgstr "Saksija-Anhalte"
 
-#: plugin.py:1156
+#: ui.py:1408
 msgid "Schleswig-Holstein"
 msgstr "Šlēsviga-Holšteina"
 
-#: plugin.py:1157
+#: ui.py:1409
 msgid "Thuringia"
 msgstr "Tīringena"
 
-#: plugin.py:1167
+#: ui.py:1419
 msgid "Austria"
 msgstr "Austrija"
 
-#: plugin.py:1168
+#: ui.py:1420
 msgid "Belgium"
 msgstr "Beļģija"
 
-#: plugin.py:1169
+#: ui.py:1421
 msgid "Czech Republic"
 msgstr "Čehija"
 
-#: plugin.py:1170
+#: ui.py:1422
 msgid "Denmark"
 msgstr "Dānija"
 
-#: plugin.py:1171
+#: ui.py:1423
 msgid "France"
 msgstr "Francija"
 
-#: plugin.py:1173
+#: ui.py:1425
 msgid "Greece"
 msgstr "Grieķija"
 
-#: plugin.py:1174
+#: ui.py:1426
 msgid "Great Britain"
 msgstr "Lielbritānija"
 
-#: plugin.py:1175
+#: ui.py:1427
 msgid "Hungary"
 msgstr "Ungārija"
 
-#: plugin.py:1176
+#: ui.py:1428
 msgid "Ireland"
 msgstr "Īrija"
 
-#: plugin.py:1177
+#: ui.py:1429
 msgid "Italy"
 msgstr "Itālija"
 
-#: plugin.py:1178
+#: ui.py:1430
 msgid "Latvia"
 msgstr "Latvija"
 
-#: plugin.py:1179
+#: ui.py:1431
 msgid "Luxembourg"
 msgstr "Luksemburga"
 
-#: plugin.py:1180
+#: ui.py:1432
 msgid "Netherlands"
 msgstr "Nīderlande"
 
-#: plugin.py:1181
+#: ui.py:1433
 msgid "Poland"
 msgstr "Polija"
 
-#: plugin.py:1182
+#: ui.py:1434
 msgid "Portugal"
 msgstr "Portugāle"
 
-#: plugin.py:1183
+#: ui.py:1435
 msgid "Russia"
 msgstr "Krievija"
 
-#: plugin.py:1184
+#: ui.py:1436
 msgid "Slovakia"
 msgstr "Slovākija"
 
-#: plugin.py:1185
+#: ui.py:1437
 msgid "Spain"
 msgstr "Spānija"
 
-#: plugin.py:1186
+#: ui.py:1438
 msgid "Switzerland"
 msgstr "Šveice"
 
-#: plugin.py:1197
+#: ui.py:1449
 msgid "North Africa"
 msgstr "Ziemeļāfrika"
 
-#: plugin.py:1198
+#: ui.py:1450
 msgid "South Africa"
 msgstr "Dienvidāfrika"
 
-#: plugin.py:1199
+#: ui.py:1451
 msgid "North America"
 msgstr "Ziemeļamerika"
 
-#: plugin.py:1200
+#: ui.py:1452
 msgid "Middle America"
 msgstr "Centrālamerika"
 
-#: plugin.py:1201
+#: ui.py:1453
 msgid "South America"
 msgstr "Dienvidamerika"
 
-#: plugin.py:1202
+#: ui.py:1454
 msgid "Middle East"
 msgstr "Tuvie austrumi"
 
-#: plugin.py:1203
+#: ui.py:1455
 msgid "East Asia"
 msgstr "Austrumāzija"
 
-#: plugin.py:1204
+#: ui.py:1456
 msgid "Southeast Asia"
 msgstr "Dienvidāzija"
 
-#: plugin.py:1205
+#: ui.py:1457
 msgid "Middle Asia"
 msgstr "Vidusāzija"
 
-#: plugin.py:1206
+#: ui.py:1458
 msgid "Australia"
 msgstr "Austrālija"
 
-#: plugin.py:1289
+#: ui.py:1546
 msgid "h"
 msgstr "st."
 
-#: plugin.py:1494
+#: ui.py:1766
 msgid "Please wait, photo is being loaded ..."
 msgstr "Foto tiek ielādēts. Lūdzu gaidiet..."
 
-#: plugin.py:1627 plugin.py:1630
+#: ui.py:1899 ui.py:1902
 msgid "SlideShow Settings"
 msgstr "Saidrādes iestatījumi"
 
-#: plugin.py:1628
+#: ui.py:1900
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: plugin.py:1629
+#: ui.py:1901
 msgid "Save"
 msgstr "Saglabāt"
 
-#: plugin.py:1654
+#: ui.py:1926
 msgid "Select units"
 msgstr "Izvēlieties vienības"
 
-#: plugin.py:1655
+#: ui.py:1927
 msgid "Select time format"
 msgstr "Izvēlieties laika formātu"
 
-#: plugin.py:1656
+#: ui.py:1928
 msgid "City names as labels in the Main screen"
 msgstr "Pilsētu nosaukumi kā apzīmējums pamatekrānā"
 
-#: plugin.py:1657
+#: ui.py:1929
 msgid "Frame size in full view"
 msgstr "Pa visu ekrānu"
 
-#: plugin.py:1658
+#: ui.py:1930
+msgid "Font size in slideshow"
+msgstr ""
+
+#: ui.py:1931
 msgid "Scaling Mode"
 msgstr "Mēroga režīms"
 
-#: plugin.py:1659
+#: ui.py:1932
 msgid "Slide Time (seconds)"
 msgstr "Slaida ilgums"
 
-#: plugin.py:1660
+#: ui.py:1933
 msgid "Show Infoline"
 msgstr "Rādīt inforindu"
 
-#: plugin.py:1661
+#: ui.py:1934
 msgid "Textcolor"
 msgstr "Teksta krāsa"
 
-#: plugin.py:1662
+#: ui.py:1935
 msgid "Backgroundcolor"
 msgstr "Fona krāsa"
 
-#: plugin.py:1663
+#: ui.py:1936
 msgid "Slide picture in loop"
 msgstr "Slaidrāde pa apli"
 
-#: plugin.py:1664
+#: ui.py:1937
+msgid "Display in extensions menu"
+msgstr ""
+
+#: ui.py:1938
 msgid "Debug"
 msgstr ""
 
-#: plugin.py:1699
-msgid "Weather forecast for the upcoming 10 days"
-msgstr "Laika ziņas tuvākajām 10 dienām"
+#~ msgid "http://www.foreca.com"
+#~ msgstr "http://www.foreca.lv"
+
+#~ msgid "Infrared"
+#~ msgstr "Infrasarkanais"
