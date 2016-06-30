@@ -458,7 +458,9 @@ class MainMenuList(MenuList):
 		x, y, w, h = self.valText1
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[5], color=weiss, color_sel=weiss))
 		x, y, w, h = self.valText2
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[6], color=mblau, color_sel=mblau))
+		textsechs=self.x[6]
+		textsechs=textsechs.replace("&deg;", "") + tempUnit
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
 		x, y, w, h = self.valText3
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
 
