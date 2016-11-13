@@ -1275,7 +1275,7 @@ class SatPanelList(MenuList):
 			self.backgroundColorSelected = parseColor(value).argb()
 		def textPos(value):
 			self.textPos = map(int, value.split(","))
-			l = len(self.self.textPos)
+			l = len(self.textPos)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		for (attrib, value) in list(self.skinAttributes):
