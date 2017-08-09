@@ -26,31 +26,31 @@ msgstr "Prognóza počasí na následujících 10 dní"
 
 #: ui.py:164
 msgid "simple"
-msgstr "jednoduchý"
+msgstr "Jednoduchý"
 
 #: ui.py:164
 msgid "better"
-msgstr "lepší"
+msgstr "Lepší"
 
 #: ui.py:165 ui.py:166
 msgid "black"
-msgstr "černá"
+msgstr "Černá"
 
 #: ui.py:165 ui.py:166
 msgid "blue"
-msgstr "modrá"
+msgstr "Modrá"
 
 #: ui.py:165 ui.py:166
 msgid "red"
-msgstr "červená"
+msgstr "Červená"
 
 #: ui.py:165 ui.py:166
 msgid "yellow"
-msgstr "žlutá"
+msgstr "Žlutá"
 
 #: ui.py:165 ui.py:166
 msgid "green"
-msgstr "zelená"
+msgstr "Zelená"
 
 #: ui.py:173
 msgid "Metric (C, m/s)"
@@ -328,7 +328,7 @@ msgid ""
 "\n"
 "                                  "
 msgstr ""
-"Toto město je uloženo jako domů!\n"
+"Toto město je uloženo jako Domů!\n"
 "\n"
 "                                  "
 
