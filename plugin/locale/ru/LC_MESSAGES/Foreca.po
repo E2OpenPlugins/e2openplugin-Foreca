@@ -78,7 +78,7 @@ msgstr "24 часа"
 
 #: ui.py:178 ui.py:526 ui.py:567 ui.py:817 ui.py:880 ui.py:1522
 msgid "http://www.foreca.com/"
-msgstr ""
+msgstr "http://www.foreca.com/"
 
 #: ui.py:394
 msgid "°F"
@@ -444,7 +444,7 @@ msgstr "Гессе"
 
 #: ui.py:1401
 msgid "Mecklenburg-Vorpommern"
-msgstr "Мекленбург-передняя Померания"
+msgstr "Mecklenburg-Vorpommern"
 
 #: ui.py:1402
 msgid "Lower Saxony"
@@ -452,11 +452,11 @@ msgstr "Нижняя Саксония"
 
 #: ui.py:1403
 msgid "North Rhine-Westphalia"
-msgstr "Северный Рейн-Вестфалия"
+msgstr "North Rhine-Westphalia"
 
 #: ui.py:1404
 msgid "Rhineland-Palatine"
-msgstr ""
+msgstr "Rhineland-Palatine"
 
 #: ui.py:1405
 msgid "Saarland"
@@ -488,7 +488,7 @@ msgstr "Бельгия"
 
 #: ui.py:1421
 msgid "Czech Republic"
-msgstr ""
+msgstr "Чехия"
 
 #: ui.py:1422
 msgid "Denmark"
@@ -496,11 +496,11 @@ msgstr "Дания"
 
 #: ui.py:1423
 msgid "France"
-msgstr ""
+msgstr "Франция"
 
 #: ui.py:1425
 msgid "Greece"
-msgstr ""
+msgstr "Греция"
 
 #: ui.py:1426
 msgid "Great Britain"
@@ -508,7 +508,7 @@ msgstr "Великобритания"
 
 #: ui.py:1427
 msgid "Hungary"
-msgstr ""
+msgstr "Венгрия"
 
 #: ui.py:1428
 msgid "Ireland"
@@ -520,7 +520,7 @@ msgstr "Италия"
 
 #: ui.py:1430
 msgid "Latvia"
-msgstr ""
+msgstr "Латвия"
 
 #: ui.py:1431
 msgid "Luxembourg"
@@ -532,7 +532,7 @@ msgstr "Нидерланды"
 
 #: ui.py:1433
 msgid "Poland"
-msgstr ""
+msgstr "Польша"
 
 #: ui.py:1434
 msgid "Portugal"
@@ -540,11 +540,11 @@ msgstr "Португалия"
 
 #: ui.py:1435
 msgid "Russia"
-msgstr ""
+msgstr "Россия"
 
 #: ui.py:1436
 msgid "Slovakia"
-msgstr ""
+msgstr "Словакия"
 
 #: ui.py:1437
 msgid "Spain"
@@ -665,30 +665,3 @@ msgstr "Показать в меню дополнений"
 #: ui.py:1938
 msgid "Debug"
 msgstr "Отладка"
-
-#~ msgid "Aspect list..."
-#~ msgstr "Список соотношений сторон..."
-
-#~ msgid "Bestfit"
-#~ msgstr "Bestfit"
-
-#~ msgid "Infrared"
-#~ msgstr "Инфракрасный"
-
-#~ msgid "Letterbox"
-#~ msgstr "Letterbox"
-
-#~ msgid "Non Linear"
-#~ msgstr "Non Linear"
-
-#~ msgid "PanScan"
-#~ msgstr "PanScan"
-
-#~ msgid "Please select an aspect ratio..."
-#~ msgstr "Пожалуйста, выберите соотношение сторон..."
-
-#~ msgid "Resolution"
-#~ msgstr "Разрешение"
-
-#~ msgid "http://www.foreca.com"
-#~ msgstr "http://www.foreca.com"
