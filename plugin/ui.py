@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.7" 
+VERSION = "3.1.9"
 #
-#                    30.09.2017
+#                    01.10.2017
 #
 #     Source of information: http://www.foreca.com
 #
@@ -91,6 +91,13 @@ VERSION = "3.1.7"
 # 3.1.4 rem /www.metoffice.gov.uk due non existing infrared on this pages more
 # 3.1.7 fix url foreca com
 # 3.1.8 fix problem with national chars in favorite names
+# 3.1.9 renamed parsed variables, added humidity into list - for display in default screen must be:
+#	changed line:  		self.itemHeight = 90   ... change to new height, if is needed
+#	and rearanged lines:	self.valText1 = 365,5,600,28
+#				self.valText2 = 365,33,600,28
+#				self.valText3 = 365,59,600,28
+#				self.valText4 = 365,87,600,28
+#	similar in user skin - there text4Pos="x,y,w,h" must be added
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -263,6 +270,7 @@ class MainMenuList(MenuList):
 		self.valText1 = 365,5,600,28
 		self.valText2 = 365,33,600,28
 		self.valText3 = 365,59,600,28
+		self.valText4 = 365,87,600,28
 		###
 
 		self.listCompleted = []
@@ -338,6 +346,11 @@ class MainMenuList(MenuList):
 		def text3Pos(value):
 			self.valText3 = map(int, value.split(","))
 			l = len(self.valText3)
+			if l != 4:
+				warningWrongSkinParameter(attrib,4, l)
+		def text4Pos(value):
+			self.valText4 = map(int, value.split(","))
+			l = len(self.valText4)
 			if l != 4:
 				warningWrongSkinParameter(attrib,4, l)
 		for (attrib, value) in list(self.skinAttributes):
@@ -465,6 +478,8 @@ class MainMenuList(MenuList):
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
 		x, y, w, h = self.valText3
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
+		x, y, w, h = self.valText4
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[8], color=mblau, color_sel=mblau))
 
 		self.listCompleted.append(self.res)
 		self.idx += 1
@@ -970,10 +985,14 @@ class ForecaPreview(Screen, HelpableScreen):
 		if DEBUG: print pluginPrintname,  "description", str(description).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', re.DOTALL)
-		precipitation = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "precipitation", str(precipitation).lstrip("\t").lstrip()
+		feels = fulltext.findall(html)
+		if DEBUG: print pluginPrintname,  "feels", str(feels).lstrip("\t").lstrip()
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
+		precip = fulltext.findall(html)
+		if DEBUG: print pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip()
+
+		fulltext = re.compile(r'<div class="c3">.+?</strong><br />.+?</strong><br />(.+?)</', re.DOTALL)
 		humidity = fulltext.findall(html)
 		if DEBUG: print pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip()
 
@@ -990,11 +1009,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		x = 0
 		while x < timeEntries:
 			description[x] = self.konvert_uml(str(sub('<[^>]*>',"",description[x])))
-			precipitation[x] = self.konvert_uml(str(sub('<[^>]*>',"",precipitation[x])))
+			feels[x] = self.konvert_uml(str(sub('<[^>]*>',"",feels[x])))
+			precip[x] = self.konvert_uml(str(sub('<[^>]*>',"",precip[x])))
 			humidity[x] = self.konvert_uml(str(sub('<[^>]*>',"",humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
-			if DEBUG: print pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], precipitation[x] , humidity[x]
-			list.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], precipitation[x], humidity[x]])
+			if DEBUG: print pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x]
+			list.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
 		self["Titel2"].text = ""
