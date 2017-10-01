@@ -90,6 +90,7 @@ VERSION = "3.1.7"
 # 3.1.3 Added font size for slideshow into setting
 # 3.1.4 rem /www.metoffice.gov.uk due non existing infrared on this pages more
 # 3.1.7 fix url foreca com
+# 3.1.8 fix problem with national chars in favorite names
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -567,7 +568,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print pluginPrintname, "home location:", self.ort
 		
-		MAIN_PAGE = "http://www.foreca.com" + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "initial link:" , MAIN_PAGE
 		
 		if HD:
@@ -817,7 +818,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = "http://www.foreca.com" + "/" + self.ort + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "day link:", MAIN_PAGE
 
 		# Show in GUI
