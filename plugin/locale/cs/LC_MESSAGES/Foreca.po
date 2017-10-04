@@ -272,7 +272,7 @@ msgstr "Výběr města"
 
 #: ui.py:1099
 msgid "Forecast"
-msgstr "Počasí "
+msgstr "Předpověď"
 
 #: ui.py:1106 ui.py:1343 ui.py:1624
 msgid "Left - Previous page"
