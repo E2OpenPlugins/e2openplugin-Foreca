@@ -11,9 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.1.9"
+VERSION = "3.2.0"
 #
-#                    01.10.2017
+#                    04.10.2017
 #
 #     Source of information: http://www.foreca.com
 #
@@ -98,6 +98,7 @@ VERSION = "3.1.9"
 #				self.valText3 = 365,59,600,28
 #				self.valText4 = 365,87,600,28
 #	similar in user skin - there text4Pos="x,y,w,h" must be added
+# 3.2.0	fixed satellite maps, removed infrared - page not exist more, sanity check if nothing is downloaded
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -1384,7 +1385,6 @@ class SatPanel(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
 		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
-		#self.Mlist.append(self.SatEntryItem((_("Infrared"), 'infrarotmetoffice')))
 		
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
@@ -1523,34 +1523,15 @@ class SatPanel(Screen, HelpableScreen):
 			devicepath = "/tmp/meteogram.png"
 			urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
 			self.session.open(PicView, devicepath, 0, False)
-
-		elif menu == "infrarotmetoffice":
-			# http://www.metoffice.gov.uk/satpics/latest_IR.html
-			devicepath = "/tmp/sat.html"
-			urllib.urlretrieve("http://www.metoffice.gov.uk/satpics/latest_IR.html", devicepath)
-			fd=open(devicepath)
-			html=fd.read()
-			fd.close()
-
-			#http://www.metoffice.gov.uk/weather/images/eurir_sat_201104251500.jpg
-			# <img src='/weather/images/eurir_sat_201104251500.jpg' name="sat"
-			fulltext = re.compile(r'<img src=\'(.+?)\' name="sat"', re.DOTALL)
-			PressureLink = fulltext.findall(html)
-			devicepath = "/tmp/meteogram.png"
-			urllib.urlretrieve("http://www.metoffice.gov.uk" + PressureLink[0], devicepath)
-			self.session.open(PicView, devicepath, 0, False)
-		
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.com" + "/" + self.ort + "?map=" + menu
+			url = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
-			urllib.urlretrieve(url, devicepath)
-			fd=open(devicepath)
-			html=fd.read()
-			fd.close()
+			resp = urllib2.urlopen(url)
+			html = resp.read()
 
-			fulltext = re.compile(r'http://cache-(.+?)\'', re.DOTALL)
+			fulltext = re.compile(r'//cache-(.+?)\'', re.DOTALL)
 			PressureLink = fulltext.findall(html)
 
 			# Load Picture for Slideshow
@@ -1559,7 +1540,7 @@ class SatPanel(Screen, HelpableScreen):
 			zehner = "1"
 			x = 0
 			while x < max:
-				url = "http://cache-" + PressureLink[x].replace('[TYPE]',menu)
+				url = "http://cache-" + PressureLink[x].split('?')[0].replace('[TYPE]', menu)
 				foundPos = url.find("0000.jpg")
 				if DEBUG: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
 				if foundPos ==-1:
@@ -1798,10 +1779,11 @@ class View_Slideshow(Screen):
 		self.filelist = FileList(CACHE_PATH, showDirectories = False, matchingPattern = "^.*\.(jpg)", useServiceRef = False)
 
 		for x in self.filelist.getFileList():
-			if x[0][1] == False:
-				self.picfilelist.append(CACHE_PATH + x[0][0])
-			else:
-				self.dirlistcount += 1
+			if x[0][0]:
+				if x[0][1] == False:
+					self.picfilelist.append(CACHE_PATH + x[0][0])
+				else:
+					self.dirlistcount += 1
 
 		self.maxentry = len(self.picfilelist)-1
 		self.pindex = pindex - self.dirlistcount
