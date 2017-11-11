@@ -376,7 +376,7 @@ msgstr "Красная - континенты"
 
 #: ui.py:1348
 msgid "Green - Europe"
-msgstr "Зеленая - Увропа"
+msgstr "Зеленая - Европа"
 
 #: ui.py:1349
 msgid "Yellow - Germany"
@@ -444,7 +444,7 @@ msgstr "Гессе"
 
 #: ui.py:1401
 msgid "Mecklenburg-Vorpommern"
-msgstr "Mecklenburg-Vorpommern"
+msgstr "Мекленбург-Передняя Померания"
 
 #: ui.py:1402
 msgid "Lower Saxony"
@@ -452,15 +452,15 @@ msgstr "Нижняя Саксония"
 
 #: ui.py:1403
 msgid "North Rhine-Westphalia"
-msgstr "North Rhine-Westphalia"
+msgstr "Северный Рейн-Вестфалия"
 
 #: ui.py:1404
 msgid "Rhineland-Palatine"
-msgstr "Rhineland-Palatine"
+msgstr "Рейнланд-Пфальц"
 
 #: ui.py:1405
 msgid "Saarland"
-msgstr "Саарланд"
+msgstr "Саар"
 
 #: ui.py:1406
 msgid "Saxony"
