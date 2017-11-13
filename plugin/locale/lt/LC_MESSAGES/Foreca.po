@@ -1,0 +1,666 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Foreca 3.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-06 13:58+0200\n"
+"PO-Revision-Date: 2017-11-13 11:42+0200\n"
+"Last-Translator: Vytenis P. <vyteniui@gmail.com>\n"
+"Language-Team: Vytenis P. vyteniui@gmail.com\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.0.4\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: plugin.py:21 plugin.py:27 ui.py:615 ui.py:634
+msgid "Foreca Weather Forecast"
+msgstr "Foreca orų prognozė"
+
+#: plugin.py:22 plugin.py:28
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Orų prognozė artimiausioms 10-čiai dienų"
+
+#: ui.py:164
+msgid "simple"
+msgstr "paprastas"
+
+#: ui.py:164
+msgid "better"
+msgstr "geresnis"
+
+#: ui.py:165 ui.py:166
+msgid "black"
+msgstr "juodas"
+
+#: ui.py:165 ui.py:166
+msgid "blue"
+msgstr "mėlynas"
+
+#: ui.py:165 ui.py:166
+msgid "red"
+msgstr "raudonas"
+
+#: ui.py:165 ui.py:166
+msgid "yellow"
+msgstr "geltonas"
+
+#: ui.py:165 ui.py:166
+msgid "green"
+msgstr "žalias"
+
+#: ui.py:173
+msgid "Metric (C, m/s)"
+msgstr "Metrinė (°C, m/sek.)"
+
+#: ui.py:173
+msgid "Metric (C, km/h)"
+msgstr "Metrinė (°C, km/val.)"
+
+#: ui.py:173
+msgid "Imperial (C, mph)"
+msgstr "Imperinė (°C, mylių/val.)"
+
+#: ui.py:173
+msgid "US (F, mph)"
+msgstr "US (°F, mylių/val.)"
+
+#: ui.py:174
+msgid "12 h"
+msgstr "12 val."
+
+#: ui.py:174
+msgid "24 h"
+msgstr "24 val."
+
+#: ui.py:178 ui.py:526 ui.py:567 ui.py:817 ui.py:880 ui.py:1522
+msgid "http://www.foreca.com/"
+msgstr "http://www.foreca.com/"
+
+#: ui.py:394
+msgid "°F"
+msgstr "°F"
+
+#: ui.py:397
+msgid "°C"
+msgstr "°C"
+
+#: ui.py:438
+msgid "Temp"
+msgstr "Temperatūra"
+
+#: ui.py:453
+msgid "Wind"
+msgstr "Vėjas"
+
+#: ui.py:618 ui.py:683
+msgid "Please wait ..."
+msgstr "Palaukite..."
+
+#: ui.py:622
+msgid "Week"
+msgstr "Savaitė"
+
+#: ui.py:623
+msgid "City"
+msgstr "Miestas"
+
+#: ui.py:629 ui.py:844 ui.py:897 ui.py:1096
+msgid "Favorite 1"
+msgstr "Miestas 1"
+
+#: ui.py:630 ui.py:845 ui.py:898 ui.py:1097
+msgid "Favorite 2"
+msgstr "Miestas 2"
+
+#: ui.py:631 ui.py:846 ui.py:899 ui.py:1098
+msgid "Home"
+msgstr "Namai"
+
+#: ui.py:632
+msgid "Legend"
+msgstr "Paaiškinimai"
+
+#: ui.py:633
+msgid "Maps"
+msgstr "Žemėlapiai"
+
+#: ui.py:634
+msgid "Version "
+msgstr "Versija"
+
+#: ui.py:639 ui.py:1105 ui.py:1342 ui.py:1623
+msgid "Exit - End"
+msgstr "'Exit' - užverti"
+
+#: ui.py:640
+msgid "Menu - Weather maps"
+msgstr "'Menu' - orų žemėlapiai"
+
+#: ui.py:641
+msgid "Info - Legend"
+msgstr "'Info' - paaiškinimai"
+
+#: ui.py:642
+msgid "OK - City"
+msgstr "'OK' - miestas"
+
+#: ui.py:643
+msgid "Left - Previous day"
+msgstr "'Kairėn' - ankstesnė diena"
+
+#: ui.py:644
+msgid "Right - Next day"
+msgstr "'Dešinėn' - sekanti diena"
+
+#: ui.py:645
+msgid "Up - Previous page"
+msgstr "'Aukštyn' - ankstesnis puslapis"
+
+#: ui.py:646
+msgid "Down - Next page"
+msgstr "'Žemyn' - sekantis puslapis"
+
+#: ui.py:647
+msgid "Left arrow - Previous day"
+msgstr "'Rodyklė kairėn' - ankstesnė diena"
+
+#: ui.py:648
+msgid "Right arrow - Next day"
+msgstr "'Rodyklė dešinėn' - sekanti diena"
+
+#: ui.py:649
+msgid "Red - Weekoverview"
+msgstr "'RAUDONAS' - savaitės apžvalga"
+
+#: ui.py:651
+msgid "Green - Favorite 1"
+msgstr "'ŽALIAS' - miestas 1"
+
+#: ui.py:652
+msgid "Yellow - Favorite 2"
+msgstr "'GELTONAS' - miestas 2"
+
+#: ui.py:653
+msgid "Blue - Home"
+msgstr "'MĖLYNAS' - namai"
+
+#: ui.py:654
+msgid "0 - Today"
+msgstr "0 - šiandien"
+
+#: ui.py:655
+msgid "1 - Today + 1 day"
+msgstr "1 - šiandien + 1 diena"
+
+#: ui.py:656
+msgid "2 - Today + 2 days"
+msgstr "2 - šiandien + 2 dienos"
+
+#: ui.py:657
+msgid "3 - Today + 3 days"
+msgstr "3 - šiandien + 3 dienos"
+
+#: ui.py:658
+msgid "4 - Today + 4 days"
+msgstr "4 - šiandien + 4 dienos"
+
+#: ui.py:659
+msgid "5 - Today + 5 days"
+msgstr "5 - šiandien + 5 dienos"
+
+#: ui.py:660
+msgid "6 - Today + 6 days"
+msgstr "6 - šiandien + 6 dienos"
+
+#: ui.py:661
+msgid "7 - Today + 7 days"
+msgstr "7 - šiandien + 7 dienos"
+
+#: ui.py:662
+msgid "8 - Today + 8 days"
+msgstr "8 - šiandien + 8 dienos"
+
+#: ui.py:663
+msgid "9 - Today + 9 days"
+msgstr "9 - šiandien + 9 dienos"
+
+#: ui.py:824
+msgid ""
+"\n"
+"<   >       =   Prognosis next/previous day\n"
+"0 - 9       =   Prognosis (x) days from now\n"
+"\n"
+"VOL+/-  =   Fast scroll 100 (City choice)\n"
+"Bouquet+/- =   Fast scroll 500 (City choice)\n"
+"\n"
+"Info        =   This information\n"
+"Menu     =   Satellite photos and maps\n"
+"\n"
+"Red        =   Temperature chart for the upcoming 5 days\n"
+"Green    =   Go to Favorite 1\n"
+"Yellow    =   Go to Favorite 2\n"
+"Blue        =   Go to Home\n"
+"\n"
+"Wind direction = Arrow to right: Wind from the West"
+msgstr ""
+"\n"
+"'<'   '>'       =   Prognozė kitai/ankstesnei dienai\n"
+"'0' -' 9'       =   Prognozė X dienų nuo šios\n"
+"\n"
+"'VOL+/-'  =   Praleisti 100 (miesto pasirinkimas)\n"
+"'Bouquet+/-' =   Praleisti 500 (miesto pasirinkimas)\n"
+"\n"
+"'Info'        =   Ši informacija\n"
+"'Menu'     =   Palydovo nuotraukos ir žemėlapiai\n"
+"\n"
+"'RAUDONAS'        =   Temperatūros diagrama sekančioms 5 dienoms\n"
+"'ŽALIAS    =   Miestas 1\n"
+"'GELTONAS'    =   Miestas 2\n"
+"'MĖLYNAS'       =   namo \n"
+"\n"
+"Vėjo kryptis = rodyklė > į dešinę: vėjas iš vakarų"
+
+#: ui.py:1090 ui.py:1100
+msgid "Select a city"
+msgstr "Pasirinkite miestą"
+
+#: ui.py:1099
+msgid "Forecast"
+msgstr "Orų prognozė"
+
+#: ui.py:1106 ui.py:1343 ui.py:1624
+msgid "Left - Previous page"
+msgstr "'Kairėn' - ankstesnis puslapis"
+
+#: ui.py:1107 ui.py:1344 ui.py:1625
+msgid "Right - Next page"
+msgstr "'Dešinėn' - sekantis puslapis"
+
+#: ui.py:1108 ui.py:1345 ui.py:1626
+msgid "Up - Previous"
+msgstr "'Aukštyn' - ankstesnis"
+
+#: ui.py:1109 ui.py:1346 ui.py:1627
+msgid "Down - Next"
+msgstr "'Žemyn' - sekantis"
+
+#: ui.py:1110
+msgid "OK - Select"
+msgstr "'OK' - pasirinkti"
+
+#: ui.py:1111
+msgid "Green - Assign to Favorite 1"
+msgstr "'ŽALIAS' - priskirti, kaip miestas 1"
+
+#: ui.py:1112
+msgid "Yellow - Assign to Favorite 2"
+msgstr "'GELTONAS' - priskirti, kaip miestas 2"
+
+#: ui.py:1113
+msgid "Blue - Assign to Home"
+msgstr "'MĖLYNAS' - priskirti namams"
+
+#: ui.py:1114
+msgid "Channel+ - 500 back"
+msgstr "'Channel+' - 500 atgal"
+
+#: ui.py:1115
+msgid "Channel- - 500 forward"
+msgstr "'Channel-' - 500 pirmyn"
+
+#: ui.py:1116
+msgid "Volume- - 100 forward"
+msgstr "'Volume-' - 100 pirmyn"
+
+#: ui.py:1117
+msgid "Volume+ - 100 back"
+msgstr "'Volume+' - 100 atgal"
+
+#: ui.py:1195
+msgid ""
+"This city is stored as home!\n"
+"\n"
+"                                  "
+msgstr "Šis miestas išsaugotas, kaip namai!"
+
+#: ui.py:1206
+msgid ""
+"This city is stored as favorite 1!\n"
+"\n"
+"                             "
+msgstr ""
+"Šis miestas išsaugotas, kaip miestas 1!\n"
+"\n"
+"                             "
+
+#: ui.py:1217
+msgid ""
+"This city is stored as favorite 2!\n"
+"\n"
+"                             "
+msgstr ""
+"Šis miestas išsaugotas, kaip miestas 2!\n"
+"\n"
+"                             "
+
+#: ui.py:1328 ui.py:1337
+msgid "Satellite photos"
+msgstr "Nuotraukos iš palydovo"
+
+#: ui.py:1333 ui.py:1459
+msgid "Continents"
+msgstr "Žemynai"
+
+#: ui.py:1334 ui.py:1444 ui.py:1448
+msgid "Europe"
+msgstr "Europa"
+
+#: ui.py:1335 ui.py:1415 ui.py:1424
+msgid "Germany"
+msgstr "Vokietija"
+
+#: ui.py:1336 ui.py:1617
+msgid "Settings"
+msgstr "Nustatymai"
+
+#: ui.py:1347
+msgid "Red - Continents"
+msgstr "'RAUDONAS' - žemynai"
+
+#: ui.py:1348
+msgid "Green - Europe"
+msgstr "'ŽALIAS'- Europa"
+
+#: ui.py:1349
+msgid "Yellow - Germany"
+msgstr "'GELTONAS' - Vokietija"
+
+#: ui.py:1350 ui.py:1628
+msgid "Blue - Settings"
+msgstr "'MĖLYNAS' - nustatymai"
+
+#: ui.py:1351 ui.py:1629
+msgid "OK - Show"
+msgstr "'OK' - parodyti"
+
+#: ui.py:1357
+msgid "Weather map Video"
+msgstr "Orų žemėlapis - video"
+
+#: ui.py:1358
+msgid "Showerradar Video"
+msgstr "Kritulių frontas - video"
+
+#: ui.py:1359
+msgid "Temperature Video"
+msgstr "Temperatūra - video"
+
+#: ui.py:1360
+msgid "Cloudcover Video"
+msgstr "Debesuotumas - video"
+
+#: ui.py:1361
+msgid "Air pressure"
+msgstr "Oro slėgis"
+
+#: ui.py:1362
+msgid "Eumetsat"
+msgstr "Eumetsat puslapis"
+
+#: ui.py:1394
+msgid "Baden-Wuerttemberg"
+msgstr "Badenas-Viurtembergas"
+
+#: ui.py:1395
+msgid "Bavaria"
+msgstr "Bavarija"
+
+#: ui.py:1396
+msgid "Berlin"
+msgstr "Berlynas"
+
+#: ui.py:1397
+msgid "Brandenburg"
+msgstr "Brandenburgas"
+
+#: ui.py:1398
+msgid "Bremen"
+msgstr "Brėmenas"
+
+#: ui.py:1399
+msgid "Hamburg"
+msgstr "Hamburgas"
+
+#: ui.py:1400
+msgid "Hesse"
+msgstr "Hesenas"
+
+#: ui.py:1401
+msgid "Mecklenburg-Vorpommern"
+msgstr "Meklenburgas-Pomeranija"
+
+#: ui.py:1402
+msgid "Lower Saxony"
+msgstr "Žemutinė Saksonija"
+
+#: ui.py:1403
+msgid "North Rhine-Westphalia"
+msgstr "Šiaurės Reinas-Vestfalija"
+
+#: ui.py:1404
+msgid "Rhineland-Palatine"
+msgstr "Reino kraštas-Pfalcas"
+
+#: ui.py:1405
+msgid "Saarland"
+msgstr "Saro kraštas"
+
+#: ui.py:1406
+msgid "Saxony"
+msgstr "Saksonija"
+
+#: ui.py:1407
+msgid "Saxony-Anhalt"
+msgstr "Saksonija-Anhaltas"
+
+#: ui.py:1408
+msgid "Schleswig-Holstein"
+msgstr "Šlezvigas-Holšteinas"
+
+#: ui.py:1409
+msgid "Thuringia"
+msgstr "Tiūringija"
+
+#: ui.py:1419
+msgid "Austria"
+msgstr "Austrija"
+
+#: ui.py:1420
+msgid "Belgium"
+msgstr "Belgija"
+
+#: ui.py:1421
+msgid "Czech Republic"
+msgstr "Čekijos respublika"
+
+#: ui.py:1422
+msgid "Denmark"
+msgstr "Danija"
+
+#: ui.py:1423
+msgid "France"
+msgstr "Prancūzija"
+
+#: ui.py:1425
+msgid "Greece"
+msgstr "Graikija"
+
+#: ui.py:1426
+msgid "Great Britain"
+msgstr "Didžioji Britanija"
+
+#: ui.py:1427
+msgid "Hungary"
+msgstr "Vengrija"
+
+#: ui.py:1428
+msgid "Ireland"
+msgstr "Airija"
+
+#: ui.py:1429
+msgid "Italy"
+msgstr "Italija"
+
+#: ui.py:1430
+msgid "Latvia"
+msgstr "Latvija"
+
+#: ui.py:1431
+msgid "Luxembourg"
+msgstr "Liuksemburgas"
+
+#: ui.py:1432
+msgid "Netherlands"
+msgstr "Nyderlandai"
+
+#: ui.py:1433
+msgid "Poland"
+msgstr "Lenkija"
+
+#: ui.py:1434
+msgid "Portugal"
+msgstr "Portugalija"
+
+#: ui.py:1435
+msgid "Russia"
+msgstr "Rusija"
+
+#: ui.py:1436
+msgid "Slovakia"
+msgstr "Slovakija"
+
+#: ui.py:1437
+msgid "Spain"
+msgstr "Ispanija"
+
+#: ui.py:1438
+msgid "Switzerland"
+msgstr "Šveicarija"
+
+#: ui.py:1449
+msgid "North Africa"
+msgstr "Šiaurės Afrika"
+
+#: ui.py:1450
+msgid "South Africa"
+msgstr "Pietų Afrika"
+
+#: ui.py:1451
+msgid "North America"
+msgstr "Šiaurės Amerika"
+
+#: ui.py:1452
+msgid "Middle America"
+msgstr "Centrinė Amerika"
+
+#: ui.py:1453
+msgid "South America"
+msgstr "Pietų Amerika"
+
+#: ui.py:1454
+msgid "Middle East"
+msgstr "Vidurio Rytai"
+
+#: ui.py:1455
+msgid "East Asia"
+msgstr "Rytų Azija"
+
+#: ui.py:1456
+msgid "Southeast Asia"
+msgstr "Pietryčių Azija"
+
+#: ui.py:1457
+msgid "Middle Asia"
+msgstr "Vidurinė Azija"
+
+#: ui.py:1458
+msgid "Australia"
+msgstr "Australija"
+
+#: ui.py:1546
+msgid "h"
+msgstr "val."
+
+#: ui.py:1766
+msgid "Please wait, photo is being loaded ..."
+msgstr "Palaukite, kol įkeliama nuotrauka..."
+
+#: ui.py:1899 ui.py:1902
+msgid "SlideShow Settings"
+msgstr "Nuotraukų peržiūros nuostatos"
+
+#: ui.py:1900
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: ui.py:1901
+msgid "Save"
+msgstr "Išsaugoti"
+
+#: ui.py:1926
+msgid "Select units"
+msgstr "Matavimo vienetai"
+
+#: ui.py:1927
+msgid "Select time format"
+msgstr "Laiko formatas"
+
+#: ui.py:1928
+msgid "City names as labels in the Main screen"
+msgstr "Miestų pavadinimai, kaip žymės pagrindiniame lange"
+
+#: ui.py:1929
+msgid "Frame size in full view"
+msgstr "Kadro dydis pilnaekraniame režime"
+
+#: ui.py:1930
+msgid "Font size in slideshow"
+msgstr "Šrifto dydis nuotraukų peržiūroje"
+
+#: ui.py:1931
+msgid "Scaling Mode"
+msgstr "Mastelio keitimo būdas"
+
+#: ui.py:1932
+msgid "Slide Time (seconds)"
+msgstr "Kadro rodymo trukmė (sek.)"
+
+#: ui.py:1933
+msgid "Show Infoline"
+msgstr "Rodyti informacinę eilutę"
+
+#: ui.py:1934
+msgid "Textcolor"
+msgstr "Teksto spalva"
+
+#: ui.py:1935
+msgid "Backgroundcolor"
+msgstr "Fono spalva"
+
+#: ui.py:1936
+msgid "Slide picture in loop"
+msgstr "Nuotraukas rodyti cikliškai"
+
+#: ui.py:1937
+msgid "Display in extensions menu"
+msgstr "Rodyti plėtinių naršyklėje"
+
+#: ui.py:1938
+msgid "Debug"
+msgstr "Klaidų šalinimas"
