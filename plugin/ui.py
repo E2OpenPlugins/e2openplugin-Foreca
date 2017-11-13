@@ -512,10 +512,10 @@ class ForecaPreviewCache(Screen):
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		
+
 		self["spinner"] = Pixmap()
 		self.curr = 0
-		
+
 		self.timer = eTimer()
 		self.timer.callback.append(self.showNextSpinner)
 
@@ -651,7 +651,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_blue"] = StaticText(_("Home"))
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
-		self["Title"] = StaticText(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
+		self.setTitle(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
