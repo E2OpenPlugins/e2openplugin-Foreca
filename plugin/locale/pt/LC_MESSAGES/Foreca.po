@@ -1,19 +1,20 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Torpe Foreca 3.0.0\n"
+"Project-Id-Version: Foreca 3.1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-17 15:55+0200\n"
-"PO-Revision-Date: 2016-05-06 13:58+0200\n"
-"Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
-"Language-Team: torpe\n"
-"Language: hu_HU\n"
+"PO-Revision-Date: 2017-10-10 01:21+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: ../../..\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.0.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: ../ui.py:844
@@ -36,73 +37,73 @@ msgid ""
 "Wind direction = Arrow to right: Wind from the West"
 msgstr ""
 "\n"
-"<   > = Előrejelzés a következő/előző napra\n"
-"0 - 9 = Előrejelzés (x) napra\n"
+"<   >       =   Prognosis next/previous day\n"
+"0 - 9       =   Prognosis (x) days from now\n"
 "\n"
-"VOL+/- = Gyors lapozás 100 (város kiválasztása)\n"
-"Bouquet+/- = Gyors lapozás 500 (város kiválasztása)\n"
+"VOL+/-  =   Fast scroll 100 (City choice)\n"
+"Bouquet+/- =   Fast scroll 500 (City choice)\n"
 "\n"
-"Info = Ez az információ\n"
-"Menü = Műhold képek és térképek\n"
+"Info        =   This information\n"
+"Menu     =   Satellite photos and maps\n"
 "\n"
-"Piros = Hőmorsékletek a következő 5 napra\n"
-"Zöld = Vált a kedvenc 1re\n"
-"Sárga = Vált a kedvenc 2re\n"
-"Kék = Vált haza\n"
+"Red        =   Temperature chart for the upcoming 5 days\n"
+"Green    =   Go to Favorite 1\n"
+"Yellow    =   Go to Favorite 2\n"
+"Blue        =   Go to Home\n"
 "\n"
-"Szél iránya = a nyilacska jobbra: nyugati szél"
+"Wind direction = Arrow to right: Wind from the West"
 
 #: ../ui.py:674
 msgid "0 - Today"
-msgstr "0 - Ma"
+msgstr "0 - Hoje"
 
 #: ../ui.py:675
 msgid "1 - Today + 1 day"
-msgstr "1 - Ma + 1 nap"
+msgstr "1 - Hoje + 1 dia"
 
 #: ../ui.py:184
 msgid "12 h"
-msgstr ""
+msgstr "12 h"
 
 #: ../ui.py:676
 msgid "2 - Today + 2 days"
-msgstr "2 - Ma + 2 nap"
+msgstr "2 - Hoje + 2 dias"
 
 #: ../ui.py:184
 msgid "24 h"
-msgstr ""
+msgstr "24 h"
 
 #: ../ui.py:677
 msgid "3 - Today + 3 days"
-msgstr "3 - Ma + 3 nap"
+msgstr "3 - Hoje + 3 dias"
 
 #: ../ui.py:678
 msgid "4 - Today + 4 days"
-msgstr "4 - Ma + 4 nap"
+msgstr "4 - Hoje + 4 dias"
 
 #: ../ui.py:679
 msgid "5 - Today + 5 days"
-msgstr "5 - Ma + 5 nap"
+msgstr "5 - Hoje + 5 dias"
 
 #: ../ui.py:680
 msgid "6 - Today + 6 days"
-msgstr "6 - Ma + 6 nap"
+msgstr "6 - Hoje + 6 dias"
 
 #: ../ui.py:681
 msgid "7 - Today + 7 days"
-msgstr "7 - Ma + 7 nap"
+msgstr "7 - Hoje + 7 dias"
 
 #: ../ui.py:682
 msgid "8 - Today + 8 days"
-msgstr "8 - Ma + 8 nap"
+msgstr "8 - Hoje + 8 dias"
 
 #: ../ui.py:683
 msgid "9 - Today + 9 days"
-msgstr "9 - Ma + 9 nap"
+msgstr "9 - Hoje + 9 dias"
 
 #: ../ui.py:1386
 msgid "Air pressure"
-msgstr "Légnyomás"
+msgstr "Pressão do Ar"
 
 #: ../ui.py:1482
 msgid "Australia"
@@ -110,15 +111,15 @@ msgstr "Austrália"
 
 #: ../ui.py:1443
 msgid "Austria"
-msgstr "Ausztria"
+msgstr "Áustria"
 
 #: ../ui.py:1941
 msgid "Backgroundcolor"
-msgstr "Háttér szine"
+msgstr "Cor do Fundo"
 
 #: ../ui.py:1418
 msgid "Baden-Wuerttemberg"
-msgstr "Báden-Würtemberg"
+msgstr "Baden-Wuerttemberg"
 
 #: ../ui.py:1419
 msgid "Bavaria"
@@ -126,7 +127,7 @@ msgstr "Bavaria"
 
 #: ../ui.py:1444
 msgid "Belgium"
-msgstr "Belgium"
+msgstr "Bélgica"
 
 #: ../ui.py:1420
 msgid "Berlin"
@@ -134,15 +135,15 @@ msgstr "Berlin"
 
 #: ../ui.py:1138
 msgid "Blue - Assign to Home"
-msgstr "Kék - Haza"
+msgstr "Azul - atribuir a Casa"
 
 #: ../ui.py:673
 msgid "Blue - Home"
-msgstr "Kék - Haza"
+msgstr "Azul - Casa"
 
 #: ../ui.py:1375 ../ui.py:1633
 msgid "Blue - Settings"
-msgstr "Kék - Beállítások"
+msgstr "Azul - Definições"
 
 #: ../ui.py:1421
 msgid "Brandenburg"
@@ -154,127 +155,127 @@ msgstr "Bremen"
 
 #: ../ui.py:1906
 msgid "Cancel"
-msgstr "Elvet"
+msgstr "Cancelar"
 
 #: ../ui.py:1139
 msgid "Channel+ - 500 back"
-msgstr "Csatorna+ - 500 vissza"
+msgstr "Canal + - 500 recua"
 
 #: ../ui.py:1140
 msgid "Channel- - 500 forward"
-msgstr "Csatornal- - 500 tovább"
+msgstr "Canal- - 500 avança"
 
 #: ../ui.py:643
 msgid "City"
-msgstr "Város"
+msgstr "Cidade"
 
 #: ../ui.py:1934
 msgid "City names as labels in the Main screen"
-msgstr "Városnevek megjelenítése a fő képenyőn"
+msgstr "Nome das cidades como etiquetas no ecrã principal"
 
 #: ../ui.py:1385
 msgid "Cloudcover Video"
-msgstr "Felhőtérkép -  video"
+msgstr "Nebulosidade"
 
 #: ../ui.py:1358 ../ui.py:1483
 msgid "Continents"
-msgstr "Kontinensek"
+msgstr "Continentes"
 
 #: ../ui.py:1445
 msgid "Czech Republic"
-msgstr "Cseh Köztársaság "
+msgstr "República Checa"
 
 #: ../ui.py:1944
 msgid "Debug"
-msgstr ""
+msgstr "Depurar"
 
 #: ../ui.py:1446
 msgid "Denmark"
-msgstr "Dánia"
+msgstr "Dinamarca"
 
 #: ../ui.py:1943
 msgid "Display in extensions menu"
-msgstr ""
+msgstr "Exibir no menu de extensões"
 
 #: ../ui.py:1134 ../ui.py:1371 ../ui.py:1632
 msgid "Down - Next"
-msgstr "Le - Következő"
+msgstr "Baixo - seguinte"
 
 #: ../ui.py:666
 msgid "Down - Next page"
-msgstr "Le - Következő oldal"
+msgstr "Baixo - Página seguinte"
 
 #: ../ui.py:1479
 msgid "East Asia"
-msgstr "Kelet Ázsia"
+msgstr "Leste Asiático"
 
 #: ../ui.py:1387
 msgid "Eumetsat"
-msgstr "Eumetsat"
+msgstr "Eumestat"
 
 #: ../ui.py:1359 ../ui.py:1468 ../ui.py:1472
 msgid "Europe"
-msgstr "Európa"
+msgstr "Europa"
 
 #: ../ui.py:659 ../ui.py:1130 ../ui.py:1367 ../ui.py:1628
 msgid "Exit - End"
-msgstr "Bezár"
+msgstr "Sair - Fim"
 
 #: ../ui.py:649 ../ui.py:864 ../ui.py:917 ../ui.py:1121
 msgid "Favorite 1"
-msgstr "Kedvenc 1"
+msgstr "Favorito 1"
 
 #: ../ui.py:650 ../ui.py:865 ../ui.py:918 ../ui.py:1122
 msgid "Favorite 2"
-msgstr "Kedvenc 2"
+msgstr "Favorito 2"
 
 #: ../ui.py:1936
 msgid "Font size in slideshow"
-msgstr ""
+msgstr "Tamanho da fonte na Apresentação"
 
 #: ../plugin.py:21 ../plugin.py:27 ../ui.py:635 ../ui.py:654
 msgid "Foreca Weather Forecast"
-msgstr "Foreca -  időjárás előrejelzés"
+msgstr "Foreca - Previsão do tempo"
 
 #: ../ui.py:1124
 msgid "Forecast"
-msgstr "Időjárás"
+msgstr "Previsão"
 
 #: ../ui.py:1935
 msgid "Frame size in full view"
-msgstr "Kép mérete teljes megjelenítésben"
+msgstr "Tamanho da janela em ecrã total"
 
 #: ../ui.py:1447
 msgid "France"
-msgstr "Franciaország"
+msgstr "França"
 
 #: ../ui.py:1360 ../ui.py:1439 ../ui.py:1448
 msgid "Germany"
-msgstr "Németország"
+msgstr "Alemanha"
 
 #: ../ui.py:1450
 msgid "Great Britain"
-msgstr "Nagy Britannia"
+msgstr "Grã-Bretanha"
 
 #: ../ui.py:1449
 msgid "Greece"
-msgstr "Görögország "
+msgstr "Grécia"
 
 #: ../ui.py:1136
 msgid "Green - Assign to Favorite 1"
-msgstr "Zöld - Kedvenc 1"
+msgstr "Verde - atribuir Favorito 1"
 
 #: ../ui.py:1373
 msgid "Green - Europe"
-msgstr "Zöld - Európa"
+msgstr "Verde - Europa"
 
 #: ../ui.py:671
 msgid "Green - Favorite 1"
-msgstr "Zöld - Kedvenc 1"
+msgstr "Verde - Favorito 1"
 
 #: ../ui.py:1423
 msgid "Hamburg"
-msgstr "Hamburg"
+msgstr "Hamburgo"
 
 #: ../ui.py:1424
 msgid "Hesse"
@@ -282,59 +283,59 @@ msgstr "Hesse"
 
 #: ../ui.py:651 ../ui.py:866 ../ui.py:919 ../ui.py:1123
 msgid "Home"
-msgstr "Haza"
+msgstr "Casa"
 
 #: ../ui.py:1451
 msgid "Hungary"
-msgstr "Magyarország "
+msgstr "Hungria"
 
 #: ../ui.py:183
 msgid "Imperial (C, mph)"
-msgstr "Angolszász (C, mph)"
+msgstr "Imperial (C, mph)"
 
 #: ../ui.py:661
 msgid "Info - Legend"
-msgstr "Jelmagyarázat"
+msgstr "Info - Legenda"
 
 #: ../ui.py:1452
 msgid "Ireland"
-msgstr "Írország"
+msgstr "Irlanda"
 
 #: ../ui.py:1453
 msgid "Italy"
-msgstr "Olaszország"
+msgstr "Itália"
 
 #: ../ui.py:1454
 msgid "Latvia"
-msgstr "Lettország "
+msgstr "Letónia"
 
 #: ../ui.py:663
 msgid "Left - Previous day"
-msgstr "Balra - Eőző nap"
+msgstr "Esquerda - Dia anterior"
 
 #: ../ui.py:1131 ../ui.py:1368 ../ui.py:1629
 msgid "Left - Previous page"
-msgstr "Balra - Eőző oldal"
+msgstr "Esquerda - página anterior"
 
 #: ../ui.py:667
 msgid "Left arrow - Previous day"
-msgstr "Balra - Eőző nap"
+msgstr "Seta esquerda - Dia anterior"
 
 #: ../ui.py:652
 msgid "Legend"
-msgstr "Jelmagyarázat"
+msgstr "Legenda"
 
 #: ../ui.py:1426
 msgid "Lower Saxony"
-msgstr "Alsó Saxony"
+msgstr "Lower Saxony"
 
 #: ../ui.py:1455
 msgid "Luxembourg"
-msgstr "Luxemburg"
+msgstr "Luxemburgo"
 
 #: ../ui.py:653
 msgid "Maps"
-msgstr "Térképek"
+msgstr "Mapas"
 
 #: ../ui.py:1425
 msgid "Mecklenburg-Vorpommern"
@@ -342,39 +343,39 @@ msgstr "Mecklenburg-Vorpommern"
 
 #: ../ui.py:660
 msgid "Menu - Weather maps"
-msgstr "Menü - Időjárás térképek"
+msgstr "Menu - Mapas Meteorológicos"
 
 #: ../ui.py:183
 msgid "Metric (C, km/h)"
-msgstr "Metrikus (C, km/h)"
+msgstr "Metric (C, km/h)"
 
 #: ../ui.py:183
 msgid "Metric (C, m/s)"
-msgstr "Metrikus (C, m/s)"
+msgstr "Metric (C, m/s)"
 
 #: ../ui.py:1476
 msgid "Middle America"
-msgstr "Közép Amerika"
+msgstr "América Central"
 
 #: ../ui.py:1481
 msgid "Middle Asia"
-msgstr "Közép Ázsia"
+msgstr "Ásia Central"
 
 #: ../ui.py:1478
 msgid "Middle East"
-msgstr "Középkelet"
+msgstr "Medio Oriente"
 
 #: ../ui.py:1456
 msgid "Netherlands"
-msgstr "Hollandia"
+msgstr "Países Baixos"
 
 #: ../ui.py:1473
 msgid "North Africa"
-msgstr "Észak Afrika"
+msgstr "Norte de África"
 
 #: ../ui.py:1475
 msgid "North America"
-msgstr "Észak Amerika"
+msgstr "América do Norte"
 
 #: ../ui.py:1427
 msgid "North Rhine-Westphalia"
@@ -382,39 +383,39 @@ msgstr "North Rhine-Westphalia"
 
 #: ../ui.py:662
 msgid "OK - City"
-msgstr "OK - Város"
+msgstr "OK - Cidade"
 
 #: ../ui.py:1135
 msgid "OK - Select"
-msgstr "OK - Rendben"
+msgstr "OK - selecionar"
 
 #: ../ui.py:1376 ../ui.py:1634
 msgid "OK - Show"
-msgstr "OK - Megjelenít"
+msgstr "OK - Mostrar"
 
 #: ../ui.py:638 ../ui.py:703
 msgid "Please wait ..."
-msgstr "Kérem várjon..."
+msgstr "Por favor, aguarde…"
 
 #: ../ui.py:1771
 msgid "Please wait, photo is being loaded ..."
-msgstr "Fénykép betöltése..."
+msgstr "Por favor espere, a foto está a ser carregada ..."
 
 #: ../ui.py:1457
 msgid "Poland"
-msgstr "Lengyelország "
+msgstr "Polónia"
 
 #: ../ui.py:1458
 msgid "Portugal"
-msgstr "Portugália"
+msgstr "Portugal"
 
 #: ../ui.py:1372
 msgid "Red - Continents"
-msgstr "Vörös kontinens"
+msgstr "Vermelho - Continentes"
 
 #: ../ui.py:669
 msgid "Red - Weekoverview"
-msgstr "Piros - Heti áttekintés"
+msgstr "Vermelho - Vista semanal"
 
 #: ../ui.py:1428
 msgid "Rhineland-Palatine"
@@ -422,19 +423,19 @@ msgstr "Rhineland-Palatine"
 
 #: ../ui.py:664
 msgid "Right - Next day"
-msgstr "Jobbra -Következő nap"
+msgstr "Direita - Dia seguinte"
 
 #: ../ui.py:1132 ../ui.py:1369 ../ui.py:1630
 msgid "Right - Next page"
-msgstr "Jobbra - Következő oldal"
+msgstr "Direita - próxima página"
 
 #: ../ui.py:668
 msgid "Right arrow - Next day"
-msgstr "Jobbra - Következő nap"
+msgstr "Seta Direita - Dia seguinte"
 
 #: ../ui.py:1459
 msgid "Russia"
-msgstr "Oroszország "
+msgstr "Rússia"
 
 #: ../ui.py:1429
 msgid "Saarland"
@@ -442,11 +443,11 @@ msgstr "Saarland"
 
 #: ../ui.py:1353 ../ui.py:1362
 msgid "Satellite photos"
-msgstr "Műhold képek"
+msgstr "Fotos de Satélite"
 
 #: ../ui.py:1907
 msgid "Save"
-msgstr "Ment"
+msgstr "Salvar"
 
 #: ../ui.py:1430
 msgid "Saxony"
@@ -458,7 +459,7 @@ msgstr "Saxony-Anhalt"
 
 #: ../ui.py:1937
 msgid "Scaling Mode"
-msgstr "Nagyítás"
+msgstr "Modo de dimensionamento"
 
 #: ../ui.py:1432
 msgid "Schleswig-Holstein"
@@ -466,75 +467,75 @@ msgstr "Schleswig-Holstein"
 
 #: ../ui.py:1115 ../ui.py:1125
 msgid "Select a city"
-msgstr "Város választása"
+msgstr "Escolher Cidade"
 
 #: ../ui.py:1933
 msgid "Select time format"
-msgstr "Időformátum kiválasztása"
+msgstr "Selecionar Formato da hora"
 
 #: ../ui.py:1932
 msgid "Select units"
-msgstr "Mértékegységek kiválasztása"
+msgstr "Selecionar unidades"
 
 #: ../ui.py:1361 ../ui.py:1622
 msgid "Settings"
-msgstr "Beállítasok"
+msgstr "Definições"
 
 #: ../ui.py:1939
 msgid "Show Infoline"
-msgstr "Információs sor megjelenítése"
+msgstr "Mostrar Linha de Informação"
 
 #: ../ui.py:1383
 msgid "Showerradar Video"
-msgstr "Csapadék térkép - videó"
+msgstr "Vídeo de Showerradar"
 
 #: ../ui.py:1938
 msgid "Slide Time (seconds)"
-msgstr "Prezentáció"
+msgstr "Tempo de Slide (segundos)"
 
 #: ../ui.py:1942
 msgid "Slide picture in loop"
-msgstr "Prezentáció ismétlése"
+msgstr "Slide de imagens em loop"
 
 #: ../ui.py:1905 ../ui.py:1908
 msgid "SlideShow Settings"
-msgstr "Prezentáció beállítása"
+msgstr "﻿Configurações da Apresentação"
 
 #: ../ui.py:1460
 msgid "Slovakia"
-msgstr "Szlovákia "
+msgstr "Eslováquia"
 
 #: ../ui.py:1474
 msgid "South Africa"
-msgstr "Dél Afrika"
+msgstr "África do Sul"
 
 #: ../ui.py:1477
 msgid "South America"
-msgstr "Dél Amerika"
+msgstr "América do Sul"
 
 #: ../ui.py:1480
 msgid "Southeast Asia"
-msgstr "Délkelet Ázsia"
+msgstr "Sudeste Asiático"
 
 #: ../ui.py:1461
 msgid "Spain"
-msgstr "Spanyolország"
+msgstr "Espanha"
 
 #: ../ui.py:1462
 msgid "Switzerland"
-msgstr "Svájc"
+msgstr "Suíça"
 
 #: ../ui.py:454
 msgid "Temp"
-msgstr "Hőmérséklet"
+msgstr "Temp"
 
 #: ../ui.py:1384
 msgid "Temperature Video"
-msgstr "Hőmérséklet Videó "
+msgstr "Vídeo de temperatura"
 
 #: ../ui.py:1940
 msgid "Textcolor"
-msgstr "Szöveg szine"
+msgstr "Cor do Texto"
 
 #: ../ui.py:1231
 msgid ""
@@ -542,9 +543,9 @@ msgid ""
 "\n"
 "                             "
 msgstr ""
-"Ez a város elmentve mint kedvenc 1!\n"
+"Esta cidade está definida como favorita 1!\n"
 "\n"
-"                             "
+"                                   "
 
 #: ../ui.py:1242
 msgid ""
@@ -552,9 +553,9 @@ msgid ""
 "\n"
 "                             "
 msgstr ""
-"Ez a város elmentve mint kedvenc 2!\n"
+"Esta cidade está definida como favorita 2!\n"
 "\n"
-"                             "
+"                                   "
 
 #: ../ui.py:1220
 msgid ""
@@ -562,9 +563,9 @@ msgid ""
 "\n"
 "                                  "
 msgstr ""
-"Ez a város elmentve mint haza\n"
+"Esta cidade está definida como casa!\n"
 "\n"
-"                                  "
+"                                   "
 
 #: ../ui.py:1433
 msgid "Thuringia"
@@ -572,92 +573,92 @@ msgstr "Thuringia"
 
 #: ../ui.py:183
 msgid "US (F, mph)"
-msgstr ""
+msgstr "US (F, mph)"
 
 #: ../ui.py:1133 ../ui.py:1370 ../ui.py:1631
 msgid "Up - Previous"
-msgstr "Fel - Eőző"
+msgstr "Cima - anterior"
 
 #: ../ui.py:665
 msgid "Up - Previous page"
-msgstr "Fel - Eőző oldal"
+msgstr "Cima - Página anterior"
 
 #: ../ui.py:654
 msgid "Version "
-msgstr "Verzió"
+msgstr "Versão"
 
 #: ../ui.py:1142
 msgid "Volume+ - 100 back"
-msgstr "Hangerő+ - 100 vissza"
+msgstr "Volume + - 100 recua"
 
 #: ../ui.py:1141
 msgid "Volume- - 100 forward"
-msgstr "Hangerő- - 100 tovább"
+msgstr "Volume- - 100 avança"
 
 #: ../plugin.py:22 ../plugin.py:28
 msgid "Weather forecast for the upcoming 10 days"
-msgstr "Előrejelzés a következő 10 napra"
+msgstr "Previsão do tempo para os próximos 10 dias"
 
 #: ../ui.py:1382
 msgid "Weather map Video"
-msgstr "Időjárás térkép - videó"
+msgstr "Vídeo de mapa Meteorológico"
 
 #: ../ui.py:642
 msgid "Week"
-msgstr "Hét"
+msgstr "Semana"
 
 #: ../ui.py:469
 msgid "Wind"
-msgstr "Szél"
+msgstr "Vento"
 
 #: ../ui.py:1137
 msgid "Yellow - Assign to Favorite 2"
-msgstr "Sárga - Kedvenc 2"
+msgstr "Amarelo - atribuir Favorito 2"
 
 #: ../ui.py:672
 msgid "Yellow - Favorite 2"
-msgstr "Sárga - Kedvenc 2"
+msgstr "Amarelo - Favorito 2"
 
 #: ../ui.py:1374
 msgid "Yellow - Germany"
-msgstr "Sárga - Németország"
+msgstr "Amarelo - Alemanha"
 
 #: ../ui.py:174
 msgid "better"
-msgstr "jobb"
+msgstr "melhor"
 
 #: ../ui.py:175 ../ui.py:176
 msgid "black"
-msgstr "fekete"
+msgstr "preto"
 
 #: ../ui.py:175 ../ui.py:176
 msgid "blue"
-msgstr "kék"
+msgstr "azul"
 
 #: ../ui.py:175 ../ui.py:176
 msgid "green"
-msgstr "zöld"
+msgstr "verde"
 
 #: ../ui.py:1551
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: ../ui.py:175 ../ui.py:176
 msgid "red"
-msgstr "piros"
+msgstr "vermelho"
 
 #: ../ui.py:174
 msgid "simple"
-msgstr "egyszerű"
+msgstr "simples"
 
 #: ../ui.py:175 ../ui.py:176
 msgid "yellow"
-msgstr "sárga"
+msgstr "amarelo"
 
 #: ../ui.py:413
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: ../ui.py:410
 msgid "°F"
-msgstr ""
+msgstr "°F"
