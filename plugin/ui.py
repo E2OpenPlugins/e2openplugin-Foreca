@@ -602,13 +602,13 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget source="key_ok" render="Label" position="621,463" zPosition="2" size="70,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_menu" render="Label" position="729,463" zPosition="2" size="85,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
 					<widget source="key_info" render="Label" position="852,463" zPosition="2" size="85,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
-					<ePixmap position="2,470" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-					<ePixmap position="140,470" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-					<ePixmap position="288,470" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-					<ePixmap position="436,470" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+					<ePixmap position="2,470" size="36,25" pixmap="buttons/key_red.png" transparent="1" alphatest="on" />
+					<ePixmap position="140,470" size="36,25" pixmap="buttons/key_green.png" transparent="1" alphatest="on" />
+					<ePixmap position="288,470" size="36,25" pixmap="buttons/key_yellow.png" transparent="1" alphatest="on" />
+					<ePixmap position="436,470" size="36,25" pixmap="buttons/key_blue.png" transparent="1" alphatest="on" />
 					<ePixmap position="584,470" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
-					<ePixmap position="692,470" size="36,25" pixmap="skin_default/buttons/key_menu.png" transparent="1" alphatest="on" />
-					<ePixmap position="815,470" size="36,25" pixmap="skin_default/buttons/key_info.png" transparent="1" alphatest="on" />
+					<ePixmap position="692,470" size="36,25" pixmap="buttons/key_menu.png" transparent="1" alphatest="on" />
+					<ePixmap position="815,470" size="36,25" pixmap="buttons/key_info.png" transparent="1" alphatest="on" />
 					<ePixmap position="938,470" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" transparent="1" alphatest="on" />
 				</screen>"""
 		else:
@@ -624,10 +624,10 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget source="key_yellow" render="Label" position="350,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="key_blue" render="Label" position="490,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="key_ok" render="Label" position="630,438" zPosition="2" size="100,40" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
-					<ePixmap position="10,442" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-					<ePixmap position="170,442" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-					<ePixmap position="310,442" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-					<ePixmap position="450,442" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+					<ePixmap position="10,442" size="36,25" pixmap="buttons/key_red.png" transparent="1" alphatest="on" />
+					<ePixmap position="170,442" size="36,25" pixmap="buttons/key_green.png" transparent="1" alphatest="on" />
+					<ePixmap position="310,442" size="36,25" pixmap="buttons/key_yellow.png" transparent="1" alphatest="on" />
+					<ePixmap position="450,442" size="36,25" pixmap="buttons/key_blue.png" transparent="1" alphatest="on" />
 					<ePixmap position="590,442" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
 				</screen>"""
 
@@ -1104,9 +1104,9 @@ class CityPanel(Screen, HelpableScreen):
 				<widget source="key_yellow" render="Label" position="200,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 				<widget source="key_blue" render="Label" position="350,470" zPosition="2" size="100,30" font="Regular;20" valign="center" halign="left" transparent="1" />
 				<widget source="key_ok" render="Label" position="500,470" zPosition="2" size="120,30" font="Regular;20" valign="center" halign="left" transparent="1" />
-				<ePixmap position="10,473" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-				<ePixmap position="160,473" size="36,25" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-				<ePixmap position="310,473" size="36,25" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+				<ePixmap position="10,473" size="36,25" pixmap="buttons/key_green.png" transparent="1" alphatest="on" />
+				<ePixmap position="160,473" size="36,25" pixmap="buttons/key_yellow.png" transparent="1" alphatest="on" />
+				<ePixmap position="310,473" size="36,25" pixmap="buttons/key_blue.png" transparent="1" alphatest="on" />
 				<ePixmap position="460,473" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" transparent="1" alphatest="on" />
 				<ePixmap position="624,473" size="36,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" transparent="1" alphatest="on" />
 			</screen>"""
@@ -1329,10 +1329,10 @@ class SatPanel(Screen, HelpableScreen):
 					<widget source="key_green" render="Label" position="198,450" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_yellow" render="Label" position="338,450" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_blue" render="Label" position="498,450" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<ePixmap position="2,460" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-					<ePixmap position="160,460" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-					<ePixmap position="300,460" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-					<ePixmap position="460,460" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+					<ePixmap position="2,460" size="36,20" pixmap="buttons/key_red.png" transparent="1" alphatest="on" />
+					<ePixmap position="160,460" size="36,20" pixmap="buttons/key_green.png" transparent="1" alphatest="on" />
+					<ePixmap position="300,460" size="36,20" pixmap="buttons/key_yellow.png" transparent="1" alphatest="on" />
+					<ePixmap position="460,460" size="36,20" pixmap="buttons/key_blue.png" transparent="1" alphatest="on" />
 				</screen>"""
 		else:
 			self.skin = """
@@ -1343,10 +1343,10 @@ class SatPanel(Screen, HelpableScreen):
 					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<ePixmap position="2,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-					<ePixmap position="160,400" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-					<ePixmap position="300,400" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-					<ePixmap position="460,400" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
+					<ePixmap position="2,400" size="36,20" pixmap="buttons/key_red.png" transparent="1" alphatest="on" />
+					<ePixmap position="160,400" size="36,20" pixmap="buttons/key_green.png" transparent="1" alphatest="on" />
+					<ePixmap position="300,400" size="36,20" pixmap="buttons/key_yellow.png" transparent="1" alphatest="on" />
+					<ePixmap position="460,400" size="36,20" pixmap="buttons/key_blue.png" transparent="1" alphatest="on" />
 				</screen>"""
 
 		Screen.__init__(self, session)
@@ -1895,8 +1895,8 @@ class PicSetup(Screen):
 			<widget name="Mlist" position="5,5" size="650,280" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" /> 
 			<widget source="key_red" render="Label" position="50,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
 			<widget source="key_green" render="Label" position="285,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
-			<ePixmap position="5,300" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
-			<ePixmap position="240,300" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
+			<ePixmap position="5,300" size="36,25" pixmap="buttons/key_red.png" transparent="1" alphatest="on" /> 
+			<ePixmap position="240,300" size="36,25" pixmap="buttons/key_green.png" transparent="1" alphatest="on" /> 
 		</screen>"""
 	print pluginPrintname, "Setup..."
 	def __init__(self, session):
