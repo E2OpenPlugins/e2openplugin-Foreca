@@ -223,6 +223,8 @@ FILTERout = []
 FILTERidx = 0
 
 LANGUAGE = language.getActiveLanguage()[:2]
+if LANGUAGE == "zh":
+	LANGUAGE = "en"
 try:
 	locale.setlocale(locale.LC_COLLATE, language.getLanguage())
 except:
