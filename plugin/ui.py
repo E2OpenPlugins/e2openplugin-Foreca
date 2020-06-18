@@ -469,7 +469,7 @@ class MainMenuList(MenuList):
 		
 		# Text
 		x, y, w, h = self.valText1
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[5], color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
 		x, y, w, h = self.valText2
 		textsechs=self.x[6]
 		textsechs=textsechs.replace("&deg;", "") + tempUnit
