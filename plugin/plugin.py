@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 # for localized messages
 from . import _
 
@@ -11,7 +12,7 @@ config.plugins.foreca.extmenu = ConfigEnableDisable(default=True)
 
 def main(session, **kwargs):
 	global PICON_PATH
-	import ui
+	from . import ui
 	ui.PICON_PATH = PICON_PATH
 	session.open(ui.ForecaPreview)
 
