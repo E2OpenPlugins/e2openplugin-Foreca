@@ -167,7 +167,6 @@ from twisted.web.client import downloadPage, getPage
 import htmlentitydefs, re, urllib2, urllib
 from Components.Language import language
 from re import sub, split, search, match, findall
-import string
 from . import locale
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
@@ -644,9 +643,9 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["key_red"] = StaticText(_("Week"))
 		self["key_ok"] = StaticText(_("City"))
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"] = StaticText(string.replace(fav1, "_", " "))
-			self["key_yellow"] = StaticText(string.replace(fav2, "_", " "))
-			self["key_blue"] = StaticText(string.replace(start, "_", " "))
+			self["key_green"] = StaticText(fav1.replace("_", " "))
+			self["key_yellow"] = StaticText(fav2.replace("_", " "))
+			self["key_blue"] = StaticText(start.replace("_", " "))
 		else:
 			self["key_green"] = StaticText(_("Favorite 1"))
 			self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -859,9 +858,9 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.tag = 0
 		self.Zukunft(0)
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"].setText(string.replace(fav1, "_", " "))
-			self["key_yellow"].setText(string.replace(fav2, "_", " "))
-			self["key_blue"].setText(string.replace(start, "_", " "))
+			self["key_green"].setText(fav1.replace("_", " "))
+			self["key_yellow"].setText(fav2.replace("_", " "))
+			self["key_blue"].setText(start.replace("_", " "))
 		else:
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
@@ -912,9 +911,9 @@ class ForecaPreview(Screen, HelpableScreen):
 	def MenuCallback(self):
 		global menu, start, fav1, fav2
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"].setText(string.replace(fav1, "_", " "))
-			self["key_yellow"].setText(string.replace(fav2, "_", " "))
-			self["key_blue"].setText(string.replace(start, "_", " "))
+			self["key_green"].setText(fav1.replace("_", " "))
+			self["key_yellow"].setText(fav2.replace("_", " "))
+			self["key_blue"].setText(start.replace("_", " "))
 		else:
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
@@ -944,7 +943,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
 		link = str(fulltext.findall(html))
-		#print link
+		#print(link)
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = str(fulltext.findall(link))
@@ -1027,10 +1026,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		datum2=datum[:foundPos2]+datum[foundPos:]+"."+datum[foundPos2:foundPos]
 		foundPos=self.ort.find("/")
 		plaats=_(self.ort[0:foundPos]) + "-" + self.ort[foundPos+1:len(self.ort)]
-		self["Titel"].text = string.replace(plaats, "_", " ") + "  -  " + datum2
-		self["Titel4"].text = string.replace(plaats, "_", " ")
+		self["Titel"].text = plaats.replace("_", " ") + "  -  " + datum2
+		self["Titel4"].text = plaats.replace("_", " ")
 		self["Titel5"].text = datum2
-		self["Titel3"].text = string.replace(self.ort[:foundPos], "_", " ") + "\r\n" + string.replace(self.ort[foundPos+1:], "_", " ") + "\r\n" + datum2
+		self["Titel3"].text = self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos+1:].replace("_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
@@ -1041,7 +1040,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# remove diacritics for selected language
 		filterItem = 0
 		while filterItem < FILTERidx:
-			text = string.replace(text, FILTERin[filterItem], FILTERout[filterItem])
+			text = text.replace(FILTERin[filterItem], FILTERout[filterItem])
 			filterItem += 1
 		return text
 
@@ -1153,7 +1152,7 @@ class CityPanel(Screen, HelpableScreen):
 			for line in file:
 				text = line.strip()
 				self.maxidx += 1
-				self.Mlist.append(self.CityEntryItem((string.replace(text, "_", " "), text)))
+				self.Mlist.append(self.CityEntryItem((text.replace("_", " "), text)))
 			file.close
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
