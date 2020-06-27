@@ -11,11 +11,11 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.2.0"
+VERSION = "3.2.3-r3"
 #
 #                    04.10.2017
 #
-#     Source of information: http://www.foreca.com
+#     Source of information: http://www.foreca.net
 #
 #             Design and idea by
 #                  @Bauernbub
@@ -99,6 +99,7 @@ VERSION = "3.2.0"
 #				self.valText4 = 365,87,600,28
 #	similar in user skin - there text4Pos="x,y,w,h" must be added
 # 3.2.0	fixed satellite maps, removed infrared - page not exist more, sanity check if nothing is downloaded
+# 3.2.3-r3 change URL to .net and .ru
 
 # Unresolved: Crash when scrolling in help screen of city panel
 #
@@ -139,7 +140,7 @@ from Components.ConfigList import ConfigList, ConfigListScreen
 import os
 
 # Enigma
-from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, BT_SCALE , BT_KEEP_ASPECT_RATIO, RT_VALIGN_CENTER
+from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT , RT_VALIGN_CENTER
 
 # Plugin definition
 from Plugins.Plugin import PluginDescriptor
@@ -185,7 +186,7 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 
-MAIN_PAGE = "http://www.foreca.com"
+MAIN_PAGE = "http://www.foreca.net"
 USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 deviceName = HardwareInfo().get_device_name()
@@ -222,6 +223,8 @@ FILTERout = []
 FILTERidx = 0
 
 LANGUAGE = language.getActiveLanguage()[:2]
+if LANGUAGE == "zh":
+	LANGUAGE = "en"
 try:
 	locale.setlocale(locale.LC_COLLATE, language.getLanguage())
 except:
@@ -258,7 +261,7 @@ class MainMenuList(MenuList):
 		self.font1 = gFont("Regular",24)
 		self.font2 = gFont("Regular",18)
 		self.font3 = gFont("Regular",22)
-		self.itemHeight = 90
+		self.itemHeight = 120
 		self.valTime = 10,34,60,24
 		self.valPict = 70,10,70,70
 		self.valPictScale = 0
@@ -444,10 +447,7 @@ class MainMenuList(MenuList):
 		pngpic = LoadPixmap(self.thumb)
 		if pngpic is not None:
 			x, y, w, h = self.valPict
-			flags = 0
-			if self.valPictScale:
-				flags = BT_SCALE | BT_KEEP_ASPECT_RATIO
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic, flags = flags ))
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic))
 
 		# Temp
 		x, y, w, h = self.valTemp
@@ -459,10 +459,7 @@ class MainMenuList(MenuList):
 		pngpic = LoadPixmap(self.wind + ".png")
 		if pngpic is not None:
 			x, y, w, h = self.valWindPict
-			flags = 0
-			if self.valWindPictScale:
-				flags = BT_SCALE | BT_KEEP_ASPECT_RATIO
-			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic, flags = flags))
+			self.res.append(MultiContentEntryPixmapAlphaTest(pos=(x, y), size=(w, h), png=pngpic))
 
 		# Wind
 		x, y, w, h = self.valWind
@@ -472,7 +469,7 @@ class MainMenuList(MenuList):
 		
 		# Text
 		x, y, w, h = self.valText1
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[5], color=weiss, color_sel=weiss))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
 		x, y, w, h = self.valText2
 		textsechs=self.x[6]
 		textsechs=textsechs.replace("&deg;", "") + tempUnit
@@ -543,7 +540,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		MAIN_PAGE = "http://www.foreca.com"
+		MAIN_PAGE = "http://www.foreca.net"
 
 		# actual, local Time as Tuple
 		lt = localtime()
@@ -584,13 +581,13 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print pluginPrintname, "home location:", self.ort
 		
-		MAIN_PAGE = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "initial link:" , MAIN_PAGE
 		
 		if HD:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#00000000" >
+					<widget name="MainList" position="0,90" size="980,365" zPosition="3" backgroundColor="#00000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="4,10" zPosition="3" size="978,60" font="Regular;24" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="35,15" zPosition="2" size="900,60" font="Regular;26" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,70" zPosition="2" size="970,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
@@ -613,8 +610,8 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#40000000" >
-					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#40000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="ForecaPreview" position="center,65" size="720,480" title="Foreca Weather Forecast" backgroundColor="#00000000" >
+					<widget name="MainList" position="0,65" size="720,363" zPosition="3" backgroundColor="#00000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<widget source="Titel" render="Label" position="20,3" zPosition="3" size="680,50" font="Regular;20" valign="center" halign="left" transparent="1" foregroundColor="#ffffff"/>
 					<widget source="Titel2" render="Label" position="40,5" zPosition="2" size="640,50" font="Regular;22" valign="center" halign="center" transparent="1" foregroundColor="#f47d19"/>
 					<eLabel position="5,55" zPosition="2" size="710,2" foregroundColor="#c3c3c9" backgroundColor="#FFFFFF" />
@@ -834,7 +831,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		print pluginPrintname, "day link:", MAIN_PAGE
 
 		# Show in GUI
@@ -897,7 +894,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url= "http://www.foreca.com" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			self.url= "http://www.foreca.ru" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -1298,7 +1295,7 @@ class SatPanelList(MenuList):
 			self.backgroundColorSelected = parseColor(value).argb()
 		def textPos(value):
 			self.textPos = map(int, value.split(","))
-			l = len(self.textPos)
+			l = len(self.self.textPos)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		for (attrib, value) in list(self.skinAttributes):
@@ -1485,10 +1482,7 @@ class SatPanel(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 	def SatEntryItem(self,entry):
-		flags = 0
 		pict_scale = self["Mlist"].pictScale
-		if pict_scale:
-			flags = BT_SCALE # need stretch to height, due it is missing BT_KEEP_ASPECT_RATIO
 
 		ItemSkin = self["Mlist"].itemHeight
 
@@ -1503,7 +1497,7 @@ class SatPanel(Screen, HelpableScreen):
 		thumb_width = 200
 		if pict_scale:
 			thumb_width = thumb.size().width()
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin-4), png=thumb, flags=flags))  # png vorn
+		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin-4), png=thumb))  # png vorn
 		x,y,w,h = self["Mlist"].textPos
 		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
@@ -1523,13 +1517,15 @@ class SatPanel(Screen, HelpableScreen):
 			devicepath = "/tmp/meteogram.png"
 			urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
 			self.session.open(PicView, devicepath, 0, False)
+
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.com" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.ru" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
 			resp = urllib2.urlopen(url)
 			html = resp.read()
+			#resp.close()
 
 			fulltext = re.compile(r'//cache-(.+?)\'', re.DOTALL)
 			PressureLink = fulltext.findall(html)
