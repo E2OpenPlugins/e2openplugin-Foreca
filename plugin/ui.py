@@ -165,7 +165,7 @@ from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
 from twisted.web.client import downloadPage, getPage
 
-import htmlentitydefs, re, urllib2, urllib
+import html.entities, re, urllib2, urllib
 from Components.Language import language
 from re import sub, split, search, match, findall
 from . import locale
