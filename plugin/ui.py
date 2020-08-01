@@ -300,61 +300,61 @@ class MainMenuList(MenuList):
 		def itemHeight(value):
 			self.itemHeight = int(value)
 		def setTime(value):
-			self.valTime = map(int, value.split(","))
+			self.valTime = list(map(int, value.split(",")))
 			l = len(self.valTime)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setPict(value):
-			self.valPict = map(int, value.split(","))
+			self.valPict = list(map(int, value.split(",")))
 			l = len(self.valPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setPictScale(value):
 			self.valPictScale = int(value)
 		def setTemp(value):
-			self.valTemp = map(int, value.split(","))
+			self.valTemp = list(map(int, value.split(",")))
 			l = len(self.valTemp)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setTempUnits(value):
-			self.valTempUnits = map(int, value.split(","))
+			self.valTempUnits = list(map(int, value.split(",")))
 			l = len(self.valTempUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setWindPict(value):
-			self.valWindPict = map(int, value.split(","))
+			self.valWindPict = list(map(int, value.split(",")))
 			l = len(self.valWindPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setWindPictScale(value):
 			self.valWindPictScale = int(value)
 		def setWind(value):
-			self.valWind = map(int, value.split(","))
+			self.valWind = list(map(int, value.split(",")))
 			l = len(self.valWind)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, )
 		def setWindUnits(value):
-			self.valWindUnits = map(int, value.split(","))
+			self.valWindUnits = list(map(int, value.split(",")))
 			l = len(self.valWindUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text1Pos(value):
-			self.valText1 = map(int, value.split(","))
+			self.valText1 = list(map(int, value.split(",")))
 			l = len(self.valText1)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text2Pos(value):
-			self.valText2 = map(int, value.split(","))
+			self.valText2 = list(map(int, value.split(",")))
 			l = len(self.valText2)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text3Pos(value):
-			self.valText3 = map(int, value.split(","))
+			self.valText3 = list(map(int, value.split(",")))
 			l = len(self.valText3)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text4Pos(value):
-			self.valText4 = map(int, value.split(","))
+			self.valText4 = list(map(int, value.split(",")))
 			l = len(self.valText4)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
@@ -1301,7 +1301,7 @@ class SatPanelList(MenuList):
 		def backgroundColorSelected(value):
 			self.backgroundColorSelected = parseColor(value).argb()
 		def textPos(value):
-			self.textPos = map(int, value.split(","))
+			self.textPos = list(map(int, value.split(",")))
 			l = len(self.textPos)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
