@@ -165,7 +165,7 @@ from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
 from twisted.web.client import downloadPage, getPage
 
-import html.entities, re, urllib2, urllib
+import html.entities, re, urllib
 from Components.Language import language
 from re import sub, split, search, match, findall
 from . import locale
@@ -588,7 +588,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print(pluginPrintname, "home location:", self.ort)
 		
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.request.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		print(pluginPrintname, "initial link:", MAIN_PAGE)
 		
 		if HD:
@@ -838,7 +838,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr, monat, tag)
 
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.request.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		print(pluginPrintname, "day link:", MAIN_PAGE)
 
 		# Show in GUI
@@ -1530,7 +1530,7 @@ class SatPanel(Screen, HelpableScreen):
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.ru" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.ru" + "/" + urllib.request.pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
 			resp = urllib2.urlopen(url)
 			html = resp.read()
