@@ -658,7 +658,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["Title"] = StaticText(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
 
 		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(self, "ForecaActions",
+		self["actions"] = HelpableActionMap(self, ["ForecaActions"],
 			{
 				"cancel": (self.exit, _("Exit - End")),
 				"menu": (self.Menu, _("Menu - Weather maps")),
