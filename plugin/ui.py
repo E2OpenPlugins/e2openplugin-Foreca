@@ -930,7 +930,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def getForecaPage(self, html):
 		#new Ajax.Request('/lv?id=102772400', {
 		fulltext = re.compile(r"id: '(.*?)'", re.DOTALL)
-		id = fulltext.findall(html)
+		id = fulltext.findall(html.decode())
 		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "id=", id)
 		self.loc_id = str(id[0])
 
@@ -938,14 +938,14 @@ class ForecaPreview(Screen, HelpableScreen):
 		#<h6><span>Tuesday</span> March 29</h6>
 		if DEBUG: print(pluginPrintname, "Start:" + str(len(html)))
 		fulltext = re.compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', re.DOTALL)
-		titel = fulltext.findall(html)
+		titel = fulltext.findall(html.decode())
 		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(sub('<[^>]*>', "", titel[0]))
 		if DEBUG: print(pluginPrintname, "titel[0]=", titel[0])
 
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
-		link = str(fulltext.findall(html))
+		link = str(fulltext.findall(html.decode()))
 		#print(link)
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
@@ -956,7 +956,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# <div class="row clr0">
 		fulltext = re.compile(r'<!-- START -->(.+?)<div class="datecopy">', re.DOTALL)
-		html = str(fulltext.findall(html))
+		html = str(fulltext.findall(html.decode()))
 
 		print(pluginPrintname, "searching .....")
 		list = []
