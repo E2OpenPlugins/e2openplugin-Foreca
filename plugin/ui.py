@@ -718,7 +718,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			page = ""
 		url = "%s%s"%(MAIN_PAGE, page)
 		print(pluginPrintname, "page link:", url)
-		getPage(url).addCallback(self.getForecaPage).addErrback(self.error)
+		getPage(url.encode()).addCallback(self.getForecaPage).addErrback(self.error)
 
 	def error(self, err=""):
 		print(pluginPrintname, "Error:", err)
