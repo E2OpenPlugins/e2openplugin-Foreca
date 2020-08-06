@@ -580,7 +580,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		global city, start
 		if fileExists(USR_PATH + "/startservice.cfg"):
 			file = open(USR_PATH + "/startservice.cfg", "rb")
-			self.ort = str(file.readline().strip())
+			self.ort = str(file.readline().strip().decode())
 			file.close()
 			start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		else:
