@@ -232,7 +232,7 @@ except:
 	print(pluginPrintname, "Collating sequence undeterminable; default used")
 
 if fileExists(USR_PATH + "/Filter.cfg"):
-	file = open(USR_PATH + "/Filter.cfg", "r")
+	file = open(USR_PATH + "/Filter.cfg", "rb")
 	for line in file:
 		regel = str(line)
 		if regel[:2] == LANGUAGE:
@@ -560,7 +560,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Get favorites
 		global fav1, fav2
 		if fileExists(USR_PATH + "/fav1.cfg"):
-			file = open(USR_PATH + "/fav1.cfg", "r")
+			file = open(USR_PATH + "/fav1.cfg", "rb")
 			fav1 = str(file.readline().strip())
 			file.close()
 			fav1 = fav1[fav1.rfind("/")+1:len(fav1)]
@@ -568,7 +568,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			fav1 = "New_York_City"
 		print(pluginPrintname, "fav1 location:", fav1)
 		if fileExists(USR_PATH + "/fav2.cfg"):
-			file = open(USR_PATH + "/fav2.cfg", "r")
+			file = open(USR_PATH + "/fav2.cfg", "rb")
 			fav2 = str(file.readline().strip())
 			file.close()
 			fav2 = fav2[fav2.rfind("/")+1:len(fav2)]
@@ -579,7 +579,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Get home location
 		global city, start
 		if fileExists(USR_PATH + "/startservice.cfg"):
-			file = open(USR_PATH + "/startservice.cfg", "r")
+			file = open(USR_PATH + "/startservice.cfg", "rb")
 			self.ort = str(file.readline().strip())
 			file.close()
 			start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
@@ -791,7 +791,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def Fav0(self):
 		global start
 		if fileExists(USR_PATH + "/startservice.cfg"):
-			file = open(USR_PATH + "/startservice.cfg", "r")
+			file = open(USR_PATH + "/startservice.cfg", "rb")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
@@ -803,7 +803,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def Fav1(self):
 		global fav1
 		if fileExists(USR_PATH + "/fav1.cfg"):
-			file = open(USR_PATH + "/fav1.cfg", "r")
+			file = open(USR_PATH + "/fav1.cfg", "rb")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
@@ -815,7 +815,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def Fav2(self):
 		global fav2
 		if fileExists(USR_PATH + "/fav2.cfg"):
-			file = open(USR_PATH + "/fav2.cfg", "r")
+			file = open(USR_PATH + "/fav2.cfg", "rb")
 			self.ort = str(file.readline().strip())
 			file.close()
 		else:
@@ -1151,7 +1151,7 @@ class CityPanel(Screen, HelpableScreen):
 	def prepare(self):
 		self.maxidx = 0
 		if fileExists(USR_PATH + "/City.cfg"):
-			file = open(USR_PATH + "/City.cfg", "r")
+			file = open(USR_PATH + "/City.cfg", "rb")
 			for line in file:
 				text = line.strip()
 				self.maxidx += 1
