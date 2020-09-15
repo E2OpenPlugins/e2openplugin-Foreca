@@ -4,22 +4,22 @@
 #
 #-------------------------------------------------------
 #
-#              Foreca Weather Forecast E2
+#			Foreca Weather Forecast E2
 #
-#   This Plugin retrieves the actual weather forecast
-#   for the next 10 days from the Foreca website.
+#	This Plugin retrieves the actual weather forecast
+#	for the next 10 days from the Foreca website.
 #
-#        We wish all users wonderful weather!
+#		 We wish all users wonderful weather!
 #
-VERSION = "3.2.3-r3"
+VERSION = "3.2.3-r4"
 #
-#                    04.10.2017
+#					04.10.2017
 #
-#     Source of information: http://www.foreca.net
+#	  Source of information: http://www.foreca.net
 #
-#             Design and idea by
-#                  @Bauernbub
-#            enigma2 mod by mogli123
+#			Design and idea by
+#				@Bauernbub
+#			 enigma2 mod by mogli123
 #
 #-------------------------------------------------------
 #
@@ -33,7 +33,7 @@ VERSION = "3.2.3-r3"
 # 2.8 Calculate next date based on displayed date when left/right key is pushed
 #	  after prior date jump using 0 - 9 keys was performed
 # 2.9 Fix: Show correct date and time in weather videos
-#     Main screen navigation modified to comply with standard usage:
+#	  Main screen navigation modified to comply with standard usage:
 #	  scroll page up/down by left/right key
 #	  select previous/next day by left/right arrow key of numeric key group
 # 2.9.1 Latvian cities and localization added. Thanks to muca
@@ -73,7 +73,7 @@ VERSION = "3.2.3-r3"
 #	Localization updated
 # 3.0.4 Language determination improved
 # 3.0.5 Setup of collating sequence reworked
-# 3.0.6 Weather data in Russian version obtained from foreca.com instead of foreca.ru due
+# 3.0.6 Weather data in Russian version obtained from foreca.com instead of foreca.net due
 #	  to structural discrepancy of Russian web site
 #	Code cosmetics
 # 3.0.7 Turkish cities updated. Thanks to atsiz77 
@@ -92,13 +92,13 @@ VERSION = "3.2.3-r3"
 # 3.1.7 fix url foreca com
 # 3.1.8 fix problem with national chars in favorite names
 # 3.1.9 renamed parsed variables, added humidity into list - for display in default screen must be:
-#	changed line:  		self.itemHeight = 90   ... change to new height, if is needed
+#	changed line:		self.itemHeight = 90   ... change to new height, if is needed
 #	and rearanged lines:	self.valText1 = 365,5,600,28
 #				self.valText2 = 365,33,600,28
 #				self.valText3 = 365,59,600,28
 #				self.valText4 = 365,87,600,28
 #	similar in user skin - there text4Pos="x,y,w,h" must be added
-# 3.2.0	fixed satellite maps, removed infrared - page not exist more, sanity check if nothing is downloaded
+# 3.2.0 fixed satellite maps, removed infrared - page not exist more, sanity check if nothing is downloaded
 # 3.2.3-r3 change URL to .net and .ru
 
 # Unresolved: Crash when scrolling in help screen of city panel
@@ -168,7 +168,10 @@ from Components.Language import language
 from re import sub, split, search, match, findall
 import string
 import locale
-
+try:
+	import requests
+except:
+	pass
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
 
@@ -247,7 +250,7 @@ def getScale():
 	return AVSwitch().getFramebufferScale()
 
 #------------------------------------------------------------------------------------------
-#----------------------------------  MainMenuList   ---------------------------------------
+#----------------------------------	 MainMenuList	---------------------------------------
 #------------------------------------------------------------------------------------------
 
 class MainMenuList(MenuList):
@@ -394,19 +397,19 @@ class MainMenuList(MenuList):
 		self.res = [(self.x[0], self.x[1])]
 
 		violetred = 0xC7D285
-		violet    = 0xff40b3
-		gruen     = 0x77f424
-		dgruen    = 0x53c905
-		drot      = 0xff4040
-		rot       = 0xff6640
-		orange    = 0xffb340
-		gelb      = 0xffff40
-		ddblau    = 0x3b62ff
-		dblau     = 0x408cff
-		mblau     = 0x40b3ff
-		blau      = 0x40d9ff
-		hblau     = 0x40ffff
-		weiss     = 0xffffff
+		violet	  = 0xff40b3
+		gruen	  = 0x77f424
+		dgruen	  = 0x53c905
+		drot	  = 0xff4040
+		rot		  = 0xff6640
+		orange	  = 0xffb340
+		gelb	  = 0xffff40
+		ddblau	  = 0x3b62ff
+		dblau	  = 0x408cff
+		mblau	  = 0x40b3ff
+		blau	  = 0x40d9ff
+		hblau	  = 0x40ffff
+		weiss	  = 0xffffff
 
 		if config.plugins.foreca.units.value == "us":
 			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
@@ -648,7 +651,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_blue"] = StaticText(_("Home"))
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
-		self["Title"] = StaticText(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
+		self.setTitle(_("Foreca Weather Forecast") + "	 " + _("Version ") + VERSION)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -838,7 +841,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.StartPage()
 
 	def info(self):
-		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
+		message = "%s" % (_("\n<   >	   =   Prognosis next/previous day\n0 - 9		=	Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =	 Fast scroll 500 (City choice)\n\nInfo		  =	  This information\nMenu	 =	 Satellite photos and maps\n\nRed		 =	 Temperature chart for the upcoming 5 days\nGreen	 =	 Go to Favorite 1\nYellow	 =	 Go to Favorite 2\nBlue		   =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
 
 
@@ -894,7 +897,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url= "http://www.foreca.ru" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			self.url= "http://www.foreca.net" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -917,8 +920,13 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def loadPicture(self,url=""):
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve(url, devicepath)
-		self.session.open(PicView, devicepath, 0, False)
+		try:
+			r = requests.get(url)
+			with open(devicepath, "wb") as code:
+				code.write(r.content)
+			self.session.open(PicView, devicepath, 0, False)
+		except:
+			pass
 
 	def getForecaPage(self,html):
 		#new Ajax.Request('/lv?id=102772400', {
@@ -1119,7 +1127,7 @@ class CityPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
-		self["Title"] = StaticText(_("Select a city"))
+		self.setTitle(_("Select a city"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self,"ForecaActions",
@@ -1214,7 +1222,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.write(city)
 		fwrite.close()
 		start = city[city.rfind("/")+1:len(city)]
-		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
+		message = "%s %s" % (_("This city is stored as home!\n\n								  "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def green(self):
@@ -1225,7 +1233,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.write(city)
 		fwrite.close()
 		fav1 = city[city.rfind("/")+1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
+		message = "%s %s" % (_("This city is stored as favorite 1!\n\n							   "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def yellow(self):
@@ -1236,7 +1244,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.write(city)
 		fwrite.close()
 		fav2 = city[city.rfind("/")+1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
+		message = "%s %s" % (_("This city is stored as favorite 2!\n\n							   "), city)
 		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self,entry):
@@ -1320,7 +1328,7 @@ class SatPanel(Screen, HelpableScreen):
 		if HD:
 			self.skin = """
 				<screen name="SatPanel" position="center,center" size="630,500" title="Satellite photos" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"	backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,445" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
 					<widget source="key_red" render="Label" position="40,450" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_green" render="Label" position="198,450" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
@@ -1334,7 +1342,7 @@ class SatPanel(Screen, HelpableScreen):
 		else:
 			self.skin = """
 				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"	backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
 					<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
@@ -1356,7 +1364,7 @@ class SatPanel(Screen, HelpableScreen):
 		self["key_green"] = StaticText(_("Europe"))
 		self["key_yellow"] = StaticText(_("Germany"))
 		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(_("Satellite photos"))
+		self.setTitle(_("Satellite photos"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -1497,7 +1505,7 @@ class SatPanel(Screen, HelpableScreen):
 		thumb_width = 200
 		if pict_scale:
 			thumb_width = thumb.size().width()
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin-4), png=thumb))  # png vorn
+		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin-4), png=thumb))	 # png vorn
 		x,y,w,h = self["Mlist"].textPos
 		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
@@ -1521,7 +1529,7 @@ class SatPanel(Screen, HelpableScreen):
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.ru" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
 			resp = urllib2.urlopen(url)
 			html = resp.read()
@@ -1598,12 +1606,12 @@ class SatPanelb(Screen, HelpableScreen):
 		if HD:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="620,500" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" position="10,10" size="600,430" zPosition="3" backgroundColor="#40000000"	backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				</screen>"""
 		else:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="620,440" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"	backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				</screen>"""
 
 
@@ -1616,7 +1624,7 @@ class SatPanelb(Screen, HelpableScreen):
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(title)
+		self.setTitle(title)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -1747,7 +1755,7 @@ class View_Slideshow(Screen):
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\""+ str(size_w) + "," + str(size_h) + "\" backgroundColor=\""+ self.bgcolor +"\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space+40) + "\" size=\"" + str(size_w-(space*2)) + "," + str(size_h-(space*2)-40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
 			<widget name=\"point\" position=\""+ str(space+5) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "record.png\" alphatest=\"on\" /> \
-			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"  alphatest=\"on\" /> \
+			<widget name=\"play_icon\" position=\""+ str(space+25) + "," + str(space+10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"	alphatest=\"on\" /> \
 			<widget name=\"file\" position=\""+ str(space+45) + "," + str(space+10) + "\" size=\""+ str(size_w-(space*2)-50) + "," + str(fontsize+5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
 			</screen>"
 		Screen.__init__(self, session)
@@ -1901,7 +1909,7 @@ class PicSetup(Screen):
 		self.setup_title = _("SlideShow Settings")
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["Title"] = StaticText(_("SlideShow Settings"))
+		self.setTitle(_("SlideShow Settings"))
 		self["actions"] = NumberActionMap(["SetupActions", "ColorActions"],
 			{
 				"ok": self.save,
