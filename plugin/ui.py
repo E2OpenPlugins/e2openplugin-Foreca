@@ -11,7 +11,9 @@
 #
 #        We wish all users wonderful weather!
 #
-VERSION = "3.2.3-r3"
+from __future__ import absolute_import
+from __future__ import print_function
+VERSION = "3.2.5"
 #
 #                    04.10.2017
 #
@@ -115,7 +117,6 @@ VERSION = "3.2.3-r3"
 
 # for localized messages
 from . import _
-
 # GUI (Components)
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.AVSwitch import AVSwitch
@@ -137,7 +138,7 @@ from Components.config import *
 from Components.ConfigList import ConfigList, ConfigListScreen
 
 # OS
-import os
+import os, sys, re, threading
 
 # Enigma
 from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT , RT_VALIGN_CENTER
@@ -159,14 +160,18 @@ from time import *
 
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
-from Tools.HardwareInfo import HardwareInfo
-from Tools.LoadPixmap import LoadPixmap
-from twisted.web.client import downloadPage, getPage
 
-import htmlentitydefs, re, urllib2, urllib
+# from Tools.HardwareInfo import HardwareInfo
+from Tools.LoadPixmap import LoadPixmap
+
+PY3 = (sys.version_info[0] == 3)
+if PY3:
+	from urllib.request import urlopen, Request, pathname2url
+else:
+	from urllib import pathname2url
+	from urllib2 import urlopen, Request
+
 from Components.Language import language
-from re import sub, split, search, match, findall
-import string
 import locale
 
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
@@ -180,19 +185,22 @@ config.plugins.foreca.fontsize = ConfigInteger(default=20, limits=(20, 30))
 config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
 config.plugins.foreca.infoline = ConfigYesNo(default=True)
 config.plugins.foreca.loop = ConfigYesNo(default=False)
-config.plugins.foreca.citylabels = ConfigEnableDisable(default=False)
+config.plugins.foreca.citylabels = ConfigEnableDisable(default=True)
 config.plugins.foreca.units = ConfigSelection(default="metrickmh", choices = [("metric", _("Metric (C, m/s)")), ("metrickmh", _("Metric (C, km/h)")), ("imperial", _("Imperial (C, mph)")), ("us", _("US (F, mph)"))])
 config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _("12 h")), ("24h", _("24 h"))])
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Maple2012) AppleWebKit/534.7 (KHTML, like Gecko) SmartTV Safari/534.7'}
 MAIN_PAGE = "http://www.foreca.net"
 USR_PATH = resolveFilename(SCOPE_CONFIG)+"Foreca"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
-deviceName = HardwareInfo().get_device_name()
+SIGN = chr(176) if PY3 else unichr(176).encode("utf-8")
+# deviceName = HardwareInfo().get_device_name()
 DEBUG = config.plugins.foreca.debug.value
-if DEBUG: print pluginPrintname, "Debug enabled"
-else: print pluginPrintname, "Debug disabled"
+if DEBUG: print(pluginPrintname, "Debug enabled")
+else: print(pluginPrintname, "Debug disabled")
 
 # Make Path for Slideshow
 CACHE_PATH = "/var/cache/Foreca/"
@@ -228,7 +236,7 @@ if LANGUAGE == "zh":
 try:
 	locale.setlocale(locale.LC_COLLATE, language.getLanguage())
 except:
-	print pluginPrintname, "Collating sequence undeterminable; default used"
+	print(pluginPrintname, "Collating sequence undeterminable; default used")
 
 if fileExists(USR_PATH + "/Filter.cfg"):
 	file = open(USR_PATH + "/Filter.cfg","r")
@@ -282,12 +290,12 @@ class MainMenuList(MenuList):
 		self.idx = 0
 		self.thumb = ""
 		self.pos = 20
-		print pluginPrintname, "MainMenuList..."
+		print(pluginPrintname, "MainMenuList...")
 
 #--------------------------- get skin attribs ---------------------------------------------
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string, wanted, given):
-			print "[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given)
+			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
 		def font0(value):
 			self.font0 = parseFont(value, ((1,1),(1,1)))
 		def font1(value):
@@ -299,61 +307,61 @@ class MainMenuList(MenuList):
 		def itemHeight(value):
 			self.itemHeight = int(value)
 		def setTime(value):
-			self.valTime = map(int, value.split(","))
+			self.valTime = list(map(int, value.split(",")))
 			l = len(self.valTime)
 			if l != 4:
 				warningWrongSkinParameter(attrib,4, l)
 		def setPict(value):
-			self.valPict = map(int, value.split(","))
+			self.valPict = list(map(int, value.split(",")))
 			l = len(self.valPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setPictScale(value):
 			self.valPictScale = int(value)
 		def setTemp(value):
-			self.valTemp = map(int, value.split(","))
+			self.valTemp = list(map(int, value.split(",")))
 			l = len(self.valTemp)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setTempUnits(value):
-			self.valTempUnits = map(int, value.split(","))
+			self.valTempUnits = list(map(int, value.split(",")))
 			l = len(self.valTempUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setWindPict(value):
-			self.valWindPict = map(int, value.split(","))
+			self.valWindPict = list(map(int, value.split(",")))
 			l = len(self.valWindPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def setWindPictScale(value):
 			self.valWindPictScale = int(value)
 		def setWind(value):
-			self.valWind = map(int, value.split(","))
+			self.valWind = list(map(int, value.split(",")))
 			l = len(self.valWind)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, )
 		def setWindUnits(value):
-			self.valWindUnits = map(int, value.split(","))
+			self.valWindUnits = list(map(int, value.split(",")))
 			l = len(self.valWindUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text1Pos(value):
-			self.valText1 = map(int, value.split(","))
+			self.valText1 = list(map(int, value.split(",")))
 			l = len(self.valText1)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text2Pos(value):
-			self.valText2 = map(int, value.split(","))
+			self.valText2 = list(map(int, value.split(",")))
 			l = len(self.valText2)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
 		def text3Pos(value):
-			self.valText3 = map(int, value.split(","))
+			self.valText3 = list(map(int, value.split(",")))
 			l = len(self.valText3)
 			if l != 4:
 				warningWrongSkinParameter(attrib,4, l)
 		def text4Pos(value):
-			self.valText4 = map(int, value.split(","))
+			self.valText4 = list(map(int, value.split(",")))
 			l = len(self.valText4)
 			if l != 4:
 				warningWrongSkinParameter(attrib,4, l)
@@ -372,7 +380,7 @@ class MainMenuList(MenuList):
 
 #--------------------------- Go through all list entries ----------------------------------
 	def buildEntries(self):
-		#if DEBUG: print pluginPrintname, "buildEntries:", len(self.list)
+		#if DEBUG: print(pluginPrintname, "buildEntries:", len(self.list))
 		if self.idx == len(self.list):
 			self.setList(self.listCompleted)
 			if self.callback:
@@ -410,10 +418,10 @@ class MainMenuList(MenuList):
 
 		if config.plugins.foreca.units.value == "us":
 			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
-			tempUnit = _("°F")
+			tempUnit = _(SIGN + "F")
 		else:
 			self.centigrades = int(self.x[2])
-			tempUnit = _("°C")
+			tempUnit = _(SIGN + "C")
 		if self.centigrades <= -20:
 			self.tempcolor = ddblau
 		elif self.centigrades <= -15:
@@ -486,7 +494,7 @@ class MainMenuList(MenuList):
 # -------------------------- Build Menu list ----------------------------------------------
 
 	def SetList(self, l):
-		if DEBUG: print pluginPrintname, "SetList"
+		if DEBUG: print(pluginPrintname, "SetList")
 		self.list = l
 		#self.l.setItemHeight(90)
 		del self.listCompleted
@@ -547,7 +555,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Extract the Tuple, Date
 		jahr, monat, tag = lt[0:3]
 		heute ="%04i%02i%02i" % (jahr,monat,tag)
-		if DEBUG: print pluginPrintname, "determined local date:", heute
+		if DEBUG: print(pluginPrintname, "determined local date:", heute)
 		self.tag = 0
 
 		# Get favorites
@@ -559,7 +567,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			fav1 = fav1[fav1.rfind("/")+1:len(fav1)]
 		else:
 			fav1 = "New_York_City"
-		print pluginPrintname, "fav1 location:", fav1
+		print(pluginPrintname, "fav1 location:", fav1)
 		if fileExists(USR_PATH + "/fav2.cfg"):
 			file = open(USR_PATH + "/fav2.cfg","r")
 			fav2 = str(file.readline().strip())
@@ -567,7 +575,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			fav2 = fav2[fav2.rfind("/")+1:len(fav2)]
 		else:
 			fav2 = "Moskva"
-		print pluginPrintname, "fav2 location:", fav2
+		print(pluginPrintname, "fav2 location:", fav2)
 
 		# Get home location
 		global city, start
@@ -579,11 +587,11 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "United_Kingdom/London"
 			start = "London"
-		print pluginPrintname, "home location:", self.ort
-		
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
-		print pluginPrintname, "initial link:" , MAIN_PAGE
-		
+		print(pluginPrintname, "home location:", self.ort)
+
+		MAIN_PAGE = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		print(pluginPrintname, "initial link:" , MAIN_PAGE)
+
 		if HD:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="980,505" title="Foreca Weather Forecast" backgroundColor="#00000000" >
@@ -639,16 +647,16 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["key_red"] = StaticText(_("Week"))
 		self["key_ok"] = StaticText(_("City"))
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"] = StaticText(string.replace(fav1, "_", " "))
-			self["key_yellow"] = StaticText(string.replace(fav2, "_", " "))
-			self["key_blue"] = StaticText(string.replace(start, "_", " "))
+			self["key_green"] = StaticText(fav1.replace("_", " "))
+			self["key_yellow"] = StaticText(fav2.replace( "_", " "))
+			self["key_blue"] = StaticText(start.replace("_", " "))
 		else:
 			self["key_green"] = StaticText(_("Favorite 1"))
 			self["key_yellow"] = StaticText(_("Favorite 2"))
 			self["key_blue"] = StaticText(_("Home"))
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
-		self["Title"] = StaticText(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
+		self.setTitle(_("Foreca Weather Forecast") + "   " + _("Version ") + VERSION)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -661,8 +669,8 @@ class ForecaPreview(Screen, HelpableScreen):
 				"right": (self.right, _("Right - Next day")),
 				"up": (self.up, _("Up - Previous page")),
 				"down": (self.down, _("Down - Next page")),
-				"previous": (self.previous, _("Left arrow - Previous day")),
-				"next": (self.next, _("Right arrow - Next day")),
+				"previous": (self.previousDay, _("Left arrow - Previous day")),
+				"next": (self.nextDay, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
 				#"shift_red": (self.shift_red, _("Red long - 10 day forecast")),
 				"green": (self.Fav1, _("Green - Favorite 1")),
@@ -683,7 +691,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.StartPageFirst()
 
 	def StartPageFirst(self):
-		print pluginPrintname, "StartPageFirst..."
+		print(pluginPrintname, "StartPageFirst...")
 		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
 		self["MainList"].callback = self.deactivateCacheDialog
 		self.working = False
@@ -699,22 +707,27 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["Titel5"].text = ""
 		self["Titel2"].text = _("Please wait ...")
 		self.working = False
-		print pluginPrintname, "MainList show..."
+		print(pluginPrintname, "MainList show...")
 		self["MainList"].show
 		self.getPage()
 
 	def getPage(self, page=None):
-		print pluginPrintname, "getPage..."
+		print(pluginPrintname, "getPage...")
 		self.cacheDialog.start()
 		self.working = True
 		if not page:
 			page = ""
-		url = "%s%s"%(MAIN_PAGE, page)
-		print pluginPrintname, "page link:" , url
-		getPage(url).addCallback(self.getForecaPage).addErrback(self.error)
+		url = "%s%s" % (MAIN_PAGE, page)
+		print(pluginPrintname, "page link:" , url)
+		try:		
+			req = Request(url, headers=HEADERS)
+			resp = urlopen(req, timeout=2)
+			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
+		except Exception as e:
+			self.error(repr(e))
 
 	def error(self, err=""):
-		print pluginPrintname, "Error:", err
+		print(pluginPrintname, "Error:", err)
 		self.working = False
 		self.deactivateCacheDialog()
 
@@ -789,7 +802,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			file.close()
 		else:
 			self.ort = "United_Kingdom/London"
-		print pluginPrintname, "home location:", self.ort
+		print(pluginPrintname, "home location:", self.ort)
 		start = self.ort[self.ort.rfind("/")+1:len(self.ort)]
 		self.Zukunft(0)
 
@@ -802,7 +815,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "United_States/New_York_City"
 		fav1 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
-		print pluginPrintname, "fav1 location:", fav1
+		print(pluginPrintname, "fav1 location:", fav1)
 		self.Zukunft(0)
 
 	def Fav2(self):
@@ -814,7 +827,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		else:
 			self.ort = "Russia/Moskva"
 		fav2 = self.ort[self.ort.rfind("/")+1:len(self.ort)]
-		print pluginPrintname, "fav2 location:", fav2
+		print(pluginPrintname, "fav2 location:", fav2)
 		self.Zukunft(0)
 
 	def Zukunft(self, ztag=0):
@@ -831,8 +844,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr,monat,tag)
 
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
-		print pluginPrintname, "day link:", MAIN_PAGE
+		MAIN_PAGE = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		print(pluginPrintname, "day link:", MAIN_PAGE)
 
 		# Show in GUI
 		self.StartPage()
@@ -854,15 +867,15 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.tag = 0
 		self.Zukunft(0)
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"].setText(string.replace(fav1, "_", " "))
-			self["key_yellow"].setText(string.replace(fav2, "_", " "))
-			self["key_blue"].setText(string.replace(start, "_", " "))
+			self["key_green"].setText(fav1.replace("_", " "))
+			self["key_yellow"].setText(fav2.replace("_", " "))
+			self["key_blue"].setText(start.replace("_", " "))
 		else:
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
-		print pluginPrintname, "MenuCallback"
-		
+		print(pluginPrintname, "MenuCallback")
+
 	def left(self):
 		if not self.working and self.tag >= 1:
 			self.tag = self.tag - 1
@@ -881,12 +894,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		if not self.working:
 			self["MainList"].pageDown()
 
-	def previous(self):
+	def previousDay(self):
 		if not self.working and self.tag >= 1:
 			self.tag = self.tag - 1
 			self.Zukunft(self.tag)
 
-	def next(self):
+	def nextDay(self):
 		if not self.working and self.tag < 9:
 			self.tag = self.tag + 1
 			self.Zukunft(self.tag)
@@ -894,7 +907,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url= "http://www.foreca.ru" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			self.url= "http://www.foreca.net" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -907,9 +920,9 @@ class ForecaPreview(Screen, HelpableScreen):
 	def MenuCallback(self):
 		global menu, start, fav1, fav2
 		if config.plugins.foreca.citylabels.value == True:
-			self["key_green"].setText(string.replace(fav1, "_", " "))
-			self["key_yellow"].setText(string.replace(fav2, "_", " "))
-			self["key_blue"].setText(string.replace(start, "_", " "))
+			self["key_green"].setText(fav1.replace("_", " "))
+			self["key_yellow"].setText(fav2.replace("_", " "))
+			self["key_blue"].setText(start.replace("_", " "))
 		else:
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
@@ -917,33 +930,36 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def loadPicture(self,url=""):
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve(url, devicepath)
+		req = Request(url, headers=HEADERS)
+		resp = urlopen(req, timeout=2)
+		with open(devicepath, 'wb') as f:
+			f.write(resp.read()) 
 		self.session.open(PicView, devicepath, 0, False)
 
-	def getForecaPage(self,html):
+	def getForecaPage(self, html):
 		#new Ajax.Request('/lv?id=102772400', {
 		fulltext = re.compile(r"id: '(.*?)'", re.DOTALL)
-		id = fulltext.findall(html)
-		if DEBUG: print pluginPrintname, "fulltext=", fulltext, "id=", id
+		id = fulltext.findall('%s' % html)
+		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "id=", id)
 		self.loc_id = str(id[0])
 
 		# <!-- START -->
 		#<h6><span>Tuesday</span> March 29</h6>
-		if DEBUG: print pluginPrintname, "Start:" + str(len(html))
+		if DEBUG: print(pluginPrintname, "Start:" + str(len(html)))
 		fulltext = re.compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', re.DOTALL)
 		titel = fulltext.findall(html)
-		if DEBUG: print pluginPrintname, "fulltext=", fulltext, "titel=", titel
-		titel[0] = str(sub('<[^>]*>',"",titel[0]))
-		if DEBUG: print pluginPrintname, "titel[0]=", titel[0]
+		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
+		titel[0] = str(re.sub('<[^>]*>',"",titel[0]))
+		if DEBUG: print(pluginPrintname, "titel[0]=", titel[0])
 
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
 		link = str(fulltext.findall(html))
-		#print link
+		#print(link)
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = str(fulltext.findall(link))
-		#print "Day ", tag
+		#print("Day ", tag)
 
 		# ---------- Wetterdaten -----------
 
@@ -951,28 +967,28 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = re.compile(r'<!-- START -->(.+?)<div class="datecopy">', re.DOTALL)
 		html = str(fulltext.findall(html))
 
-		print pluginPrintname, "searching ....."
+		print(pluginPrintname, "searching .....")
 		list = []
 
 		fulltext = re.compile(r'<a href="(.+?)".+?', re.DOTALL)
 		taglink = str(fulltext.findall(html))
 		#taglink = konvert_uml(taglink)
-		if DEBUG: print pluginPrintname, "Daylink ", taglink
+		if DEBUG: print(pluginPrintname, "Daylink ", taglink)
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "Day", str(tag)
+		if DEBUG: print(pluginPrintname,  "Day", str(tag))
 
 		# <div class="c0"> <strong>17:00</strong></div>
 		fulltime = re.compile(r'<div class="c0"> <strong>(.+?)<.+?', re.DOTALL)
 		zeit = fulltime.findall(html)
-		if DEBUG: print pluginPrintname,  "Time", str(zeit)
+		if DEBUG: print(pluginPrintname,  "Time", str(zeit))
 
 		#<div class="c4">
 		#<span class="warm"><strong>+15&deg;</strong></span><br />
 		fulltime = re.compile(r'<div class="c4">.*?<strong>(.+?)&.+?', re.DOTALL)
 		temp = fulltime.findall(html)
-		if DEBUG: print pluginPrintname,  "Temp", str(temp)
+		if DEBUG: print(pluginPrintname,  "Temp", str(temp))
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
 		fulltext = re.compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', re.DOTALL)
@@ -980,38 +996,38 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = re.compile(r'<div class="c3">.+? (.+?)<br />.+?', re.DOTALL)
 		description = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "description", str(description).lstrip("\t").lstrip()
+		if DEBUG: print(pluginPrintname,  "description", str(description).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', re.DOTALL)
 		feels = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "feels", str(feels).lstrip("\t").lstrip()
+		if DEBUG: print(pluginPrintname,  "feels", str(feels).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
 		precip = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip()
+		if DEBUG: print(pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />.+?</strong><br />(.+?)</', re.DOTALL)
 		humidity = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip()
+		if DEBUG: print(pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c2">.+?<img src="//img-b.foreca.net/s/symb-wind/(.+?).gif', re.DOTALL)
 		windDirection = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "windDirection", str(windDirection)
+		if DEBUG: print(pluginPrintname,  "windDirection", str(windDirection))
 
 		fulltext = re.compile(r'<div class="c2">.+?<strong>(.+?)<.+?', re.DOTALL)
 		windSpeed = fulltext.findall(html)
-		if DEBUG: print pluginPrintname,  "windSpeed", str(windSpeed)
+		if DEBUG: print(pluginPrintname,  "windSpeed", str(windSpeed))
 
 		timeEntries = len(zeit)
-		#print "Aantal tijden ", str(timeEntries)
+		#print("Aantal tijden ", str(timeEntries))
 		x = 0
 		while x < timeEntries:
-			description[x] = self.konvert_uml(str(sub('<[^>]*>',"",description[x])))
-			feels[x] = self.konvert_uml(str(sub('<[^>]*>',"",feels[x])))
-			precip[x] = self.konvert_uml(str(sub('<[^>]*>',"",precip[x])))
-			humidity[x] = self.konvert_uml(str(sub('<[^>]*>',"",humidity[x])))
+			description[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",description[x])))
+			feels[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",feels[x])))
+			precip[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",precip[x])))
+			humidity[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
-			if DEBUG: print pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x]
+			if DEBUG: print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x])
 			list.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
@@ -1022,10 +1038,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		datum2=datum[:foundPos2]+datum[foundPos:]+"."+datum[foundPos2:foundPos]
 		foundPos=self.ort.find("/")
 		plaats=_(self.ort[0:foundPos]) + "-" + self.ort[foundPos+1:len(self.ort)]
-		self["Titel"].text = string.replace(plaats, "_", " ") + "  -  " + datum2
-		self["Titel4"].text = string.replace(plaats, "_", " ")
+		self["Titel"].text = plaats.replace("_", " ") + "  -  " + datum2
+		self["Titel4"].text = plaats.replace("_", " ")
 		self["Titel5"].text = datum2
-		self["Titel3"].text = string.replace(self.ort[:foundPos], "_", " ") + "\r\n" + string.replace(self.ort[foundPos+1:], "_", " ") + "\r\n" + datum2
+		self["Titel3"].text = self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos+1:].replace("_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(list)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
@@ -1036,7 +1052,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# remove diacritics for selected language
 		filterItem = 0
 		while filterItem < FILTERidx:
-			text = string.replace(text, FILTERin[filterItem], FILTERout[filterItem])
+			text = text.replace(FILTERin[filterItem], FILTERout[filterItem])
 			filterItem += 1
 		return text
 
@@ -1119,7 +1135,7 @@ class CityPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
-		self["Title"] = StaticText(_("Select a city"))
+		self.setTitle(_("Select a city"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self,"ForecaActions",
@@ -1148,7 +1164,7 @@ class CityPanel(Screen, HelpableScreen):
 			for line in file:
 				text = line.strip()
 				self.maxidx += 1
-				self.Mlist.append(self.CityEntryItem((string.replace(text, "_", " "), text)))
+				self.Mlist.append(self.CityEntryItem((text.replace("_", " "), text)))
 			file.close
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
@@ -1203,13 +1219,13 @@ class CityPanel(Screen, HelpableScreen):
 	def ok(self):
 		global city
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print pluginPrintname, "city=", city, "CurrentSelection=", self['Mlist'].l.getCurrentSelection()
+		if DEBUG: print(pluginPrintname, "city=", city, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.close()
 
 	def blue(self):
 		global start
-		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print pluginPrintname, "Home:", city
+		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if DEBUG: print(pluginPrintname, "Home:", city)
 		fwrite = open(USR_PATH + "/startservice.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1219,8 +1235,8 @@ class CityPanel(Screen, HelpableScreen):
 
 	def green(self):
 		global fav1
-		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print pluginPrintname, "Fav1:", city
+		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if DEBUG: print(pluginPrintname, "Fav1:", city)
 		fwrite = open(USR_PATH + "/fav1.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1230,8 +1246,8 @@ class CityPanel(Screen, HelpableScreen):
 
 	def yellow(self):
 		global fav2
-		city = sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print pluginPrintname, "Fav2:", city
+		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
+		if DEBUG: print(pluginPrintname, "Fav2:", city)
 		fwrite = open(USR_PATH + "/fav2.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1278,7 +1294,7 @@ class SatPanelList(MenuList):
 
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string, wanted, given):
-			print "[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given)
+			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
 		def font(value):
 			self.font0 = parseFont(value, ((1,1),(1,1)))
 		def font1(value):
@@ -1294,7 +1310,7 @@ class SatPanelList(MenuList):
 		def backgroundColorSelected(value):
 			self.backgroundColorSelected = parseColor(value).argb()
 		def textPos(value):
-			self.textPos = map(int, value.split(","))
+			self.textPos = list(map(int, value.split(",")))
 			l = len(self.textPos)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
@@ -1356,7 +1372,7 @@ class SatPanel(Screen, HelpableScreen):
 		self["key_green"] = StaticText(_("Europe"))
 		self["key_yellow"] = StaticText(_("Germany"))
 		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(_("Satellite photos"))
+		self.setTitle(_("Satellite photos"))
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -1407,7 +1423,7 @@ class SatPanel(Screen, HelpableScreen):
 
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print pluginPrintname, "SatPanel menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection()
+		if DEBUG: print(pluginPrintname, "SatPanel menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.SatBild()
 
 	def MapsGermany(self):
@@ -1492,7 +1508,7 @@ class SatPanel(Screen, HelpableScreen):
 
 
 		res = [entry]
-		#if DEBUG: print pluginPrintname, "entry=", entry
+		#if DEBUG: print(pluginPrintname, "entry=", entry)
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
 		thumb_width = 200
 		if pict_scale:
@@ -1506,50 +1522,56 @@ class SatPanel(Screen, HelpableScreen):
 		self.session.open(PicSetup)
 
 #------------------------------------------------------------------------------------------
+	def fetch_url(self, x):
+		menu = self['Mlist'].l.getCurrentSelection()[0][1]
+		url = ('http:%s' % x).replace('[TYPE]', menu)
+		foundPos = url.find("0000.jpg")
+		if DEBUG: print(pluginPrintname, "x=", x, "url=", url, "foundPos=", foundPos)
+		if foundPos == -1:
+			foundPos = url.find(".jpg")
+		if foundPos == -1:
+			foundPos = url.find(".png")
+		file = url[foundPos-10:foundPos]
+		file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
+		if DEBUG: print(pluginPrintname, "file=", file, "file2=", file2)
+		req = Request(url, headers=HEADERS)
+		resp = urlopen(req, timeout=2)
+		with open(CACHE_PATH + file2 + ".jpg", 'wb') as f:
+			f.write(resp.read())
 
 	def SatBild(self):
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection()
+		if DEBUG: print(pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 
 
 		if menu == "eumetsat":
 			devicepath = "/tmp/meteogram.png"
-			urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
+			url = "http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538"
+			req = Request(url, headers=HEADERS)
+			resp = urlopen(req, timeout=2)
+			with open(devicepath, 'wb') as f:
+				f.write(resp.read())
+
 			self.session.open(PicView, devicepath, 0, False)
 
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.ru" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
-			resp = urllib2.urlopen(url)
-			html = resp.read()
-			#resp.close()
-
-			fulltext = re.compile(r'//cache-(.+?)\'', re.DOTALL)
-			PressureLink = fulltext.findall(html)
+			fulltext = re.compile(r"'(\/\/cache-.+?)\'", re.DOTALL)
+			req = Request(url, headers=HEADERS)
+			resp = urlopen(req, timeout=2)
 
 			# Load Picture for Slideshow
-			max = int(len(PressureLink))
-			if DEBUG: print pluginPrintname, "max= ", str(max)
-			zehner = "1"
-			x = 0
-			while x < max:
-				url = "http://cache-" + PressureLink[x].split('?')[0].replace('[TYPE]', menu)
-				foundPos = url.find("0000.jpg")
-				if DEBUG: print pluginPrintname, "x=", str(x), "url=", url, "foundPos=", foundPos
-				if foundPos ==-1:
-					foundPos = url.find(".jpg")
-				if foundPos ==-1:
-					foundPos = url.find(".png")			
-				file = url[foundPos-10:foundPos]
-				file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
-				if DEBUG: print pluginPrintname, "file=", file, "file2=", file2
-				urllib.urlretrieve(url, CACHE_PATH + file2 + ".jpg")
-				x = x + 1
-				if x > 9:
-					zehner = "2"
+			urls = fulltext.findall(resp.read().decode('utf-8') if PY3 else resp.read())	
+			threads = [threading.Thread(target=self.fetch_url, args=(url,)) for url in urls]
+			for thread in threads:
+				thread.start()
+			for thread in threads:
+				thread.join()
+
 			self.session.open(View_Slideshow, 0, True)
 
 #------------------------------------------------------------------------------------------
@@ -1610,13 +1632,13 @@ class SatPanelb(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		self.setup_title = title
 		self.Mlist = mlist
-		#if DEBUG: print pluginPrintname, "Mlist=", self.Mlist, "\nSatPanelListb([])=", SatPanelListb([])
+		#if DEBUG: print(pluginPrintname, "Mlist=", self.Mlist, "\nSatPanelListb([])=", SatPanelListb([]))
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText(_("Settings"))
-		self["Title"] = StaticText(title)
+		self.setTitle(title)
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(self, "ForecaActions",
@@ -1651,7 +1673,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print pluginPrintname, "SatPanelb menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection()
+		if DEBUG: print(pluginPrintname, "SatPanelb menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.SatBild()
 
 	def PicSetupMenu(self):
@@ -1663,7 +1685,11 @@ class SatPanelb(Screen, HelpableScreen):
 
 		region = self['Mlist'].l.getCurrentSelection()[0][1]
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve("http://img.wetterkontor.de/karten/" + region + "0.jpg", devicepath)
+		url = "http://img.wetterkontor.de/karten/" + region + "0.jpg"
+		req = Request(url, headers=HEADERS)
+		resp = urlopen(req, timeout=2)
+		with open(devicepath, 'wb') as f:
+			f.write(resp.read())
 		self.session.open(PicView, devicepath, 0, False)
 
 #------------------------------------------------------------------------------------------
@@ -1736,7 +1762,7 @@ class View_Slideshow(Screen):
 	def __init__(self, session, pindex, startslide):
 
 		pindex = 0 
-		print pluginPrintname, "SlideShow is running..."
+		print(pluginPrintname, "SlideShow is running...")
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
@@ -1809,7 +1835,7 @@ class View_Slideshow(Screen):
 			self.lastindex = self.currPic[1]
 			self["pic"].instance.setPixmap(self.currPic[2].__deref__())
 			self.currPic = []
-			self.next()
+			self.nextDay()
 			self.start_decode()
 
 	def finish_decode(self, picInfo=""):
@@ -1832,7 +1858,7 @@ class View_Slideshow(Screen):
 		self.picload.startDecode(self.picfilelist[self.pindex])
 		self["point"].show()
 
-	def next(self):
+	def nextDay(self):
 		self.pindex += 1
 		if self.pindex > self.maxentry:
 			self.pindex = 0
@@ -1843,7 +1869,7 @@ class View_Slideshow(Screen):
 			self.pindex = self.maxentry
 
 	def slidePic(self):
-		if DEBUG: print pluginPrintname, "slide to next Picture index=" + str(self.lastindex)
+		if DEBUG: print(pluginPrintname, "slide to next Picture index=" + str(self.lastindex))
 		if config.plugins.foreca.loop.value==False and self.lastindex == self.maxentry:
 			self.PlayPause()
 		self.shownow = True
@@ -1873,7 +1899,7 @@ class View_Slideshow(Screen):
 		del self.picload
 		for file in self.picfilelist:
 			try:
-				if DEBUG: print pluginPrintname, "file=", file
+				if DEBUG: print(pluginPrintname, "file=", file)
 				os.unlink(file)
 			except:
 				pass
@@ -1894,14 +1920,14 @@ class PicSetup(Screen):
 			<ePixmap position="5,300" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
 			<ePixmap position="240,300" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
 		</screen>"""
-	print pluginPrintname, "Setup..."
+	print(pluginPrintname, "Setup...")
 	def __init__(self, session):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
 		self.setup_title = _("SlideShow Settings")
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["Title"] = StaticText(_("SlideShow Settings"))
+		self.setTitle(_("SlideShow Settings"))
 		self["actions"] = NumberActionMap(["SetupActions", "ColorActions"],
 			{
 				"ok": self.save,
@@ -1945,8 +1971,8 @@ class PicSetup(Screen):
 		config.save()
 		global DEBUG
 		DEBUG = config.plugins.foreca.debug.value
-		if DEBUG: print pluginPrintname, "Debug enabled"
-		else: print pluginPrintname, "Debug disabled"
+		if DEBUG: print(pluginPrintname, "Debug enabled")
+		else: print(pluginPrintname, "Debug disabled")
 		self.refreshPlugins()
 		self.close()
 
