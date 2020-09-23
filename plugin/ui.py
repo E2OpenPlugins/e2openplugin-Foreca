@@ -13,7 +13,7 @@
 #
 from __future__ import absolute_import
 from __future__ import print_function
-VERSION = "3.2.5"
+VERSION = "3.2.6"
 #
 #                    04.10.2017
 #
