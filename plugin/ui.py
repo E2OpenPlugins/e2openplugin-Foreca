@@ -163,9 +163,12 @@ from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
 from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
-from twisted.web.client import downloadPage, getPage
+from twisted.web.client import getPage
 
-import htmlentitydefs, re, urllib2, urllib
+import six
+from six.moves.urllib.request import pathname2url, urlopen, urlretrieve
+
+import re
 from Components.Language import language
 from re import sub, split, search, match, findall
 from . import locale
@@ -588,7 +591,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print(pluginPrintname, "home location:", self.ort)
 		
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
 		print(pluginPrintname, "initial link:", MAIN_PAGE)
 		
 		if HD:
@@ -718,6 +721,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			page = ""
 		url = "%s%s"%(MAIN_PAGE, page)
 		print(pluginPrintname, "page link:", url)
+		url = six.ensure_binary(url)
 		getPage(url).addCallback(self.getForecaPage).addErrback(self.error)
 
 	def error(self, err=""):
@@ -838,7 +842,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen ="%04i%02i%02i" % (jahr, monat, tag)
 
-		MAIN_PAGE = "http://www.foreca.net" + "/" + urllib.pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
 		print(pluginPrintname, "day link:", MAIN_PAGE)
 
 		# Show in GUI
@@ -924,11 +928,12 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def loadPicture(self,url=""):
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve(url, devicepath)
+		urlretrieve(url, devicepath)
 		self.session.open(PicView, devicepath, 0, False)
 
 	def getForecaPage(self, html):
 		#new Ajax.Request('/lv?id=102772400', {
+		html = six.ensure_str(html)
 		fulltext = re.compile(r"id: '(.*?)'", re.DOTALL)
 		id = fulltext.findall(html)
 		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "id=", id)
@@ -1525,14 +1530,14 @@ class SatPanel(Screen, HelpableScreen):
 
 		if menu == "eumetsat":
 			devicepath = "/tmp/meteogram.png"
-			urllib.urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
+			urlretrieve("http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538", devicepath)
 			self.session.open(PicView, devicepath, 0, False)
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.ru" + "/" + urllib.pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.ru" + "/" + pathname2url(self.ort) + "?map=" + menu
 			# Load site for category and search Picture link
-			resp = urllib2.urlopen(url)
+			resp = urlopen(url)
 			html = resp.read()
 
 			fulltext = re.compile(r'//cache-(.+?)\'', re.DOTALL)
@@ -1554,7 +1559,7 @@ class SatPanel(Screen, HelpableScreen):
 				file = url[foundPos-10:foundPos]
 				file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
 				if DEBUG: print(pluginPrintname, "file=", file, "file2=", file2)
-				urllib.urlretrieve(url, CACHE_PATH + file2 + ".jpg")
+				urlretrieve(url, CACHE_PATH + file2 + ".jpg")
 				x = x + 1
 				if x > 9:
 					zehner = "2"
@@ -1671,7 +1676,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 		region = self['Mlist'].l.getCurrentSelection()[0][1]
 		devicepath = "/tmp/meteogram.png"
-		urllib.urlretrieve("http://img.wetterkontor.de/karten/" + region + "0.jpg", devicepath)
+		urlretrieve("http://img.wetterkontor.de/karten/" + region + "0.jpg", devicepath)
 		self.session.open(PicView, devicepath, 0, False)
 
 #------------------------------------------------------------------------------------------
