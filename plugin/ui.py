@@ -180,17 +180,17 @@ import locale
 pluginPrintname = "[Foreca Ver. %s]" %VERSION
 ###############################################################################
 
-config.plugins.foreca.resize = ConfigSelection(default="0", choices = [("0", _("simple")), ("1", _("better"))])
-config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
-config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices = [("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
+config.plugins.foreca.resize = ConfigSelection(default="0", choices=[("0", _("simple")), ("1", _("better"))])
+config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices=[("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
+config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices=[("#00000000", _("black")),("#009eb9ff", _("blue")),("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.framesize = ConfigInteger(default=5, limits=(5, 99))
 config.plugins.foreca.fontsize = ConfigInteger(default=20, limits=(20, 30))
 config.plugins.foreca.slidetime = ConfigInteger(default=1, limits=(1, 60))
 config.plugins.foreca.infoline = ConfigYesNo(default=True)
 config.plugins.foreca.loop = ConfigYesNo(default=False)
 config.plugins.foreca.citylabels = ConfigEnableDisable(default=True)
-config.plugins.foreca.units = ConfigSelection(default="metrickmh", choices = [("metric", _("Metric (C, m/s)")), ("metrickmh", _("Metric (C, km/h)")), ("imperial", _("Imperial (C, mph)")), ("us", _("US (F, mph)"))])
-config.plugins.foreca.time = ConfigSelection(default="24h", choices = [("12h", _("12 h")), ("24h", _("24 h"))])
+config.plugins.foreca.units = ConfigSelection(default="metrickmh", choices=[("metric", _("Metric (C, m/s)")), ("metrickmh", _("Metric (C, km/h)")), ("imperial", _("Imperial (C, mph)")), ("us", _("US (F, mph)"))])
+config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("12 h")), ("24h", _("24 h"))])
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 
@@ -1088,7 +1088,7 @@ class ForecaPreview(Screen, HelpableScreen):
 #------------------------------------------------------------------------------------------
 
 class CityPanelList(MenuList):
-	def __init__(self, list, font0 = 22, font1 = 16, itemHeight = 30, enableWrapAround = True):
+	def __init__(self, list, font0=22, font1=16, itemHeight=30, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
 		GUIComponent.__init__(self)
 		self.font0 = gFont("Regular",font0)
@@ -1306,7 +1306,7 @@ class SatPanelList(MenuList):
 	else:
 		ItemSkin = 123
 
-	def __init__(self, list, font0 = 28, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
+	def __init__(self, list, font0=28, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
 		GUIComponent.__init__(self)
 		self.font0 = gFont("Regular",font0)
@@ -1615,7 +1615,7 @@ class SatPanelListb(MenuList):
 	else:
 		ItemSkin = 123
 
-	def __init__(self, list, font0 = 24, font1 = 16, itemHeight = ItemSkin, enableWrapAround = True):
+	def __init__(self, list, font0=24, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
 		self.font0 = gFont("Regular",font0)
 		self.font1 = gFont("Regular",font1)
@@ -1829,7 +1829,7 @@ class View_Slideshow(Screen):
 		self.shownow = True
 		self.dirlistcount = 0
 
-		self.filelist = FileList(CACHE_PATH, showDirectories = False, matchingPattern = "^.*\.(jpg)", useServiceRef = False)
+		self.filelist = FileList(CACHE_PATH, showDirectories=False, matchingPattern="^.*\.(jpg)", useServiceRef=False)
 
 		for x in self.filelist.getFileList():
 			if x[0][0]:
