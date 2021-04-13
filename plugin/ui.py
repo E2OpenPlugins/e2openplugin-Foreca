@@ -144,7 +144,7 @@ import re
 import threading
 
 # Enigma
-from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT , RT_VALIGN_CENTER
+from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, RT_VALIGN_CENTER
 
 # Plugin definition
 from Plugins.Plugin import PluginDescriptor
@@ -597,7 +597,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		print(pluginPrintname, "home location:", self.ort)
 
 		MAIN_PAGE = "http://www.foreca.net" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value +"&tf=" + config.plugins.foreca.time.value
-		print(pluginPrintname, "initial link:" , MAIN_PAGE)
+		print(pluginPrintname, "initial link:", MAIN_PAGE)
 
 		if HD:
 			self.skin = """
@@ -655,7 +655,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["key_ok"] = StaticText(_("City"))
 		if config.plugins.foreca.citylabels.value == True:
 			self["key_green"] = StaticText(fav1.replace("_", " "))
-			self["key_yellow"] = StaticText(fav2.replace( "_", " "))
+			self["key_yellow"] = StaticText(fav2.replace("_", " "))
 			self["key_blue"] = StaticText(start.replace("_", " "))
 		else:
 			self["key_green"] = StaticText(_("Favorite 1"))
@@ -725,7 +725,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		if not page:
 			page = ""
 		url = "%s%s" % (MAIN_PAGE, page)
-		print(pluginPrintname, "page link:" , url)
+		print(pluginPrintname, "page link:", url)
 		try:		
 			req = Request(url, headers=HEADERS)
 			resp = urlopen(req, timeout=2)
@@ -859,7 +859,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def info(self):
 		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO)
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 
 	def OK(self):
@@ -1022,12 +1022,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
 		precip = fulltext.findall(html)
 		if DEBUG:
-			print(pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip())
+			print(pluginPrintname,  "precip", str(precip).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />.+?</strong><br />(.+?)</', re.DOTALL)
 		humidity = fulltext.findall(html)
 		if DEBUG:
-			print(pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip())
+			print(pluginPrintname,  "humidity", str(humidity).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c2">.+?<img src="//img-b.foreca.net/s/symb-wind/(.+?).gif', re.DOTALL)
 		windDirection = fulltext.findall(html)
@@ -1049,7 +1049,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			humidity[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
 			if DEBUG:
-				print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x])
+				print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x])
 			list.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
@@ -1255,7 +1255,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.close()
 		start = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def green(self):
 		global fav1
@@ -1267,7 +1267,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.close()
 		fav1 = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def yellow(self):
 		global fav2
@@ -1279,7 +1279,7 @@ class CityPanel(Screen, HelpableScreen):
 		fwrite.close()
 		fav2 = city[city.rfind("/")+1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
-		self.session.open( MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self,entry):
 		mblau = self["Mlist"].foregroundColorSelected
