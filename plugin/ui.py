@@ -194,7 +194,6 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 
-
 HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Maple2012) AppleWebKit/534.7 (KHTML, like Gecko) SmartTV Safari/534.7'}
 MAIN_PAGE = "http://www.foreca.net"
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
@@ -256,12 +255,14 @@ if fileExists(USR_PATH + "/Filter.cfg"):
 
 #---------------------- Skin Functions ----------------------------------------------------
 
+
 def getScale():
 	return AVSwitch().getFramebufferScale()
 
 #------------------------------------------------------------------------------------------
 #----------------------------------  MainMenuList   ---------------------------------------
 #------------------------------------------------------------------------------------------
+
 
 class MainMenuList(MenuList):
 
@@ -301,70 +302,88 @@ class MainMenuList(MenuList):
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string, wanted, given):
 			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
+
 		def font0(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font1(value):
 			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font2(value):
 			self.font2 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font3(value):
 			self.font3 = parseFont(value, ((1, 1), (1, 1)))
+
 		def itemHeight(value):
 			self.itemHeight = int(value)
+
 		def setTime(value):
 			self.valTime = list(map(int, value.split(",")))
 			l = len(self.valTime)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def setPict(value):
 			self.valPict = list(map(int, value.split(",")))
 			l = len(self.valPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def setPictScale(value):
 			self.valPictScale = int(value)
+
 		def setTemp(value):
 			self.valTemp = list(map(int, value.split(",")))
 			l = len(self.valTemp)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def setTempUnits(value):
 			self.valTempUnits = list(map(int, value.split(",")))
 			l = len(self.valTempUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def setWindPict(value):
 			self.valWindPict = list(map(int, value.split(",")))
 			l = len(self.valWindPict)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def setWindPictScale(value):
 			self.valWindPictScale = int(value)
+
 		def setWind(value):
 			self.valWind = list(map(int, value.split(",")))
 			l = len(self.valWind)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, )
+
 		def setWindUnits(value):
 			self.valWindUnits = list(map(int, value.split(",")))
 			l = len(self.valWindUnits)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def text1Pos(value):
 			self.valText1 = list(map(int, value.split(",")))
 			l = len(self.valText1)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def text2Pos(value):
 			self.valText2 = list(map(int, value.split(",")))
 			l = len(self.valText2)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def text3Pos(value):
 			self.valText3 = list(map(int, value.split(",")))
 			l = len(self.valText3)
 			if l != 4:
 				warningWrongSkinParameter(attrib, 4, l)
+
 		def text4Pos(value):
 			self.valText4 = list(map(int, value.split(",")))
 			l = len(self.valText4)
@@ -512,6 +531,7 @@ class MainMenuList(MenuList):
 #------------------------------------------ Spinner ---------------------------------------
 #------------------------------------------------------------------------------------------
 
+
 class ForecaPreviewCache(Screen):
 
 	skin = """
@@ -548,6 +568,7 @@ class ForecaPreviewCache(Screen):
 #------------------------------------------------------------------------------------------
 #------------------------------ Foreca Preview---------------------------------------------
 #------------------------------------------------------------------------------------------
+
 
 class ForecaPreview(Screen, HelpableScreen):
 
@@ -861,7 +882,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
-
 	def OK(self):
 		global city
 		panelmenu = ""
@@ -1087,6 +1107,7 @@ class ForecaPreview(Screen, HelpableScreen):
 #------------------------------ City Panel ------------------------------------------------
 #------------------------------------------------------------------------------------------
 
+
 class CityPanelList(MenuList):
 	def __init__(self, list, font0=22, font1=16, itemHeight=30, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
@@ -1103,16 +1124,22 @@ class CityPanelList(MenuList):
 	def applySkin(self, desktop, parent):
 		def font(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font1(value):
 			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
 		def itemHeight(value):
 			self.itemHeight = int(value)
+
 		def foregroundColor(value):
 			self.foregroundColor = parseColor(value).argb()
+
 		def foregroundColorSelected(value):
 			self.foregroundColorSelected = parseColor(value).argb()
+
 		def backgroundColorSelected(value):
 			self.backgroundColorSelected = parseColor(value).argb()
+
 		def column(value):
 			self.column = int(value)
 		for (attrib, value) in list(self.skinAttributes):
@@ -1126,6 +1153,7 @@ class CityPanelList(MenuList):
 		self.l.setItemHeight(self.itemHeight)
 		return GUIComponent.applySkin(self, desktop, parent)
 # -------------------------------------------------------------------
+
 
 class CityPanel(Screen, HelpableScreen):
 
@@ -1299,6 +1327,7 @@ class CityPanel(Screen, HelpableScreen):
 #------------------------------ Satellite photos ------------------------------------------
 #------------------------------------------------------------------------------------------
 
+
 class SatPanelList(MenuList):
 
 	if HD:
@@ -1321,20 +1350,28 @@ class SatPanelList(MenuList):
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string, wanted, given):
 			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
+
 		def font(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font1(value):
 			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
 		def itemHeight(value):
 			self.itemHeight = int(value)
+
 		def setPictScale(value):
 			self.pictScale = int(value)
+
 		def foregroundColor(value):
 			self.foregroundColor = parseColor(value).argb()
+
 		def foregroundColorSelected(value):
 			self.foregroundColorSelected = parseColor(value).argb()
+
 		def backgroundColorSelected(value):
 			self.backgroundColorSelected = parseColor(value).argb()
+
 		def textPos(value):
 			self.textPos = list(map(int, value.split(",")))
 			l = len(self.textPos)
@@ -1352,6 +1389,7 @@ class SatPanelList(MenuList):
 		return GUIComponent.applySkin(self, desktop, parent)
 
 # -----------------------------------------------------------------------------------------
+
 
 class SatPanel(Screen, HelpableScreen):
 
@@ -1533,7 +1571,6 @@ class SatPanel(Screen, HelpableScreen):
 		weiss = self["Mlist"].foregroundColor
 		grau = self["Mlist"].backgroundColorSelected
 
-
 		res = [entry]
 		#if DEBUG: print(pluginPrintname, "entry=", entry)
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
@@ -1574,7 +1611,6 @@ class SatPanel(Screen, HelpableScreen):
 		if DEBUG:
 			print(pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 
-
 		if menu == "eumetsat":
 			devicepath = "/tmp/meteogram.png"
 			url = "http://www.sat24.com/images.php?country=eu&type=zoom&format=640x480001001&rnd=118538"
@@ -1608,6 +1644,7 @@ class SatPanel(Screen, HelpableScreen):
 #------------------------------ Weather Maps ----------------------------------------------
 #------------------------------------------------------------------------------------------
 
+
 class SatPanelListb(MenuList):
 
 	if HD:
@@ -1624,8 +1661,10 @@ class SatPanelListb(MenuList):
 	def applySkin(self, desktop, parent):
 		def font(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
 		def font1(value):
 			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
 		def itemHeight(value):
 			self.itemHeight = int(value)
 		for (attrib, value) in list(self.skinAttributes):
@@ -1640,6 +1679,7 @@ class SatPanelListb(MenuList):
 		return GUIComponent.applySkin(self, desktop, parent)
 
 # -------------------------------------------------------------------
+
 
 class SatPanelb(Screen, HelpableScreen):
 
@@ -1657,7 +1697,6 @@ class SatPanelb(Screen, HelpableScreen):
 				<screen name="SatPanelb" position="center,center" size="620,440" backgroundColor="#40000000" >
 					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				</screen>"""
-
 
 		Screen.__init__(self, session)
 		self.setup_title = title
@@ -1727,6 +1766,7 @@ class SatPanelb(Screen, HelpableScreen):
 #-------------------------- Picture viewer for large pictures -----------------------------
 #------------------------------------------------------------------------------------------
 
+
 class PicView(Screen):
 
 	def __init__(self, session, filelist, index, startslide):
@@ -1787,6 +1827,7 @@ class PicView(Screen):
 #------------------------------------------------------------------------------------------
 #------------------------------ Slide Show ------------------------------------------------
 #------------------------------------------------------------------------------------------
+
 
 class View_Slideshow(Screen):
 
@@ -1954,6 +1995,7 @@ class PicSetup(Screen):
 			<ePixmap position="240,300" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
 		</screen>"""
 	print(pluginPrintname, "Setup...")
+
 	def __init__(self, session):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
