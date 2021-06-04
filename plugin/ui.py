@@ -138,7 +138,10 @@ from Components.config import *
 from Components.ConfigList import ConfigList, ConfigListScreen
 
 # OS
-import os, sys, re, threading
+import os
+import sys
+import re
+import threading
 
 # Enigma
 from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT , RT_VALIGN_CENTER
