@@ -10,11 +10,13 @@ from Components.config import *
 config.plugins.foreca = ConfigSubsection()
 config.plugins.foreca.extmenu = ConfigEnableDisable(default=True)
 
+
 def main(session, **kwargs):
 	global PICON_PATH
 	from . import ui
 	ui.PICON_PATH = PICON_PATH
 	session.open(ui.ForecaPreview)
+
 
 def Plugins(path, **kwargs):
 	global PICON_PATH
