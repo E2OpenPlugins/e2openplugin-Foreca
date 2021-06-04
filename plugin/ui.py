@@ -202,8 +202,10 @@ THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 SIGN = chr(176) if PY3 else unichr(176).encode("utf-8")
 # deviceName = HardwareInfo().get_device_name()
 DEBUG = config.plugins.foreca.debug.value
-if DEBUG: print(pluginPrintname, "Debug enabled")
-else: print(pluginPrintname, "Debug disabled")
+if DEBUG:
+	print(pluginPrintname, "Debug enabled")
+else:
+	print(pluginPrintname, "Debug disabled")
 
 # Make Path for Slideshow
 CACHE_PATH = "/var/cache/Foreca/"
@@ -497,7 +499,8 @@ class MainMenuList(MenuList):
 # -------------------------- Build Menu list ----------------------------------------------
 
 	def SetList(self, l):
-		if DEBUG: print(pluginPrintname, "SetList")
+		if DEBUG:
+			print(pluginPrintname, "SetList")
 		self.list = l
 		#self.l.setItemHeight(90)
 		del self.listCompleted
@@ -558,7 +561,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Extract the Tuple, Date
 		jahr, monat, tag = lt[0:3]
 		heute ="%04i%02i%02i" % (jahr,monat,tag)
-		if DEBUG: print(pluginPrintname, "determined local date:", heute)
+		if DEBUG:
+			print(pluginPrintname, "determined local date:", heute)
 		self.tag = 0
 
 		# Get favorites
@@ -943,17 +947,21 @@ class ForecaPreview(Screen, HelpableScreen):
 		#new Ajax.Request('/lv?id=102772400', {
 		fulltext = re.compile(r"id: '(.*?)'", re.DOTALL)
 		id = fulltext.findall('%s' % html)
-		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "id=", id)
+		if DEBUG:
+			print(pluginPrintname, "fulltext=", fulltext, "id=", id)
 		self.loc_id = str(id[0])
 
 		# <!-- START -->
 		#<h6><span>Tuesday</span> March 29</h6>
-		if DEBUG: print(pluginPrintname, "Start:" + str(len(html)))
+		if DEBUG:
+			print(pluginPrintname, "Start:" + str(len(html)))
 		fulltext = re.compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', re.DOTALL)
 		titel = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
+		if DEBUG:
+			print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(re.sub('<[^>]*>',"",titel[0]))
-		if DEBUG: print(pluginPrintname, "titel[0]=", titel[0])
+		if DEBUG:
+			print(pluginPrintname, "titel[0]=", titel[0])
 
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = re.compile(r'<!-- START -->(.+?)<h6>', re.DOTALL)
@@ -976,22 +984,26 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = re.compile(r'<a href="(.+?)".+?', re.DOTALL)
 		taglink = str(fulltext.findall(html))
 		#taglink = konvert_uml(taglink)
-		if DEBUG: print(pluginPrintname, "Daylink ", taglink)
+		if DEBUG:
+			print(pluginPrintname, "Daylink ", taglink)
 
 		fulltext = re.compile(r'<a href=".+?>(.+?)<.+?', re.DOTALL)
 		tag = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "Day", str(tag))
+		if DEBUG:
+			print(pluginPrintname,  "Day", str(tag))
 
 		# <div class="c0"> <strong>17:00</strong></div>
 		fulltime = re.compile(r'<div class="c0"> <strong>(.+?)<.+?', re.DOTALL)
 		zeit = fulltime.findall(html)
-		if DEBUG: print(pluginPrintname,  "Time", str(zeit))
+		if DEBUG:
+			print(pluginPrintname,  "Time", str(zeit))
 
 		#<div class="c4">
 		#<span class="warm"><strong>+15&deg;</strong></span><br />
 		fulltime = re.compile(r'<div class="c4">.*?<strong>(.+?)&.+?', re.DOTALL)
 		temp = fulltime.findall(html)
-		if DEBUG: print(pluginPrintname,  "Temp", str(temp))
+		if DEBUG:
+			print(pluginPrintname,  "Temp", str(temp))
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
 		fulltext = re.compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', re.DOTALL)
@@ -999,27 +1011,33 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = re.compile(r'<div class="c3">.+? (.+?)<br />.+?', re.DOTALL)
 		description = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "description", str(description).lstrip("\t").lstrip())
+		if DEBUG:
+			print(pluginPrintname,  "description", str(description).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', re.DOTALL)
 		feels = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "feels", str(feels).lstrip("\t").lstrip())
+		if DEBUG:
+			print(pluginPrintname,  "feels", str(feels).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', re.DOTALL)
 		precip = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip())
+		if DEBUG:
+			print(pluginPrintname,  "precip" , str(precip).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c3">.+?</strong><br />.+?</strong><br />(.+?)</', re.DOTALL)
 		humidity = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip())
+		if DEBUG:
+			print(pluginPrintname,  "humidity" , str(humidity).lstrip("\t").lstrip())
 
 		fulltext = re.compile(r'<div class="c2">.+?<img src="//img-b.foreca.net/s/symb-wind/(.+?).gif', re.DOTALL)
 		windDirection = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "windDirection", str(windDirection))
+		if DEBUG:
+			print(pluginPrintname,  "windDirection", str(windDirection))
 
 		fulltext = re.compile(r'<div class="c2">.+?<strong>(.+?)<.+?', re.DOTALL)
 		windSpeed = fulltext.findall(html)
-		if DEBUG: print(pluginPrintname,  "windSpeed", str(windSpeed))
+		if DEBUG:
+			print(pluginPrintname,  "windSpeed", str(windSpeed))
 
 		timeEntries = len(zeit)
 		#print("Aantal tijden ", str(timeEntries))
@@ -1030,7 +1048,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			precip[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",precip[x])))
 			humidity[x] = self.konvert_uml(str(re.sub('<[^>]*>',"",humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
-			if DEBUG: print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x])
+			if DEBUG:
+				print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x] , precip[x], humidity[x])
 			list.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
@@ -1222,13 +1241,15 @@ class CityPanel(Screen, HelpableScreen):
 	def ok(self):
 		global city
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print(pluginPrintname, "city=", city, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
+		if DEBUG:
+			print(pluginPrintname, "city=", city, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.close()
 
 	def blue(self):
 		global start
 		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print(pluginPrintname, "Home:", city)
+		if DEBUG:
+			print(pluginPrintname, "Home:", city)
 		fwrite = open(USR_PATH + "/startservice.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1239,7 +1260,8 @@ class CityPanel(Screen, HelpableScreen):
 	def green(self):
 		global fav1
 		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print(pluginPrintname, "Fav1:", city)
+		if DEBUG:
+			print(pluginPrintname, "Fav1:", city)
 		fwrite = open(USR_PATH + "/fav1.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1250,7 +1272,8 @@ class CityPanel(Screen, HelpableScreen):
 	def yellow(self):
 		global fav2
 		city = re.sub(" ","_",self['Mlist'].l.getCurrentSelection()[0][1])
-		if DEBUG: print(pluginPrintname, "Fav2:", city)
+		if DEBUG:
+			print(pluginPrintname, "Fav2:", city)
 		fwrite = open(USR_PATH + "/fav2.cfg", "w")
 		fwrite.write(city)
 		fwrite.close()
@@ -1426,7 +1449,8 @@ class SatPanel(Screen, HelpableScreen):
 
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print(pluginPrintname, "SatPanel menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
+		if DEBUG:
+			print(pluginPrintname, "SatPanel menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.SatBild()
 
 	def MapsGermany(self):
@@ -1529,14 +1553,16 @@ class SatPanel(Screen, HelpableScreen):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
 		url = ('http:%s' % x).replace('[TYPE]', menu)
 		foundPos = url.find("0000.jpg")
-		if DEBUG: print(pluginPrintname, "x=", x, "url=", url, "foundPos=", foundPos)
+		if DEBUG:
+			print(pluginPrintname, "x=", x, "url=", url, "foundPos=", foundPos)
 		if foundPos == -1:
 			foundPos = url.find(".jpg")
 		if foundPos == -1:
 			foundPos = url.find(".png")
 		file = url[foundPos-10:foundPos]
 		file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
-		if DEBUG: print(pluginPrintname, "file=", file, "file2=", file2)
+		if DEBUG:
+			print(pluginPrintname, "file=", file, "file2=", file2)
 		req = Request(url, headers=HEADERS)
 		resp = urlopen(req, timeout=2)
 		with open(CACHE_PATH + file2 + ".jpg", 'wb') as f:
@@ -1545,7 +1571,8 @@ class SatPanel(Screen, HelpableScreen):
 	def SatBild(self):
 
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print(pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
+		if DEBUG:
+			print(pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 
 
 		if menu == "eumetsat":
@@ -1676,7 +1703,8 @@ class SatPanelb(Screen, HelpableScreen):
 
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG: print(pluginPrintname, "SatPanelb menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
+		if DEBUG:
+			print(pluginPrintname, "SatPanelb menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
 		self.SatBild()
 
 	def PicSetupMenu(self):
@@ -1821,7 +1849,7 @@ class View_Slideshow(Screen):
 		if self.maxentry >= 0:
 			self.onLayoutFinish.append(self.setPicloadConf)
 		if startslide == True:
-			self.PlayPause();
+			self.PlayPause()
 
 	def setPicloadConf(self):
 		sc = getScale()
@@ -1872,7 +1900,8 @@ class View_Slideshow(Screen):
 			self.pindex = self.maxentry
 
 	def slidePic(self):
-		if DEBUG: print(pluginPrintname, "slide to next Picture index=" + str(self.lastindex))
+		if DEBUG:
+			print(pluginPrintname, "slide to next Picture index=" + str(self.lastindex))
 		if config.plugins.foreca.loop.value==False and self.lastindex == self.maxentry:
 			self.PlayPause()
 		self.shownow = True
@@ -1902,7 +1931,8 @@ class View_Slideshow(Screen):
 		del self.picload
 		for file in self.picfilelist:
 			try:
-				if DEBUG: print(pluginPrintname, "file=", file)
+				if DEBUG:
+					print(pluginPrintname, "file=", file)
 				os.unlink(file)
 			except:
 				pass
@@ -1974,8 +2004,10 @@ class PicSetup(Screen):
 		config.save()
 		global DEBUG
 		DEBUG = config.plugins.foreca.debug.value
-		if DEBUG: print(pluginPrintname, "Debug enabled")
-		else: print(pluginPrintname, "Debug disabled")
+		if DEBUG:
+			print(pluginPrintname, "Debug enabled")
+		else:
+			print(pluginPrintname, "Debug disabled")
 		self.refreshPlugins()
 		self.close()
 
