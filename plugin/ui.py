@@ -42,7 +42,7 @@ VERSION = "3.2.6"
 # 2.9.2 Iranian cities updated and localization added. Thanks to Persian Prince
 #	Hungarian and Slovakian cities added. Thanks to torpe
 # 2.9.3 Detail line in main screen condensed to show more text in SD screen
-#	Grading of temperature colors reworked 
+#	Grading of temperature colors reworked
 #	Some code cosmetics
 #	Translation code simplified: Setting the os LANGUAGE variable isn't needed anymore
 #	Typos in German localization fixed
@@ -51,7 +51,7 @@ VERSION = "3.2.6"
 # 2.9.5 Fixed: Cities containing "_" didn't work as favorites. Thanks to kashmir
 # 2.9.6 Size of temperature item slightly extended to match with skins using italic font
 #	Grading of temperature colors reworked
-# 2.9.7 Use specified "Frame size in full view" value when showing "5 day forecast" chart 
+# 2.9.7 Use specified "Frame size in full view" value when showing "5 day forecast" chart
 #	Info screen reworked
 #	False temperature colors fixed
 #	Up/down keys now scroll by page in main screen (without highlighting selection)
@@ -61,7 +61,7 @@ VERSION = "3.2.6"
 #	Main screen navigation modified: Select previous/next day by left/right key
 #	Many Italian cities added and Italian localization updated. Thanks to mat8861
 #	Czech, Greek, French, Latvian, Dutch, Polish, Russian localization updated. Thanks to muca
-# 3.0.1 Fix broken transliteration 
+# 3.0.1 Fix broken transliteration
 #	Disable selection in main screen.
 # 3.0.2 Weather maps of Czech Republic, Greece, Hungary, Latvia, Poland, Russia, Slovakia added
 #	Temperature Satellite video added
@@ -78,12 +78,12 @@ VERSION = "3.2.6"
 # 3.0.6 Weather data in Russian version obtained from foreca.com instead of foreca.ru due
 #	  to structural discrepancy of Russian web site
 #	Code cosmetics
-# 3.0.7 Turkish cities updated. Thanks to atsiz77 
+# 3.0.7 Turkish cities updated. Thanks to atsiz77
 #	Debug state noted in log file
 # 3.0.8 Fixed for Foreca's pages changes
 # 3.0.9 Path for weather map regions updated after change of Wetterkontor's pages. Thanks to Bag58.
 #	Add missing spinner icon
-# 3.1.0 Plugin splitted into a loader and UI part, as Foreca needs quite a while to load. Hence 
+# 3.1.0 Plugin splitted into a loader and UI part, as Foreca needs quite a while to load. Hence
 #	  actual load postponed until the user requests for it.
 #	Finnish localization added. Thanks to kjuntara
 #	Ukrainian localization added. Thanks to Irkoff
@@ -107,7 +107,7 @@ VERSION = "3.2.6"
 #
 # To do:
 #	Add 10 day forecast on green key press
-#	City search at Foreca website on yellow key press. This will eliminate complete city DB. 
+#	City search at Foreca website on yellow key press. This will eliminate complete city DB.
 #	Option to add unlimited cities to a favorite list and to manage this favorite list (add & delete city, sort list).
 #	Show home city (first entry of favorite list) on OK key press.
 #	Skip to next/previous favorite city on left/right arrow key.
@@ -498,7 +498,7 @@ class MainMenuList(MenuList):
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=_("Wind"), color=weiss, color_sel=weiss))
 		x, y, w, h = self.valWindUnits
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[4], color=violetred, color_sel=violetred))
-		
+
 		# Text
 		x, y, w, h = self.valText1
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
@@ -543,10 +543,10 @@ class ForecaPreviewCache(Screen):
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		
+
 		self["spinner"] = Pixmap()
 		self.curr = 0
-		
+
 		self.timer = eTimer()
 		self.timer.callback.append(self.showNextSpinner)
 
@@ -747,7 +747,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			page = ""
 		url = "%s%s" % (MAIN_PAGE, page)
 		print(pluginPrintname, "page link:", url)
-		try:		
+		try:
 			req = Request(url, headers=HEADERS)
 			resp = urlopen(req, timeout=2)
 			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
@@ -768,20 +768,20 @@ class ForecaPreview(Screen, HelpableScreen):
 			os.unlink("/tmp/sat.jpg")
 		except:
 			pass
-			
+
 		try:
 			os.unlink("/tmp/sat.html")
 		except:
 			pass
-			
+
 		try:
 			os.unlink("/tmp/meteogram.png")
 		except:
 			pass
-			
+
 		self.close()
 		self.deactivateCacheDialog()
-		
+
 	def Tag0(self):
 		self.tag = 0
 		self.Zukunft(self.tag)
@@ -960,7 +960,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		req = Request(url, headers=HEADERS)
 		resp = urlopen(req, timeout=2)
 		with open(devicepath, 'wb') as f:
-			f.write(resp.read()) 
+			f.write(resp.read())
 		self.session.open(PicView, devicepath, 0, False)
 
 	def getForecaPage(self, html):
@@ -1317,7 +1317,7 @@ class CityPanel(Screen, HelpableScreen):
 		itemHeight = self["Mlist"].itemHeight
 
 		col = self["Mlist"].column
-		
+
 		res = [entry]
 		res.append(MultiContentEntryText(pos=(0, 0), size=(col, itemHeight), font=0, text="", color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		res.append(MultiContentEntryText(pos=(col, 0), size=(1000, itemHeight), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
@@ -1462,7 +1462,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
 		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
-		
+
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 
@@ -1539,7 +1539,7 @@ class SatPanel(Screen, HelpableScreen):
 			(_("Spain"), 'spanien'),
 			(_("Switzerland"), 'schweiz'),
 		]
-		itemList.sort(key=lambda i: locale.strxfrm(i[0]))		
+		itemList.sort(key=lambda i: locale.strxfrm(i[0]))
 		self.Mlist = []
 		for item in itemList:
 			self.Mlist.append(self.SatEntryItem(item))
@@ -1631,7 +1631,7 @@ class SatPanel(Screen, HelpableScreen):
 			resp = urlopen(req, timeout=2)
 
 			# Load Picture for Slideshow
-			urls = fulltext.findall(resp.read().decode('utf-8') if PY3 else resp.read())	
+			urls = fulltext.findall(resp.read().decode('utf-8') if PY3 else resp.read())
 			threads = [threading.Thread(target=self.fetch_url, args=(url,)) for url in urls]
 			for thread in threads:
 				thread.start()
@@ -1833,7 +1833,7 @@ class View_Slideshow(Screen):
 
 	def __init__(self, session, pindex, startslide):
 
-		pindex = 0 
+		pindex = 0
 		print(pluginPrintname, "SlideShow is running...")
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
@@ -1988,11 +1988,11 @@ class PicSetup(Screen):
 
 	skin = """
 		<screen name="PicSetup" position="center,center" size="660,330" title= "SlideShow Settings" backgroundColor="#000000" >
-			<widget name="Mlist" position="5,5" size="650,280" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" /> 
-			<widget source="key_red" render="Label" position="50,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
-			<widget source="key_green" render="Label" position="285,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" /> 
-			<ePixmap position="5,300" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" /> 
-			<ePixmap position="240,300" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" /> 
+			<widget name="Mlist" position="5,5" size="650,280" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" />
+			<widget source="key_red" render="Label" position="50,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+			<widget source="key_green" render="Label" position="285,290" zPosition="2" size="150,40" font="Regular;18" valign="center" halign="left" transparent="1" foregroundColor="#ffffff" />
+			<ePixmap position="5,300" size="36,25" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
+			<ePixmap position="240,300" size="36,25" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
 		</screen>"""
 	print(pluginPrintname, "Setup...")
 
