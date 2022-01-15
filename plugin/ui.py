@@ -348,7 +348,7 @@ class MainMenuList(MenuList):
 			self.valWind = list(map(int, value.split(",")))
 			l = len(self.valWind)
 			if l != 4:
-				warningWrongSkinParameter(attrib, 4, )
+				warningWrongSkinParameter(attrib, 4, l)
 
 		def setWindUnits(value):
 			self.valWindUnits = list(map(int, value.split(",")))
