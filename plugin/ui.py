@@ -122,20 +122,16 @@ from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.AVSwitch import AVSwitch
 from Components.FileList import FileList
 from Components.Label import Label
-from Components.Button import Button
 from Components.Sources.StaticText import StaticText
-from Components.ScrollLabel import ScrollLabel
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest
 from Components.Pixmap import Pixmap
-from Components.PluginComponent import plugins
-from Components.Console import Console
 from Components.GUIComponent import GUIComponent
 from skin import parseFont, parseColor
 
 # Configuration
 from Components.config import *
-from Components.ConfigList import ConfigList, ConfigListScreen
+from Components.ConfigList import ConfigList
 
 # OS
 import os
@@ -144,25 +140,19 @@ import re
 import threading
 
 # Enigma
-from enigma import eListboxPythonMultiContent, ePicLoad, eServiceReference, eTimer, getDesktop, gFont, RT_HALIGN_RIGHT, RT_HALIGN_LEFT, RT_VALIGN_CENTER
-
-# Plugin definition
-from Plugins.Plugin import PluginDescriptor
+from enigma import eListboxPythonMultiContent, ePicLoad, eTimer, getDesktop, gFont, RT_VALIGN_CENTER
 
 # GUI (Screens)
-from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
-from Screens.InfoBar import MoviePlayer
 from Screens.Screen import Screen
 
 # MessageBox
 from Screens.MessageBox import MessageBox
 
 # Timer
-from time import *
+from time import mktime, localtime
 
-from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
+from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
 
 # from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
@@ -358,7 +348,7 @@ class MainMenuList(MenuList):
 			self.valWind = list(map(int, value.split(",")))
 			l = len(self.valWind)
 			if l != 4:
-				warningWrongSkinParameter(attrib, 4, )
+				warningWrongSkinParameter(attrib, 4, l)
 
 		def setWindUnits(value):
 			self.valWindUnits = list(map(int, value.split(",")))
@@ -2069,6 +2059,5 @@ class PicSetup(Screen):
 
 	def refreshPlugins(self):
 		from Components.PluginComponent import plugins
-		from Tools.Directories import SCOPE_PLUGINS, resolveFilename
 		plugins.clearPluginList()
 		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
