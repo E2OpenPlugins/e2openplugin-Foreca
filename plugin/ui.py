@@ -157,12 +157,7 @@ from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS, file
 # from Tools.HardwareInfo import HardwareInfo
 from Tools.LoadPixmap import LoadPixmap
 
-PY3 = (sys.version_info[0] == 3)
-if PY3:
-	from urllib.request import urlopen, Request, pathname2url
-else:
-	from urllib import pathname2url
-	from urllib2 import urlopen, Request
+from urllib.request import urlopen, Request, pathname2url
 
 from Components.Language import language
 import locale
@@ -188,7 +183,7 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Map
 MAIN_PAGE = "http://www.foreca.net"
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
-SIGN = chr(176) if PY3 else unichr(176).encode("utf-8")
+SIGN = chr(176)
 # deviceName = HardwareInfo().get_device_name()
 DEBUG = config.plugins.foreca.debug.value
 if DEBUG:
@@ -740,7 +735,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		try:
 			req = Request(url, headers=HEADERS)
 			resp = urlopen(req, timeout=2)
-			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
+			self.getForecaPage(resp.read().decode('utf-8'))
 		except Exception as e:
 			self.error(repr(e))
 
@@ -1621,7 +1616,7 @@ class SatPanel(Screen, HelpableScreen):
 			resp = urlopen(req, timeout=2)
 
 			# Load Picture for Slideshow
-			urls = fulltext.findall(resp.read().decode('utf-8') if PY3 else resp.read())
+			urls = fulltext.findall(resp.read().decode('utf-8'))
 			threads = [threading.Thread(target=self.fetch_url, args=(url,)) for url in urls]
 			for thread in threads:
 				thread.start()
