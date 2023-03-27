@@ -1,20 +1,18 @@
 # for localized messages
 from . import _
 
-# Plugin definition
+# ENIGMA IMPORTS
+from Components.config import config, ConfigSubsection, ConfigEnableDisable
 from Plugins.Plugin import PluginDescriptor
 
-# Configuration
-from Components.config import *
 config.plugins.foreca = ConfigSubsection()
 config.plugins.foreca.extmenu = ConfigEnableDisable(default=True)
 
 
 def main(session, **kwargs):
 	global PICON_PATH
-	import ui
-	ui.PICON_PATH = PICON_PATH
-	session.open(ui.ForecaPreview)
+	from . ui import ForecaPreview
+	session.open(ForecaPreview)
 
 
 def Plugins(path, **kwargs):
