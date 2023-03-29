@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import absolute_import
 from __future__ import print_function
-VERSION = "3.2.7"
+VERSION = "3.2.8"
 #
 #  $Id$
 #
@@ -103,6 +103,7 @@ VERSION = "3.2.7"
 # 3.2.0	fixed satellite maps, removed infrared - page not exist more, sanity check if nothing is downloaded
 # 3.2.3-r3 change URL to .net and .ru
 # 3.2.7 change URL to .hr, Py3-bugfix for videos and several code cleanups
+# 3.2.8 'startservice.cfg', 'fav1.cfg' and 'fav2.cfg' are obsolete and now part of etc/enigma2/settings and therefore can be deleted
 #
 # To do:
 #	Add 10 day forecast on green key press
@@ -130,7 +131,7 @@ from time import localtime, mktime
 from enigma import eListboxPythonMultiContent, ePicLoad, eTimer, getDesktop, gFont, RT_VALIGN_CENTER
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.AVSwitch import AVSwitch
-from Components.config import config, ConfigSelection, ConfigInteger, ConfigYesNo, ConfigEnableDisable, getConfigListEntry, KEY_LEFT, KEY_RIGHT, KEY_0
+from Components.config import config, ConfigText, ConfigSelection, ConfigInteger, ConfigYesNo, ConfigEnableDisable, getConfigListEntry, KEY_LEFT, KEY_RIGHT, KEY_0
 from Components.ConfigList import ConfigList
 from Components.FileList import FileList
 from Components.Label import Label
@@ -157,6 +158,9 @@ else:
 
 pluginPrintname = "[Foreca Ver. %s]" % VERSION
 ###############################################################################
+config.plugins.foreca.home = ConfigText(default="Germany/Berlin", fixed_size=False)
+config.plugins.foreca.fav1 = ConfigText(default="United_States/New_York/New_York_City", fixed_size=False)
+config.plugins.foreca.fav2 = ConfigText(default="Japan/Tokyo", fixed_size=False)
 config.plugins.foreca.resize = ConfigSelection(default="0", choices=[("0", _("simple")), ("1", _("better"))])
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices=[("#00000000", _("black")), ("#009eb9ff", _("blue")), ("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices=[("#00000000", _("black")), ("#009eb9ff", _("blue")), ("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
@@ -209,9 +213,10 @@ FILTERin = []
 FILTERout = []
 FILTERidx = 0
 
-LANGUAGE = language.getActiveLanguage()[:2]
-if LANGUAGE == "zh":
-	LANGUAGE = "en"
+MAPPING = {"zh": "en"}
+LANGUAGE = language.getActiveLanguage()[:2]  # "en_US" -> "en"
+if LANGUAGE in MAPPING:
+	LANGUAGE = MAPPING.get(LANGUAGE, "en")
 try:
 	setlocale(LC_COLLATE, language.getLanguage())
 except Exception as err:
@@ -417,10 +422,10 @@ class MainMenuList(MenuList):
 
 		if config.plugins.foreca.units.value == "us":
 			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
-			tempUnit = _("°F")
+			tempUnit = "°F"
 		else:
 			self.centigrades = int(self.x[2])
-			tempUnit = _("°C")
+			tempUnit = "°C"
 		if self.centigrades <= -20:
 			self.tempcolor = ddblau
 		elif self.centigrades <= -15:
@@ -563,36 +568,20 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# Get favorites
 		global fav1, fav2
-		if fileExists(USR_PATH + "/fav1.cfg"):
-			file = open(USR_PATH + "/fav1.cfg", "r")
-			fav1 = str(file.readline().strip())
-			file.close()
-			fav1 = fav1[fav1.rfind("/") + 1:len(fav1)]
-		else:
-			fav1 = "New_York_City"
+		fav1 = config.plugins.foreca.fav1.value
+		fav1 = fav1[fav1.rfind("/") + 1:len(fav1)]
 		print(pluginPrintname, "fav1 location:", fav1)
-		if fileExists(USR_PATH + "/fav2.cfg"):
-			file = open(USR_PATH + "/fav2.cfg", "r")
-			fav2 = str(file.readline().strip())
-			file.close()
-			fav2 = fav2[fav2.rfind("/") + 1:len(fav2)]
-		else:
-			fav2 = "Moskva"
+		fav2 = config.plugins.foreca.fav2.value
+		fav2 = fav2[fav2.rfind("/") + 1:len(fav2)]
 		print(pluginPrintname, "fav2 location:", fav2)
 
 		# Get home location
 		global city, start
-		if fileExists(USR_PATH + "/startservice.cfg"):
-			file = open(USR_PATH + "/startservice.cfg", "r")
-			self.ort = str(file.readline().strip())
-			file.close()
-			start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
-		else:
-			self.ort = "United_Kingdom/London"
-			start = "London"
+		self.ort = config.plugins.foreca.home.value
+		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		print(pluginPrintname, "home location:", self.ort)
 
-		MAIN_PAGE = "http://www.foreca.hr" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + heute + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.hr/%s?lang=%s&details=%s&units=%s&tf=%s" % (pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		print(pluginPrintname, "initial link:", MAIN_PAGE)
 
 		if HD:
@@ -799,36 +788,21 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Fav0(self):
 		global start
-		if fileExists(USR_PATH + "/startservice.cfg"):
-			file = open(USR_PATH + "/startservice.cfg", "r")
-			self.ort = str(file.readline().strip())
-			file.close()
-		else:
-			self.ort = "United_Kingdom/London"
-		print(pluginPrintname, "home location:", self.ort)
+		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
+		print(pluginPrintname, "home location:", start)
 		self.Zukunft(0)
 
 	def Fav1(self):
 		global fav1
-		if fileExists(USR_PATH + "/fav1.cfg"):
-			file = open(USR_PATH + "/fav1.cfg", "r")
-			self.ort = str(file.readline().strip())
-			file.close()
-		else:
-			self.ort = "United_States/New_York_City"
+		self.ort = config.plugins.foreca.fav1.value
 		fav1 = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		print(pluginPrintname, "fav1 location:", fav1)
 		self.Zukunft(0)
 
 	def Fav2(self):
 		global fav2
-		if fileExists(USR_PATH + "/fav2.cfg"):
-			file = open(USR_PATH + "/fav2.cfg", "r")
-			self.ort = str(file.readline().strip())
-			file.close()
-		else:
-			self.ort = "Russia/Moskva"
+		self.ort = config.plugins.foreca.fav2.value
 		fav2 = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		print(pluginPrintname, "fav2 location:", fav2)
 		self.Zukunft(0)
@@ -847,7 +821,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen = "%04i%02i%02i" % (jahr, monat, tag)
 
-		MAIN_PAGE = "http://www.foreca.hr" + "/" + pathname2url(self.ort) + "?lang=" + LANGUAGE + "&details=" + morgen + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value
+		MAIN_PAGE = "http://www.foreca.hr/%s?lang=%s&details=%s&units=%s&tf=%s" % (pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		print(pluginPrintname, "day link:", MAIN_PAGE)
 
 		# Show in GUI
@@ -909,7 +883,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url = "http://www.foreca.hr" + "/meteogram.php?loc_id=" + self.loc_id + "&mglang=" + LANGUAGE + "&units=" + config.plugins.foreca.units.value + "&tf=" + config.plugins.foreca.time.value + "/meteogram.png"
+			self.url = "http://www.foreca.hr/meteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -949,7 +923,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# <!-- START -->
 		#<h6><span>Tuesday</span> March 29</h6>
 		if DEBUG:
-			print(pluginPrintname, "Start:" + str(len(html)))
+			print(pluginPrintname, "Start: %s" % len(html))
 		fulltext = compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', DOTALL)
 		titel = fulltext.findall(html)
 		if DEBUG:
@@ -1252,9 +1226,8 @@ class CityPanel(Screen, HelpableScreen):
 		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Home:", city)
-		fwrite = open(USR_PATH + "/startservice.cfg", "w")
-		fwrite.write(city)
-		fwrite.close()
+		config.plugins.foreca.home.value = city
+		config.plugins.foreca.home.save()
 		start = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1264,9 +1237,8 @@ class CityPanel(Screen, HelpableScreen):
 		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Fav1:", city)
-		fwrite = open(USR_PATH + "/fav1.cfg", "w")
-		fwrite.write(city)
-		fwrite.close()
+		config.plugins.foreca.fav1.value = city
+		config.plugins.foreca.fav1.save()
 		fav1 = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1276,9 +1248,8 @@ class CityPanel(Screen, HelpableScreen):
 		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Fav2:", city)
-		fwrite = open(USR_PATH + "/fav2.cfg", "w")
-		fwrite.write(city)
-		fwrite.close()
+		config.plugins.foreca.fav2.value = city
+		config.plugins.foreca.fav2.save()
 		fav2 = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1576,11 +1547,10 @@ class SatPanel(Screen, HelpableScreen):
 			print(pluginPrintname, "file=", file, "file2=", file2)
 		req = Request(url, headers=HEADERS)
 		resp = urlopen(req, timeout=2)
-		with open(CACHE_PATH + file2 + ".jpg", 'wb') as f:
+		with open("%s%s.jpg" % (CACHE_PATH, file2), 'wb') as f:
 			f.write(resp.read())
 
 	def SatBild(self):
-
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
 		if DEBUG:
 			print(pluginPrintname, "SatBild menu=", menu, "CurrentSelection=", self['Mlist'].l.getCurrentSelection())
@@ -1592,13 +1562,12 @@ class SatPanel(Screen, HelpableScreen):
 			resp = urlopen(req, timeout=2)
 			with open(devicepath, 'wb') as f:
 				f.write(resp.read())
-
 			self.session.open(PicView, devicepath, 0, False)
 
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.hr" + "/" + pathname2url(self.ort) + "?map=" + menu
+			url = "http://www.foreca.hr/%s?map=%s" % (pathname2url(self.ort), menu)
 			# Load site for category and search Picture link
 			fulltext = compile(r"'(\/\/cache-.+?)\'", DOTALL)
 			req = Request(url, headers=HEADERS)
@@ -1999,7 +1968,6 @@ class PicSetup(Screen):
 			}, -3)
 		self.list = []
 		self["Mlist"] = ConfigList(self.list)
-
 		self.list.append(getConfigListEntry(_("Select units"), config.plugins.foreca.units))
 		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
