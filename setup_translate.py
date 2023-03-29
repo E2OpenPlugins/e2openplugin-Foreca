@@ -3,7 +3,8 @@ from __future__ import print_function
 # http://wiki.maemo.org/Internationalize_a_Python_application
 from distutils import cmd
 from distutils.command.build import build as _build
-import os
+from os import listdir, system
+from os.path import join, isdir
 
 
 class build_trans(cmd.Command):
@@ -16,16 +17,16 @@ class build_trans(cmd.Command):
 		pass
 
 	def run(self):
-		s = os.path.join('plugin', 'locale')
-		for lang in os.listdir(s):
-			lc = os.path.join(s, lang, 'LC_MESSAGES')
-			if os.path.isdir(lc):
-				for f in os.listdir(lc):
+		s = join('plugin', 'locale')
+		for lang in listdir(s):
+			lc = join(s, lang, 'LC_MESSAGES')
+			if isdir(lc):
+				for f in listdir(lc):
 					if f.endswith('.po'):
-						src = os.path.join(lc, f)
-						dest = os.path.join(lc, f[:-2] + 'mo')
+						src = join(lc, f)
+						dest = join(lc, f[:-2] + 'mo')
 						print("Language compile %s -> %s" % (src, dest))
-						if os.system("msgfmt '%s' -o '%s'" % (src, dest)) != 0:
+						if system("msgfmt '%s' -o '%s'" % (src, dest)) != 0:
 							raise (Exception, "Failed to compile: " + src)
 
 
