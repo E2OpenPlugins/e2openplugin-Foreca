@@ -144,12 +144,11 @@ from Components.GUIComponent import GUIComponent
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from skin import parseFont, parseColor
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
 from Tools.LoadPixmap import LoadPixmap
 
 # from Tools.HardwareInfo import HardwareInfo
-PY3 = (version_info[0] == 3)
+PY3 = version_info[0] == 3
 if PY3:
 	from urllib.request import urlopen, Request, pathname2url
 else:
@@ -175,7 +174,7 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Maple2012) AppleWebKit/534.7 (KHTML, like Gecko) SmartTV Safari/534.7'}
-MAIN_PAGE = "http://www.foreca.hr"
+BASEURL = "http://www.foreca.hr/"
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
 PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
@@ -190,14 +189,14 @@ CACHE_PATH = "/var/cache/Foreca/"
 if exists(CACHE_PATH) is False:
 	try:
 		makedirs(CACHE_PATH, 755)
-	except Exception as err:
+	except Exception:
 		pass
 
 # Make Path for user settings
 if exists(USR_PATH) is False:
 	try:
 		makedirs(USR_PATH, 755)
-	except Exception as err:
+	except Exception:
 		pass
 
 # Get screen size
@@ -219,18 +218,17 @@ if LANGUAGE in MAPPING:
 	LANGUAGE = MAPPING.get(LANGUAGE, "en")
 try:
 	setlocale(LC_COLLATE, language.getLanguage())
-except Exception as err:
+except Exception:
 	print(pluginPrintname, "Collating sequence undeterminable; default used")
 
 if fileExists(USR_PATH + "/Filter.cfg"):
 	file = open(USR_PATH + "/Filter.cfg", "r")
 	for line in file:
 		regel = str(line)
-		if regel[:2] == LANGUAGE:
-			if regel[4] == "Y":
-				FILTERidx += 1
-				FILTERin.append(regel[7:15].strip())
-				FILTERout.append(regel[17:].strip())
+		if regel[:2] == LANGUAGE and regel[4] == "Y":
+			FILTERidx += 1
+			FILTERin.append(regel[7:15].strip())
+			FILTERout.append(regel[17:].strip())
 	file.close
 
 #---------------------- Skin Functions ----------------------------------------------------
@@ -280,100 +278,11 @@ class MainMenuList(MenuList):
 
 #--------------------------- get skin attribs ---------------------------------------------
 	def applySkin(self, desktop, parent):
-		def warningWrongSkinParameter(string, wanted, given):
-			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
-
-		def font0(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font2(value):
-			self.font2 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font3(value):
-			self.font3 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
-		def setTime(value):
-			self.valTime = list(map(int, value.split(",")))
-			l = len(self.valTime)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setPict(value):
-			self.valPict = list(map(int, value.split(",")))
-			l = len(self.valPict)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setPictScale(value):
-			self.valPictScale = int(value)
-
-		def setTemp(value):
-			self.valTemp = list(map(int, value.split(",")))
-			l = len(self.valTemp)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setTempUnits(value):
-			self.valTempUnits = list(map(int, value.split(",")))
-			l = len(self.valTempUnits)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setWindPict(value):
-			self.valWindPict = list(map(int, value.split(",")))
-			l = len(self.valWindPict)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setWindPictScale(value):
-			self.valWindPictScale = int(value)
-
-		def setWind(value):
-			self.valWind = list(map(int, value.split(",")))
-			l = len(self.valWind)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def setWindUnits(value):
-			self.valWindUnits = list(map(int, value.split(",")))
-			l = len(self.valWindUnits)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def text1Pos(value):
-			self.valText1 = list(map(int, value.split(",")))
-			l = len(self.valText1)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def text2Pos(value):
-			self.valText2 = list(map(int, value.split(",")))
-			l = len(self.valText2)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def text3Pos(value):
-			self.valText3 = list(map(int, value.split(",")))
-			l = len(self.valText3)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
-
-		def text4Pos(value):
-			self.valText4 = list(map(int, value.split(",")))
-			l = len(self.valText4)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
-			except Exception as err:
+			except Exception:
 				pass
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
@@ -400,7 +309,6 @@ class MainMenuList(MenuList):
 		self.buildEntry(None)
 
 #----------------------------------- Build entries for list -------------------------------
-
 	def buildEntry(self, picInfo=None):
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
@@ -496,7 +404,6 @@ class MainMenuList(MenuList):
 		self.buildEntries()
 
 # -------------------------- Build Menu list ----------------------------------------------
-
 	def SetList(self, l):
 		if DEBUG:
 			print(pluginPrintname, "SetList")
@@ -555,7 +462,6 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		MAIN_PAGE = "http://www.foreca.hr"
 
 		# actual, local Time as Tuple
 		lt = localtime()
@@ -581,7 +487,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		print(pluginPrintname, "home location:", self.ort)
 
-		MAIN_PAGE = "http://www.foreca.hr/%s?lang=%s&details=%s&units=%s&tf=%s" % (pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		print(pluginPrintname, "initial link:", MAIN_PAGE)
 
 		if HD:
@@ -730,17 +636,17 @@ class ForecaPreview(Screen, HelpableScreen):
 	def exit(self):
 		try:
 			unlink("/tmp/sat.jpg")
-		except Exception as err:
+		except Exception:
 			pass
 
 		try:
 			unlink("/tmp/sat.html")
-		except Exception as err:
+		except Exception:
 			pass
 
 		try:
 			unlink("/tmp/meteogram.png")
-		except Exception as err:
+		except Exception:
 			pass
 
 		self.close()
@@ -821,7 +727,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		jahr, monat, tag = lt[0:3]
 		morgen = "%04i%02i%02i" % (jahr, monat, tag)
 
-		MAIN_PAGE = "http://www.foreca.hr/%s?lang=%s&details=%s&units=%s&tf=%s" % (pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		print(pluginPrintname, "day link:", MAIN_PAGE)
 
 		# Show in GUI
@@ -871,19 +777,15 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["MainList"].pageDown()
 
 	def previousDay(self):
-		if not self.working and self.tag >= 1:
-			self.tag = self.tag - 1
-			self.Zukunft(self.tag)
+		self.left()
 
 	def nextDay(self):
-		if not self.working and self.tag < 9:
-			self.tag = self.tag + 1
-			self.Zukunft(self.tag)
+		self.right()
 
 	def red(self):
 		if not self.working:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
-			self.url = "http://www.foreca.hr/meteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+			self.url = "%smeteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (BASEURL, self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 			self.loadPicture(self.url)
 
 	def shift_red(self):
@@ -928,18 +830,19 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel = fulltext.findall(html)
 		if DEBUG:
 			print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
-		titel[0] = str(sub('<[^>]*>', "", titel[0]))
-		if DEBUG:
-			print(pluginPrintname, "titel[0]=", titel[0])
+		if len(titel) > 0:
+			titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
+			if DEBUG:
+				print(pluginPrintname, "titel[0]=", titel[0])
 
 		# <a href="/Austria/Linz?details=20110330">We</a>
-		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
-		link = str(fulltext.findall(html))
-		#print(link)
+#		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
+#		link = str(fulltext.findall(html))
+#		print(link)
 
-		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
-		tag = str(fulltext.findall(link))
-		#print("Day ", tag)
+#		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
+#		tag = str(fulltext.findall(link))
+#		print("Day ", tag)
 
 		# ---------- Wetterdaten -----------
 
@@ -1012,10 +915,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		#print("Aantal tijden ", str(timeEntries))
 		x = 0
 		while x < timeEntries:
-			description[x] = self.konvert_uml(str(sub('<[^>]*>', "", description[x])))
-			feels[x] = self.konvert_uml(str(sub('<[^>]*>', "", feels[x])))
-			precip[x] = self.konvert_uml(str(sub('<[^>]*>', "", precip[x])))
-			humidity[x] = self.konvert_uml(str(sub('<[^>]*>', "", humidity[x])))
+			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
+			feels[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", feels[x])))
+			precip[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", precip[x])))
+			humidity[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
 			if DEBUG:
 				print(pluginPrintname, "weather:", zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x])
@@ -1068,39 +971,18 @@ class CityPanelList(MenuList):
 		self.backgroundColorSelected = 0x565656
 		self.column = 30
 
-#--------------------------- get skin attribs ---------------------------------------------
+#---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
-		def font(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
-		def foregroundColor(value):
-			self.foregroundColor = parseColor(value).argb()
-
-		def foregroundColorSelected(value):
-			self.foregroundColorSelected = parseColor(value).argb()
-
-		def backgroundColorSelected(value):
-			self.backgroundColorSelected = parseColor(value).argb()
-
-		def column(value):
-			self.column = int(value)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
-			except Exception as err:
+			except Exception:
 				pass
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
 		self.l.setItemHeight(self.itemHeight)
 		return GUIComponent.applySkin(self, desktop, parent)
-# -------------------------------------------------------------------
 
 
 class CityPanel(Screen, HelpableScreen):
@@ -1158,12 +1040,12 @@ class CityPanel(Screen, HelpableScreen):
 	def prepare(self):
 		self.maxidx = 0
 		if fileExists(USR_PATH + "/City.cfg"):
-			file = open(USR_PATH + "/City.cfg", "r")
-			for line in file:
+			content = open(USR_PATH + "/City.cfg", "r")
+			for line in content:
 				text = line.strip()
 				self.maxidx += 1
 				self.Mlist.append(self.CityEntryItem((text.replace("_", " "), text)))
-			file.close
+			content.close
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 
@@ -1223,7 +1105,7 @@ class CityPanel(Screen, HelpableScreen):
 
 	def blue(self):
 		global start
-		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Home:", city)
 		config.plugins.foreca.home.value = city
@@ -1234,7 +1116,7 @@ class CityPanel(Screen, HelpableScreen):
 
 	def green(self):
 		global fav1
-		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Fav1:", city)
 		config.plugins.foreca.fav1.value = city
@@ -1245,7 +1127,7 @@ class CityPanel(Screen, HelpableScreen):
 
 	def yellow(self):
 		global fav2
-		city = sub(" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			print(pluginPrintname, "Fav2:", city)
 		config.plugins.foreca.fav2.value = city
@@ -1292,48 +1174,18 @@ class SatPanelList(MenuList):
 		self.backgroundColorSelected = 0x565656
 		self.textPos = 230, 45, 380, 50
 
+#---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
-		def warningWrongSkinParameter(string, wanted, given):
-			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
-
-		def font(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
-		def setPictScale(value):
-			self.pictScale = int(value)
-
-		def foregroundColor(value):
-			self.foregroundColor = parseColor(value).argb()
-
-		def foregroundColorSelected(value):
-			self.foregroundColorSelected = parseColor(value).argb()
-
-		def backgroundColorSelected(value):
-			self.backgroundColorSelected = parseColor(value).argb()
-
-		def textPos(value):
-			self.textPos = list(map(int, value.split(",")))
-			l = len(self.textPos)
-			if l != 4:
-				warningWrongSkinParameter(attrib, 4, l)
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
-			except Exception as err:
+			except Exception:
 				pass
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
 		self.l.setItemHeight(self.itemHeight)
 		return GUIComponent.applySkin(self, desktop, parent)
-
-# -----------------------------------------------------------------------------------------
 
 
 class SatPanel(Screen, HelpableScreen):
@@ -1506,7 +1358,6 @@ class SatPanel(Screen, HelpableScreen):
 		self.session.open(SatPanelb, self.ort, _("Continents"), self.Mlist)
 
 #------------------------------------------------------------------------------------------
-
 	def SatEntryItem(self, entry):
 		pict_scale = self["Mlist"].pictScale
 
@@ -1567,7 +1418,7 @@ class SatPanel(Screen, HelpableScreen):
 		else:
 			# http://www.foreca.de/Austria/Linz?map=sat
 			devicepath = "/tmp/sat.html"
-			url = "http://www.foreca.hr/%s?map=%s" % (pathname2url(self.ort), menu)
+			url = "%s%s?map=%s" % (BASEURL, pathname2url(self.ort), menu)
 			# Load site for category and search Picture link
 			fulltext = compile(r"'(\/\/cache-.+?)\'", DOTALL)
 			req = Request(url, headers=HEADERS)
@@ -1601,28 +1452,18 @@ class SatPanelListb(MenuList):
 		self.font1 = gFont("Regular", font1)
 		self.itemHeight = itemHeight
 
+#---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
-		def font(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
-			except Exception as err:
+			except Exception:
 				pass
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
 		self.l.setItemHeight(self.itemHeight)
 		return GUIComponent.applySkin(self, desktop, parent)
-
-# -------------------------------------------------------------------
 
 
 class SatPanelb(Screen, HelpableScreen):
@@ -1775,9 +1616,8 @@ class PicView(Screen):
 
 class View_Slideshow(Screen):
 
-	def __init__(self, session, pindex, startslide):
+	def __init__(self, session, pindex=0, startslide=False):
 
-		pindex = 0
 		print(pluginPrintname, "SlideShow is running...")
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
@@ -1814,7 +1654,7 @@ class View_Slideshow(Screen):
 		self.shownow = True
 		self.dirlistcount = 0
 
-		self.filelist = FileList(CACHE_PATH, showDirectories=False, matchingPattern="^.*\.(jpg)", useServiceRef=False)
+		self.filelist = FileList(CACHE_PATH, showDirectories=False, matchingPattern="^.*.(jpg)", useServiceRef=False)
 		for x in self.filelist.getFileList():
 			if x[0][0]:
 				if x[0][1] == False:
@@ -1861,7 +1701,7 @@ class View_Slideshow(Screen):
 			try:
 				text = picInfo.split('\n', 1)
 				text = "(" + str(self.pindex + 1) + "/" + str(self.maxentry + 1) + ") " + text[0].split('/')[-1]
-			except Exception as err:
+			except Exception:
 				pass
 			self.currPic = []
 			self.currPic.append(text)
@@ -1918,7 +1758,7 @@ class View_Slideshow(Screen):
 				if DEBUG:
 					print(pluginPrintname, "file=", file)
 				unlink(file)
-			except Exception as err:
+			except Exception:
 				pass
 		self.close(self.lastindex + self.dirlistcount)
 
