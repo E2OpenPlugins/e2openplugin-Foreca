@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Foreca 3.2.6\n"
+"Project-Id-Version: Foreca 3.2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-01-06 14:03+0200\n"
+"POT-Creation-Date: 2023-03-31 08:00+0200\n"
+"PO-Revision-Date: 2023-03-31 06:49+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: \n"
 "Language: fi_FI\n"
@@ -17,6 +17,207 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#: plugin.py:21 plugin.py:27 ui.py:630 ui.py:649
+msgid "Foreca Weather Forecast"
+msgstr "Foreca Sääennuste"
+
+#: plugin.py:22 plugin.py:28
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Sääennuste seuraavat 10 päivää"
+
+#: ui.py:163
+msgid "better"
+msgstr "parempi"
+
+#: ui.py:163
+msgid "simple"
+msgstr "yksinkertainen"
+
+#: ui.py:164 ui.py:165
+msgid "black"
+msgstr "musta"
+
+#: ui.py:164 ui.py:165
+msgid "blue"
+msgstr "sininen"
+
+#: ui.py:164 ui.py:165
+msgid "green"
+msgstr "vihreä"
+
+#: ui.py:164 ui.py:165
+msgid "red"
+msgstr "punainen"
+
+#: ui.py:164 ui.py:165
+msgid "yellow"
+msgstr "keltainen"
+
+#: ui.py:172
+msgid "Imperial (C, mph)"
+msgstr "Brittiläinen (C, mph)"
+
+#: ui.py:172
+msgid "Metric (C, km/h)"
+msgstr "Metrinen (C, km/h)"
+
+#: ui.py:172
+msgid "Metric (C, m/s)"
+msgstr "Metrinen (C, m/s)"
+
+#: ui.py:172
+msgid "US (F, mph)"
+msgstr "US (F, m/h)"
+
+#: ui.py:173
+msgid "12 h"
+msgstr "12 h"
+
+#: ui.py:173
+msgid "24 h"
+msgstr "24 h"
+
+#: ui.py:464
+msgid "Temp"
+msgstr "Lämpötila"
+
+#: ui.py:476
+msgid "Wind"
+msgstr "Tuuli"
+
+#: ui.py:633 ui.py:698
+msgid "Please wait ..."
+msgstr "Odota ..."
+
+#: ui.py:637
+msgid "Week"
+msgstr "Viikko"
+
+#: ui.py:638
+msgid "City"
+msgstr "Kaupunki"
+
+#: ui.py:644 ui.py:848 ui.py:901 ui.py:1130
+msgid "Favorite 1"
+msgstr "Suosikki 1"
+
+#: ui.py:645 ui.py:849 ui.py:902 ui.py:1131
+msgid "Favorite 2"
+msgstr "Suosikki 2"
+
+#: ui.py:646 ui.py:850 ui.py:903 ui.py:1132
+msgid "Home"
+msgstr "Kotipaikka"
+
+#: ui.py:647
+msgid "Legend"
+msgstr "Karttamerkkien selitykset"
+
+#: ui.py:648
+msgid "Maps"
+msgstr "Kartat"
+
+#: ui.py:649
+msgid "Version "
+msgstr "Versio "
+
+#: ui.py:654 ui.py:1139 ui.py:1387 ui.py:1659
+msgid "Exit - End"
+msgstr "Exit - Poistu"
+
+#: ui.py:655
+msgid "Menu - Weather maps"
+msgstr "Menu - Sääkartat"
+
+#: ui.py:656
+msgid "Info - Legend"
+msgstr "Tietoja - Karttamerkkien selitykset"
+
+#: ui.py:657
+msgid "OK - City"
+msgstr "OK - Kaupunki"
+
+#: ui.py:658
+msgid "Left - Previous day"
+msgstr "Vasen -  Edellinen päivä"
+
+#: ui.py:659
+msgid "Right - Next day"
+msgstr "Oikea - Seuraava päivä"
+
+#: ui.py:660
+msgid "Up - Previous page"
+msgstr "Ylös - Edellinen sivu"
+
+#: ui.py:661
+msgid "Down - Next page"
+msgstr "Alas - Seuraava sivu"
+
+#: ui.py:662
+msgid "Left arrow - Previous day"
+msgstr "Vasen nuoli - Edellinen päivä"
+
+#: ui.py:663
+msgid "Right arrow - Next day"
+msgstr "Oikea nuoli - Seuraava päivä"
+
+#: ui.py:664
+msgid "Red - Weekoverview"
+msgstr "Punainen - Viikkoennuste"
+
+#: ui.py:666
+msgid "Green - Favorite 1"
+msgstr "Vihreä - Suosikki 1"
+
+#: ui.py:667
+msgid "Yellow - Favorite 2"
+msgstr "Keltainen - Suosikki 2"
+
+#: ui.py:668
+msgid "Blue - Home"
+msgstr "Sininen - Kotipaikka"
+
+#: ui.py:669
+msgid "0 - Today"
+msgstr "0 - Tänään"
+
+#: ui.py:670
+msgid "1 - Today + 1 day"
+msgstr "1 - Tänään + 1 päivä"
+
+#: ui.py:671
+msgid "2 - Today + 2 days"
+msgstr "2 - Tänään + 2 päivää"
+
+#: ui.py:672
+msgid "3 - Today + 3 days"
+msgstr "3 - Tänään + 3 päivää"
+
+#: ui.py:673
+msgid "4 - Today + 4 days"
+msgstr "4 - Tänään + 4 päivää"
+
+#: ui.py:674
+msgid "5 - Today + 5 days"
+msgstr "5 - Tänään + 5 päivää"
+
+#: ui.py:675
+msgid "6 - Today + 6 days"
+msgstr "6 - Tänään + 6 päivää"
+
+#: ui.py:676
+msgid "7 - Today + 7 days"
+msgstr "7 - Tänään + 7 päivää"
+
+#: ui.py:677
+msgid "8 - Today + 8 days"
+msgstr "8 - Tänään + 8 päivää"
+
+#: ui.py:678
+msgid "9 - Today + 9 days"
+msgstr "9 - Tänään + 9 päivää"
+
+#: ui.py:829
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -39,513 +240,414 @@ msgstr ""
 "< > = Ennuste seuraava/edellinen päivä\n"
 "0 - 9 = Ennuste seuraavat (x) päivää\n"
 "\n"
-"Vol+/- = Nopea selaus 100 (kaupunkia)\n"
-"Ch+/- = Nopea selaus 500 (kaupunkia)\n"
+"VOL+/- = Nopea selaus 100 (kaupunkia)\n"
+"CH+/- = Nopea selaus 500 (kaupunkia)\n"
 "\n"
-"Info = Tämä info\n"
-"Menu = Satelliitti kuvat/kartat\n"
+"Info = Tämä informaatio\n"
+"Menu = Satelliittikuvat ja -kartat\n"
 "\n"
-"Punainen = Lämpötilat seuraavat 5 päivää\n"
-"Vihreä = Ennuste Suosikki 1\n"
-"Keltainen = Ennuste Suosikki 2\n"
-"Sininen = Ennuste Kotipaikka\n"
+"Punainen = Lämpötilakaavio seuraaville 5 päivälle\n"
+"Vihreä = Siirry Suosikkiin 1\n"
+"Keltainen = Siirry Suosikkiin 2\n"
+"Sininen = Siirry Kotipaikkaan\n"
 "\n"
 "Tuulensuunta = Nuoli oikealle: Tuuli lännestä"
 
-msgid "0 - Today"
-msgstr "0 - Tänään"
+#: ui.py:1124 ui.py:1134
+msgid "Select a city"
+msgstr "Valitse kaupunki"
 
-msgid "1 - Today + 1 day"
-msgstr "1 - Tänään + 1 päivä"
-
-msgid "2 - Today + 2 days"
-msgstr "2 - Tänään + 2 päivä"
-
-msgid "3 - Today + 3 days"
-msgstr "3 - Tänään + 3 päivä"
-
-msgid "4 - Today + 4 days"
-msgstr "4 - Tänään + 4 päivä"
-
-msgid "5 - Today + 5 days"
-msgstr "5 - Tänään + 5 päivä"
-
-msgid "6 - Today + 6 days"
-msgstr "6 - Tänään + 6 päivä"
-
-msgid "7 - Today + 7 days"
-msgstr "7 - Tänään + 7 päivä"
-
-msgid "8 - Today + 8 days"
-msgstr "8 - Tänään + 8 päivä"
-
-msgid "9 - Today + 9 days"
-msgstr "9 - Tänään + 9 päivä"
-
-msgid "Air pressure"
-msgstr "Ilmanpainekartta"
-
-msgid "Australia"
-msgstr "Austraalia"
-
-msgid "Austria"
-msgstr "Itävalta"
-
-msgid "Backgroundcolor"
-msgstr "Taustaväri"
-
-msgid "Baden-Wuerttemberg"
-msgstr "Baden-Württemberg"
-
-msgid "Bavaria"
-msgstr "Baijeri"
-
-msgid "Belgium"
-msgstr "Belgia"
-
-msgid "Berlin"
-msgstr "Berliini"
-
-msgid "Blue - Assign to Home"
-msgstr "Sininen - Siirry Kotipaikkaan"
-
-msgid "Blue - Home"
-msgstr "Sininen - Kotipaikka"
-
-msgid "Blue - Settings"
-msgstr "Sininen - Asetukset"
-
-msgid "Brandenburg"
-msgstr "Brandenburg"
-
-msgid "Bremen"
-msgstr "Bremen"
-
-msgid "Cancel"
-msgstr "Takaisin"
-
-msgid "Channel+ - 500 back"
-msgstr "Kanava+ - 500 takaisin"
-
-msgid "Channel- - 500 forward"
-msgstr "Kanava- - 500 seuraavaa"
-
-msgid "City"
-msgstr "Kaupunki"
-
-msgid "City names as labels in the Main screen"
-msgstr "Kaupunkien nimet etusivulla"
-
-msgid "Cloudcover Video"
-msgstr "Pilvitutkakartta"
-
-msgid "Continents"
-msgstr "Maanosat"
-
-msgid "Czech Republic"
-msgstr "Tsekki"
-
-msgid "Debug"
-msgstr "Oletus"
-
-msgid "Denmark"
-msgstr "Tanska"
-
-msgid "Down - Next"
-msgstr "Alas - Seuraava"
-
-msgid "Down - Next page"
-msgstr "Alas - Seuraava sivu"
-
-msgid "East Asia"
-msgstr "Itä Aasia"
-
-msgid "Eumetsat"
-msgstr "Eumetsat"
-
-msgid "Europe"
-msgstr "Eurooppa"
-
-msgid "Exit - End"
-msgstr "Exit - Poistu"
-
-msgid "Favorite 1"
-msgstr "Suosikki 1"
-
-msgid "Favorite 2"
-msgstr "Suosikki 2"
-
-msgid "Foreca Weather Forecast"
-msgstr "Foreca Sääennuste"
-
+#: ui.py:1133
 msgid "Forecast"
 msgstr "Ennuste"
 
-msgid "Frame size in full view"
-msgstr "Kokoruutu"
-
-msgid "France"
-msgstr "Ranska"
-
-msgid "Great Britain"
-msgstr "Iso Britannia"
-
-msgid "Greece"
-msgstr "Kreikka"
-
-msgid "Green - Assign to Favorite 1"
-msgstr "Vihreä - Siirry Suosikki 1"
-
-msgid "Green - Europe"
-msgstr "Vihreä - Eurooppa"
-
-msgid "Green - Favorite 1"
-msgstr "Vihreä - Suosikki 1"
-
-msgid "Hamburg"
-msgstr "Hampuri"
-
-msgid "Hesse"
-msgstr "Hessen"
-
-msgid "Home"
-msgstr "Kotipaikka"
-
-msgid "Humidity: %s %s"
-msgstr "Suht. kosteus: %s %s"
-
-msgid "Hungary"
-msgstr "Unkari"
-
-msgid "Imperial (C, mph)"
-msgstr "UK (C, mph)"
-
-msgid "Info - Legend"
-msgstr "Tietoja"
-
-msgid "Ireland"
-msgstr "Irlanti"
-
-msgid "Italy"
-msgstr "Italia"
-
-msgid "Latvia"
-msgstr "Latvia"
-
-msgid "Left - Previous day"
-msgstr "Vasen -  Edellinen päivä"
-
+#: ui.py:1140 ui.py:1388 ui.py:1660
 msgid "Left - Previous page"
 msgstr "Vasen - Edellinen sivu"
 
-msgid "Left arrow - Previous day"
-msgstr "Vasen nuoli - Edellinen päivää"
-
-msgid "Legend"
-msgstr "Selitykset"
-
-msgid "Lower Saxony"
-msgstr "Ala-Saksi"
-
-msgid "Luxembourg"
-msgstr "Luxemburg"
-
-msgid "Maps"
-msgstr "Kartat"
-
-msgid "Mecklenburg-Vorpommern"
-msgstr "Mecklenburg-Etu-Pommeri"
-
-msgid "Menu - Weather maps"
-msgstr "Valikko - sääkartat"
-
-msgid "Metric (C, km/h)"
-msgstr "Metrinen (C, km/h)"
-
-msgid "Metric (C, m/s)"
-msgstr "Metrinen (C, m/s)"
-
-msgid "Middle America"
-msgstr "Keski Amerikka"
-
-msgid "Middle Asia"
-msgstr "Keski-Aasia"
-
-msgid "Middle East"
-msgstr "Lähi itä"
-
-msgid "Netherlands"
-msgstr "Hollanti"
-
-msgid "North Africa"
-msgstr "Pohjois Afrikka"
-
-msgid "North America"
-msgstr "Pohjois Amerikka"
-
-msgid "North Rhine-Westphalia"
-msgstr "Nordrhein-Westfalen"
-
-msgid "OK - City"
-msgstr "OK - Kaupunki"
-
-msgid "OK - Select"
-msgstr "OK - Valitse"
-
-msgid "OK - Show"
-msgstr "OK - Näytä"
-
-msgid "Please wait ..."
-msgstr "Odota lataan ..."
-
-msgid "Please wait, photo is being loaded ..."
-msgstr "Odota lataan kuvaa ..."
-
-msgid "Poland"
-msgstr "Puola"
-
-msgid "Portugal"
-msgstr "Portugali"
-
-msgid "Red - Continents"
-msgstr "Punainen - Maanosat"
-
-msgid "Red - Weekoverview"
-msgstr "Punainen - Viikkoennuste"
-
-msgid "Rhineland-Palatine"
-msgstr "Rheinland-Pfalz"
-
-msgid "Right - Next day"
-msgstr "Oikea - Seuraava päivä"
-
+#: ui.py:1141 ui.py:1389 ui.py:1661
 msgid "Right - Next page"
 msgstr "Oikea - Seuraava sivu"
 
-msgid "Right arrow - Next day"
-msgstr "Oikea nuoli - Seuraava pÃ¤ivÃ¤"
+#: ui.py:1142 ui.py:1390 ui.py:1662
+msgid "Up - Previous"
+msgstr "Ylös - Edellinen"
 
-msgid "Russia"
-msgstr "Venäjä"
+#: ui.py:1143 ui.py:1391 ui.py:1663
+msgid "Down - Next"
+msgstr "Alas - Seuraava"
 
-msgid "Saarland"
-msgstr "Saarland"
+#: ui.py:1144
+msgid "OK - Select"
+msgstr "OK - Valitse"
 
-msgid "Satellite photos"
-msgstr "Satelliitti kuvat"
+#: ui.py:1145
+msgid "Green - Assign to Favorite 1"
+msgstr "Vihreä - Liitä suosikkiin 1"
 
-msgid "Save"
-msgstr "Tallenna"
+#: ui.py:1146
+msgid "Yellow - Assign to Favorite 2"
+msgstr "Keltainen - Liitä suosikkiin 2"
 
-msgid "Saxony"
-msgstr "Saksi"
+#: ui.py:1147
+msgid "Blue - Assign to Home"
+msgstr "Sininen - Liitä kotipaikkaan"
 
-msgid "Saxony-Anhalt"
-msgstr "Saksi-Anhalt"
+#: ui.py:1148
+msgid "Channel+ - 500 back"
+msgstr "CH+ - 500 taaksepäin"
 
-msgid "Scaling Mode"
-msgstr "Skaalaustila"
+#: ui.py:1149
+msgid "Channel- - 500 forward"
+msgstr "CH- - 500 eteenpäin"
 
-msgid "Schleswig-Holstein"
-msgstr "Schleswig-Holstein"
+#: ui.py:1150
+msgid "Volume- - 100 forward"
+msgstr "VOL- - 100 eteenpäin"
 
-msgid "Select a city"
-msgstr "Valitse paikkakunta"
+#: ui.py:1151
+msgid "Volume+ - 100 back"
+msgstr "VOL+ - 100 taaksepäin"
 
-msgid "Select time format"
-msgstr "Aika formaatti"
-
-msgid "Select units"
-msgstr "Yksiköt"
-
-msgid "Settings"
-msgstr "Asetukset"
-
-msgid "Show Infoline"
-msgstr "Näytä Inforivi"
-
-msgid "Showerradar Video"
-msgstr "Sadetutkakartta"
-
-msgid "Slide Time (seconds)"
-msgstr "Nopeus (Sekuntia)"
-
-msgid "Slide picture in loop"
-msgstr "Jatkuva toisto"
-
-msgid "SlideShow Settings"
-msgstr "Selaus asetukset"
-
-msgid "South Africa"
-msgstr "Etelä Afrikka"
-
-msgid "South America"
-msgstr "Etelä Amerikka"
-
-msgid "Southeast Asia"
-msgstr "Kaakkois-Aasia"
-
-msgid "Spain"
-msgstr "Espanja"
-
-msgid "Switzerland"
-msgstr "Sveitsi"
-
-msgid "Temp"
-msgstr "Lämpötila"
-
-msgid "Temperature Video"
-msgstr "Lämpätilakartta"
-
-msgid "Textcolor"
-msgstr "Tekstin vöri"
-
-msgid ""
-"This city is stored as favorite 1!\n"
-"\n"
-"                             "
-msgstr ""
-"Tämä on Suosikki 1!\n"
-"\n"
-"                   "
-
-msgid ""
-"This city is stored as favorite 2!\n"
-"\n"
-"                             "
-msgstr ""
-"Tämä on Suosikki 2!\n"
-"\n"
-"                    "
-
+#: ui.py:1230
 msgid ""
 "This city is stored as home!\n"
 "\n"
 "                                  "
 msgstr ""
-"Tämä on kotipaikka!\n"
+"Tämä kaupunki on tallennettu kotipaikaksi!\n"
+"                                  "
+
+#: ui.py:1241
+msgid ""
+"This city is stored as favorite 1!\n"
 "\n"
-"                      "
+"                             "
+msgstr ""
+"Tämä kaupunki on tallennettu suosikiksi 1!\n"
+"                             "
 
-msgid "Thuringia"
-msgstr "Thüringen"
+#: ui.py:1252
+msgid ""
+"This city is stored as favorite 2!\n"
+"\n"
+"                             "
+msgstr ""
+"Tämä kaupunki on tallennettu suosikiksi 2!\n"
+"                             "
 
-msgid "US (F, mph)"
-msgstr "US"
+#: ui.py:1373 ui.py:1382
+msgid "Satellite photos"
+msgstr "Satelliittikuvat"
 
-msgid "Up - Previous"
-msgstr "Ylös - Edellinen"
+#: ui.py:1378 ui.py:1504
+msgid "Continents"
+msgstr "Maanosat"
 
-msgid "Up - Previous page"
-msgstr "Ylös - Edellinen sivu"
+#: ui.py:1379 ui.py:1489 ui.py:1493
+msgid "Europe"
+msgstr "Eurooppa"
 
-msgid "Version "
-msgstr "Versio "
+#: ui.py:1380 ui.py:1460 ui.py:1469
+msgid "Germany"
+msgstr "Saksa"
 
-msgid "Volume+ - 100 back"
-msgstr "Ääni + - 100 edellistä"
+#: ui.py:1381 ui.py:1653
+msgid "Settings"
+msgstr "Asetukset"
 
-msgid "Volume- - 100 forward"
-msgstr "Ääni - - 100 seuraavaa"
+#: ui.py:1392
+msgid "Red - Continents"
+msgstr "Punainen - Maanosat"
 
-msgid "Weather forecast for the upcoming 10 days"
-msgstr "Sääennuste seuraavat 10 päivää"
+#: ui.py:1393
+msgid "Green - Europe"
+msgstr "Vihreä - Eurooppa"
 
+#: ui.py:1394
+msgid "Yellow - Germany"
+msgstr "Keltainen - Saksa"
+
+#: ui.py:1395 ui.py:1664
+msgid "Blue - Settings"
+msgstr "Sininen - Asetukset"
+
+#: ui.py:1396 ui.py:1665
+msgid "OK - Show"
+msgstr "OK - Näytä"
+
+#: ui.py:1402
 msgid "Weather map Video"
-msgstr "Sääkartta"
+msgstr "Sääkarttavideo"
 
-msgid "Week"
-msgstr "Viikko"
+#: ui.py:1403
+msgid "Showerradar Video"
+msgstr "Sadetutkavideo"
 
-msgid "Wind"
-msgstr "Tuuli"
+#: ui.py:1404
+msgid "Temperature Video"
+msgstr "Lämpötilavideo"
 
-msgid "Yellow - Assign to Favorite 2"
-msgstr "Keltainen - Siirry Suosikki 2"
+#: ui.py:1405
+msgid "Cloudcover Video"
+msgstr "Pilvipeitevideo"
 
-msgid "Yellow - Favorite 2"
-msgstr "Keltainen - Suosikki 2"
+#: ui.py:1406
+msgid "Air pressure"
+msgstr "Ilmanpaine"
 
-msgid "better"
-msgstr "parempi"
+#: ui.py:1407
+msgid "Eumetsat"
+msgstr "Eumetsat"
 
-msgid "black"
-msgstr "musta"
+#: ui.py:1439
+msgid "Baden-Wuerttemberg"
+msgstr "Baden-Wuerttemberg"
 
-msgid "blue"
-msgstr "sininen"
+#: ui.py:1440
+msgid "Bavaria"
+msgstr "Baijeri"
 
-msgid "green"
-msgstr "vihreä"
+#: ui.py:1441
+msgid "Berlin"
+msgstr "Berliini"
 
+#: ui.py:1442
+msgid "Brandenburg"
+msgstr "Brandenburg"
+
+#: ui.py:1443
+msgid "Bremen"
+msgstr "Bremen"
+
+#: ui.py:1444
+msgid "Hamburg"
+msgstr "Hampuri"
+
+#: ui.py:1445
+msgid "Hesse"
+msgstr "Hesse"
+
+#: ui.py:1446
+msgid "Mecklenburg-Vorpommern"
+msgstr "Mecklenburg-Vorpommern"
+
+#: ui.py:1447
+msgid "Lower Saxony"
+msgstr "Ala-Saksi"
+
+#: ui.py:1448
+msgid "North Rhine-Westphalia"
+msgstr "Nordrhein-Westfalen"
+
+#: ui.py:1449
+msgid "Rhineland-Palatine"
+msgstr "Rheinland-Pfalz"
+
+#: ui.py:1450
+msgid "Saarland"
+msgstr "Saarland"
+
+#: ui.py:1451
+msgid "Saxony"
+msgstr "Saksi"
+
+#: ui.py:1452
+msgid "Saxony-Anhalt"
+msgstr "Saksi-Anhalt"
+
+#: ui.py:1453
+msgid "Schleswig-Holstein"
+msgstr "Schleswig-Holstein"
+
+#: ui.py:1454
+msgid "Thuringia"
+msgstr "Thuringia"
+
+#: ui.py:1464
+msgid "Austria"
+msgstr "Itävalta"
+
+#: ui.py:1465
+msgid "Belgium"
+msgstr "Belgia"
+
+#: ui.py:1466
+msgid "Czech Republic"
+msgstr "Tšekki"
+
+#: ui.py:1467
+msgid "Denmark"
+msgstr "Tanska"
+
+#: ui.py:1468
+msgid "France"
+msgstr "Ranska"
+
+#: ui.py:1470
+msgid "Greece"
+msgstr "Kreikka"
+
+#: ui.py:1471
+msgid "Great Britain"
+msgstr "Iso-Britannia"
+
+#: ui.py:1472
+msgid "Hungary"
+msgstr "Unkari"
+
+#: ui.py:1473
+msgid "Ireland"
+msgstr "Irlanti"
+
+#: ui.py:1474
+msgid "Italy"
+msgstr "Italia"
+
+#: ui.py:1475
+msgid "Latvia"
+msgstr "Latvia"
+
+#: ui.py:1476
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+#: ui.py:1477
+msgid "Netherlands"
+msgstr "Alankomaat"
+
+#: ui.py:1478
+msgid "Poland"
+msgstr "Puola"
+
+#: ui.py:1479
+msgid "Portugal"
+msgstr "Portugali"
+
+#: ui.py:1480
+msgid "Russia"
+msgstr "Venäjä"
+
+#: ui.py:1481
+msgid "Slovakia"
+msgstr "Slovakia"
+
+#: ui.py:1482
+msgid "Spain"
+msgstr "Espanja"
+
+#: ui.py:1483
+msgid "Switzerland"
+msgstr "Sveitsi"
+
+#: ui.py:1494
+msgid "North Africa"
+msgstr "Pohjois-Afrikka"
+
+#: ui.py:1495
+msgid "South Africa"
+msgstr "Etelä-Afrikka"
+
+#: ui.py:1496
+msgid "North America"
+msgstr "Pohjois-Amerikka"
+
+#: ui.py:1497
+msgid "Middle America"
+msgstr "Keski-Amerikka"
+
+#: ui.py:1498
+msgid "South America"
+msgstr "Etelä-Amerikka"
+
+#: ui.py:1499
+msgid "Middle East"
+msgstr "Lähi-itä"
+
+#: ui.py:1500
+msgid "East Asia"
+msgstr "Itä-Aasia"
+
+#: ui.py:1501
+msgid "Southeast Asia"
+msgstr "Kaakkois-Aasia"
+
+#: ui.py:1502
+msgid "Middle Asia"
+msgstr "Keski-Aasia"
+
+#: ui.py:1503
+msgid "Australia"
+msgstr "Australia"
+
+#: ui.py:1543
 msgid "h"
-msgstr "t"
+msgstr "h"
 
-msgid "red"
-msgstr "punainen"
+#: ui.py:1809
+msgid "Please wait, photo is being loaded ..."
+msgstr "Odota, valokuvaa ladataan..."
 
-msgid "simple"
-msgstr "simppeli"
+#: ui.py:1945 ui.py:1948
+msgid "SlideShow Settings"
+msgstr "Diaesitysasetukset"
 
-msgid "yellow"
-msgstr "keltainen"
+#: ui.py:1946
+msgid "Cancel"
+msgstr "Peruuta"
 
-msgid "Feels"
-msgstr "Tuntuu kuin"
+#: ui.py:1947
+msgid "Save"
+msgstr "Tallenna"
 
-msgid "Feels like: %s %s"
-msgstr "Tuntuu kuin: %s %s"
+#: ui.py:1971
+msgid "Select units"
+msgstr "Valitse yksiköt"
 
-msgid "Precip chance: %s %s"
-msgstr "Sateen todennäköisyys: %s %s"
+#: ui.py:1972
+msgid "Select time format"
+msgstr "Valitse ajan muoto"
 
-msgid "Overcast and light wet snow"
-msgstr "Pilvistä, vähäistä räntäsadetta"
+#: ui.py:1973
+msgid "City names as labels in the Main screen"
+msgstr "Kaupunkien nimet päänäytön nimikkeinä"
 
-msgid "Partly cloudy"
-msgstr "Puolipilvistä"
+#: ui.py:1974
+msgid "Frame size in full view"
+msgstr "Kehyskoko koko näkymässä"
 
-msgid "Partly cloudy and light rain"
-msgstr "Puolipilvistä, vähäistä sadetta"
-
-msgid "Overcast and snow showers"
-msgstr "Pilvistä, ajoittaista lumisadetta"
-
-msgid "Overcast and showers"
-msgstr "Pilvistä, ajoittaista sadetta"
-
-msgid "Overcast and light rain"
-msgstr "Pilvistä, vähäistä sadetta"
-
-msgid "Overcast"
-msgstr "Pilvistä"
-
-msgid "Overcast and wet snow showers"
-msgstr "Pilvistä, ajoittaista räntäsadetta"
-
-msgid "Overcast and wet snow"
-msgstr "Pilvistä, runsasta räntäsadetta"
-
-msgid "Overcast and light snow"
-msgstr "Pilvistä, vähäistä lumisadetta"
-
-msgid "Overcast and rain"
-msgstr "Pilvistä, runsasta sadetta"
-
-msgid "Cloudy"
-msgstr "Pilvistä"
-
-msgid "Mostly clear"
-msgstr "Melko selkeää"
-
-msgid "Cloudy and light rain"
-msgstr "Melko pilvistä, vähäistä sadetta"
-
-msgid "Clear"
-msgstr "Selkeää"
-
-msgid "Display in extensions menu"
-msgstr "Näytä laajennukset valikossa"
-
+#: ui.py:1975
 msgid "Font size in slideshow"
-msgstr "Fontti koko sivu näkyvässä"
+msgstr "Fonttikoko diaesityksessä"
+
+#: ui.py:1976
+msgid "Scaling Mode"
+msgstr "Skaalaustila"
+
+#: ui.py:1977
+msgid "Slide Time (seconds)"
+msgstr "Dian aika (sekunteina)"
+
+#: ui.py:1978
+msgid "Show Infoline"
+msgstr "Näytä inforivi"
+
+#: ui.py:1979
+msgid "Textcolor"
+msgstr "Tekstin väri"
+
+#: ui.py:1980
+msgid "Backgroundcolor"
+msgstr "Taustaväri"
+
+#: ui.py:1981
+msgid "Slide picture in loop"
+msgstr "Dian kuva luupissa"
+
+#: ui.py:1982
+msgid "Display in extensions menu"
+msgstr "Näytä laajennusvalikossa"
+
+#: ui.py:1983
+msgid "Debug"
+msgstr "Debug"
