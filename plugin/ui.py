@@ -144,6 +144,7 @@ from Components.GUIComponent import GUIComponent
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
+from skin import parseFont, parseColor
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS, fileExists
 from Tools.LoadPixmap import LoadPixmap
 
@@ -278,6 +279,96 @@ class MainMenuList(MenuList):
 
 #--------------------------- get skin attribs ---------------------------------------------
 	def applySkin(self, desktop, parent):
+		def warningWrongSkinParameter(string, wanted, given):
+			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
+
+		def font0(value):
+			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font1(value):
+			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font2(value):
+			self.font2 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font3(value):
+			self.font3 = parseFont(value, ((1, 1), (1, 1)))
+
+		def itemHeight(value):
+			self.itemHeight = int(value)
+
+		def setTime(value):
+			self.valTime = list(map(int, value.split(",")))
+			l = len(self.valTime)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setPict(value):
+			self.valPict = list(map(int, value.split(",")))
+			l = len(self.valPict)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setPictScale(value):
+			self.valPictScale = int(value)
+
+		def setTemp(value):
+			self.valTemp = list(map(int, value.split(",")))
+			l = len(self.valTemp)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setTempUnits(value):
+			self.valTempUnits = list(map(int, value.split(",")))
+			l = len(self.valTempUnits)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setWindPict(value):
+			self.valWindPict = list(map(int, value.split(",")))
+			l = len(self.valWindPict)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setWindPictScale(value):
+			self.valWindPictScale = int(value)
+
+		def setWind(value):
+			self.valWind = list(map(int, value.split(",")))
+			l = len(self.valWind)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def setWindUnits(value):
+			self.valWindUnits = list(map(int, value.split(",")))
+			l = len(self.valWindUnits)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def text1Pos(value):
+			self.valText1 = list(map(int, value.split(",")))
+			l = len(self.valText1)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def text2Pos(value):
+			self.valText2 = list(map(int, value.split(",")))
+			l = len(self.valText2)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def text3Pos(value):
+			self.valText3 = list(map(int, value.split(",")))
+			l = len(self.valText3)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
+		def text4Pos(value):
+			self.valText4 = list(map(int, value.split(",")))
+			l = len(self.valText4)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -293,7 +384,8 @@ class MainMenuList(MenuList):
 
 #--------------------------- Go through all list entries ----------------------------------
 	def buildEntries(self):
-		#if DEBUG: print(pluginPrintname, "buildEntries:", len(self.list))
+		if DEBUG:
+			print(pluginPrintname, "buildEntries:", len(self.list))
 		if self.idx == len(self.list):
 			self.setList(self.listCompleted)
 			if self.callback:
@@ -835,15 +927,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			if DEBUG:
 				print(pluginPrintname, "titel[0]=", titel[0])
 
-		# <a href="/Austria/Linz?details=20110330">We</a>
-#		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
-#		link = str(fulltext.findall(html))
-#		print(link)
-
-#		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
-#		tag = str(fulltext.findall(link))
-#		print("Day ", tag)
-
 		# ---------- Wetterdaten -----------
 
 		# <div class="row clr0">
@@ -912,7 +995,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			print(pluginPrintname, "windSpeed", str(windSpeed))
 
 		timeEntries = len(zeit)
-		#print("Aantal tijden ", str(timeEntries))
 		x = 0
 		while x < timeEntries:
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
@@ -973,6 +1055,27 @@ class CityPanelList(MenuList):
 
 #---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
+		def font(value):
+			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font1(value):
+			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
+		def itemHeight(value):
+			self.itemHeight = int(value)
+
+		def foregroundColor(value):
+			self.foregroundColor = parseColor(value).argb()
+
+		def foregroundColorSelected(value):
+			self.foregroundColorSelected = parseColor(value).argb()
+
+		def backgroundColorSelected(value):
+			self.backgroundColorSelected = parseColor(value).argb()
+
+		def column(value):
+			self.column = int(value)
+
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -1176,6 +1279,36 @@ class SatPanelList(MenuList):
 
 #---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
+		def warningWrongSkinParameter(string, wanted, given):
+			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
+
+		def font(value):
+			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font1(value):
+			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
+		def itemHeight(value):
+			self.itemHeight = int(value)
+
+		def setPictScale(value):
+			self.pictScale = int(value)
+
+		def foregroundColor(value):
+			self.foregroundColor = parseColor(value).argb()
+
+		def foregroundColorSelected(value):
+			self.foregroundColorSelected = parseColor(value).argb()
+
+		def backgroundColorSelected(value):
+			self.backgroundColorSelected = parseColor(value).argb()
+
+		def textPos(value):
+			self.textPos = list(map(int, value.split(",")))
+			l = len(self.textPos)
+			if l != 4:
+				warningWrongSkinParameter(attrib, 4, l)
+
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -1368,7 +1501,8 @@ class SatPanel(Screen, HelpableScreen):
 		grau = self["Mlist"].backgroundColorSelected
 
 		res = [entry]
-		#if DEBUG: print(pluginPrintname, "entry=", entry)
+		if DEBUG:
+			print(pluginPrintname, "entry=", entry)
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
 		thumb_width = 200
 		if pict_scale:
@@ -1454,6 +1588,15 @@ class SatPanelListb(MenuList):
 
 #---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
+		def font(value):
+			self.font0 = parseFont(value, ((1, 1), (1, 1)))
+
+		def font1(value):
+			self.font1 = parseFont(value, ((1, 1), (1, 1)))
+
+		def itemHeight(value):
+			self.itemHeight = int(value)
+
 		for (attrib, value) in list(self.skinAttributes):
 			try:
 				locals().get(attrib)(value)
@@ -1486,7 +1629,8 @@ class SatPanelb(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		self.setup_title = title
 		self.Mlist = mlist
-		#if DEBUG: print(pluginPrintname, "Mlist=", self.Mlist, "\nSatPanelListb([])=", SatPanelListb([]))
+		if DEBUG:
+			print(pluginPrintname, "Mlist=", self.Mlist, "\nSatPanelListb([])=", SatPanelListb([]))
 		self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
