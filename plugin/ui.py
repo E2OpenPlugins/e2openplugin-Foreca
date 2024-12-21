@@ -1,11 +1,11 @@
-VERSION = "3.3.2"
+VERSION = "3.3.3"
 #-------------------------------------------------------
 #              Foreca Weather Forecast E2
 #   This Plugin retrieves the actual weather forecast
 #   for the next 10 days from the Foreca website.
 #        We wish all users wonderful weather!
 #                    04.10.2017
-#     Source of information: http://www.foreca.biz
+#     Source of information: http://www.foreca.hr
 #             Design and idea by
 #                  @Bauernbub
 #            enigma2 mod by mogli123
@@ -158,7 +158,7 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Maple2012) AppleWebKit/534.7 (KHTML, like Gecko) SmartTV Safari/534.7'}
-BASEURL = "http://www.foreca.biz/"
+BASEURL = "http://www.foreca.hr/"
 MODULE_NAME = __name__.split(".")[-1]
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
 PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
