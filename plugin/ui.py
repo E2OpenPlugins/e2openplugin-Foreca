@@ -1246,11 +1246,13 @@ class SatPanelList(MenuList):
 
 class View_Slideshow(Screen):
 	def __init__(self, session, menu, urls, pindex=0, startslide=False):
+		self.session = session
 		self.menu = menu
 		self.urls = urls
 		self.lastindex = pindex
 		self.startslide = startslide
-		self.session = session
+		self.picfilelist = []
+		self.dirlistcount = 0
 		FAlog("SlideShow is running...")
 		self.textcolor = config.plugins.foreca.textcolor.value
 		self.bgcolor = config.plugins.foreca.bgcolor.value
