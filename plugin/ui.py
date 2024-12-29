@@ -5,7 +5,7 @@ VERSION = "3.3.3"
 #   for the next 10 days from the Foreca website.
 #        We wish all users wonderful weather!
 #                    04.10.2017
-#     Source of information: http://www.foreca.hr
+#     Source of information: http://www.foreca.ba
 #             Design and idea by
 #                  @Bauernbub
 #            enigma2 mod by mogli123
@@ -92,7 +92,8 @@ VERSION = "3.3.3"
 # 3.3.0 accelerated start-up of plugin (threaded url-access & processing) and replaced 'urllib(2).urlopen & .Request' by 'requests.get & .exceptions'
 # 3.3.1 AGENTS-list bugfixed
 # 3.3.2 corrected url for satellite views and recoded access to Eumetsat
-#
+# 3.3.3 homepage changed from 'foreca.biz' to 'foreca.hr'
+# 3.3.4 homepage changed from 'foreca.hr' to 'foreca.ba'
 # To do:
 #	Add 10 day forecast on green key press
 #	City search at Foreca website on yellow key press. This will eliminate complete city DB.
@@ -158,7 +159,7 @@ config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("
 config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV; Maple2012) AppleWebKit/534.7 (KHTML, like Gecko) SmartTV Safari/534.7'}
-BASEURL = "http://www.foreca.hr/"
+BASEURL = "http://www.foreca.ba/"
 MODULE_NAME = __name__.split(".")[-1]
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
 PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
@@ -554,6 +555,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		FAlog("home location:", self.ort)
+		# https://www.foreca.ba/Germany/Berlin
 		MAIN_PAGE = f"{BASEURL}{pathname2url(self.ort)}?lang={LANGUAGE}&details={heute}&units={config.plugins.foreca.units.value}&tf={config.plugins.foreca.time.value}"
 		FAlog("initial link:", MAIN_PAGE)
 		if HD:
@@ -840,7 +842,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.right()
 
 	def red(self):
-		if not self.working:
+		if not self.working and self.loc_id:
 			#/meteogram.php?loc_id=211001799&amp;mglang=de&amp;units=metrickmh&amp;tf=24h
 			self.url = f"{BASEURL}meteogram.php?loc_id={self.loc_id}&mglang={LANGUAGE}&units={config.plugins.foreca.units.value}&tf={config.plugins.foreca.time.value}/meteogram.png"
 			self.loadPicture(self.url)
@@ -880,7 +882,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = compile(r"id: '(.*?)'", DOTALL)
 		fid = fulltext.findall('%s' % html)
 		FAlog("fulltext= %s" % fulltext, "id= %s" % fid)
-		self.loc_id = str(fid[0])
+		self.loc_id = str(fid[0]) if fid else ""
 		# <!-- START -->
 		#<h6><span>Tuesday</span> March 29</h6>
 		FAlog("Start: %s" % len(html))
@@ -961,7 +963,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 
 #---------------------- Diacritics Function -----------------------------------------------
-
 
 	def filter_dia(self, text):
 		# remove diacritics for selected language
