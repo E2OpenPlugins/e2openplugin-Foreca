@@ -1,11 +1,10 @@
 Package: enigma2-plugin-extensions-foreca
-Version: 3.2.3-r3
+Version: 3.3.5
 Description: Weather forecast for the upcoming 10 days
 Section: extra
 Priority: optional
 Maintainer: Bauernbub
 Architecture: all
 OE: enigma2-plugin-extensions-foreca
-Depends: enigma2, python-html, python-twisted-web
 Homepage: http://openpli.org/forums/topic/25848-foreca-weather-plugin-problem/
-Source: https://github.com/E2OpenPlugins/e2openplugin-Foreca
+Source: *
