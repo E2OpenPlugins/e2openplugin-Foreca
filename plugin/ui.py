@@ -697,18 +697,18 @@ class ForecaPreviewCache(Screen):
 
 	if size_w == 1920:
 		skin = """
-		<screen position="1450,95" size="60,60" backgroundColor="transparent" flags="wfNoBorder" zPosition="100" >
-			<widget name="spinner" position="0,0" size="60,60"/>
+		<screen position="center,center" size="80,80" backgroundColor="transparent" flags="wfNoBorder" zPosition="100" >
+			<widget name="spinner" position="0,0" size="80,80"/>
 		</screen>"""
 	elif size_w == 2560:
 		skin = """
-		<screen position="center,center" size="152,152" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
-			<widget name="spinner" position="28,28" size="96,96"/>
+		<screen position="center,center" size="80,80" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
+			<widget name="spinner" position="0,0" size="80,80"/>
 		</screen>"""
 	else:
 		skin = """
-		<screen position="center,center" size="76,76" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
-			<widget name="spinner" position="14,14" size="48,48"/>
+		<screen position="center,center" size="80,80" backgroundColor="transparent" flags="wfNoBorder" zPosition="100">
+			<widget name="spinner" position="0,0" size="80,80"/>
 		</screen>"""
 
 	def __init__(self, session):
@@ -731,7 +731,7 @@ class ForecaPreviewCache(Screen):
 
 	def showNextSpinner(self):
 		self.curr += 1
-		if self.curr > 3:
+		if self.curr > 8:
 			self.curr = 0
 		png = LoadPixmap(cached=True, path=PICON_PATH + str(self.curr) + ".png")
 		self["spinner"].instance.setPixmap(png)
