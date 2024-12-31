@@ -91,7 +91,7 @@ except NameError:
 	unicode = str  # In Python 3, unicode == str
 
 
-VERSION = "3.3.5"
+VERSION = "3.3.6"
 #
 #  $Id$
 #
@@ -105,7 +105,7 @@ VERSION = "3.3.5"
 #        We wish all users wonderful weather!
 #
 #
-#                 30.12.2024
+#                 31.12.2024
 #
 #     Source of information: https://www.foreca.ba
 #
@@ -723,7 +723,7 @@ class ForecaPreviewCache(Screen):
 
 	def start(self):
 		self.show()
-		self.timer.start(120, False)
+		self.timer.start(200, False)
 
 	def stop(self):
 		self.hide()
@@ -1241,6 +1241,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
+		self.deactivateCacheDialog()
 
 	def filter_dia(self, text):
 		# remove diacritics for selected language
@@ -1449,16 +1450,25 @@ class CityPanel(Screen, HelpableScreen):
 	def right(self):
 		self["Mlist"].pageDown()
 
+	def deactivateCacheDialog(self):
+		self.cacheDialog.stop()
+		self.working = False
+
 	def exit(self):
 		global menu
 		menu = "stop"
+		self.deactivateCacheDialog()
 		self.close()
 
 	def ok(self):
 		global city
+
+		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
+		self.cacheDialog.start()
+
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
 		FAlog("city= %s" % city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		self.close()
+		self.exit()
 
 	def blue(self):
 		global start
@@ -1689,9 +1699,28 @@ class SatPanel(Screen, HelpableScreen):
 		menu = "stop"
 		self.close()
 
+	def deactivateCacheDialog(self):
+		self.cacheDialog.stop()
+		self.working = False
+
+	# def exit(self):
+		# global menu
+		# menu = "stop"
+		# self.deactivateCacheDialog()
+		# self.close()
+
+	# def ok(self):
+		# self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
+		# self.cacheDialog.start()
+
+
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
 		FAlog("SatPanel menu= %s" % menu, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		
+		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
+		self.cacheDialog.start()
+		
 		self.SatBild()
 
 	def MapsGermany(self):
@@ -1849,7 +1878,6 @@ class SatPanel(Screen, HelpableScreen):
 					req = Request(url, headers=HEADERS)
 					resp = urlopen(req, timeout=10)
 					content = resp.read().decode('utf-8') if PY3 else resp.read()
-
 					pattern = r'<div class="absolute w-full h-full overflow-hidden z-10">.*?<img .*?alt="satLayer".*?src="([^"]+)".*?>'
 					matches = findall(pattern, content, DOTALL)
 					if matches:
@@ -1870,6 +1898,7 @@ class SatPanel(Screen, HelpableScreen):
 							img = img.convert("RGB")  # Rimuove ICC
 							img.save(devicepath, "PNG")
 							FAlog("Image dimensions: {}x{}".format(img.width, img.height))
+							
 
 							self.session.openWithCallback(returnToChoiceBox, PicView, devicepath, 0, False)
 						except requests.RequestException as e:
@@ -1893,6 +1922,9 @@ class SatPanel(Screen, HelpableScreen):
 				return
 			menu = current_selection[0][1]
 			FAlog("SatBild menu= %s" % menu, "CurrentSelection= %s" % current_selection)
+			
+			self.deactivateCacheDialog()
+			
 			if menu == "eumetsat":
 				self.doContext()
 			else:
@@ -1916,7 +1948,6 @@ class SatPanel(Screen, HelpableScreen):
 							full_url = 'https:' + url  # Ricostruisci l'URL completo
 							FAlog("Valid URL:", full_url)
 							self.fetch_url(full_url)
-
 						self.session.open(View_Slideshow, 0, True)
 					else:
 						FAlog("SatBild Warning: No image URLs found in page content.")
