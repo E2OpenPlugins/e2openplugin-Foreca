@@ -1,84 +1,127 @@
-almost clear
-broken
-clear
-clear or partly cloudy
-clear with haze
-clear with light haze
-cloudy or very cloudy
-cloudy with extensive haze
-cloudy with local openings
-fog
-foggy weather
-foggy weather and very low visibility
-freezing fog
-gray sky due to low clouds
-half cloudy
-heavy rain
-heavy snow and fog
-irregular clouds with heavy rain
-irregular clouds with possible thunderstorm
-irregular clouds with possible thunderstorms and fog
-irregular clouds with rain showers
-irregular clouds with snow
-irregular clouds with snow showers
-irregular clouds with strong thunderstorm
-irregular clouds with thunderstorms
-irregular clouds with very heavy rain
-low clouds with some clearings
-mostly
-mostly clear
-no precipitation
-overcast
-overcast with drizzle
-overcast with drizzle and fog
-overcast with freezing rain
-overcast with heavy snow
-overcast with heavy snow of a blizzard nature
-overcast with heavy snow of a blizzard nature and fog
-overcast with light rain
-overcast with light rain and fog
-overcast with light snow
-overcast with light snow and fog
-overcast with possible rain
-overcast with possible rain and fog
-overcast with rain
-overcast with rain and fog
-overcast with rain mixed with snow
-overcast with rain showers
-overcast with rain showers and fog
-overcast with round snow showers
-overcast with sleet
-overcast with sleet and fog
-overcast with snow
-overcast with snow and fog
-overcast with snow showers
-overcast with snow showers and fog
-overcast with snow storms
-partly cloudy
-partly or partly cloudy with scattered haze
-precipitation
-rain
-reduced visibility due to fog banks
-scattered clouds and clearings
-scattered clouds with drizzle
-scattered clouds with large clearings
-scattered clouds with light rain
-scattered clouds with light snow
-scattered clouds with possible rain
-scattered clouds with possible thunderstorms
-scattered clouds with rain
-scattered clouds with sleet
-severe thunderstorms
-severe thunderstorms and fog
-severe thunderstorms with hail
-showers
-sleet
-slight precipitation
-snow
-thin high clouds
-thunder
-very cloudy or overcast
-very cloudy or overcast with high clouds
-very cloudy with rain and thunderstorms
-very cloudy with rain and thunderstorms and fog
-very heavy rain, locally flooding
+almost clear=almost clear
+almost=almost
+and=and
+broken=broken
+clear or partly cloudy=clear or partly cloudy
+clear with haze=clear with haze
+clear with light haze=clear with light haze
+clear=clear
+clearings=clearings
+cloudy or very cloudy=cloudy or very cloudy
+cloudy with extensive haze=cloudy with extensive haze
+cloudy with local openings=cloudy with local openings
+cloudy=cloudy
+drizzle=drizzle
+due=due
+extensive=extensive
+flooding=flooding
+fog=fog
+foggy weather and very low visibility=foggy weather and very low visibility
+foggy weather=foggy weather
+foggy=foggy
+freezing fog=freezing fog
+freezing=freezing
+gray sky due to low clouds=gray sky due to low clouds
+gray=gray
+hail=hail
+half cloudy=half cloudy
+half=half
+haze=haze
+heavy rain=heavy rain
+heavy snow and fog=heavy snow and fog
+heavy=heavy
+high=high
+irregular clouds with heavy rain=irregular clouds with heavy rain
+irregular clouds with possible thunderstorm=irregular clouds with possible thunderstorm
+irregular clouds with possible thunderstorms and fog=irregular clouds with possible thunderstorms and fog
+irregular clouds with rain showers=irregular clouds with rain showers
+irregular clouds with snow showers=irregular clouds with snow showers
+irregular clouds with snow=irregular clouds with snow
+irregular clouds with strong thunderstorm=irregular clouds with strong thunderstorm
+irregular clouds with thunderstorms=irregular clouds with thunderstorms
+irregular clouds with very heavy rain=irregular clouds with very heavy rain
+irregular=irregular
+light=light
+local=local
+low clouds with some clearings=low clouds with some clearings
+low=low
+mostly clear=mostly clear
+mostly=mostly
+mostly=mostly
+no precipitation=no precipitation
+no=no
+openings=openings
+or=or
+overcast with drizzle and fog=overcast with drizzle and fog
+overcast with drizzle=overcast with drizzle
+overcast with freezing rain=overcast with freezing rain
+overcast with heavy snow of a blizzard nature and fog=overcast with heavy snow of a blizzard nature and fog
+overcast with heavy snow of a blizzard nature=overcast with heavy snow of a blizzard nature
+overcast with heavy snow=overcast with heavy snow
+overcast with light rain and fog=overcast with light rain and fog
+overcast with light rain=overcast with light rain
+overcast with light snow and fog=overcast with light snow and fog
+overcast with light snow=overcast with light snow
+overcast with possible rain and fog=overcast with possible rain and fog
+overcast with possible rain=overcast with possible rain
+overcast with rain and fog=overcast with rain and fog
+overcast with rain mixed with snow=overcast with rain mixed with snow
+overcast with rain showers and fog=overcast with rain showers and fog
+overcast with rain showers=overcast with rain showers
+overcast with rain=overcast with rain
+overcast with round snow showers=overcast with round snow showers
+overcast with sleet and fog=overcast with sleet and fog
+overcast with sleet=overcast with sleet
+overcast with snow and fog=overcast with snow and fog
+overcast with snow showers and fog=overcast with snow showers and fog
+overcast with snow showers=overcast with snow showers
+overcast with snow storms=overcast with snow storms
+overcast with snow=overcast with snow
+overcast=overcast
+overcast=overcast
+partly cloudy=partly cloudy
+partly or partly cloudy with scattered haze=partly or partly cloudy with scattered haze
+partly=partly
+possible=possible
+precipitation=precipitation
+precipitation=precipitation
+rain=rain
+reduced visibility due to fog banks=reduced visibility due to fog banks
+round=round
+scattered clouds and clearings=scattered clouds and clearings
+scattered clouds with drizzle=scattered clouds with drizzle
+scattered clouds with large clearings=scattered clouds with large clearings
+scattered clouds with light rain=scattered clouds with light rain
+scattered clouds with light snow=scattered clouds with light snow
+scattered clouds with possible rain=scattered clouds with possible rain
+scattered clouds with possible thunderstorms=scattered clouds with possible thunderstorms
+scattered clouds with rain=scattered clouds with rain
+scattered clouds with sleet=scattered clouds with sleet
+severe thunderstorms and fog=severe thunderstorms and fog
+severe thunderstorms with hail=severe thunderstorms with hail
+severe thunderstorms=severe thunderstorms
+showers=showers
+showers=showers
+sky=sky
+sleet=sleet
+sleets=sleets
+slight precipitation=slight precipitation
+slight=slight
+snow=snow
+some=some
+storms=storms
+strong=strong
+thin high clouds=thin high clouds
+thin=thin
+thunder=thunder
+thunderstorm=thunderstorm
+to=to
+very cloudy or overcast with high clouds=very cloudy or overcast with high clouds
+very cloudy or overcast=very cloudy or overcast
+very cloudy with rain and thunderstorms and fog=very cloudy with rain and thunderstorms and fog
+very cloudy with rain and thunderstorms=very cloudy with rain and thunderstorms
+very heavy rain, locally flooding=very heavy rain, locally flooding
+very=very
+visibility=visibility
+weather=weather
+with=with
