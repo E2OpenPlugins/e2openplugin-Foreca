@@ -674,14 +674,44 @@ class MainMenuList(MenuList):
 		# Text
 		x, y, w, h = self.valText1
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
+
 		x, y, w, h = self.valText2
 		textsechs = self.x[6]
 		textsechs = textsechs.replace("&deg;", "") + tempUnit
+		textsechs = textsechs.replace("Feels Like:", _("Feels like:"))
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
+
 		x, y, w, h = self.valText3
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
+		textsechs = self.x[7]
+		textsechs = textsechs.replace("Precip chance:", _("Precip chance:"))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
+
 		x, y, w, h = self.valText4
+		textsechs = self.x[8]
+		textsechs = textsechs.replace("Humidity:", _("Humidity:"))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
+
+		"""
+		# Text
+		x, y, w, h = self.valText1
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
+
+		x, y, w, h = self.valText2
+		textsechs = self.x[6]
+		textsechs = textsechs.replace("&deg;", "") + tempUnit
+		textsechs = textsechs.replace("Feels Like:", _("Feels like:"))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
+
+		x, y, w, h = self.valText3
+		textsechs = self.x[7]
+		textsechs = textsechs.replace("Precip chance:", _("Precip chance:"))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
+
+		x, y, w, h = self.valText4
+		textsechs=self.x[8]
+		textsechs=textsechs.replace("Humidity:", _("Humidity:"))
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[8], color=mblau, color_sel=mblau))
+		"""
 
 		self.listCompleted.append(self.res)
 		self.idx += 1
