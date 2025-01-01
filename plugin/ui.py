@@ -34,6 +34,7 @@ from enigma import (
 	eTimer,
 	getDesktop,
 	gFont,
+
 	RT_VALIGN_CENTER,
 )
 from locale import setlocale, LC_COLLATE, strxfrm
@@ -55,7 +56,6 @@ from twisted.internet.ssl import ClientContextFactory
 # from twisted.internet.reactor import callInThread
 import requests
 import ssl
-
 
 PY3 = version_info[0] == 3
 if PY3:
@@ -268,7 +268,7 @@ languages = [
 
 
 pluginPrintname = "[Foreca Ver. %s]" % VERSION
-config.plugins.foreca.lang = ConfigEnableDisable(default=False)
+
 config.plugins.foreca.languages = ConfigSelection(default="no", choices=languages)
 config.plugins.foreca.home = ConfigText(default="Germany/Berlin", fixed_size=False)
 config.plugins.foreca.fav1 = ConfigText(default="United_States/New_York/New_York_City", fixed_size=False)
@@ -313,6 +313,14 @@ def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.ba/"):
 		return fallback_url
 
 
+try:
+	lng = config.osd.language.value
+	lng = lng[:-3]
+except:
+	lng = 'en'
+	pass
+
+
 selected_language = config.plugins.foreca.languages.value
 if not selected_language == 'no':
 	if selected_language == "https://www.farsiweather.com/":
@@ -323,6 +331,7 @@ else:
 	BASEURL = get_base_url_from_txt(file_url)
 
 MODULE_NAME = __name__.split(".")[-1]
+MAIN_PAGE = BASEURL.rstrip("/")
 USR_PATH = resolveFilename(SCOPE_CONFIG) + "Foreca"
 PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
@@ -1089,9 +1098,13 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.right()
 
 	def red(self):
-		if not self.working:
-			self.url = "%smeteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (BASEURL, self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-			self.loadPicture(self.url)
+		try:
+			if not self.working:
+				self.url = "%smeteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (BASEURL, self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+				print('self.url=', self.url)
+				self.loadPicture(self.url)
+		except Exception as e:
+			print('error red=', e)
 
 	def shift_red(self):
 		pass
@@ -1128,9 +1141,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.open(PicView, devicepath, 0, False)
 
 	def getForecaPage(self, html):
-		# new Ajax.Request('/lv?id=102772400', {
+		"""
 		with open("/tmp/foreca_response.html", "w", encoding="utf-8") as f:
 			f.write(html)
+		"""
 		fulltext = compile(r"id: '(.*?)'", DOTALL)
 		id = fulltext.findall(html)
 		print(pluginPrintname, "fulltext=", fulltext, "id=", id)
@@ -1141,6 +1155,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel = fulltext.findall(html)
 		print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
+
 		print(pluginPrintname, "titel[0]=", titel[0])
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
@@ -1182,8 +1197,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', DOTALL)
 		thumbnails = fulltext.findall(html)
 
-		# fulltext = compile(r'<div class="c2">.*?title="(.+?)" alt="', DOTALL)
-		fulltext = compile(r'<div class="c3">.+? (.+?)<br />.+?', DOTALL)  # orig
+		fulltext = compile(r'<div class="c3">.+? (.+?)<br />.+?', DOTALL)
 		description = fulltext.findall(html)
 		# print("description", str(description).lstrip("\r\n\t").lstrip())
 		FAlog("description", str(description).lstrip("\r\n\t").lstrip())
@@ -1211,17 +1225,21 @@ class ForecaPreview(Screen, HelpableScreen):
 		timeEntries = len(zeit)
 		x = 0
 		while x < timeEntries:
-			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
+			# description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			feels[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", feels[x])))
 			precip[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", precip[x])))
 			humidity[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
 
-			description[x] = _(description[x])
-			feels[x] = _(feels[x])
-			precip[x] = _(precip[x])
-			humidity[x] = _(humidity[x])
-			windSpeed[x] = _(windSpeed[x])
+			# translate_description
+			translation_dict = self.load_translation_dict(lng)
+			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
+			description[x] = self.translate_description(description[x], translation_dict)
+
+			# description[x] = description[x].strip().replace("\\t", "").replace("\\r", "").replace("\\n", "")
+
+			print("description[x]=", description[x])  # Aggiungiamo debug
+			# translate_description end
 
 			FAlog("weather: %s, %s, %s, %s, %s, %s, %s, %s" % (zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]))
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
@@ -1243,8 +1261,28 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].show
 		self.deactivateCacheDialog()
 
+	def load_translation_dict(self, lng):
+		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
+		if not exists(dict_file):
+			dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/endict.txt"
+		print('dict_file=', dict_file)
+		translation_dict = {}
+		with open(dict_file, 'r') as file:
+			for line in file:
+				parts = line.strip().split('=')
+				if len(parts) == 2:
+					key, value = parts
+					translation_dict[key.strip().lower()] = value.strip()
+		return translation_dict
+
+	def translate_description(self, description, translation_dict):
+		cleaned_description = sub(r'[\t\r\n]', ' ', description).strip()
+		if cleaned_description.lower() in translation_dict:
+			return translation_dict[cleaned_description.lower()]
+		words = cleaned_description.split()
+		return ' '.join([translation_dict.get(word.lower(), word) for word in words])
+
 	def filter_dia(self, text):
-		# remove diacritics for selected language
 		filterItem = 0
 		while filterItem < FILTERidx:
 			text = text.replace(FILTERin[filterItem], FILTERout[filterItem])
@@ -1315,7 +1353,7 @@ class CityPanel(Screen, HelpableScreen):
 		self.session = session
 		if size_w == 1920:
 			self.skin = """
-			<screen name="CityPanel" position="center,170" size="1200,820" title="Select a city" >
+			<screen name="CityPanel" position="center,center" size="1200,820" title="Select a city" >
 				<ePixmap pixmap="skin_default/buttons/green.png" position="10,5" scale="stretch" size="390,70" />
 				<ePixmap pixmap="skin_default/buttons/yellow.png" position="405,5" scale="stretch" size="390,70" />
 				<ePixmap pixmap="skin_default/buttons/blue.png" position="800,5" scale="stretch" size="390,70" />
@@ -1331,7 +1369,7 @@ class CityPanel(Screen, HelpableScreen):
 			</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-			<screen name="CityPanel" position="center,240" size="1240,1040" title="Select a city" >
+			<screen name="CityPanel" position="center,center" size="1240,1040" title="Select a city" >
 				<ePixmap pixmap="skin_default/buttons/green.png" position="20,10" size="400,80" />
 				<ePixmap pixmap="skin_default/buttons/yellow.png" position="420,10" size="400,80" />
 				<ePixmap pixmap="skin_default/buttons/blue.png" position="820,10" size="400,80" />
@@ -1347,7 +1385,7 @@ class CityPanel(Screen, HelpableScreen):
 			</screen>"""
 		else:
 			self.skin = """
-			<screen name="CityPanel" position="center,120" size="620,520" title="Select a city" >
+			<screen name="CityPanel" position="center,center" size="620,520" title="Select a city" >
 				<ePixmap pixmap="skin_default/buttons/green.png" position="10,5" size="200,40" />
 				<ePixmap pixmap="skin_default/buttons/yellow.png" position="210,5" size="200,40" />
 				<ePixmap pixmap="skin_default/buttons/blue.png" position="410,5" size="200,40" />
@@ -1467,12 +1505,14 @@ class CityPanel(Screen, HelpableScreen):
 		self.cacheDialog.start()
 
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
+
 		FAlog("city= %s" % city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		self.exit()
 
 	def blue(self):
 		global start
 		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+
 		FAlog("Home:", city)
 		config.plugins.foreca.home.value = city
 		config.plugins.foreca.home.save()
@@ -1596,7 +1636,7 @@ class SatPanel(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="SatPanel" position="center,170" size="1200,820" title="Satellite photos" >
+				<screen name="SatPanel" position="center,center" size="1200,820" title="Satellite photos" >
 					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="305,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="600,5" size="295,70" />
@@ -1610,7 +1650,7 @@ class SatPanel(Screen, HelpableScreen):
 				</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="SatPanel" position="center,240" size="1640,1080" title="Satellite photos" >
+				<screen name="SatPanel" position="center,center" size="1640,1080" title="Satellite photos" >
 					<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="820,10" size="400,80" />
@@ -1627,15 +1667,15 @@ class SatPanel(Screen, HelpableScreen):
 				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" >
 					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-					<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<ePixmap position="2,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
 					<ePixmap position="160,400" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
 					<ePixmap position="300,400" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
 					<ePixmap position="460,400" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-				</screen>"""
+					<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				 </screen>"""
 
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
@@ -1703,24 +1743,13 @@ class SatPanel(Screen, HelpableScreen):
 		self.cacheDialog.stop()
 		self.working = False
 
-	# def exit(self):
-		# global menu
-		# menu = "stop"
-		# self.deactivateCacheDialog()
-		# self.close()
-
-	# def ok(self):
-		# self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
-		# self.cacheDialog.start()
-
-
 	def ok(self):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
 		FAlog("SatPanel menu= %s" % menu, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		
+
 		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
 		self.cacheDialog.start()
-		
+
 		self.SatBild()
 
 	def MapsGermany(self):
@@ -1893,13 +1922,10 @@ class SatPanel(Screen, HelpableScreen):
 							else:
 								from cStringIO import StringIO as BytesIO
 							img_response = requests.get(chosen_link, headers=HEADERS, timeout=10)
-
 							img = Image.open(BytesIO(img_response.content))
 							img = img.convert("RGB")  # Rimuove ICC
 							img.save(devicepath, "PNG")
 							FAlog("Image dimensions: {}x{}".format(img.width, img.height))
-							
-
 							self.session.openWithCallback(returnToChoiceBox, PicView, devicepath, 0, False)
 						except requests.RequestException as e:
 							FAlog("Error downloading image: %s" % str(e))
@@ -1922,9 +1948,9 @@ class SatPanel(Screen, HelpableScreen):
 				return
 			menu = current_selection[0][1]
 			FAlog("SatBild menu= %s" % menu, "CurrentSelection= %s" % current_selection)
-			
+
 			self.deactivateCacheDialog()
-			
+
 			if menu == "eumetsat":
 				self.doContext()
 			else:
@@ -2017,7 +2043,7 @@ class SatPanelb(Screen, HelpableScreen):
 			"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="SatPanelb" position="center,240" size="1640,1040">
+				<screen name="SatPanelb" position="center,center" size="1640,1040">
 					<widget name="Mlist" itemHeight="320" position="20,40" size="1600,960" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				</screen>
 			"""
@@ -2041,8 +2067,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
-			self,
-			"ForecaActions",
+			self, "ForecaActions",
 			{
 				"cancel": (self.Exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
@@ -2130,7 +2155,7 @@ class PicView(Screen):
 			["OkCancelActions", "MediaPlayerActions"],
 			{
 				"cancel": self.Exit,
-				"stop": self.Exit
+				"stop": self.Exit,
 			},
 			-1
 		)
