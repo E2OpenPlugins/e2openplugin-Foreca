@@ -1186,6 +1186,20 @@ class ForecaPreview(Screen, HelpableScreen):
 		print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 
+
+
+		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
+		translations = {
+			"Monday": _("Monday"), "Tuesday": _("Tuesday"), "Wednesday": _("Wednesday"),
+			"Thursday": _("Thursday"), "Friday": _("Friday"), "Saturday": _("Saturday"), "Sunday": _("Sunday"),
+			"January": _("January"), "February": _("February"), "March": _("March"), "April": _("April"),
+			"May": _("May"), "June": _("June"), "July": _("July"), "August": _("August"),
+			"September": _("September"), "October": _("October"), "November": _("November"), "December": _("December"),
+		}
+		textsechs = titel[0]
+		for key, value in translations.items():
+			textsechs = textsechs.replace(key, value)
+
 		print(pluginPrintname, "titel[0]=", titel[0])
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
