@@ -65,11 +65,6 @@ else:
 	from urllib2 import urlopen, Request
 
 
-# try:
-	# from urllib import quote  # Python 2
-# except ImportError:
-	# from urllib.parse import quote  # Python 3
-
 
 try:
 	from urllib.parse import urlparse
@@ -222,6 +217,8 @@ VERSION = "3.3.6"
 # 3.3.5 change URL to and many code improvements
 # To do:
 #   Add server url online
+# 3.3.6 fix translations and many code improvements
+
 
 
 class WebClientContextFactory(ClientContextFactory):
@@ -1279,10 +1276,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			translation_dict = self.load_translation_dict(lng)
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			description[x] = self.translate_description(description[x], translation_dict)
-
-			# description[x] = description[x].strip().replace("\\t", "").replace("\\r", "").replace("\\n", "")
-
-			print("description[x]=", description[x])  # Aggiungiamo debug
+			print("description[x]=", description[x])
 			# translate_description end
 
 			FAlog("weather: %s, %s, %s, %s, %s, %s, %s, %s" % (zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]))
