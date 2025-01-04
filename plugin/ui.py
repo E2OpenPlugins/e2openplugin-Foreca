@@ -1533,14 +1533,14 @@ class CityPanel(Screen, HelpableScreen):
 	def exit(self):
 		global menu
 		menu = "stop"
-		self.deactivateCacheDialog()
+		# self.deactivateCacheDialog()
 		self.close()
 
 	def ok(self):
 		global city
 
-		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
-		self.cacheDialog.start()
+		# self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
+		# self.cacheDialog.start()
 
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
 
