@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-01-06 14:49+0200\n"
+"POT-Creation-Date: 2023-03-31 08:00+0200\n"
+"PO-Revision-Date: 2025-01-01 16:40+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: \n"
 "Language: fi_FI\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: plugin.py:21 plugin.py:27 ui.py:630 ui.py:649
@@ -123,15 +123,15 @@ msgstr "Versio "
 
 #: ui.py:654 ui.py:1139 ui.py:1387 ui.py:1659
 msgid "Exit - End"
-msgstr "Exit - Poistu"
+msgstr "EXIT - Poistu"
 
 #: ui.py:655
 msgid "Menu - Weather maps"
-msgstr "Menu - Sääkartat"
+msgstr "MENU - Sääkartat"
 
 #: ui.py:656
 msgid "Info - Legend"
-msgstr "Tietoja - Karttamerkkien selitykset"
+msgstr "INFO - Karttamerkkien selitykset"
 
 #: ui.py:657
 msgid "OK - City"
@@ -651,3 +651,133 @@ msgstr "Näytä laajennusvalikossa"
 #: ui.py:1983
 msgid "Debug"
 msgstr "Debug"
+
+msgid "Cloudy"
+msgstr "Enimmäkseen pilvistä"
+
+msgid "Cloudy and snow showers"
+msgstr "Enimmäkseen pilvistä ja lumisadetta"
+
+msgid "Overcast and snow showers"
+msgstr "Pilvistä ja lumisadetta"
+
+msgid "Overcast and light snow"
+msgstr "Pilvistä ja heikkoa lumisadetta"
+
+#: ui.py:1973
+msgid "City names as labels in the Main screen"
+msgstr "Kaupunkien nimet päänäytön nimikkeinä"
+
+msgid "Mostly clear"
+msgstr "Enimmäkseen selkeää"
+
+msgid "Clear"
+msgstr "Selkeää"
+
+msgid "Overcast"
+msgstr "Pilvistä"
+
+msgid "Cloudy and light rain"
+msgstr "Enimmäkseen pilvistä ja heikkoa sadetta"
+
+msgid "Overcast and showers"
+msgstr "Pilvistä ja sadekuuroja"
+
+msgid "Overcast and snow"
+msgstr "Pilvistä ja sakeaa lumisadetta"
+
+msgid "Partly cloudy and showers"
+msgstr "Puolipilvistä ja sadekuuroja"
+
+msgid "Overcast and light rain"
+msgstr "Pilvistä ja heikkoa sadetta"
+
+msgid "Cloudy and showers"
+msgstr "Enimmäkseen pilvistä ja sadekuuroja"
+
+msgid "Partly cloudy and light rain"
+msgstr "Puolipilvistä ja heikkoa sadetta"
+
+msgid "Overcast and rain"
+msgstr "Pilvistä ja sadetta"
+
+msgid "Partly cloudy, possible thunderstorms with rain"
+msgstr "Puolipilvistä, mahdollisia ukkosmyrskyjä ja sadetta"
+
+msgid "Overcast and wet snow showers"
+msgstr "Pilvistä ja räntäsadekuuroja"
+
+msgid "Cloudy and light wet snow"
+msgstr "Enimmäkseen pilvistä ja heikkoa räntäsadetta"
+
+msgid "Overcast and light wet snow"
+msgstr "Pilvistä ja heikkoa räntäsadetta"
+
+msgid "Overcast and wet snow"
+msgstr "Pilvistä ja räntäsadetta"
+
+msgid "Feels like:"
+msgstr "Tuntuu kuin:"
+
+msgid "Precip chance:"
+msgstr "Sateen mahdollisuus:"
+
+msgid "Humidity:"
+msgstr "Kosteus:"
+
+msgid "Monday"
+msgstr "Maanantai"
+
+msgid "Tuesday"
+msgstr "Tiistai"
+
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+msgid "Thursday"
+msgstr "Torstai"
+
+msgid "Friday"
+msgstr "Perjantai"
+
+msgid "Saturday"
+msgstr "Lauantai"
+
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+msgid "January"
+msgstr "Tammikuuta"
+
+msgid "February"
+msgstr "Helmikuuta"
+
+msgid "March"
+msgstr "Maaliskuuta"
+
+msgid "April"
+msgstr "Huhtikuuta"
+
+msgid "May"
+msgstr "Toukokuuta"
+
+msgid "June"
+msgstr "Kesäkuuta"
+
+msgid "July"
+msgstr "Heinäkuuta"
+
+msgid "August"
+msgstr "Elokuuta"
+
+msgid "September"
+msgstr "Syyskuuta"
+
+msgid "October"
+msgstr "Lokakuuta"
+
+msgid "November"
+msgstr "Marraskuuta"
+
+msgid "December"
+msgstr "Joulukuuta"

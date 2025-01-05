@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-17 15:55+0200\n"
+"POT-Creation-Date: 2024-12-30 14:02+0100\n"
 "PO-Revision-Date: 2017-01-30 21:51+0200\n"
 "Last-Translator: peter <sct2003@abv.bg>\n"
 "Language-Team: Bulgarian <>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../ui.py:844
+#: ../ui.py:833
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -54,491 +54,491 @@ msgstr ""
 "\n"
 "Посока на вятъра = Стрелка на дясно: Западен вятър"
 
-#: ../ui.py:674
+#: ../ui.py:673
 msgid "0 - Today"
 msgstr "Днес"
 
-#: ../ui.py:675
+#: ../ui.py:674
 msgid "1 - Today + 1 day"
 msgstr "Утре"
 
-#: ../ui.py:184
+#: ../ui.py:175
 msgid "12 h"
 msgstr "12 часов"
 
-#: ../ui.py:676
+#: ../ui.py:675
 msgid "2 - Today + 2 days"
 msgstr "Вдругиден"
 
-#: ../ui.py:184
+#: ../ui.py:175
 msgid "24 h"
 msgstr "24 часов"
 
-#: ../ui.py:677
+#: ../ui.py:676
 msgid "3 - Today + 3 days"
 msgstr "След 3 дни"
 
-#: ../ui.py:678
+#: ../ui.py:677
 msgid "4 - Today + 4 days"
 msgstr "След 4 дни"
 
-#: ../ui.py:679
+#: ../ui.py:678
 msgid "5 - Today + 5 days"
 msgstr "След 5 дни"
 
-#: ../ui.py:680
+#: ../ui.py:679
 msgid "6 - Today + 6 days"
 msgstr "След 6 дни"
 
-#: ../ui.py:681
+#: ../ui.py:680
 msgid "7 - Today + 7 days"
 msgstr "След 7 дни"
 
-#: ../ui.py:682
+#: ../ui.py:681
 msgid "8 - Today + 8 days"
 msgstr "След 8 дни"
 
-#: ../ui.py:683
+#: ../ui.py:682
 msgid "9 - Today + 9 days"
 msgstr "След 9 дни"
 
-#: ../ui.py:1386
+#: ../ui.py:1380
 msgid "Air pressure"
 msgstr "Въздушно налягане"
 
-#: ../ui.py:1482
+#: ../ui.py:1476
 msgid "Australia"
 msgstr "Австралия"
 
-#: ../ui.py:1443
+#: ../ui.py:1437
 msgid "Austria"
 msgstr "Австрия"
 
-#: ../ui.py:1941
+#: ../ui.py:1942
 msgid "Backgroundcolor"
 msgstr "Цвят на фона"
 
-#: ../ui.py:1418
+#: ../ui.py:1412
 msgid "Baden-Wuerttemberg"
 msgstr "Баден-Вюртемберг"
 
-#: ../ui.py:1419
+#: ../ui.py:1413
 msgid "Bavaria"
 msgstr "Бавария"
 
-#: ../ui.py:1444
+#: ../ui.py:1438
 msgid "Belgium"
 msgstr "Белгия"
 
-#: ../ui.py:1420
+#: ../ui.py:1414
 msgid "Berlin"
 msgstr "Берлин"
 
-#: ../ui.py:1138
+#: ../ui.py:1125
 msgid "Blue - Assign to Home"
 msgstr "Избор като Местен"
 
-#: ../ui.py:673
+#: ../ui.py:672
 msgid "Blue - Home"
 msgstr "Местен"
 
-#: ../ui.py:1375 ../ui.py:1633
+#: ../ui.py:1369 ../ui.py:1630
 msgid "Blue - Settings"
 msgstr "Настройки"
 
-#: ../ui.py:1421
+#: ../ui.py:1415
 msgid "Brandenburg"
 msgstr "Брандербург"
 
-#: ../ui.py:1422
+#: ../ui.py:1416
 msgid "Bremen"
 msgstr "Бремен"
 
-#: ../ui.py:1906
+#: ../ui.py:1908
 msgid "Cancel"
 msgstr "Отказ"
 
-#: ../ui.py:1139
+#: ../ui.py:1126
 msgid "Channel+ - 500 back"
 msgstr "500 реда назад"
 
-#: ../ui.py:1140
+#: ../ui.py:1127
 msgid "Channel- - 500 forward"
 msgstr "500 реда напред"
 
-#: ../ui.py:643
+#: ../ui.py:642
 msgid "City"
 msgstr "Град"
 
-#: ../ui.py:1934
+#: ../ui.py:1935
 msgid "City names as labels in the Main screen"
 msgstr "С имена на градовете в главния екран"
 
-#: ../ui.py:1385
+#: ../ui.py:1379
 msgid "Cloudcover Video"
 msgstr "Облачност - слайдшоу"
 
-#: ../ui.py:1358 ../ui.py:1483
+#: ../ui.py:1352 ../ui.py:1477
 msgid "Continents"
 msgstr "Континенти"
 
-#: ../ui.py:1445
+#: ../ui.py:1439
 msgid "Czech Republic"
 msgstr "Чехия"
 
-#: ../ui.py:1944
+#: ../ui.py:1945
 msgid "Debug"
 msgstr "Дебъг"
 
-#: ../ui.py:1446
+#: ../ui.py:1440
 msgid "Denmark"
 msgstr "Дания"
 
-#: ../ui.py:1943
+#: ../ui.py:1944
 msgid "Display in extensions menu"
 msgstr "Покажи при Разширенията"
 
-#: ../ui.py:1134 ../ui.py:1371 ../ui.py:1632
+#: ../ui.py:1121 ../ui.py:1365 ../ui.py:1629
 msgid "Down - Next"
 msgstr "Следващ"
 
-#: ../ui.py:666
+#: ../ui.py:665
 msgid "Down - Next page"
 msgstr "Следваща страница"
 
-#: ../ui.py:1479
+#: ../ui.py:1473
 msgid "East Asia"
 msgstr "Източна Азия"
 
-#: ../ui.py:1387
+#: ../ui.py:1381
 msgid "Eumetsat"
 msgstr ""
 
-#: ../ui.py:1359 ../ui.py:1468 ../ui.py:1472
+#: ../ui.py:1353 ../ui.py:1462 ../ui.py:1466
 msgid "Europe"
 msgstr "Европа"
 
-#: ../ui.py:659 ../ui.py:1130 ../ui.py:1367 ../ui.py:1628
+#: ../ui.py:658 ../ui.py:1117 ../ui.py:1361 ../ui.py:1625
 msgid "Exit - End"
 msgstr "Изход"
 
-#: ../ui.py:649 ../ui.py:864 ../ui.py:917 ../ui.py:1121
+#: ../ui.py:648 ../ui.py:852 ../ui.py:901 ../ui.py:1108
 msgid "Favorite 1"
 msgstr "Предпочитан 1"
 
-#: ../ui.py:650 ../ui.py:865 ../ui.py:918 ../ui.py:1122
+#: ../ui.py:649 ../ui.py:853 ../ui.py:902 ../ui.py:1109
 msgid "Favorite 2"
 msgstr "Предпочитан 2"
 
-#: ../ui.py:1936
+#: ../ui.py:1937
 msgid "Font size in slideshow"
 msgstr "Размер на шрифта при слайдшоу"
 
-#: ../plugin.py:21 ../plugin.py:27 ../ui.py:635 ../ui.py:654
+#: ../plugin.py:21 ../plugin.py:27 ../ui.py:634 ../ui.py:653
 msgid "Foreca Weather Forecast"
 msgstr "Foreca - прогноза за времето"
 
-#: ../ui.py:1124
+#: ../ui.py:1111
 msgid "Forecast"
 msgstr "Прогоза"
 
-#: ../ui.py:1935
+#: ../ui.py:1936
 msgid "Frame size in full view"
 msgstr "Размер на рамка при цял екран"
 
-#: ../ui.py:1447
+#: ../ui.py:1441
 msgid "France"
 msgstr "Франция"
 
-#: ../ui.py:1360 ../ui.py:1439 ../ui.py:1448
+#: ../ui.py:1354 ../ui.py:1433 ../ui.py:1442
 msgid "Germany"
 msgstr "Германия"
 
-#: ../ui.py:1450
+#: ../ui.py:1444
 msgid "Great Britain"
 msgstr "Великобритания"
 
-#: ../ui.py:1449
+#: ../ui.py:1443
 msgid "Greece"
 msgstr "Гърция"
 
-#: ../ui.py:1136
+#: ../ui.py:1123
 msgid "Green - Assign to Favorite 1"
 msgstr "Избор като Предпочитан 1"
 
-#: ../ui.py:1373
+#: ../ui.py:1367
 msgid "Green - Europe"
 msgstr "Европа"
 
-#: ../ui.py:671
+#: ../ui.py:670
 msgid "Green - Favorite 1"
 msgstr "Предпочитан 1"
 
-#: ../ui.py:1423
+#: ../ui.py:1417
 msgid "Hamburg"
 msgstr "Хамбург"
 
-#: ../ui.py:1424
+#: ../ui.py:1418
 msgid "Hesse"
 msgstr "Хесен"
 
-#: ../ui.py:651 ../ui.py:866 ../ui.py:919 ../ui.py:1123
+#: ../ui.py:650 ../ui.py:854 ../ui.py:903 ../ui.py:1110
 msgid "Home"
 msgstr "Местен"
 
-#: ../ui.py:1451
+#: ../ui.py:1445
 msgid "Hungary"
 msgstr "Унгария"
 
-#: ../ui.py:183
+#: ../ui.py:174
 msgid "Imperial (C, mph)"
 msgstr "Имперски (C, mph)"
 
-#: ../ui.py:661
+#: ../ui.py:660
 msgid "Info - Legend"
 msgstr "Упътване"
 
-#: ../ui.py:1452
+#: ../ui.py:1446
 msgid "Ireland"
 msgstr "Ирландия"
 
-#: ../ui.py:1453
+#: ../ui.py:1447
 msgid "Italy"
 msgstr "Италия"
 
-#: ../ui.py:1454
+#: ../ui.py:1448
 msgid "Latvia"
 msgstr "Латвия"
 
-#: ../ui.py:663
+#: ../ui.py:662
 msgid "Left - Previous day"
 msgstr "Предишен ден"
 
-#: ../ui.py:1131 ../ui.py:1368 ../ui.py:1629
+#: ../ui.py:1118 ../ui.py:1362 ../ui.py:1626
 msgid "Left - Previous page"
 msgstr "Предишна страница"
 
-#: ../ui.py:667
+#: ../ui.py:666
 msgid "Left arrow - Previous day"
 msgstr "Предишен ден"
 
-#: ../ui.py:652
+#: ../ui.py:651
 msgid "Legend"
 msgstr "Упътване"
 
-#: ../ui.py:1426
+#: ../ui.py:1420
 msgid "Lower Saxony"
 msgstr "Долна Саксония"
 
-#: ../ui.py:1455
+#: ../ui.py:1449
 msgid "Luxembourg"
 msgstr "Люксембург"
 
-#: ../ui.py:653
+#: ../ui.py:652
 msgid "Maps"
 msgstr "Карти"
 
-#: ../ui.py:1425
+#: ../ui.py:1419
 msgid "Mecklenburg-Vorpommern"
 msgstr "Мекленбург-Предна Померания"
 
-#: ../ui.py:660
+#: ../ui.py:659
 msgid "Menu - Weather maps"
 msgstr "Синоптични карти"
 
-#: ../ui.py:183
+#: ../ui.py:174
 msgid "Metric (C, km/h)"
 msgstr "Метрични (C, km/h)"
 
-#: ../ui.py:183
+#: ../ui.py:174
 msgid "Metric (C, m/s)"
 msgstr "Метрични (C, m/s)"
 
-#: ../ui.py:1476
+#: ../ui.py:1470
 msgid "Middle America"
 msgstr "Централна Америка"
 
-#: ../ui.py:1481
+#: ../ui.py:1475
 msgid "Middle Asia"
 msgstr "Централна Азия"
 
-#: ../ui.py:1478
+#: ../ui.py:1472
 msgid "Middle East"
 msgstr "Близък Изток"
 
-#: ../ui.py:1456
+#: ../ui.py:1450
 msgid "Netherlands"
 msgstr "Холандия"
 
-#: ../ui.py:1473
+#: ../ui.py:1467
 msgid "North Africa"
 msgstr "Северна Африка"
 
-#: ../ui.py:1475
+#: ../ui.py:1469
 msgid "North America"
 msgstr "Северна Америка"
 
-#: ../ui.py:1427
+#: ../ui.py:1421
 msgid "North Rhine-Westphalia"
 msgstr "Северен Рейн-Вестфалия"
 
-#: ../ui.py:662
+#: ../ui.py:661
 msgid "OK - City"
 msgstr "Град"
 
-#: ../ui.py:1135
+#: ../ui.py:1122
 msgid "OK - Select"
 msgstr "Избор"
 
-#: ../ui.py:1376 ../ui.py:1634
+#: ../ui.py:1370 ../ui.py:1631
 msgid "OK - Show"
 msgstr "Покажи"
 
-#: ../ui.py:638 ../ui.py:703
+#: ../ui.py:637 ../ui.py:702
 msgid "Please wait ..."
 msgstr "Моля изчакайте ..."
 
-#: ../ui.py:1771
+#: ../ui.py:1773
 msgid "Please wait, photo is being loaded ..."
 msgstr "Зареждане на изображението ..."
 
-#: ../ui.py:1457
+#: ../ui.py:1451
 msgid "Poland"
 msgstr "Полша"
 
-#: ../ui.py:1458
+#: ../ui.py:1452
 msgid "Portugal"
 msgstr "Португалия"
 
-#: ../ui.py:1372
+#: ../ui.py:1366
 msgid "Red - Continents"
 msgstr "Континенти"
 
-#: ../ui.py:669
+#: ../ui.py:668
 msgid "Red - Weekoverview"
 msgstr "Обзор на седмицата"
 
-#: ../ui.py:1428
+#: ../ui.py:1422
 msgid "Rhineland-Palatine"
 msgstr "Рейнланд-Пфалц"
 
-#: ../ui.py:664
+#: ../ui.py:663
 msgid "Right - Next day"
 msgstr "Следващ ден"
 
-#: ../ui.py:1132 ../ui.py:1369 ../ui.py:1630
+#: ../ui.py:1119 ../ui.py:1363 ../ui.py:1627
 msgid "Right - Next page"
 msgstr "Следваща страница"
 
-#: ../ui.py:668
+#: ../ui.py:667
 msgid "Right arrow - Next day"
 msgstr "Следващ ден"
 
-#: ../ui.py:1459
+#: ../ui.py:1453
 msgid "Russia"
 msgstr "Русия"
 
-#: ../ui.py:1429
+#: ../ui.py:1423
 msgid "Saarland"
 msgstr "Саарланд"
 
-#: ../ui.py:1353 ../ui.py:1362
+#: ../ui.py:1347 ../ui.py:1356
 msgid "Satellite photos"
 msgstr "Сателитни снимки"
 
-#: ../ui.py:1907
+#: ../ui.py:1909
 msgid "Save"
 msgstr "Запис"
 
-#: ../ui.py:1430
+#: ../ui.py:1424
 msgid "Saxony"
 msgstr "Саксония"
 
-#: ../ui.py:1431
+#: ../ui.py:1425
 msgid "Saxony-Anhalt"
 msgstr "Саксония-Анхалт"
 
-#: ../ui.py:1937
+#: ../ui.py:1938
 msgid "Scaling Mode"
 msgstr "Режим на мащабиране"
 
-#: ../ui.py:1432
+#: ../ui.py:1426
 msgid "Schleswig-Holstein"
 msgstr "Шлезвиг-Холщайн"
 
-#: ../ui.py:1115 ../ui.py:1125
+#: ../ui.py:1102 ../ui.py:1112
 msgid "Select a city"
 msgstr "Изберете град"
 
-#: ../ui.py:1933
+#: ../ui.py:1934
 msgid "Select time format"
 msgstr "Изберете времеви формат"
 
-#: ../ui.py:1932
+#: ../ui.py:1933
 msgid "Select units"
 msgstr "Изберете мерни единици"
 
-#: ../ui.py:1361 ../ui.py:1622
+#: ../ui.py:1355 ../ui.py:1619
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../ui.py:1939
+#: ../ui.py:1940
 msgid "Show Infoline"
 msgstr "Показване на инфолента"
 
-#: ../ui.py:1383
+#: ../ui.py:1377
 msgid "Showerradar Video"
 msgstr "Валежи - слайдшоу"
 
-#: ../ui.py:1938
+#: ../ui.py:1939
 msgid "Slide Time (seconds)"
 msgstr "Смяна кадър (в секунди)"
 
-#: ../ui.py:1942
+#: ../ui.py:1943
 msgid "Slide picture in loop"
 msgstr "Повтаряне на слайдшоу"
 
-#: ../ui.py:1905 ../ui.py:1908
+#: ../ui.py:1907 ../ui.py:1910
 msgid "SlideShow Settings"
 msgstr "Настроки за слайдшоу"
 
-#: ../ui.py:1460
+#: ../ui.py:1454
 msgid "Slovakia"
 msgstr "Словакия"
 
-#: ../ui.py:1474
+#: ../ui.py:1468
 msgid "South Africa"
 msgstr "Южна Африка"
 
-#: ../ui.py:1477
+#: ../ui.py:1471
 msgid "South America"
 msgstr "Южна Америка"
 
-#: ../ui.py:1480
+#: ../ui.py:1474
 msgid "Southeast Asia"
 msgstr "Югоизточна Азия"
 
-#: ../ui.py:1461
+#: ../ui.py:1455
 msgid "Spain"
 msgstr "Испания"
 
-#: ../ui.py:1462
+#: ../ui.py:1456
 msgid "Switzerland"
 msgstr "Швейцария"
 
-#: ../ui.py:454
+#: ../ui.py:472
 msgid "Temp"
 msgstr "Температура"
 
-#: ../ui.py:1384
+#: ../ui.py:1378
 msgid "Temperature Video"
 msgstr "Температура - слайдшоу"
 
-#: ../ui.py:1940
+#: ../ui.py:1941
 msgid "Textcolor"
 msgstr "Цвят на текста"
 
-#: ../ui.py:1231
+#: ../ui.py:1216
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
@@ -548,7 +548,7 @@ msgstr ""
 "\n"
 "                             "
 
-#: ../ui.py:1242
+#: ../ui.py:1226
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -558,7 +558,7 @@ msgstr ""
 "\n"
 "                             "
 
-#: ../ui.py:1220
+#: ../ui.py:1206
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -568,31 +568,31 @@ msgstr ""
 "\n"
 "                                  "
 
-#: ../ui.py:1433
+#: ../ui.py:1427
 msgid "Thuringia"
 msgstr "Тюрингия"
 
-#: ../ui.py:183
+#: ../ui.py:174
 msgid "US (F, mph)"
 msgstr "Американски (F, mph)"
 
-#: ../ui.py:1133 ../ui.py:1370 ../ui.py:1631
+#: ../ui.py:1120 ../ui.py:1364 ../ui.py:1628
 msgid "Up - Previous"
 msgstr "Предишен"
 
-#: ../ui.py:665
+#: ../ui.py:664
 msgid "Up - Previous page"
 msgstr "Предишна страница"
 
-#: ../ui.py:654
+#: ../ui.py:653
 msgid "Version "
 msgstr "Версия "
 
-#: ../ui.py:1142
+#: ../ui.py:1129
 msgid "Volume+ - 100 back"
 msgstr "100 реда назад"
 
-#: ../ui.py:1141
+#: ../ui.py:1128
 msgid "Volume- - 100 forward"
 msgstr "100 реда напред"
 
@@ -600,66 +600,58 @@ msgstr "100 реда напред"
 msgid "Weather forecast for the upcoming 10 days"
 msgstr "10 дневна прогноза за времето"
 
-#: ../ui.py:1382
+#: ../ui.py:1376
 msgid "Weather map Video"
 msgstr "Синоптична карта - слайдшоу"
 
-#: ../ui.py:642
+#: ../ui.py:641
 msgid "Week"
 msgstr "Седмична"
 
-#: ../ui.py:469
+#: ../ui.py:484
 msgid "Wind"
 msgstr "Вятър"
 
-#: ../ui.py:1137
+#: ../ui.py:1124
 msgid "Yellow - Assign to Favorite 2"
 msgstr "Избор като Предпочитан 2"
 
-#: ../ui.py:672
+#: ../ui.py:671
 msgid "Yellow - Favorite 2"
 msgstr "Предпочитан 2"
 
-#: ../ui.py:1374
+#: ../ui.py:1368
 msgid "Yellow - Germany"
 msgstr "Германия"
 
-#: ../ui.py:174
+#: ../ui.py:165
 msgid "better"
 msgstr "добър"
 
-#: ../ui.py:175 ../ui.py:176
+#: ../ui.py:166 ../ui.py:167
 msgid "black"
 msgstr "черен"
 
-#: ../ui.py:175 ../ui.py:176
+#: ../ui.py:166 ../ui.py:167
 msgid "blue"
 msgstr "син"
 
-#: ../ui.py:175 ../ui.py:176
+#: ../ui.py:166 ../ui.py:167
 msgid "green"
 msgstr "зелен"
 
-#: ../ui.py:1551
+#: ../ui.py:1514
 msgid "h"
 msgstr "ч"
 
-#: ../ui.py:175 ../ui.py:176
+#: ../ui.py:166 ../ui.py:167
 msgid "red"
 msgstr "червен"
 
-#: ../ui.py:174
+#: ../ui.py:165
 msgid "simple"
 msgstr "опростен"
 
-#: ../ui.py:175 ../ui.py:176
+#: ../ui.py:166 ../ui.py:167
 msgid "yellow"
 msgstr "жълт"
-
-#: ../ui.py:413
-msgid "°C"
-msgstr ""
-
-#: ../ui.py:410
-msgid "°F"
-msgstr ""
