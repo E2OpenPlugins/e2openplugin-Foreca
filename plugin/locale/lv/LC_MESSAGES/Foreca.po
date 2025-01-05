@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 14:02+0100\n"
+"POT-Creation-Date: 2016-05-06 13:58+0200\n"
 "PO-Revision-Date: 2016-05-06 13:58+0200\n"
 "Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
 "Language-Team: \n"
@@ -16,7 +16,219 @@ msgstr ""
 "X-Generator: Poedit 1.8.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: ../ui.py:833
+#: plugin.py:21 plugin.py:27 ui.py:615 ui.py:634
+msgid "Foreca Weather Forecast"
+msgstr "Foreca Laika ziņas"
+
+#: plugin.py:22 plugin.py:28
+msgid "Weather forecast for the upcoming 10 days"
+msgstr "Laika ziņas tuvākajām 10 dienām"
+
+#: ui.py:164
+msgid "simple"
+msgstr "vienkāršs"
+
+#: ui.py:164
+msgid "better"
+msgstr "labāks"
+
+#: ui.py:165 ui.py:166
+msgid "black"
+msgstr "melns"
+
+#: ui.py:165 ui.py:166
+msgid "blue"
+msgstr "zils"
+
+#: ui.py:165 ui.py:166
+msgid "red"
+msgstr "sarkans"
+
+#: ui.py:165 ui.py:166
+msgid "yellow"
+msgstr "dzeltens"
+
+#: ui.py:165 ui.py:166
+msgid "green"
+msgstr "zaļš"
+
+#: ui.py:173
+msgid "Metric (C, m/s)"
+msgstr "Metriskās (C, m/s)"
+
+#: ui.py:173
+msgid "Metric (C, km/h)"
+msgstr "Metriskās (C, km/st.)"
+
+#: ui.py:173
+msgid "Imperial (C, mph)"
+msgstr "Britu (C, jūdzes/st.)"
+
+#: ui.py:173
+msgid "US (F, mph)"
+msgstr "ASV (F, jūdzes/st.)"
+
+#: ui.py:174
+msgid "12 h"
+msgstr "12 st."
+
+#: ui.py:174
+msgid "24 h"
+msgstr "24 st."
+
+#: ui.py:178 ui.py:526 ui.py:567 ui.py:817 ui.py:880 ui.py:1522
+msgid "http://www.foreca.com/"
+msgstr ""
+
+#: ui.py:394
+msgid "°F"
+msgstr ""
+
+#: ui.py:397
+msgid "°C"
+msgstr ""
+
+#: ui.py:438
+msgid "Temp"
+msgstr "Temp"
+
+#: ui.py:453
+msgid "Wind"
+msgstr "Vējš"
+
+#: ui.py:618 ui.py:683
+msgid "Please wait ..."
+msgstr "Lūdzu uzgaidiet..."
+
+#: ui.py:622
+msgid "Week"
+msgstr "Nedēļa"
+
+#: ui.py:623
+msgid "City"
+msgstr "Pilsēta"
+
+#: ui.py:629 ui.py:844 ui.py:897 ui.py:1096
+msgid "Favorite 1"
+msgstr "Favorīts 1"
+
+#: ui.py:630 ui.py:845 ui.py:898 ui.py:1097
+msgid "Favorite 2"
+msgstr "Favorīts 2"
+
+#: ui.py:631 ui.py:846 ui.py:899 ui.py:1098
+msgid "Home"
+msgstr "Mājas"
+
+#: ui.py:632
+msgid "Legend"
+msgstr "Skaidroj."
+
+#: ui.py:633
+msgid "Maps"
+msgstr "Kartes"
+
+#: ui.py:634
+msgid "Version "
+msgstr "Versija "
+
+#: ui.py:639 ui.py:1105 ui.py:1342 ui.py:1623
+msgid "Exit - End"
+msgstr "Exit - Beigt"
+
+#: ui.py:640
+msgid "Menu - Weather maps"
+msgstr "Menu - Kartes"
+
+#: ui.py:641
+msgid "Info - Legend"
+msgstr "Info - Skaidrojumi"
+
+#: ui.py:642
+msgid "OK - City"
+msgstr "OK - Pilsēta"
+
+#: ui.py:643
+msgid "Left - Previous day"
+msgstr "Pa kreisi -  Iepriekšējā diena"
+
+#: ui.py:644
+msgid "Right - Next day"
+msgstr "Pa labi - Nākošā diena"
+
+#: ui.py:645
+msgid "Up - Previous page"
+msgstr "Augšup - Iepriekšējā lapa"
+
+#: ui.py:646
+msgid "Down - Next page"
+msgstr "Lejup - nākošā lapa"
+
+#: ui.py:647
+msgid "Left arrow - Previous day"
+msgstr "Pa kreisi - Iepriekšējā diena"
+
+#: ui.py:648
+msgid "Right arrow - Next day"
+msgstr "Pa labi - Nākamā diena"
+
+#: ui.py:649
+msgid "Red - Weekoverview"
+msgstr "Sakranā - Nedēļas pārskats"
+
+#: ui.py:651
+msgid "Green - Favorite 1"
+msgstr "Zaļā - Favorīts 1"
+
+#: ui.py:652
+msgid "Yellow - Favorite 2"
+msgstr "Dzeltanā - Favorīts 2"
+
+#: ui.py:653
+msgid "Blue - Home"
+msgstr "Zilā - Mājas"
+
+#: ui.py:654
+msgid "0 - Today"
+msgstr "0 - Šodien"
+
+#: ui.py:655
+msgid "1 - Today + 1 day"
+msgstr "1 - Šodien + 1 Diena"
+
+#: ui.py:656
+msgid "2 - Today + 2 days"
+msgstr "2 - Šodien + 2 Dienas"
+
+#: ui.py:657
+msgid "3 - Today + 3 days"
+msgstr "3 - Šodien + 3 Dienas"
+
+#: ui.py:658
+msgid "4 - Today + 4 days"
+msgstr "4 - Šodien + 4 Dienas"
+
+#: ui.py:659
+msgid "5 - Today + 5 days"
+msgstr "5 - Šodien + 5 Dienas"
+
+#: ui.py:660
+msgid "6 - Today + 6 days"
+msgstr "6 - Šodien + 6 Dienas"
+
+#: ui.py:661
+msgid "7 - Today + 7 days"
+msgstr "7 - Šodien + 7 Dienas"
+
+#: ui.py:662
+msgid "8 - Today + 8 days"
+msgstr "8 - Šodien + 8 Dienas"
+
+#: ui.py:663
+msgid "9 - Today + 9 days"
+msgstr "9 - Šodien + 9 Dienas"
+
+#: ui.py:824
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -52,511 +264,63 @@ msgstr ""
 "\n"
 "Vēja virziens = piem. Bultiņa pa labi: Rietumu vējšs"
 
-#: ../ui.py:673
-msgid "0 - Today"
-msgstr "0 - Šodien"
-
-#: ../ui.py:674
-msgid "1 - Today + 1 day"
-msgstr "1 - Šodien + 1 Diena"
-
-#: ../ui.py:175
-msgid "12 h"
-msgstr "12 st."
-
-#: ../ui.py:675
-msgid "2 - Today + 2 days"
-msgstr "2 - Šodien + 2 Dienas"
-
-#: ../ui.py:175
-msgid "24 h"
-msgstr "24 st."
-
-#: ../ui.py:676
-msgid "3 - Today + 3 days"
-msgstr "3 - Šodien + 3 Dienas"
-
-#: ../ui.py:677
-msgid "4 - Today + 4 days"
-msgstr "4 - Šodien + 4 Dienas"
-
-#: ../ui.py:678
-msgid "5 - Today + 5 days"
-msgstr "5 - Šodien + 5 Dienas"
-
-#: ../ui.py:679
-msgid "6 - Today + 6 days"
-msgstr "6 - Šodien + 6 Dienas"
-
-#: ../ui.py:680
-msgid "7 - Today + 7 days"
-msgstr "7 - Šodien + 7 Dienas"
-
-#: ../ui.py:681
-msgid "8 - Today + 8 days"
-msgstr "8 - Šodien + 8 Dienas"
-
-#: ../ui.py:682
-msgid "9 - Today + 9 days"
-msgstr "9 - Šodien + 9 Dienas"
-
-#: ../ui.py:1380
-msgid "Air pressure"
-msgstr "Atmosfēras spiediens"
-
-#: ../ui.py:1476
-msgid "Australia"
-msgstr "Austrālija"
-
-#: ../ui.py:1437
-msgid "Austria"
-msgstr "Austrija"
-
-#: ../ui.py:1942
-msgid "Backgroundcolor"
-msgstr "Fona krāsa"
-
-#: ../ui.py:1412
-msgid "Baden-Wuerttemberg"
-msgstr "Bādene-Virtemberga"
-
-#: ../ui.py:1413
-msgid "Bavaria"
-msgstr "Bavārija"
-
-#: ../ui.py:1438
-msgid "Belgium"
-msgstr "Beļģija"
-
-#: ../ui.py:1414
-msgid "Berlin"
-msgstr "Berlīne"
-
-#: ../ui.py:1125
-msgid "Blue - Assign to Home"
-msgstr "Zilā - piešķirt Mājas"
-
-#: ../ui.py:672
-msgid "Blue - Home"
-msgstr "Zilā - Mājas"
-
-#: ../ui.py:1369 ../ui.py:1630
-msgid "Blue - Settings"
-msgstr "Zilā - Iestatījumi"
-
-#: ../ui.py:1415
-msgid "Brandenburg"
-msgstr "Brandenburga"
-
-#: ../ui.py:1416
-msgid "Bremen"
-msgstr "Brēmene"
-
-#: ../ui.py:1908
-msgid "Cancel"
-msgstr "Atcelt"
-
-#: ../ui.py:1126
-msgid "Channel+ - 500 back"
-msgstr "Kanāls+ - 500 atpakaļ"
-
-#: ../ui.py:1127
-msgid "Channel- - 500 forward"
-msgstr "Kanāls- - 500 uz priekšu"
-
-#: ../ui.py:642
-msgid "City"
-msgstr "Pilsēta"
-
-#: ../ui.py:1935
-msgid "City names as labels in the Main screen"
-msgstr "Pilsētu nosaukumi kā apzīmējums pamatekrānā"
-
-#: ../ui.py:1379
-msgid "Cloudcover Video"
-msgstr "Mākoņu kartes video"
-
-#: ../ui.py:1352 ../ui.py:1477
-msgid "Continents"
-msgstr "Kontinenti"
-
-#: ../ui.py:1439
-msgid "Czech Republic"
-msgstr "Čehija"
-
-#: ../ui.py:1945
-msgid "Debug"
-msgstr ""
-
-#: ../ui.py:1440
-msgid "Denmark"
-msgstr "Dānija"
-
-#: ../ui.py:1944
-msgid "Display in extensions menu"
-msgstr ""
-
-#: ../ui.py:1121 ../ui.py:1365 ../ui.py:1629
-msgid "Down - Next"
-msgstr "Lejup - nākošais"
-
-#: ../ui.py:665
-msgid "Down - Next page"
-msgstr "Lejup - nākošā lapa"
-
-#: ../ui.py:1473
-msgid "East Asia"
-msgstr "Austrumāzija"
-
-#: ../ui.py:1381
-msgid "Eumetsat"
-msgstr "Eumetsat"
-
-#: ../ui.py:1353 ../ui.py:1462 ../ui.py:1466
-msgid "Europe"
-msgstr "Eiropa"
-
-#: ../ui.py:658 ../ui.py:1117 ../ui.py:1361 ../ui.py:1625
-msgid "Exit - End"
-msgstr "Exit - Beigt"
-
-#: ../ui.py:648 ../ui.py:852 ../ui.py:901 ../ui.py:1108
-msgid "Favorite 1"
-msgstr "Favorīts 1"
-
-#: ../ui.py:649 ../ui.py:853 ../ui.py:902 ../ui.py:1109
-msgid "Favorite 2"
-msgstr "Favorīts 2"
-
-#: ../ui.py:1937
-msgid "Font size in slideshow"
-msgstr ""
-
-#: ../plugin.py:21 ../plugin.py:27 ../ui.py:634 ../ui.py:653
-msgid "Foreca Weather Forecast"
-msgstr "Foreca Laika ziņas"
-
-#: ../ui.py:1111
-msgid "Forecast"
-msgstr "Prognoze"
-
-#: ../ui.py:1936
-msgid "Frame size in full view"
-msgstr "Pa visu ekrānu"
-
-#: ../ui.py:1441
-msgid "France"
-msgstr "Francija"
-
-#: ../ui.py:1354 ../ui.py:1433 ../ui.py:1442
-msgid "Germany"
-msgstr "Vācija"
-
-#: ../ui.py:1444
-msgid "Great Britain"
-msgstr "Lielbritānija"
-
-#: ../ui.py:1443
-msgid "Greece"
-msgstr "Grieķija"
-
-#: ../ui.py:1123
-msgid "Green - Assign to Favorite 1"
-msgstr "Zaļā - piešķirt Favorītam 1"
-
-#: ../ui.py:1367
-msgid "Green - Europe"
-msgstr "Zaļā - Eiropa"
-
-#: ../ui.py:670
-msgid "Green - Favorite 1"
-msgstr "Zaļā - Favorīts 1"
-
-#: ../ui.py:1417
-msgid "Hamburg"
-msgstr "Hamburga"
-
-#: ../ui.py:1418
-msgid "Hesse"
-msgstr "Hessene"
-
-#: ../ui.py:650 ../ui.py:854 ../ui.py:903 ../ui.py:1110
-msgid "Home"
-msgstr "Mājas"
-
-#: ../ui.py:1445
-msgid "Hungary"
-msgstr "Ungārija"
-
-#: ../ui.py:174
-msgid "Imperial (C, mph)"
-msgstr "Britu (C, jūdzes/st.)"
-
-#: ../ui.py:660
-msgid "Info - Legend"
-msgstr "Info - Skaidrojumi"
-
-#: ../ui.py:1446
-msgid "Ireland"
-msgstr "Īrija"
-
-#: ../ui.py:1447
-msgid "Italy"
-msgstr "Itālija"
-
-#: ../ui.py:1448
-msgid "Latvia"
-msgstr "Latvija"
-
-#: ../ui.py:662
-msgid "Left - Previous day"
-msgstr "Pa kreisi -  Iepriekšējā diena"
-
-#: ../ui.py:1118 ../ui.py:1362 ../ui.py:1626
-msgid "Left - Previous page"
-msgstr "Pa kreisi - Iepriekšējā lapa"
-
-#: ../ui.py:666
-msgid "Left arrow - Previous day"
-msgstr "Pa kreisi - Iepriekšējā diena"
-
-#: ../ui.py:651
-msgid "Legend"
-msgstr "Skaidroj."
-
-#: ../ui.py:1420
-msgid "Lower Saxony"
-msgstr "Lejassaksija"
-
-#: ../ui.py:1449
-msgid "Luxembourg"
-msgstr "Luksemburga"
-
-#: ../ui.py:652
-msgid "Maps"
-msgstr "Kartes"
-
-#: ../ui.py:1419
-msgid "Mecklenburg-Vorpommern"
-msgstr "Meklenburga-Priekšpomerānija"
-
-#: ../ui.py:659
-msgid "Menu - Weather maps"
-msgstr "Menu - Kartes"
-
-#: ../ui.py:174
-msgid "Metric (C, km/h)"
-msgstr "Metriskās (C, km/st.)"
-
-#: ../ui.py:174
-msgid "Metric (C, m/s)"
-msgstr "Metriskās (C, m/s)"
-
-#: ../ui.py:1470
-msgid "Middle America"
-msgstr "Centrālamerika"
-
-#: ../ui.py:1475
-msgid "Middle Asia"
-msgstr "Vidusāzija"
-
-#: ../ui.py:1472
-msgid "Middle East"
-msgstr "Tuvie austrumi"
-
-#: ../ui.py:1450
-msgid "Netherlands"
-msgstr "Nīderlande"
-
-#: ../ui.py:1467
-msgid "North Africa"
-msgstr "Ziemeļāfrika"
-
-#: ../ui.py:1469
-msgid "North America"
-msgstr "Ziemeļamerika"
-
-#: ../ui.py:1421
-msgid "North Rhine-Westphalia"
-msgstr "Ziemeļreina-Vestfāle"
-
-#: ../ui.py:661
-msgid "OK - City"
-msgstr "OK - Pilsēta"
-
-#: ../ui.py:1122
-msgid "OK - Select"
-msgstr "OK - Izvēlēties"
-
-#: ../ui.py:1370 ../ui.py:1631
-msgid "OK - Show"
-msgstr "OK - Rādīt"
-
-#: ../ui.py:637 ../ui.py:702
-msgid "Please wait ..."
-msgstr "Lūdzu uzgaidiet..."
-
-#: ../ui.py:1773
-msgid "Please wait, photo is being loaded ..."
-msgstr "Foto tiek ielādēts. Lūdzu gaidiet..."
-
-#: ../ui.py:1451
-msgid "Poland"
-msgstr "Polija"
-
-#: ../ui.py:1452
-msgid "Portugal"
-msgstr "Portugāle"
-
-#: ../ui.py:1366
-msgid "Red - Continents"
-msgstr "Sarkanā - Kontinenti"
-
-#: ../ui.py:668
-msgid "Red - Weekoverview"
-msgstr "Sakranā - Nedēļas pārskats"
-
-#: ../ui.py:1422
-msgid "Rhineland-Palatine"
-msgstr "Reinzeme-Pfalca"
-
-#: ../ui.py:663
-msgid "Right - Next day"
-msgstr "Pa labi - Nākošā diena"
-
-#: ../ui.py:1119 ../ui.py:1363 ../ui.py:1627
-msgid "Right - Next page"
-msgstr "Pa labi - Nākošā lapa"
-
-#: ../ui.py:667
-msgid "Right arrow - Next day"
-msgstr "Pa labi - Nākamā diena"
-
-#: ../ui.py:1453
-msgid "Russia"
-msgstr "Krievija"
-
-#: ../ui.py:1423
-msgid "Saarland"
-msgstr "Zāra"
-
-#: ../ui.py:1347 ../ui.py:1356
-msgid "Satellite photos"
-msgstr "Satelītattēli"
-
-#: ../ui.py:1909
-msgid "Save"
-msgstr "Saglabāt"
-
-#: ../ui.py:1424
-msgid "Saxony"
-msgstr "Saksija"
-
-#: ../ui.py:1425
-msgid "Saxony-Anhalt"
-msgstr "Saksija-Anhalte"
-
-#: ../ui.py:1938
-msgid "Scaling Mode"
-msgstr "Mēroga režīms"
-
-#: ../ui.py:1426
-msgid "Schleswig-Holstein"
-msgstr "Šlēsviga-Holšteina"
-
-#: ../ui.py:1102 ../ui.py:1112
+#: ui.py:1090 ui.py:1100
 msgid "Select a city"
 msgstr "Izvēlieties pilsētu"
 
-#: ../ui.py:1934
-msgid "Select time format"
-msgstr "Izvēlieties laika formātu"
+#: ui.py:1099
+msgid "Forecast"
+msgstr "Prognoze"
 
-#: ../ui.py:1933
-msgid "Select units"
-msgstr "Izvēlieties vienības"
+#: ui.py:1106 ui.py:1343 ui.py:1624
+msgid "Left - Previous page"
+msgstr "Pa kreisi - Iepriekšējā lapa"
 
-#: ../ui.py:1355 ../ui.py:1619
-msgid "Settings"
-msgstr "Iestatījumi"
+#: ui.py:1107 ui.py:1344 ui.py:1625
+msgid "Right - Next page"
+msgstr "Pa labi - Nākošā lapa"
 
-#: ../ui.py:1940
-msgid "Show Infoline"
-msgstr "Rādīt inforindu"
+#: ui.py:1108 ui.py:1345 ui.py:1626
+msgid "Up - Previous"
+msgstr "Agšup - iepriekšejais"
 
-#: ../ui.py:1377
-msgid "Showerradar Video"
-msgstr "Lietus kartes video"
+#: ui.py:1109 ui.py:1346 ui.py:1627
+msgid "Down - Next"
+msgstr "Lejup - nākošais"
 
-#: ../ui.py:1939
-msgid "Slide Time (seconds)"
-msgstr "Slaida ilgums"
+#: ui.py:1110
+msgid "OK - Select"
+msgstr "OK - Izvēlēties"
 
-#: ../ui.py:1943
-msgid "Slide picture in loop"
-msgstr "Slaidrāde pa apli"
+#: ui.py:1111
+msgid "Green - Assign to Favorite 1"
+msgstr "Zaļā - piešķirt Favorītam 1"
 
-#: ../ui.py:1907 ../ui.py:1910
-msgid "SlideShow Settings"
-msgstr "Saidrādes iestatījumi"
+#: ui.py:1112
+msgid "Yellow - Assign to Favorite 2"
+msgstr "Dzeltenā - piešķirt Favorītam 2"
 
-#: ../ui.py:1454
-msgid "Slovakia"
-msgstr "Slovākija"
+#: ui.py:1113
+msgid "Blue - Assign to Home"
+msgstr "Zilā - piešķirt Mājas"
 
-#: ../ui.py:1468
-msgid "South Africa"
-msgstr "Dienvidāfrika"
+#: ui.py:1114
+msgid "Channel+ - 500 back"
+msgstr "Kanāls+ - 500 atpakaļ"
 
-#: ../ui.py:1471
-msgid "South America"
-msgstr "Dienvidamerika"
+#: ui.py:1115
+msgid "Channel- - 500 forward"
+msgstr "Kanāls- - 500 uz priekšu"
 
-#: ../ui.py:1474
-msgid "Southeast Asia"
-msgstr "Dienvidāzija"
+#: ui.py:1116
+msgid "Volume- - 100 forward"
+msgstr "Skaļums- - 100 uz priekšu"
 
-#: ../ui.py:1455
-msgid "Spain"
-msgstr "Spānija"
+#: ui.py:1117
+msgid "Volume+ - 100 back"
+msgstr "Skaļums+ - 100 atpakaļ"
 
-#: ../ui.py:1456
-msgid "Switzerland"
-msgstr "Šveice"
-
-#: ../ui.py:472
-msgid "Temp"
-msgstr "Temp"
-
-#: ../ui.py:1378
-msgid "Temperature Video"
-msgstr "Temperatūras Video"
-
-#: ../ui.py:1941
-msgid "Textcolor"
-msgstr "Teksta krāsa"
-
-#: ../ui.py:1216
-msgid ""
-"This city is stored as favorite 1!\n"
-"\n"
-"                             "
-msgstr ""
-"Šī pilsēta ir saglabāta kā Favorīts 1!\n"
-"\n"
-"                   "
-
-#: ../ui.py:1226
-msgid ""
-"This city is stored as favorite 2!\n"
-"\n"
-"                             "
-msgstr ""
-"Šī pilsēta ir saglabāta kā Favorīts 2!\n"
-"\n"
-"                    "
-
-#: ../ui.py:1206
+#: ui.py:1195
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -566,90 +330,344 @@ msgstr ""
 "\n"
 "                      "
 
-#: ../ui.py:1427
-msgid "Thuringia"
-msgstr "Tīringena"
+#: ui.py:1206
+msgid ""
+"This city is stored as favorite 1!\n"
+"\n"
+"                             "
+msgstr ""
+"Šī pilsēta ir saglabāta kā Favorīts 1!\n"
+"\n"
+"                   "
 
-#: ../ui.py:174
-msgid "US (F, mph)"
-msgstr "ASV (F, jūdzes/st.)"
+#: ui.py:1217
+msgid ""
+"This city is stored as favorite 2!\n"
+"\n"
+"                             "
+msgstr ""
+"Šī pilsēta ir saglabāta kā Favorīts 2!\n"
+"\n"
+"                    "
 
-#: ../ui.py:1120 ../ui.py:1364 ../ui.py:1628
-msgid "Up - Previous"
-msgstr "Agšup - iepriekšejais"
+#: ui.py:1328 ui.py:1337
+msgid "Satellite photos"
+msgstr "Satelītattēli"
 
-#: ../ui.py:664
-msgid "Up - Previous page"
-msgstr "Augšup - Iepriekšējā lapa"
+#: ui.py:1333 ui.py:1459
+msgid "Continents"
+msgstr "Kontinenti"
 
-#: ../ui.py:653
-msgid "Version "
-msgstr "Versija "
+#: ui.py:1334 ui.py:1444 ui.py:1448
+msgid "Europe"
+msgstr "Eiropa"
 
-#: ../ui.py:1129
-msgid "Volume+ - 100 back"
-msgstr "Skaļums+ - 100 atpakaļ"
+#: ui.py:1335 ui.py:1415 ui.py:1424
+msgid "Germany"
+msgstr "Vācija"
 
-#: ../ui.py:1128
-msgid "Volume- - 100 forward"
-msgstr "Skaļums- - 100 uz priekšu"
+#: ui.py:1336 ui.py:1617
+msgid "Settings"
+msgstr "Iestatījumi"
 
-#: ../plugin.py:22 ../plugin.py:28
-msgid "Weather forecast for the upcoming 10 days"
-msgstr "Laika ziņas tuvākajām 10 dienām"
+#: ui.py:1347
+msgid "Red - Continents"
+msgstr "Sarkanā - Kontinenti"
 
-#: ../ui.py:1376
-msgid "Weather map Video"
-msgstr "Laika ziņu kartes video"
+#: ui.py:1348
+msgid "Green - Europe"
+msgstr "Zaļā - Eiropa"
 
-#: ../ui.py:641
-msgid "Week"
-msgstr "Nedēļa"
-
-#: ../ui.py:484
-msgid "Wind"
-msgstr "Vējš"
-
-#: ../ui.py:1124
-msgid "Yellow - Assign to Favorite 2"
-msgstr "Dzeltenā - piešķirt Favorītam 2"
-
-#: ../ui.py:671
-msgid "Yellow - Favorite 2"
-msgstr "Dzeltanā - Favorīts 2"
-
-#: ../ui.py:1368
+#: ui.py:1349
 msgid "Yellow - Germany"
 msgstr "Dzeltenā - Vācija"
 
-#: ../ui.py:165
-msgid "better"
-msgstr "labāks"
+#: ui.py:1350 ui.py:1628
+msgid "Blue - Settings"
+msgstr "Zilā - Iestatījumi"
 
-#: ../ui.py:166 ../ui.py:167
-msgid "black"
-msgstr "melns"
+#: ui.py:1351 ui.py:1629
+msgid "OK - Show"
+msgstr "OK - Rādīt"
 
-#: ../ui.py:166 ../ui.py:167
-msgid "blue"
-msgstr "zils"
+#: ui.py:1357
+msgid "Weather map Video"
+msgstr "Laika ziņu kartes video"
 
-#: ../ui.py:166 ../ui.py:167
-msgid "green"
-msgstr "zaļš"
+#: ui.py:1358
+msgid "Showerradar Video"
+msgstr "Lietus kartes video"
 
-#: ../ui.py:1514
+#: ui.py:1359
+msgid "Temperature Video"
+msgstr "Temperatūras Video"
+
+#: ui.py:1360
+msgid "Cloudcover Video"
+msgstr "Mākoņu kartes video"
+
+#: ui.py:1361
+msgid "Air pressure"
+msgstr "Atmosfēras spiediens"
+
+#: ui.py:1362
+msgid "Eumetsat"
+msgstr "Eumetsat"
+
+#: ui.py:1394
+msgid "Baden-Wuerttemberg"
+msgstr "Bādene-Virtemberga"
+
+#: ui.py:1395
+msgid "Bavaria"
+msgstr "Bavārija"
+
+#: ui.py:1396
+msgid "Berlin"
+msgstr "Berlīne"
+
+#: ui.py:1397
+msgid "Brandenburg"
+msgstr "Brandenburga"
+
+#: ui.py:1398
+msgid "Bremen"
+msgstr "Brēmene"
+
+#: ui.py:1399
+msgid "Hamburg"
+msgstr "Hamburga"
+
+#: ui.py:1400
+msgid "Hesse"
+msgstr "Hessene"
+
+#: ui.py:1401
+msgid "Mecklenburg-Vorpommern"
+msgstr "Meklenburga-Priekšpomerānija"
+
+#: ui.py:1402
+msgid "Lower Saxony"
+msgstr "Lejassaksija"
+
+#: ui.py:1403
+msgid "North Rhine-Westphalia"
+msgstr "Ziemeļreina-Vestfāle"
+
+#: ui.py:1404
+msgid "Rhineland-Palatine"
+msgstr "Reinzeme-Pfalca"
+
+#: ui.py:1405
+msgid "Saarland"
+msgstr "Zāra"
+
+#: ui.py:1406
+msgid "Saxony"
+msgstr "Saksija"
+
+#: ui.py:1407
+msgid "Saxony-Anhalt"
+msgstr "Saksija-Anhalte"
+
+#: ui.py:1408
+msgid "Schleswig-Holstein"
+msgstr "Šlēsviga-Holšteina"
+
+#: ui.py:1409
+msgid "Thuringia"
+msgstr "Tīringena"
+
+#: ui.py:1419
+msgid "Austria"
+msgstr "Austrija"
+
+#: ui.py:1420
+msgid "Belgium"
+msgstr "Beļģija"
+
+#: ui.py:1421
+msgid "Czech Republic"
+msgstr "Čehija"
+
+#: ui.py:1422
+msgid "Denmark"
+msgstr "Dānija"
+
+#: ui.py:1423
+msgid "France"
+msgstr "Francija"
+
+#: ui.py:1425
+msgid "Greece"
+msgstr "Grieķija"
+
+#: ui.py:1426
+msgid "Great Britain"
+msgstr "Lielbritānija"
+
+#: ui.py:1427
+msgid "Hungary"
+msgstr "Ungārija"
+
+#: ui.py:1428
+msgid "Ireland"
+msgstr "Īrija"
+
+#: ui.py:1429
+msgid "Italy"
+msgstr "Itālija"
+
+#: ui.py:1430
+msgid "Latvia"
+msgstr "Latvija"
+
+#: ui.py:1431
+msgid "Luxembourg"
+msgstr "Luksemburga"
+
+#: ui.py:1432
+msgid "Netherlands"
+msgstr "Nīderlande"
+
+#: ui.py:1433
+msgid "Poland"
+msgstr "Polija"
+
+#: ui.py:1434
+msgid "Portugal"
+msgstr "Portugāle"
+
+#: ui.py:1435
+msgid "Russia"
+msgstr "Krievija"
+
+#: ui.py:1436
+msgid "Slovakia"
+msgstr "Slovākija"
+
+#: ui.py:1437
+msgid "Spain"
+msgstr "Spānija"
+
+#: ui.py:1438
+msgid "Switzerland"
+msgstr "Šveice"
+
+#: ui.py:1449
+msgid "North Africa"
+msgstr "Ziemeļāfrika"
+
+#: ui.py:1450
+msgid "South Africa"
+msgstr "Dienvidāfrika"
+
+#: ui.py:1451
+msgid "North America"
+msgstr "Ziemeļamerika"
+
+#: ui.py:1452
+msgid "Middle America"
+msgstr "Centrālamerika"
+
+#: ui.py:1453
+msgid "South America"
+msgstr "Dienvidamerika"
+
+#: ui.py:1454
+msgid "Middle East"
+msgstr "Tuvie austrumi"
+
+#: ui.py:1455
+msgid "East Asia"
+msgstr "Austrumāzija"
+
+#: ui.py:1456
+msgid "Southeast Asia"
+msgstr "Dienvidāzija"
+
+#: ui.py:1457
+msgid "Middle Asia"
+msgstr "Vidusāzija"
+
+#: ui.py:1458
+msgid "Australia"
+msgstr "Austrālija"
+
+#: ui.py:1546
 msgid "h"
 msgstr "st."
 
-#: ../ui.py:166 ../ui.py:167
-msgid "red"
-msgstr "sarkans"
+#: ui.py:1766
+msgid "Please wait, photo is being loaded ..."
+msgstr "Foto tiek ielādēts. Lūdzu gaidiet..."
 
-#: ../ui.py:165
-msgid "simple"
-msgstr "vienkāršs"
+#: ui.py:1899 ui.py:1902
+msgid "SlideShow Settings"
+msgstr "Saidrādes iestatījumi"
 
-#: ../ui.py:166 ../ui.py:167
-msgid "yellow"
-msgstr "dzeltens"
+#: ui.py:1900
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: ui.py:1901
+msgid "Save"
+msgstr "Saglabāt"
+
+#: ui.py:1926
+msgid "Select units"
+msgstr "Izvēlieties vienības"
+
+#: ui.py:1927
+msgid "Select time format"
+msgstr "Izvēlieties laika formātu"
+
+#: ui.py:1928
+msgid "City names as labels in the Main screen"
+msgstr "Pilsētu nosaukumi kā apzīmējums pamatekrānā"
+
+#: ui.py:1929
+msgid "Frame size in full view"
+msgstr "Pa visu ekrānu"
+
+#: ui.py:1930
+msgid "Font size in slideshow"
+msgstr ""
+
+#: ui.py:1931
+msgid "Scaling Mode"
+msgstr "Mēroga režīms"
+
+#: ui.py:1932
+msgid "Slide Time (seconds)"
+msgstr "Slaida ilgums"
+
+#: ui.py:1933
+msgid "Show Infoline"
+msgstr "Rādīt inforindu"
+
+#: ui.py:1934
+msgid "Textcolor"
+msgstr "Teksta krāsa"
+
+#: ui.py:1935
+msgid "Backgroundcolor"
+msgstr "Fona krāsa"
+
+#: ui.py:1936
+msgid "Slide picture in loop"
+msgstr "Slaidrāde pa apli"
+
+#: ui.py:1937
+msgid "Display in extensions menu"
+msgstr ""
+
+#: ui.py:1938
+msgid "Debug"
+msgstr ""
+
+#~ msgid "http://www.foreca.com"
+#~ msgstr "http://www.foreca.lv"
+
+#~ msgid "Infrared"
+#~ msgstr "Infrasarkanais"
