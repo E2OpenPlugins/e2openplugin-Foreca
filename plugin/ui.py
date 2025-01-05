@@ -65,6 +65,7 @@ else:
 	from urllib2 import urlopen, Request
 
 
+
 try:
 	from urllib.parse import urlparse
 except ImportError:
@@ -92,8 +93,10 @@ VERSION = "3.3.6"
 # -------------------------------------------------------
 #
 #              Foreca Weather Forecast E2
+#
 #   This Plugin retrieves the actual weather forecast
 #   for the next 10 days from the Foreca website.
+#
 #        We wish all users wonderful weather!
 #
 #
@@ -215,6 +218,7 @@ VERSION = "3.3.6"
 # To do:
 #   Add server url online
 # 3.3.6 fix translations and many code improvements
+
 
 
 class WebClientContextFactory(ClientContextFactory):
@@ -363,7 +367,10 @@ if not exists(USR_PATH):
 # Get screen size
 size_w = getDesktop(0).size().width()
 size_h = getDesktop(0).size().height()
-HD = False if size_w < 1280 else True
+
+HD = True
+if size_w < 1280:
+	HD = False
 
 # Get diacritics to handle
 FILTERin = []
@@ -430,6 +437,7 @@ def getScale():
 
 
 class MainMenuList(MenuList):
+
 	def __init__(self):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
 		GUIComponent.__init__(self)
@@ -770,6 +778,7 @@ class ForecaPreviewCache(Screen):
 
 
 class ForecaPreview(Screen, HelpableScreen):
+
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
@@ -888,6 +897,7 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget source="key_ok" render="Label" position="510,490" size="160,25" font="Regular;22" />
 					<ePixmap position="750,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
 				</screen>"""
+
 		Screen.__init__(self, session)
 		self.setup_title = _("Foreca Weather Forecast")
 		self["MainList"] = MainMenuList()
@@ -909,6 +919,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
 		self.setTitle(_("Foreca Weather Forecast") + " " + _("Version ") + VERSION)
+
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -952,10 +963,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].show
 		self.cacheTimer = eTimer()
 		self.cacheDialog.start()
-		self.onLayoutFinish.append(self.onLayoutFinished)
-
-	def onLayoutFinished(self):
-		callInThread(self.getPage)
+		self.onLayoutFinish.append(self.getPage)
 
 	def StartPage(self):
 		self["Titel"].text = ""
@@ -966,12 +974,14 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.working = False
 		FAlog("MainList show...")
 		self["MainList"].show
-		callInThread(self.getPage)
+		self.getPage()
 
 	def getPage(self, page=None):
 		FAlog("getPage...")
 		self.cacheDialog.start()
 		self.working = True
+		if not page:
+			page = ""
 		url = "%s%s" % (MAIN_PAGE, page)
 		FAlog("page link:", url)
 		try:
@@ -995,14 +1005,17 @@ class ForecaPreview(Screen, HelpableScreen):
 			unlink(CACHE_PATH + "sat.jpg")
 		except Exception:
 			pass
+
 		try:
 			unlink(CACHE_PATH + "sat.html")
 		except Exception:
 			pass
+
 		try:
 			unlink(CACHE_PATH + "meteogram.png")
 		except Exception:
 			pass
+
 		self.close()
 		self.deactivateCacheDialog()
 
@@ -1019,7 +1032,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.ort = "United_Kingdom/London"
 		print(pluginPrintname, "home location:", self.ort)
 		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
-		FAlog("home location:", start)
 		self.Zukunft(0)
 
 	def Fav1(self):
@@ -1171,6 +1183,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 
+
+
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 		translations = {
 			"Monday": _("Monday"), "Tuesday": _("Tuesday"), "Wednesday": _("Wednesday"),
@@ -1192,6 +1206,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		tag = str(fulltext.findall(link))
 		# print "Day ", tag
 		# ---------- Wetterdaten -----------
+
 		# <div class="row clr0">
 		fulltext = compile(r'<!-- START -->(.+?)<div class="datecopy">', DOTALL)
 		html = str(fulltext.findall(html))
@@ -1371,6 +1386,7 @@ class CityPanelList(MenuList):
 
 
 class CityPanel(Screen, HelpableScreen):
+
 	def __init__(self, session, panelmenu):
 		self.session = session
 		if size_w == 1920:
@@ -1421,16 +1437,20 @@ class CityPanel(Screen, HelpableScreen):
 				<ePixmap position="370,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
 				<ePixmap position="560,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
 			</screen>"""
+
 		Screen.__init__(self, session)
 		self.setup_title = _("Select a city")
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
+
 		self.onChangedEntry = []
+
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
 		self.setTitle(_("Select a city"))
+
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -1568,8 +1588,11 @@ class CityPanel(Screen, HelpableScreen):
 		mblau = self["Mlist"].foregroundColorSelected
 		weiss = self["Mlist"].foregroundColor
 		grau = self["Mlist"].backgroundColorSelected
+
 		itemHeight = self["Mlist"].itemHeight
+
 		col = self["Mlist"].column
+
 		res = [entry]
 		res.append(MultiContentEntryText(pos=(0, 0), size=(col, itemHeight), font=0, text="", color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		res.append(MultiContentEntryText(pos=(col, 0), size=(1000, itemHeight), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
@@ -1581,7 +1604,11 @@ class CityPanel(Screen, HelpableScreen):
 
 
 class SatPanelList(MenuList):
-	ItemSkin = 143 if HD else 123
+
+	if HD:
+		ItemSkin = 143
+	else:
+		ItemSkin = 123
 
 	def __init__(self, list, font0=28, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
@@ -1640,6 +1667,7 @@ class SatPanelList(MenuList):
 
 
 class SatPanel(Screen, HelpableScreen):
+
 	def __init__(self, session, ort):
 		self.session = session
 		self.ort = ort
@@ -1674,7 +1702,7 @@ class SatPanel(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" resolution="1280,720" >
+				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" >
 					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
 					<ePixmap position="2,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
@@ -1690,6 +1718,7 @@ class SatPanel(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
 		self["Mlist"] = SatPanelList([])
+
 		self.onChangedEntry = []
 		self.loc_id = ''
 		self["key_red"] = StaticText(_("Continents"))
@@ -1697,6 +1726,7 @@ class SatPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Germany"))
 		self["key_blue"] = StaticText(_("Settings"))
 		self.setTitle(_("Satellite photos"))
+
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -1724,6 +1754,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
 		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
 		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
+
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 
@@ -1835,6 +1866,7 @@ class SatPanel(Screen, HelpableScreen):
 		mblau = self["Mlist"].foregroundColorSelected
 		weiss = self["Mlist"].foregroundColor
 		grau = self["Mlist"].backgroundColorSelected
+
 		res = [entry]
 		FAlog("entry=", entry)
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
@@ -1997,7 +2029,11 @@ class SatPanel(Screen, HelpableScreen):
 
 
 class SatPanelListb(MenuList):
-	ItemSkin = 143 if HD else 123
+
+	if HD:
+		ItemSkin = 143
+	else:
+		ItemSkin = 123
 
 	def __init__(self, list, font0=24, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
@@ -2029,6 +2065,7 @@ class SatPanelListb(MenuList):
 
 
 class SatPanelb(Screen, HelpableScreen):
+
 	def __init__(self, session, ort, title, mlist):
 		self.session = session
 		self.ort = ort
@@ -2065,6 +2102,7 @@ class SatPanelb(Screen, HelpableScreen):
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText(_("Settings"))
 		self.setTitle(title)
+
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -2138,17 +2176,18 @@ class SatPanelb(Screen, HelpableScreen):
 
 
 class PicView(Screen):
+
 	def __init__(self, session, filelist, index, startslide):
 		self.session = session
-		self.filelist = filelist
-		self.lastindex = index
-		self.startslide = startslide
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
+
+		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"on\" /> \
 			</screen>"
+
 		Screen.__init__(self, session)
 		self["actions"] = ActionMap(
 			["OkCancelActions", "MediaPlayerActions"],
@@ -2160,7 +2199,9 @@ class PicView(Screen):
 		)
 
 		self["pic"] = Pixmap()
+		self.filelist = filelist
 		self.old_index = 0
+		self.lastindex = index
 		self.currPic = []
 		self.shownow = True
 		self.dirlistcount = 0
@@ -2168,6 +2209,7 @@ class PicView(Screen):
 		self.picload = ePicLoad()
 		self.picload.PictureData.get().append(self.finish_decode)
 		self.onLayoutFinish.append(self.setPicloadConf)
+		self.startslide = startslide
 
 	def setPicloadConf(self):
 		FAlog("[setPicloadConf] setPicloadConf")

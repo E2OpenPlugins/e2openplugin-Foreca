@@ -664,9 +664,8 @@ msgstr "Pilvistä ja lumisadetta"
 msgid "Overcast and light snow"
 msgstr "Pilvistä ja heikkoa lumisadetta"
 
-#: ui.py:1973
-msgid "City names as labels in the Main screen"
-msgstr "Kaupunkien nimet päänäytön nimikkeinä"
+msgid "Partly cloudy"
+msgstr "Puolipilvistä"
 
 msgid "Mostly clear"
 msgstr "Enimmäkseen selkeää"
