@@ -827,7 +827,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,170" size="1200,820" title="Foreca Weather Forecast">
+				<screen name="ForecaPreview" position="center,center" size="1200,820" title="Foreca Weather Forecast">
 					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="305,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="600,5" size="295,70" />
@@ -853,7 +853,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,240" size="1640,1040" title="Foreca Weather Forecast" >
+				<screen name="ForecaPreview" position="center,center" size="1640,1040" title="Foreca Weather Forecast" >
 					<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="820,10" size="400,80" />
@@ -877,7 +877,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,120" size="820,520" title="Foreca Weather Forecast">
+				<screen name="ForecaPreview" position="center,center" size="820,520" title="Foreca Weather Forecast">
 					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="200,40" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="210,5" size="200,40" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="410,5" size="200,40" />
@@ -2072,7 +2072,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="SatPanelb" position="center,170" size="1200,820">
+				<screen name="SatPanelb" position="center,center" size="1200,820">
 					<widget enableWrapAround="1" name="Mlist" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
 					<eLabel backgroundColor="grey" position="10,760" size="1180,1" />
 					<ePixmap position="1030,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
@@ -2317,7 +2317,7 @@ class View_Slideshow(Screen):
 				"pause": self.PlayPause,
 				"play": self.PlayPause,
 				"previous": self.prevPic,
-				"next": self.nextPic
+				"next": self.nextPic,
 			},
 			-1
 		)
@@ -2396,6 +2396,7 @@ class View_Slideshow(Screen):
 		self["point"].hide()
 		ptr = self.picload.getData()
 		if ptr is not None:
+			text = ""
 			print("[finish_decode] Image data loaded successfully.")
 			try:
 				if picInfo:
@@ -2549,6 +2550,8 @@ class PicSetup(Screen, ConfigListScreen):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
 		self.setup_title = _("SlideShow Settings")
+		self.list = []
+		self.onChangedEntry = []
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self.setTitle(_("SlideShow Settings"))
@@ -2575,8 +2578,6 @@ class PicSetup(Screen, ConfigListScreen):
 			},
 			-3,
 		)
-		self.onChangedEntry = []
-		self.list = []
 		self["Mlist"] = ConfigList(self.list)
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
