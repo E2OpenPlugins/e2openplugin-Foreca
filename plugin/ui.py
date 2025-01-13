@@ -1234,6 +1234,17 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = fulltext.findall(html)
+
+		trans = {
+			"Mon": _("Monday"), "Tue": _("Tuesday"), "Wed": _("Wednesday"),
+			"Thu": _("Thursday"), "Fri": _("Friday"), "Sat": _("Saturday"),
+			"Sun": _("Sunday"),
+		}
+		tag = tag[0]
+		for key, value in trans.items():
+			tag = tag.replace(key, value)
+
+		# Day ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', '\\r\\n
 		FAlog("Day", str(tag))
 
 		# <div class="c0"> <strong>17:00</strong></div>
