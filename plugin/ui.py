@@ -41,6 +41,7 @@ from locale import setlocale, LC_COLLATE, strxfrm
 from os import makedirs, unlink, remove, listdir
 from os.path import exists, join
 from re import sub, DOTALL, compile, findall
+from PIL import Image
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -65,12 +66,16 @@ else:
 	from urllib2 import urlopen, Request
 
 
-
 try:
 	from urllib.parse import urlparse
 except ImportError:
 	from urlparse import urlparse
 
+
+if PY3:
+	from io import BytesIO
+else:
+	from cStringIO import StringIO as BytesIO
 
 try:
 	_create_unverified_https_context = ssl._create_unverified_context
@@ -220,7 +225,6 @@ VERSION = "3.3.6"
 # 3.3.6 fix translations and many code improvements
 
 
-
 class WebClientContextFactory(ClientContextFactory):
 	def __init__(self, url=None):
 		domain = urlparse(url).netloc
@@ -241,7 +245,7 @@ languages = [
 	("cs", "Čeština"),
 	("da", "Dansk"),
 	("de", "Deutsch"),
-	("el", "ελληνικά"),
+	("com/el", "ελληνικά"),
 	("es", "Español"),
 	("et", "Eesti"),
 	("https://www.farsiweather.com/", "زبان فارسی"),
@@ -317,7 +321,7 @@ except:
 	lng = 'en'
 	pass
 
-
+"""
 selected_language = config.plugins.foreca.languages.value
 if not selected_language == 'no':
 	if selected_language == "https://www.farsiweather.com/":
@@ -326,6 +330,10 @@ if not selected_language == 'no':
 		BASEURL = 'https://www.foreca.' + selected_language
 else:
 	BASEURL = get_base_url_from_txt(file_url)
+"""
+BASEURL = get_base_url_from_txt(file_url)
+if not BASEURL.endswith("/"):
+	BASEURL += "/"
 
 MODULE_NAME = __name__.split(".")[-1]
 MAIN_PAGE = BASEURL.rstrip("/")
@@ -337,7 +345,7 @@ print("BASEURL in uso:", BASEURL)
 
 # Make Path for Slideshow
 CACHE_PATH = "/tmp/Foreca/"
-if exists(CACHE_PATH) is False:
+if not exists(CACHE_PATH):
 	try:
 		# makedirs(CACHE_PATH, 755)
 		makedirs(CACHE_PATH, mode=0o755, exist_ok=True)
@@ -368,9 +376,8 @@ if not exists(USR_PATH):
 size_w = getDesktop(0).size().width()
 size_h = getDesktop(0).size().height()
 
-HD = True
-if size_w < 1280:
-	HD = False
+HD = False if size_w < 1280 else True
+
 
 # Get diacritics to handle
 FILTERin = []
@@ -431,6 +438,10 @@ def getScale():
 	return AVSwitch().getFramebufferScale()
 
 
+def clean_url(url):
+	return url.replace('\ufeff', '')
+
+
 # ------------------------------------------------------------------------------------------
 # ----------------------------------  MainMenuList   ---------------------------------------
 # ------------------------------------------------------------------------------------------
@@ -448,7 +459,7 @@ class MainMenuList(MenuList):
 		self.font3 = gFont("Regular", 28)
 		self.itemHeight = 120
 		self.valTime = 5, 80, 100, 45
-		self.valPict = 50, 45, 80, 80
+		self.valPict = 110, 45, 70, 70
 		self.valPictScale = 0
 		self.valTemp = 200, 55, 150, 40
 		self.valTempUnits = 200, 95, 15, 40
@@ -688,28 +699,6 @@ class MainMenuList(MenuList):
 		textsechs = textsechs.replace("Humidity:", _("Humidity:"))
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
 
-		"""
-		# Text
-		x, y, w, h = self.valText1
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=_(self.x[5]), color=weiss, color_sel=weiss))
-
-		x, y, w, h = self.valText2
-		textsechs = self.x[6]
-		textsechs = textsechs.replace("&deg;", "") + tempUnit
-		textsechs = textsechs.replace("Feels Like:", _("Feels like:"))
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
-
-		x, y, w, h = self.valText3
-		textsechs = self.x[7]
-		textsechs = textsechs.replace("Precip chance:", _("Precip chance:"))
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[7], color=mblau, color_sel=mblau))
-
-		x, y, w, h = self.valText4
-		textsechs=self.x[8]
-		textsechs=textsechs.replace("Humidity:", _("Humidity:"))
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=self.x[8], color=mblau, color_sel=mblau))
-		"""
-
 		self.listCompleted.append(self.res)
 		self.idx += 1
 		self.buildEntries()
@@ -818,12 +807,27 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		print(pluginPrintname, "home location:", self.ort)
 		FAlog("home location:", self.ort)
+		"""
+		# MAIN_URL = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
+			# BASEURL,
+			# pathname2url(self.ort),
+			# LANGUAGE,
+			# heute,
+			# config.plugins.foreca.units.value,
+			# config.plugins.foreca.time.value
+		# )
+
+		# # MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+
+		# MAIN_PAGE = clean_url(MAIN_URL)
+		"""
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+
 		FAlog("initial link:", MAIN_PAGE)
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,170" size="1200,820" title="Foreca Weather Forecast">
+				<screen name="ForecaPreview" position="center,center" size="1200,820" title="Foreca Weather Forecast">
 					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="305,5" size="295,70" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="600,5" size="295,70" />
@@ -849,7 +853,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,240" size="1640,1040" title="Foreca Weather Forecast" >
+				<screen name="ForecaPreview" position="center,center" size="1640,1040" title="Foreca Weather Forecast" >
 					<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="820,10" size="400,80" />
@@ -873,7 +877,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,120" size="820,520" title="Foreca Weather Forecast">
+				<screen name="ForecaPreview" position="center,center" size="820,520" title="Foreca Weather Forecast">
 					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="200,40" />
 					<ePixmap pixmap="skin_default/buttons/green.png" position="210,5" size="200,40" />
 					<ePixmap pixmap="skin_default/buttons/yellow.png" position="410,5" size="200,40" />
@@ -1076,7 +1080,20 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.StartPage()
 
 	def info(self):
-		message = "%s" % (_("\n<   >       =   Prognosis next/previous day\n0 - 9       =   Prognosis (x) days from now\n\nVOL+/-  =   Fast scroll 100 (City choice)\nBouquet+/- =   Fast scroll 500 (City choice)\n\nInfo        =   This information\nMenu     =   Satellite photos and maps\n\nRed        =   Temperature chart for the upcoming 5 days\nGreen    =   Go to Favorite 1\nYellow    =   Go to Favorite 2\nBlue        =   Go to Home\n\nWind direction = Arrow to right: Wind from the West"))
+		message = "%s" % (_(
+			"Server URL:    %s\n\n"
+			"<   >      =   Prognosis next/previous day\n"
+			"0 - 9      =   Prognosis (x) days from now\n\n"
+			"VOL+/-     =   Fast scroll 100 (City choice)\n"
+			"Bouquet+/- =   Fast scroll 500 (City choice)\n\n"
+			"Info       =   This information\n"
+			"Menu       =   Satellite photos and maps\n\n"
+			"Red        =   Temperature chart for the upcoming 5 days\n"
+			"Green      =   Go to Favorite 1\n"
+			"Yellow     =   Go to Favorite 2\n"
+			"Blue       =   Go to Home\n\n"
+			"Wind direction =   Arrow to right: Wind from the West\n"
+		) % BASEURL)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
@@ -1182,10 +1199,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel = fulltext.findall(html)
 		print(pluginPrintname, "fulltext=", fulltext, "titel=", titel)
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
-
-
-
-		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 		translations = {
 			"Monday": _("Monday"), "Tuesday": _("Tuesday"), "Wednesday": _("Wednesday"),
 			"Thursday": _("Thursday"), "Friday": _("Friday"), "Saturday": _("Saturday"), "Sunday": _("Sunday"),
@@ -1221,6 +1234,17 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = fulltext.findall(html)
+
+		trans = {
+			"Mon": _("Monday"), "Tue": _("Tuesday"), "Wed": _("Wednesday"),
+			"Thu": _("Thursday"), "Fri": _("Friday"), "Sat": _("Saturday"),
+			"Sun": _("Sunday"),
+		}
+		tag = tag[0]
+		for key, value in trans.items():
+			tag = tag.replace(key, value)
+
+		# Day ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', '\\r\\n
 		FAlog("Day", str(tag))
 
 		# <div class="c0"> <strong>17:00</strong></div>
@@ -1240,7 +1264,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<div class="c3">.+? (.+?)<br />.+?', DOTALL)
 		description = fulltext.findall(html)
-		# print("description", str(description).lstrip("\r\n\t").lstrip())
 		FAlog("description", str(description).lstrip("\r\n\t").lstrip())
 
 		fulltext = compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', DOTALL)
@@ -1533,24 +1556,17 @@ class CityPanel(Screen, HelpableScreen):
 	def exit(self):
 		global menu
 		menu = "stop"
-		# self.deactivateCacheDialog()
 		self.close()
 
 	def ok(self):
 		global city
-
-		# self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
-		# self.cacheDialog.start()
-
 		city = self['Mlist'].l.getCurrentSelection()[0][1]
-
 		FAlog("city= %s" % city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		self.exit()
 
 	def blue(self):
 		global start
 		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
-
 		FAlog("Home:", city)
 		config.plugins.foreca.home.value = city
 		config.plugins.foreca.home.save()
@@ -1670,7 +1686,6 @@ class SatPanel(Screen, HelpableScreen):
 
 	def __init__(self, session, ort):
 		self.session = session
-		self.ort = ort
 
 		if size_w == 1920:
 			self.skin = """
@@ -1720,6 +1735,7 @@ class SatPanel(Screen, HelpableScreen):
 		self["Mlist"] = SatPanelList([])
 
 		self.onChangedEntry = []
+		self.ort = ort
 		self.loc_id = ''
 		self["key_red"] = StaticText(_("Continents"))
 		self["key_green"] = StaticText(_("Europe"))
@@ -1916,13 +1932,13 @@ class SatPanel(Screen, HelpableScreen):
 		try:
 			response = requests.get(base_url + "/en-gb/continent/eu", headers=HEADERS, timeout=10)
 			response.raise_for_status()
-			# html = response.text
 			html = response.text if PY3 else response.content
 		except requests.RequestException as e:
 			print("Error while page download: %s" % str(e))
 			return
 		pattern = r'<li class=".*?">\s*<a .*?href="([^"]+)".*?>\s*(.*?)\s*</a>'
 		matches = findall(pattern, html)
+
 		seen_links = set()
 		menu = []
 
@@ -1954,11 +1970,6 @@ class SatPanel(Screen, HelpableScreen):
 							chosen_link = base_url + chosen_link
 
 						try:
-							from PIL import Image
-							if PY3:
-								from io import BytesIO
-							else:
-								from cStringIO import StringIO as BytesIO
 							img_response = requests.get(chosen_link, headers=HEADERS, timeout=10)
 							img = Image.open(BytesIO(img_response.content))
 							img = img.convert("RGB")  # Rimuove ICC
@@ -2072,7 +2083,7 @@ class SatPanelb(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="SatPanelb" position="center,170" size="1200,820">
+				<screen name="SatPanelb" position="center,center" size="1200,820">
 					<widget enableWrapAround="1" name="Mlist" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
 					<eLabel backgroundColor="grey" position="10,760" size="1180,1" />
 					<ePixmap position="1030,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
@@ -2152,11 +2163,13 @@ class SatPanelb(Screen, HelpableScreen):
 				FAlog("SatBild Error: Invalid selection in CurrentSelection", str(current_selection))
 				self.session.open(MessageBox, _("Invalid selection. Please select a valid region."), MessageBox.TYPE_ERROR)
 				return
+
 			region = current_selection[0][1]
 			FAlog("SatBild: Selected region = %s" % region)
 			devicepath = CACHE_PATH + "meteogram.png"
 			url = "http://img.wetterkontor.de/karten/" + region + "0.jpg"
 			FAlog("SatBild: Downloading image from URL = %s" % url)
+
 			try:
 				download_image(url, devicepath)
 				remove_icc_profile(devicepath)
@@ -2315,7 +2328,7 @@ class View_Slideshow(Screen):
 				"pause": self.PlayPause,
 				"play": self.PlayPause,
 				"previous": self.prevPic,
-				"next": self.nextPic
+				"next": self.nextPic,
 			},
 			-1
 		)
@@ -2394,6 +2407,7 @@ class View_Slideshow(Screen):
 		self["point"].hide()
 		ptr = self.picload.getData()
 		if ptr is not None:
+			text = ""
 			print("[finish_decode] Image data loaded successfully.")
 			try:
 				if picInfo:
@@ -2547,6 +2561,8 @@ class PicSetup(Screen, ConfigListScreen):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
 		self.setup_title = _("SlideShow Settings")
+		self.list = []
+		self.onChangedEntry = []
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self.setTitle(_("SlideShow Settings"))
@@ -2573,8 +2589,6 @@ class PicSetup(Screen, ConfigListScreen):
 			},
 			-3,
 		)
-		self.onChangedEntry = []
-		self.list = []
 		self["Mlist"] = ConfigList(self.list)
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
