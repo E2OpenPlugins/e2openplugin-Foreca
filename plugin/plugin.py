@@ -1,7 +1,5 @@
-# for localized messages
 from . import _
 
-# ENIGMA IMPORTS
 from Components.config import config, ConfigSubsection, ConfigEnableDisable
 from Plugins.Plugin import PluginDescriptor
 
@@ -19,16 +17,16 @@ def Plugins(path, **kwargs):
 	global PICON_PATH
 	PICON_PATH = path + "/picon/"
 	list = [PluginDescriptor(
-		name=_("Foreca Weather Forecast"),
-		description=_("Weather forecast for the upcoming 10 days"),
-		icon="foreca_logo.png",
-		where=PluginDescriptor.WHERE_PLUGINMENU,
-		fnc=main)]
-	if config.plugins.foreca.extmenu.value:
-		list.append(PluginDescriptor(
 			name=_("Foreca Weather Forecast"),
 			description=_("Weather forecast for the upcoming 10 days"),
 			icon="foreca_logo.png",
-			where=PluginDescriptor.WHERE_EXTENSIONSMENU,
-			fnc=main))
+			where=PluginDescriptor.WHERE_PLUGINMENU,
+			fnc=main)]
+	if config.plugins.foreca.extmenu.value:
+		list.append(PluginDescriptor(
+					name=_("Foreca Weather Forecast"),
+					description=_("Weather forecast for the upcoming 10 days"),
+					icon="foreca_logo.png",
+					where=PluginDescriptor.WHERE_EXTENSIONSMENU,
+					fnc=main))
 	return list
