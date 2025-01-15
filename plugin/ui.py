@@ -834,8 +834,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		MAIN_PAGE = clean_url(MAIN_URL)
 		"""
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-		if isinstance(MAIN_PAGE, unicode):
-			MAIN_PAGE = MAIN_PAGE.encode('utf-8')
+		"""
+		# if isinstance(MAIN_PAGE, unicode):
+			# MAIN_PAGE = MAIN_PAGE.encode('utf-8')
+		"""
 		if DEBUG:
 			FAlog("initial link:", MAIN_PAGE)
 
@@ -1094,7 +1096,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		morgen = "%04i%02i%02i" % (jahr, monat, tag)
 
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-		FAlog("day link:", MAIN_PAGE)
+		if DEBUG:
+			FAlog("day link:", MAIN_PAGE)
 		# Show in GUI
 		self.StartPage()
 
@@ -1258,17 +1261,17 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = fulltext.findall(html)
-
-		trans = {
-			"Mon": _("Monday"), "Tue": _("Tuesday"), "Wed": _("Wednesday"),
-			"Thu": _("Thursday"), "Fri": _("Friday"), "Sat": _("Saturday"),
-			"Sun": _("Sunday"),
-		}
-		tag = tag[0]
-		for key, value in trans.items():
-			tag = tag.replace(key, value)
-
+		"""
 		# Day ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', '\\r\\n
+		# trans = {
+			# "Mon": _("Monday"), "Tue": _("Tuesday"), "Wed": _("Wednesday"),
+			# "Thu": _("Thursday"), "Fri": _("Friday"), "Sat": _("Saturday"),
+			# "Sun": _("Sunday"),
+		# }
+		# tag = tag[0]
+		# for key, value in trans.items():
+			# tag = tag.replace(key, value)
+		"""
 		if DEBUG:
 			FAlog("Day=%s" % str(tag))
 
@@ -2312,6 +2315,7 @@ class PicView(Screen):
 		if self.shownow and len(self.currPic):
 			self.shownow = False
 			if self.currPic[0]:
+				# remove_icc_profile(self.currPic[0])
 				print("[ShowPicture] Imposto l'immagine:", self.currPic[0])
 				self["pic"].instance.setPixmap(self.currPic[0].__deref__())
 			else:
@@ -2324,6 +2328,7 @@ class PicView(Screen):
 		if ptr is not None:
 			print("[finish_decode] Image data loaded successfully.")
 			try:
+				# remove_icc_profile(ptr)
 				self.currPic = []
 				self.currPic.append(ptr)
 				self.ShowPicture()
@@ -2633,8 +2638,6 @@ class PicSetup(Screen, ConfigListScreen):
 		self.skin = PicSetup.skin
 		Screen.__init__(self, session)
 		self.setup_title = _("SlideShow Settings")
-		self.list = []
-		self.onChangedEntry = []
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self.setTitle(_("SlideShow Settings"))
@@ -2663,6 +2666,8 @@ class PicSetup(Screen, ConfigListScreen):
 			},
 			-3,
 		)
+		self.list = []
+		self.onChangedEntry = []
 		self["Mlist"] = ConfigList(self.list)
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
