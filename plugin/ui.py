@@ -37,7 +37,6 @@ from enigma import (
 
 	RT_VALIGN_CENTER,
 )
-from PIL import Image
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -56,6 +55,7 @@ from twisted.internet._sslverify import ClientTLSOptions
 from twisted.internet.ssl import ClientContextFactory
 import requests
 import ssl
+import warnings
 
 PY3 = version_info[0] == 3
 if PY3:
@@ -70,11 +70,17 @@ try:
 except ImportError:
 	from urlparse import urlparse
 
+try:
+	from PIL import Image
+except ImportError:
+	from Image import Image
+
 
 if PY3:
 	from io import BytesIO
 else:
 	from cStringIO import StringIO as BytesIO
+
 
 try:
 	_create_unverified_https_context = ssl._create_unverified_context
@@ -382,7 +388,6 @@ size_h = getDesktop(0).size().height()
 
 HD = False if size_w < 1280 else True
 
-
 # Get diacritics to handle
 FILTERin = []
 FILTERout = []
@@ -430,8 +435,6 @@ def download_image(url, devicepath):
 
 def remove_icc_profile(devicepath):
 	try:
-		from PIL import Image
-		import warnings
 		warnings.filterwarnings("ignore", "(?s).*iCCP.*", category=UserWarning)
 		img = Image.open(devicepath)
 		img.save(devicepath, icc_profile=None)
@@ -1086,7 +1089,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.StartPage()
 
 	def info(self):
-		message = "%s" % (_(
+		message = str("%s" % (_(
 			"Server URL:    %s\n\n"
 			"<   >      =   Prognosis next/previous day\n"
 			"0 - 9      =   Prognosis (x) days from now\n\n"
@@ -1099,7 +1102,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			"Yellow     =   Go to Favorite 2\n"
 			"Blue       =   Go to Home\n\n"
 			"Wind direction =   Arrow to right: Wind from the West\n"
-		) % BASEURL)
+		) % BASEURL))
+
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
@@ -1182,8 +1186,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		with open(devicepath, 'wb') as f:
 			f.write(resp.read())
 		try:
-			from PIL import Image
-			import warnings
 			warnings.filterwarnings("ignore", "(?s).*iCCP.*", category=UserWarning)
 			img = Image.open(devicepath)
 			img.save(devicepath, icc_profile=None)
@@ -1755,7 +1757,7 @@ class SatPanel(Screen, HelpableScreen):
 					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 					<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-				 </screen>"""
+				</screen>"""
 
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
