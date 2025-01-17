@@ -37,21 +37,21 @@ from enigma import (
 
 	RT_VALIGN_CENTER,
 )
-from locale import setlocale, LC_COLLATE, strxfrm
-from os import makedirs, unlink, remove, listdir
-from os.path import exists, join
-from re import sub, DOTALL, compile, findall
 from PIL import Image
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from skin import parseFont, parseColor
-from sys import version_info
-from time import localtime, mktime, strftime
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
+from locale import setlocale, LC_COLLATE, strxfrm
+from os import makedirs, unlink, remove, listdir
+from os.path import exists, join
+from re import sub, DOTALL, compile, findall
+from skin import parseFont, parseColor
+from sys import version_info
+from time import localtime, mktime, strftime
 from twisted.internet._sslverify import ClientTLSOptions
 from twisted.internet.ssl import ClientContextFactory
 import requests
@@ -267,9 +267,7 @@ languages = [
 	("tr", "Türkçe"),
 ]
 
-
 pluginPrintname = "[Foreca Ver. %s]" % VERSION
-
 # config.plugins.foreca.languages = ConfigSelection(default="no", choices=languages)
 config.plugins.foreca.home = ConfigText(default="Germany/Berlin", fixed_size=False)
 config.plugins.foreca.fav1 = ConfigText(default="United_States/New_York/New_York_City", fixed_size=False)
@@ -350,12 +348,12 @@ else:
 
 
 # Make Path for Slideshow
-CACHE_PATH = "/tmp/Foreca/"
+CACHE_PATH = "/var/cache/Foreca/"
 if not exists(CACHE_PATH):
 	try:
-		# makedirs(CACHE_PATH, 755)
 		makedirs(CACHE_PATH, mode=0o755, exist_ok=True)
 	except Exception:
+		CACHE_PATH = "/tmp/"
 		pass
 
 
@@ -819,20 +817,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			start = "London"
 		if DEBUG:
 			FAlog("home location:", self.ort)
-		"""
-		MAIN_URL = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
-			BASEURL,
-			pathname2url(self.ort),
-			LANGUAGE,
-			heute,
-			config.plugins.foreca.units.value,
-			config.plugins.foreca.time.value
-		)
-
-		# MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-
-		MAIN_PAGE = clean_url(MAIN_URL)
-		"""
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		"""
 		# if isinstance(MAIN_PAGE, unicode):
@@ -1225,18 +1209,27 @@ class ForecaPreview(Screen, HelpableScreen):
 		if DEBUG:
 			FAlog("fulltext=%s titel= %s" % (fulltext, titel))
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
-		translations = {
-			"Monday": _("Monday"), "Tuesday": _("Tuesday"), "Wednesday": _("Wednesday"),
-			"Thursday": _("Thursday"), "Friday": _("Friday"), "Saturday": _("Saturday"), "Sunday": _("Sunday"),
-			"January": _("January"), "February": _("February"), "March": _("March"), "April": _("April"),
-			"May": _("May"), "June": _("June"), "July": _("July"), "August": _("August"),
-			"September": _("September"), "October": _("October"), "November": _("November"), "December": _("December"),
-		}
-		textsechs = titel[0]
-		for key, value in translations.items():
-			textsechs = textsechs.replace(key, value)
+
 		if DEBUG:
 			FAlog("titel[0]=%s" % titel[0])
+
+		def translate_description_gettext(description, translation_dict):
+			cleaned_description = sub(r'[\t\r\n]', ' ', description).strip()
+			words = sub(r'([.,!?])', r' \1 ', cleaned_description).split()
+			translated_words = []
+			for word in words:
+				is_capitalized = word[0].isupper()
+				translated_word = translation_dict.get(word.lower(), word)
+				if is_capitalized:
+					translated_word = translated_word.capitalize()
+				translated_words.append(translated_word)
+				print("translated_words=", translated_words)
+			return ' '.join(translated_words)
+
+		translation_dict = self.load_translation_dict(lng)
+		# titel[0] = self.konvert_uml(str(sub(r'<[^>]*>', "", titel[0])))
+		titel[0] = translate_description_gettext(titel[0], translation_dict)
+
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
 		link = str(fulltext.findall(html))
@@ -1244,6 +1237,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = str(fulltext.findall(link))
 		# print "Day ", tag
+
 		# ---------- Wetterdaten -----------
 
 		# <div class="row clr0">
@@ -1261,17 +1255,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = fulltext.findall(html)
-		"""
-		# Day ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', '\\r\\n
-		# trans = {
-			# "Mon": _("Monday"), "Tue": _("Tuesday"), "Wed": _("Wednesday"),
-			# "Thu": _("Thursday"), "Fri": _("Friday"), "Sat": _("Saturday"),
-			# "Sun": _("Sunday"),
-		# }
-		# tag = tag[0]
-		# for key, value in trans.items():
-			# tag = tag.replace(key, value)
-		"""
+
 		if DEBUG:
 			FAlog("Day=%s" % str(tag))
 
@@ -1847,7 +1831,6 @@ class SatPanel(Screen, HelpableScreen):
 
 		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
 		self.cacheDialog.start()
-
 		self.SatBild()
 
 	def MapsGermany(self):
@@ -2290,8 +2273,6 @@ class PicView(Screen):
 		self.startslide = startslide
 
 	def setPicloadConf(self):
-		if DEBUG:
-			FAlog("[setPicloadConf] setPicloadConf")
 		sc = getScale()
 		if not sc or len(sc) < 2:
 			sc = (1920, 1080)
@@ -2310,8 +2291,6 @@ class PicView(Screen):
 		self.start_decode()
 
 	def ShowPicture(self):
-		if DEBUG:
-			FAlog("[setPicloadConf] ShowPicture")
 		if self.shownow and len(self.currPic):
 			self.shownow = False
 			if self.currPic[0]:
@@ -2322,8 +2301,6 @@ class PicView(Screen):
 				print("[ShowPicture] No image data present.")
 
 	def finish_decode(self, picInfo=""):
-		if DEBUG:
-			FAlog("[setPicloadConf] finish_decode")
 		ptr = self.picload.getData()
 		if ptr is not None:
 			print("[finish_decode] Image data loaded successfully.")
@@ -2338,8 +2315,6 @@ class PicView(Screen):
 			print("[finish_decode] No image data obtained from picload.")
 
 	def start_decode(self):
-		if DEBUG:
-			FAlog("[setPicloadConf] start_decode")
 		self.picload.startDecode(self.filelist)
 
 	def clear_images(self):
@@ -2436,8 +2411,6 @@ class View_Slideshow(Screen):
 			self.PlayPause()
 
 	def setPicloadConf(self):
-		if DEBUG:
-			FAlog("[View_Slideshow] setPicloadConf")
 		sc = getScale()
 		if not sc or len(sc) < 2:
 			sc = (1920, 1080)
@@ -2460,8 +2433,6 @@ class View_Slideshow(Screen):
 		self.start_decode()
 
 	def ShowPicture(self):
-		if DEBUG:
-			FAlog("[View_Slideshow] ShowPicture")
 		if self.shownow and len(self.currPic):
 			self.shownow = False
 			self["file"].setText(self.currPic[0].replace(".jpg", "").replace(".png", ""))
@@ -2475,8 +2446,6 @@ class View_Slideshow(Screen):
 			self.start_decode()
 
 	def finish_decode(self, picInfo=""):
-		if DEBUG:
-			FAlog("[View_Slideshow] finish_decode")
 		self["point"].hide()
 		ptr = self.picload.getData()
 		if ptr is not None:
@@ -2496,8 +2465,6 @@ class View_Slideshow(Screen):
 			print("[finish_decode] No image data obtained from picload.")
 
 	def start_decode(self):
-		if DEBUG:
-			FAlog("[View_Slideshow] start_decode")
 		if self.pindex < 0 or self.pindex >= len(self.picfilelist):
 			print("[start_decode] Index out of bounds: %d" % self.pindex)
 			return
@@ -2537,8 +2504,6 @@ class View_Slideshow(Screen):
 		self.ShowPicture()
 
 	def PlayPause(self):
-		if DEBUG:
-			FAlog("[View_Slideshow] PlayPause")
 		if self.slideTimer.isActive():
 			self.slideTimer.stop()
 			self["play_icon"].hide()
