@@ -1,22 +1,21 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Foreca 3.1.3\n"
+"Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 14:02+0100\n"
-"PO-Revision-Date: 2020-06-19 11:13+0800\n"
-"Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
-"Language-Team: n.a.\n"
-"Language: ru\n"
+"POT-Creation-Date: 2016-05-06 13:57+0200\n"
+"PO-Revision-Date: 2025-01-02 18:19+0800\n"
+"Last-Translator:lexlong2007\n"
+"Language-Team: lexlong2007\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.7.3\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: ../ui.py:833
 msgid ""
 "\n"
 "<   >       =   Prognosis next/previous day\n"
@@ -35,596 +34,810 @@ msgid ""
 "\n"
 "Wind direction = Arrow to right: Wind from the West"
 msgstr ""
+"\n"
+"<   >       =  下一步预测/前一天\n"
+"0 - 9       =   从现在向后 (x) 几天\n"
+"\n"
+"VOL+/-  =  快速滚动 100 (城市选择)\n"
+"Bouquet+/- =   快速滚动 500 (城市选择)\n"
+"\n"
+"Info        =   关于信息\n"
+"Menu     =   卫星照片和地图\n"
+"\n"
+"Red        =   未来5天的气温图\n"
+"Green    =   转到收藏夹 1\n"
+"Yellow    =   转到收藏夹 2\n"
+"Blue        =   返回主页 \n"
+"\n"
+"风向=向右箭头：西风"
 
-#: ../ui.py:673
 msgid "0 - Today"
-msgstr ""
+msgstr "0-今日"
 
-#: ../ui.py:674
 msgid "1 - Today + 1 day"
-msgstr ""
+msgstr "1-今天+ 1天"
 
-#: ../ui.py:175
 msgid "12 h"
-msgstr ""
+msgstr "12小时"
 
-#: ../ui.py:675
 msgid "2 - Today + 2 days"
-msgstr ""
+msgstr "2-今天+ 2天"
 
-#: ../ui.py:175
 msgid "24 h"
-msgstr ""
+msgstr "24 小时"
 
-#: ../ui.py:676
 msgid "3 - Today + 3 days"
-msgstr ""
+msgstr "3-今天+ 3天"
 
-#: ../ui.py:677
 msgid "4 - Today + 4 days"
-msgstr ""
+msgstr "4-今天+ 4天"
 
-#: ../ui.py:678
 msgid "5 - Today + 5 days"
-msgstr ""
+msgstr "5-今天+ 5天"
 
-#: ../ui.py:679
 msgid "6 - Today + 6 days"
-msgstr ""
+msgstr "6-今天+ 6天"
 
-#: ../ui.py:680
 msgid "7 - Today + 7 days"
-msgstr ""
+msgstr "7-今天+ 7天"
 
-#: ../ui.py:681
 msgid "8 - Today + 8 days"
-msgstr ""
+msgstr "8-今天+ 8天"
 
-#: ../ui.py:682
 msgid "9 - Today + 9 days"
-msgstr ""
+msgstr "9 -今天+ 9天"
 
-#: ../ui.py:1380
 msgid "Air pressure"
-msgstr ""
+msgstr "空气压力"
 
-#: ../ui.py:1476
 msgid "Australia"
 msgstr "澳大利亚"
 
-#: ../ui.py:1437
 msgid "Austria"
 msgstr "奥地利"
 
-#: ../ui.py:1942
 msgid "Backgroundcolor"
-msgstr "背景色"
+msgstr "背景颜色"
 
-#: ../ui.py:1412
 msgid "Baden-Wuerttemberg"
-msgstr ""
+msgstr "巴登-符腾堡州"
 
-#: ../ui.py:1413
 msgid "Bavaria"
 msgstr "巴伐利亚"
 
-#: ../ui.py:1438
 msgid "Belgium"
 msgstr "比利时"
 
-#: ../ui.py:1414
 msgid "Berlin"
 msgstr "柏林"
 
-#: ../ui.py:1125
+msgid "Blowing Snow"
+msgstr "暴风雪"
+
 msgid "Blue - Assign to Home"
-msgstr ""
+msgstr "蓝色-分配给首页"
 
-#: ../ui.py:672
 msgid "Blue - Home"
-msgstr ""
+msgstr "蓝色-主页"
 
-#: ../ui.py:1369 ../ui.py:1630
 msgid "Blue - Settings"
-msgstr ""
+msgstr "蓝色-设置"
 
-#: ../ui.py:1415
+msgid "Blustery"
+msgstr "大风"
+
 msgid "Brandenburg"
 msgstr "勃兰登堡"
 
-#: ../ui.py:1416
+msgid "Breezy"
+msgstr "微风习习"
+
 msgid "Bremen"
 msgstr "不来梅"
 
-#: ../ui.py:1908
 msgid "Cancel"
 msgstr "取消"
 
-#: ../ui.py:1126
+msgid "Chance precip:"
+msgstr "降雨可能性:"
+
+msgid "Chance precip:%s"
+msgstr "降雨可能性:%s"
+
 msgid "Channel+ - 500 back"
-msgstr ""
+msgstr "频道+-500返回"
 
-#: ../ui.py:1127
 msgid "Channel- - 500 forward"
-msgstr ""
+msgstr "频道--500前转"
 
-#: ../ui.py:642
 msgid "City"
 msgstr "城市"
 
-#: ../ui.py:1935
 msgid "City names as labels in the Main screen"
-msgstr "城市名称作为主屏幕中的标签"
+msgstr "城市名称在主屏幕中作为标签"
 
-#: ../ui.py:1379
+msgid "Clear"
+msgstr "晴朗"
+
 msgid "Cloudcover Video"
 msgstr "云层视频"
 
-#: ../ui.py:1352 ../ui.py:1477
-msgid "Continents"
-msgstr "大洲"
+msgid "Cloudy"
+msgstr "多云"
 
-#: ../ui.py:1439
+msgid "Cold"
+msgstr "寒冷"
+
+msgid "Continents"
+msgstr "地区选择"
+
 msgid "Czech Republic"
 msgstr "捷克共和国"
 
-#: ../ui.py:1945
 msgid "Debug"
-msgstr "调试"
+msgstr "调试日志"
 
-#: ../ui.py:1440
 msgid "Denmark"
 msgstr "丹麦"
 
-#: ../ui.py:1944
 msgid "Display in extensions menu"
 msgstr "在扩展菜单中显示"
 
-#: ../ui.py:1121 ../ui.py:1365 ../ui.py:1629
 msgid "Down - Next"
-msgstr ""
+msgstr "下-下一个"
 
-#: ../ui.py:665
 msgid "Down - Next page"
-msgstr ""
+msgstr "向下-下一页"
 
-#: ../ui.py:1473
+msgid "Drizzle"
+msgstr "下蒙蒙细雨"
+
+msgid "Dust"
+msgstr "灰尘"
+
 msgid "East Asia"
 msgstr "东亚"
 
-#: ../ui.py:1381
 msgid "Eumetsat"
-msgstr "欧洲气象卫星组织"
+msgstr "欧洲气象卫星应用组织"
 
-#: ../ui.py:1353 ../ui.py:1462 ../ui.py:1466
 msgid "Europe"
 msgstr "欧洲"
 
-#: ../ui.py:658 ../ui.py:1117 ../ui.py:1361 ../ui.py:1625
 msgid "Exit - End"
-msgstr ""
+msgstr "退出-结束"
 
-#: ../ui.py:648 ../ui.py:852 ../ui.py:901 ../ui.py:1108
 msgid "Favorite 1"
-msgstr "收藏1"
+msgstr "收藏 1"
 
-#: ../ui.py:649 ../ui.py:853 ../ui.py:902 ../ui.py:1109
 msgid "Favorite 2"
-msgstr "收藏2"
+msgstr "收藏 2"
 
-#: ../ui.py:1937
+msgid "Feels Like: "
+msgstr "体感温度: "
+
+msgid "Feels like:"
+msgstr "体感:"
+
+msgid "Feels like: %d"
+msgstr "感觉像: %d"
+
+msgid "Feels like: %s"
+msgstr "感觉像: %s"
+
+msgid "Feels like:%d"
+msgstr "感觉像:%d"
+
+msgid "Feels like:%s"
+msgstr "感觉像:%s"
+
+msgid "Foggy"
+msgstr "多雾的"
+
 msgid "Font size in slideshow"
 msgstr "幻灯片中的字体大小"
 
-#: ../plugin.py:21 ../plugin.py:27 ../ui.py:634 ../ui.py:653
 msgid "Foreca Weather Forecast"
-msgstr "Foreca天气预报"
+msgstr "Foreca 天气预报"
 
-#: ../ui.py:1111
 msgid "Forecast"
-msgstr "预测"
+msgstr "Forecast十天天气预报"
 
-#: ../ui.py:1936
 msgid "Frame size in full view"
-msgstr "全视图中的帧大小"
+msgstr "全屏显示帧速率"
 
-#: ../ui.py:1441
 msgid "France"
 msgstr "法国"
 
-#: ../ui.py:1354 ../ui.py:1433 ../ui.py:1442
+msgid "Freezing Drizzle"
+msgstr "冻毛毛雨"
+
+msgid "Freezing Rain"
+msgstr "冻雨"
+
 msgid "Germany"
 msgstr "德国"
 
-#: ../ui.py:1444
 msgid "Great Britain"
-msgstr "英国"
+msgstr "大不列颠及北爱尔兰"
 
-#: ../ui.py:1443
 msgid "Greece"
 msgstr "希腊"
 
-#: ../ui.py:1123
 msgid "Green - Assign to Favorite 1"
-msgstr ""
+msgstr "绿色-分配到收藏夹1"
 
-#: ../ui.py:1367
 msgid "Green - Europe"
-msgstr ""
+msgstr "绿色-欧洲"
 
-#: ../ui.py:670
 msgid "Green - Favorite 1"
-msgstr ""
+msgstr "绿色-收藏 1"
 
-#: ../ui.py:1417
+msgid "Hail"
+msgstr "冰雹"
+
 msgid "Hamburg"
-msgstr "汉堡"
+msgstr "德国汉堡"
 
-#: ../ui.py:1418
+msgid "Haze"
+msgstr "霾"
+
+msgid "Heavy Snow"
+msgstr "大雪"
+
 msgid "Hesse"
-msgstr "赫斯"
+msgstr "黑森"
 
-#: ../ui.py:650 ../ui.py:854 ../ui.py:903 ../ui.py:1110
 msgid "Home"
-msgstr "主页"
+msgstr "首页"
 
-#: ../ui.py:1445
+msgid "Hot"
+msgstr "热的"
+
+msgid "Humidity"
+msgstr "湿度"
+
+msgid "Humidity:"
+msgstr "湿度:"
+
 msgid "Hungary"
 msgstr "匈牙利"
 
-#: ../ui.py:174
+msgid "Hurricane"
+msgstr "飓风"
+
 msgid "Imperial (C, mph)"
 msgstr "英制（C，mph）"
 
-#: ../ui.py:660
 msgid "Info - Legend"
-msgstr ""
+msgstr "信息-图例"
 
-#: ../ui.py:1446
 msgid "Ireland"
 msgstr "爱尔兰"
 
-#: ../ui.py:1447
+msgid "Isolated Thundershowers"
+msgstr "局部雷阵雨"
+
+msgid "Isolated Thunderstorms"
+msgstr "局部雷暴"
+
 msgid "Italy"
 msgstr "意大利"
 
-#: ../ui.py:1448
+msgid "Latitude:"
+msgstr "维度:"
+
 msgid "Latvia"
 msgstr "拉脱维亚"
 
-#: ../ui.py:662
 msgid "Left - Previous day"
-msgstr ""
+msgstr "左-前一天"
 
-#: ../ui.py:1118 ../ui.py:1362 ../ui.py:1626
 msgid "Left - Previous page"
-msgstr ""
+msgstr "左-前一页"
 
-#: ../ui.py:666
 msgid "Left arrow - Previous day"
-msgstr ""
+msgstr "左箭头-前一天"
 
-#: ../ui.py:651
 msgid "Legend"
-msgstr ""
+msgstr "图例"
 
-#: ../ui.py:1420
+msgid "Light Snow Showers"
+msgstr "小雪阵雨"
+
+msgid "Location:"
+msgstr "位置:"
+
+msgid "Longitude:"
+msgstr "经度:"
+
 msgid "Lower Saxony"
 msgstr "下萨克森"
 
-#: ../ui.py:1449
 msgid "Luxembourg"
 msgstr "卢森堡"
 
-#: ../ui.py:652
 msgid "Maps"
 msgstr "地图"
 
-#: ../ui.py:1419
 msgid "Mecklenburg-Vorpommern"
-msgstr ""
+msgstr "梅克伦堡"
 
-#: ../ui.py:659
 msgid "Menu - Weather maps"
-msgstr ""
+msgstr "菜单-天气图"
 
-#: ../ui.py:174
 msgid "Metric (C, km/h)"
-msgstr "公制（C，km/h）"
+msgstr "公制（C，千米/小时）"
 
-#: ../ui.py:174
 msgid "Metric (C, m/s)"
-msgstr "公制（C，m/s）"
+msgstr "公制（C，米/秒）"
 
-#: ../ui.py:1470
 msgid "Middle America"
-msgstr "中美"
+msgstr "中美洲"
 
-#: ../ui.py:1475
 msgid "Middle Asia"
 msgstr "中亚"
 
-#: ../ui.py:1472
 msgid "Middle East"
 msgstr "中东"
 
-#: ../ui.py:1450
+msgid "Mixed Rain and Hail"
+msgstr "混合雨和冰雹"
+
+msgid "Moonlight:"
+msgstr "月光:"
+
+msgid "Mostly Clear"
+msgstr "晴时多云"
+
+msgid "Mostly Cloudy"
+msgstr "部分地区多云"
+
+msgid "Mostly Sunny"
+msgstr "晴时多云"
+
+msgid "Mostly clear"
+msgstr "大部晴朗"
+
 msgid "Netherlands"
-msgstr "纽西兰"
+msgstr "荷兰"
 
-#: ../ui.py:1467
+msgid "New moon"
+msgstr "新月"
+
 msgid "North Africa"
-msgstr "南非"
+msgstr "北非"
 
-#: ../ui.py:1469
 msgid "North America"
-msgstr "南美"
+msgstr "北美洲"
 
-#: ../ui.py:1421
 msgid "North Rhine-Westphalia"
-msgstr ""
+msgstr "北莱茵-- 威斯特伐利亚"
 
-#: ../ui.py:661
 msgid "OK - City"
-msgstr ""
+msgstr "OK-城市"
 
-#: ../ui.py:1122
 msgid "OK - Select"
-msgstr ""
+msgstr "确定-选择"
 
-#: ../ui.py:1370 ../ui.py:1631
 msgid "OK - Show"
-msgstr ""
+msgstr "OK  -显示"
 
-#: ../ui.py:637 ../ui.py:702
+msgid "Observation point:"
+msgstr "观测点："
+
+msgid "Overcast"
+msgstr "灰蒙蒙"
+
+msgid "Partly Cloudy"
+msgstr "部分多云"
+
 msgid "Please wait ..."
-msgstr "请等待 ..."
+msgstr "请耐心等待 ..."
 
-#: ../ui.py:1773
 msgid "Please wait, photo is being loaded ..."
-msgstr "请等待，图片加载中 ..."
+msgstr "请稍候，正在加载照片..."
 
-#: ../ui.py:1451
 msgid "Poland"
 msgstr "波兰"
 
-#: ../ui.py:1452
 msgid "Portugal"
 msgstr "葡萄牙"
 
-#: ../ui.py:1366
+msgid "Precip chance"
+msgstr "降雨几率"
+
+msgid "Precip chance:"
+msgstr "降雨几率:"
+
+msgid "Precip chance: %s"
+msgstr "降雨几率: %s"
+
+msgid "Rain"
+msgstr "雨"
+
+msgid "Rain And Sleet"
+msgstr "雨夹雪"
+
+msgid "Rain And Snow"
+msgstr "雨雪天气"
+
 msgid "Red - Continents"
-msgstr ""
+msgstr "红色 -欧洲大陆"
 
-#: ../ui.py:668
 msgid "Red - Weekoverview"
-msgstr ""
+msgstr "红色-每周概览"
 
-#: ../ui.py:1422
 msgid "Rhineland-Palatine"
-msgstr ""
+msgstr "莱茵兰-帕拉丁"
 
-#: ../ui.py:663
 msgid "Right - Next day"
-msgstr ""
+msgstr "右-第二天"
 
-#: ../ui.py:1119 ../ui.py:1363 ../ui.py:1627
 msgid "Right - Next page"
-msgstr ""
+msgstr "右-下一页"
 
-#: ../ui.py:667
 msgid "Right arrow - Next day"
-msgstr ""
+msgstr "向右箭头-第二天"
 
-#: ../ui.py:1453
 msgid "Russia"
 msgstr "俄罗斯"
 
-#: ../ui.py:1423
 msgid "Saarland"
-msgstr "萨尔兰"
+msgstr "萨尔州"
 
-#: ../ui.py:1347 ../ui.py:1356
 msgid "Satellite photos"
 msgstr "卫星照片"
 
-#: ../ui.py:1909
 msgid "Save"
 msgstr "保存"
 
-#: ../ui.py:1424
 msgid "Saxony"
-msgstr "萨克森"
+msgstr "萨克森州"
 
-#: ../ui.py:1425
 msgid "Saxony-Anhalt"
-msgstr ""
+msgstr "萨克森-安哈尔特"
 
-#: ../ui.py:1938
+msgid "Scale of temperature:"
+msgstr "温度刻度："
+
+msgid "Scale of wind speed:"
+msgstr "风速范围："
+
 msgid "Scaling Mode"
 msgstr "缩放模式"
 
-#: ../ui.py:1426
-msgid "Schleswig-Holstein"
-msgstr ""
+msgid "Scattered Showers"
+msgstr "零星阵雨"
 
-#: ../ui.py:1102 ../ui.py:1112
+msgid "Scattered Snow Showers"
+msgstr "零星的阵雪"
+
+msgid "Scattered Thunderstorms"
+msgstr "散射雷暴"
+
+msgid "Schleswig-Holstein"
+msgstr "石勒苏益格-荷尔斯泰因"
+
 msgid "Select a city"
 msgstr "选择一个城市"
 
-#: ../ui.py:1934
 msgid "Select time format"
 msgstr "选择时间格式"
 
-#: ../ui.py:1933
 msgid "Select units"
 msgstr "选择单位"
 
-#: ../ui.py:1355 ../ui.py:1619
 msgid "Settings"
 msgstr "设置"
 
-#: ../ui.py:1940
+msgid "Severe Thunderstorms"
+msgstr "强雷暴"
+
 msgid "Show Infoline"
-msgstr "显示信息线"
+msgstr "显示信息"
 
-#: ../ui.py:1377
 msgid "Showerradar Video"
-msgstr ""
+msgstr "视频显示雷达"
 
-#: ../ui.py:1939
+msgid "Showers"
+msgstr "阵雨"
+
+msgid "Sleet"
+msgstr "冰雹"
+
 msgid "Slide Time (seconds)"
 msgstr "滑动时间（秒）"
 
-#: ../ui.py:1943
 msgid "Slide picture in loop"
 msgstr "循环播放幻灯片"
 
-#: ../ui.py:1907 ../ui.py:1910
 msgid "SlideShow Settings"
-msgstr "幻灯片放映设置"
+msgstr "幻灯片设置"
 
-#: ../ui.py:1454
 msgid "Slovakia"
 msgstr "斯洛伐克"
 
-#: ../ui.py:1468
+msgid "Smoky"
+msgstr "冒烟的"
+
+msgid "Snow"
+msgstr "雪"
+
+msgid "Snow And Sleet"
+msgstr "雨夹雪"
+
+msgid "Snow Flurries"
+msgstr "小雪"
+
+msgid "Snow Showers"
+msgstr "阵雪"
+
 msgid "South Africa"
 msgstr "南非"
 
-#: ../ui.py:1471
 msgid "South America"
 msgstr "南美洲"
 
-#: ../ui.py:1474
 msgid "Southeast Asia"
 msgstr "东南亚"
 
-#: ../ui.py:1455
 msgid "Spain"
 msgstr "西班牙"
 
-#: ../ui.py:1456
+msgid "Sunny"
+msgstr "阳光灿烂"
+
 msgid "Switzerland"
 msgstr "瑞士"
 
-#: ../ui.py:472
 msgid "Temp"
 msgstr "温度"
 
-#: ../ui.py:1378
 msgid "Temperature Video"
 msgstr "温度视频"
 
-#: ../ui.py:1941
 msgid "Textcolor"
-msgstr ""
+msgstr "字体颜色"
 
-#: ../ui.py:1216
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
 "                             "
 msgstr ""
+"这座城市被保存为 收藏1！\n"
+"\n"
+"                             "
 
-#: ../ui.py:1226
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
 "                             "
 msgstr ""
+"这个城市被存储为 收藏2!\n"
+"\n"
+"                             "
 
-#: ../ui.py:1206
 msgid ""
 "This city is stored as home!\n"
 "\n"
 "                                  "
 msgstr ""
+"这座城市被保存为 收藏 1！\n"
+"\n"
+"                                  "
 
-#: ../ui.py:1427
+msgid "Thundershowers"
+msgstr "雷雨"
+
+msgid "Thunderstorms"
+msgstr "雷暴"
+
 msgid "Thuringia"
-msgstr ""
+msgstr "图林根州"
 
-#: ../ui.py:174
+msgid "Tornado"
+msgstr "龙卷风"
+
+msgid "Tropical Storm"
+msgstr "热带风暴"
+
 msgid "US (F, mph)"
-msgstr ""
+msgstr "美国（F，mph）"
 
-#: ../ui.py:1120 ../ui.py:1364 ../ui.py:1628
 msgid "Up - Previous"
-msgstr ""
+msgstr "上-上一个"
 
-#: ../ui.py:664
 msgid "Up - Previous page"
-msgstr ""
+msgstr "向上-上一页"
 
-#: ../ui.py:653
 msgid "Version "
-msgstr "版本 "
+msgstr "版本"
 
-#: ../ui.py:1129
 msgid "Volume+ - 100 back"
-msgstr ""
+msgstr "音量+-100后退"
 
-#: ../ui.py:1128
 msgid "Volume- - 100 forward"
-msgstr ""
+msgstr "音量--100前进"
 
-#: ../plugin.py:22 ../plugin.py:28
 msgid "Weather forecast for the upcoming 10 days"
-msgstr "未来10天天气预报"
+msgstr "未来10天的天气预报"
 
-#: ../ui.py:1376
 msgid "Weather map Video"
-msgstr "天气图视频"
+msgstr "气象图视频"
 
-#: ../ui.py:641
 msgid "Week"
-msgstr "一周天气"
+msgstr "星期:"
 
-#: ../ui.py:484
 msgid "Wind"
 msgstr "风速"
 
-#: ../ui.py:1124
+msgid "Windy"
+msgstr "刮风的"
+
 msgid "Yellow - Assign to Favorite 2"
-msgstr ""
+msgstr "黄色-分配给收藏夹2"
 
-#: ../ui.py:671
 msgid "Yellow - Favorite 2"
-msgstr ""
+msgstr "黄色-收藏 2"
 
-#: ../ui.py:1368
 msgid "Yellow - Germany"
-msgstr ""
+msgstr "黄色-德国"
 
-#: ../ui.py:165
 msgid "better"
-msgstr "更好"
+msgstr "较好"
 
-#: ../ui.py:166 ../ui.py:167
 msgid "black"
-msgstr "黑"
+msgstr "黑色"
 
-#: ../ui.py:166 ../ui.py:167
 msgid "blue"
-msgstr "蓝"
+msgstr "蓝色"
 
-#: ../ui.py:166 ../ui.py:167
+msgid "clear day"
+msgstr "晴天"
+
+msgid "clear night"
+msgstr "晴朗的夜晚"
+
+msgid "cloudy"
+msgstr "多云的"
+
+msgid "fog"
+msgstr "雾"
+
+msgid "ft/s"
+msgstr "英尺/秒"
+
 msgid "green"
-msgstr "绿"
+msgstr "绿色"
 
-#: ../ui.py:1514
 msgid "h"
-msgstr ""
+msgstr "小时"
 
-#: ../ui.py:166 ../ui.py:167
+msgid "http://www.foreca.com/"
+msgstr "http://www.foreca.com/"
+
+msgid "km/h"
+msgstr "公里/小时"
+
+msgid "knots"
+msgstr "节"
+
+msgid "m/s"
+msgstr "米/秒"
+
+msgid "mp/h"
+msgstr "英里/小时"
+
+msgid "partly cloudy day"
+msgstr "多云天气"
+
+msgid "partly cloudy night"
+msgstr "多云的夜晚"
+
+msgid "rain"
+msgstr "雨"
+
 msgid "red"
-msgstr "红"
+msgstr "红色"
 
-#: ../ui.py:165
 msgid "simple"
 msgstr "简单"
 
-#: ../ui.py:166 ../ui.py:167
+msgid "sleet"
+msgstr "冰雹"
+
+msgid "snow"
+msgstr "雪"
+
+msgid "wind"
+msgstr "风"
+
 msgid "yellow"
-msgstr "黄"
+msgstr "黃色"
+
+msgid "°C"
+msgstr "°C"
+
+msgid "°F"
+msgstr "°F"
+
+msgid "For more info press HELP button"
+msgstr "如需了解更多信息,请按 '帮助'按钮!"
+
+msgid "Cloudy and light rain"
+msgstr "多云有小雨"
+
+msgid "Partly cloudy"
+msgstr "多云"
+
+msgid "Type Server"
+msgstr "服务器类型"
+
+msgid "Sunday"
+msgstr "周日"
+
+msgid "Monday"
+msgstr "周一"
+
+msgid "Tuesday"
+msgstr "周二"
+
+msgid "Wednesday"
+msgstr "周三"
+
+msgid "Thursday"
+msgstr "周四"
+
+msgid "Friday"
+msgstr "周五"
+
+msgid "Saturday"
+msgstr "周六"
+
+msgid "January"
+msgstr "一月"
+
+msgid "February"
+msgstr "二月"
+
+msgid "March"
+msgstr "三月"
+
+msgid "April"
+msgstr "四月"
+
+msgid "May"
+msgstr "五月"
+
+msgid "June"
+msgstr "六月"
+
+msgid "July"
+msgstr "七月"
+
+msgid "August"
+msgstr "八月"
+
+msgid "September"
+msgstr "九月"
+
+msgid "October"
+msgstr "十月"
+
+msgid "November"
+msgstr "十一月"
+
+msgid "December"
+msgstr "十二月"
+
+msgid "Overcast and light rain"
+msgstr "阴天有小雨"
+
+msgid "Overcast and showers"
+msgstr "阴天有阵雨"
+
+msgid "Partly cloudy and light rain"
+msgstr "多云，有小雨"
+
+
