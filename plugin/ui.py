@@ -466,10 +466,11 @@ class MainMenuList(MenuList):
 		self.font1 = gFont("Regular", 26)
 		self.font2 = gFont("Regular", 28)
 		self.font3 = gFont("Regular", 28)
-		self.itemHeight = 120
+
+		self.itemHeight = 150
 		self.valTime = 5, 80, 100, 45
-		self.valPict = 110, 45, 70, 70
-		self.valPictScale = 0
+		self.valPict = 120, 45, 70, 70
+		self.valPictScale = 1
 		self.valTemp = 200, 55, 150, 40
 		self.valTempUnits = 200, 95, 15, 40
 		self.valWindPict = 320, 75, 35, 35
@@ -480,6 +481,7 @@ class MainMenuList(MenuList):
 		self.valText2 = 500, 45, 800, 42
 		self.valText3 = 500, 90, 800, 42
 		self.valText4 = 500, 135, 800, 42
+
 		self.listCompleted = []
 		self.callback = None
 		self.idx = 0
@@ -831,10 +833,10 @@ class ForecaPreview(Screen, HelpableScreen):
 		if size_w == 1920:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="1200,820" title="Foreca Weather Forecast">
-					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/green.png" position="305,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/yellow.png" position="600,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/blue.png" position="895,5" size="295,70" />
+					<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="600,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="895,65" size="295,6" zPosition="11" />
 					<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_red" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
@@ -844,7 +846,11 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget backgroundColor="background" source="Titel2" render="Label" position="13,123" size="1180,40" font="Regular;32" halign="center" transparent="1" />
 					<widget backgroundColor="background" source="Titel3" render="Label" position="13,84" size="1180,40" foregroundColor="yellow" font="Regular;32" halign="center" transparent="1" />
 					<widget backgroundColor="background" source="Titel4" render="Label" position="6,882" size="1180,40" font="Regular;32" halign="center" transparent="1" />
+					<!--
 					<widget name="MainList" position="10,160" size="1180,600" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					-->
+					<widget name="MainList" position="10,160" size="1180,600" zPosition="3" foregroundColor="#ffffff" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="barColor" alphatest="1" font0="Regular;30" font1="Fixed;30" font2="Fixed;28" font3="Regular;30" itemHeight="200" setTime="15,40,100,45" setPict="150,40,70,70" setPictScale="1" setTemp="280,50,200,40" setTempUnits="280,95,150,40" setWindPict="550,75,35,35" setWindPictScale="1" setWind="600,50,95,40" setWindUnits="600,95,50,40" text1Pos="720,0,600,42" text2Pos="720,50,600,42" text3Pos="720,100,600,42" text4Pos="720,150,600,42" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" />
+
 					<eLabel backgroundColor="grey" position="10,770" size="1180,1" />
 					<ePixmap position="10,780" size="60,30" pixmap="skin_default/icons/info.png" />
 					<ePixmap position="360,780" size="60,30" pixmap="skin_default/icons/menu.png" />
@@ -854,13 +860,14 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget source="key_ok" render="Label" position="790,780" size="250,35" font="Regular;30" />
 					<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
 				</screen>"""
+
 		elif size_w == 2560:
 			self.skin = """
 				<screen name="ForecaPreview" position="center,center" size="1640,1040" title="Foreca Weather Forecast" >
-					<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/yellow.png" position="820,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/blue.png" position="1220,10" size="400,80" />
+					<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="820,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1220,85" size="400,6" zPosition="11" />
 					<widget source="key_red" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_green" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_yellow" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
@@ -880,11 +887,11 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,center" size="820,520" title="Foreca Weather Forecast">
-					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="200,40" />
-					<ePixmap pixmap="skin_default/buttons/green.png" position="210,5" size="200,40" />
-					<ePixmap pixmap="skin_default/buttons/yellow.png" position="410,5" size="200,40" />
-					<ePixmap pixmap="skin_default/buttons/blue.png" position="610,5" size="200,40" />
+				<screen name="ForecaPreview" position="550,240" size="820,600" title="Foreca Weather Forecast">
+					<eLabel backgroundColor="red" cornerRadius="3" position="10,40" size="200,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="210,40" size="200,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="410,40" size="200,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="610,40" size="200,6" zPosition="11" />
 					<widget source="key_red" render="Label" position="10,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_green" render="Label" position="210,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_yellow" render="Label" position="410,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
@@ -892,8 +899,8 @@ class ForecaPreview(Screen, HelpableScreen):
 					<eLabel position="10,50" size="800,1" backgroundColor="grey" />
 					<widget backgroundColor="background" source="Titel" render="Label" position="10,54" size="800,30" font="Regular;22" valign="center" halign="center" transparent="1" />
 					<widget backgroundColor="background" source="Titel2" render="Label" position="10,80" size="800,30" font="Regular;22" valign="center" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel3" render="Label" position="2,544" size="800,30" foregroundColor="yellow" font="Regular; 22" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel4" render="Label" position="0,588" size="800,30" font="Regular; 22" halign="center" transparent="1" />
+					<widget backgroundColor="background" source="Titel3" render="Label" position="2,524" size="800,30" foregroundColor="yellow" font="Regular; 22" halign="center" transparent="1" />
+					<widget backgroundColor="background" source="Titel4" render="Label" position="0,558" size="800,30" font="Regular; 22" halign="center" transparent="1" />
 					<widget name="MainList" position="10,110" size="800,360" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="10,480" size="800,1" backgroundColor="grey" />
 					<ePixmap position="10,490" size="50,25" pixmap="skin_default/buttons/key_info.png" />
@@ -1439,10 +1446,10 @@ class CityPanel(Screen, HelpableScreen):
 		self.session = session
 		if size_w == 1920:
 			self.skin = """
-			<screen name="CityPanel" position="center,center" size="1200,820" title="Select a city" >
-				<ePixmap pixmap="skin_default/buttons/green.png" position="10,5" scale="stretch" size="390,70" />
-				<ePixmap pixmap="skin_default/buttons/yellow.png" position="405,5" scale="stretch" size="390,70" />
-				<ePixmap pixmap="skin_default/buttons/blue.png" position="800,5" scale="stretch" size="390,70" />
+			<screen name="CityPanel" position="center,center" size="1200,820" title="Select a city">
+				<eLabel backgroundColor="green" cornerRadius="3" position="10,65" size="390,6" zPosition="11" />
+				<eLabel backgroundColor="yellow" cornerRadius="3" position="405,65" size="390,6" zPosition="11" />
+				<eLabel backgroundColor="blue" cornerRadius="3" position="800,65" size="390,6" zPosition="11" />
 				<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_green" transparent="1" valign="center" zPosition="1" />
 				<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="405,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
 				<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="800,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
@@ -1456,9 +1463,9 @@ class CityPanel(Screen, HelpableScreen):
 		elif size_w == 2560:
 			self.skin = """
 			<screen name="CityPanel" position="center,center" size="1240,1040" title="Select a city" >
-				<ePixmap pixmap="skin_default/buttons/green.png" position="20,10" size="400,80" />
-				<ePixmap pixmap="skin_default/buttons/yellow.png" position="420,10" size="400,80" />
-				<ePixmap pixmap="skin_default/buttons/blue.png" position="820,10" size="400,80" />
+				<eLabel backgroundColor="green" cornerRadius="3" position="20,80" size="400,6" zPosition="11" />
+				<eLabel backgroundColor="yellow" cornerRadius="3" position="420,80" size="400,6" zPosition="11" />
+				<eLabel backgroundColor="blue" cornerRadius="3" position="820,80" size="400,6" zPosition="11" />
 				<widget source="key_green" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 				<widget source="key_yellow" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 				<widget source="key_blue" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
@@ -1472,9 +1479,9 @@ class CityPanel(Screen, HelpableScreen):
 		else:
 			self.skin = """
 			<screen name="CityPanel" position="center,center" size="620,520" title="Select a city" >
-				<ePixmap pixmap="skin_default/buttons/green.png" position="10,5" size="200,40" />
-				<ePixmap pixmap="skin_default/buttons/yellow.png" position="210,5" size="200,40" />
-				<ePixmap pixmap="skin_default/buttons/blue.png" position="410,5" size="200,40" />
+				<eLabel backgroundColor="green" cornerRadius="3" position="11,45" size="200,6" zPosition="11" />
+				<eLabel backgroundColor="yellow" cornerRadius="3" position="210,45" size="200,6" zPosition="11" />
+				<eLabel backgroundColor="blue" cornerRadius="3" position="410,45" size="200,6" zPosition="11" />
 				<widget source="key_green" render="Label" position="10,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 				<widget source="key_yellow" render="Label" position="210,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 				<widget source="key_blue" render="Label" position="410,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
@@ -1719,10 +1726,10 @@ class SatPanel(Screen, HelpableScreen):
 		if size_w == 1920:
 			self.skin = """
 				<screen name="SatPanel" position="center,center" size="1200,820" title="Satellite photos" >
-					<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/green.png" position="305,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/yellow.png" position="600,5" size="295,70" />
-					<ePixmap pixmap="skin_default/buttons/blue.png" position="895,5" size="295,70" />
+					<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="600,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="895,65" size="295,6" zPosition="11" />
 					<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_red" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
@@ -1733,10 +1740,10 @@ class SatPanel(Screen, HelpableScreen):
 		elif size_w == 2560:
 			self.skin = """
 				<screen name="SatPanel" position="center,center" size="1640,1080" title="Satellite photos" >
-					<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/yellow.png" position="820,10" size="400,80" />
-					<ePixmap pixmap="skin_default/buttons/blue.png" position="1220,10" size="400,80" />
+					<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="820,85" size="400,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1220,85" size="400,6" zPosition="11" />
 					<widget source="key_red" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_green" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
 					<widget source="key_yellow" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
@@ -1746,17 +1753,17 @@ class SatPanel(Screen, HelpableScreen):
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000" >
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000"  backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000">
+					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-					<ePixmap position="2,400" size="36,20" pixmap="skin_default/buttons/key_red.png" transparent="1" alphatest="on" />
-					<ePixmap position="160,400" size="36,20" pixmap="skin_default/buttons/key_green.png" transparent="1" alphatest="on" />
-					<ePixmap position="300,400" size="36,20" pixmap="skin_default/buttons/key_yellow.png" transparent="1" alphatest="on" />
-					<ePixmap position="460,400" size="36,20" pixmap="skin_default/buttons/key_blue.png" transparent="1" alphatest="on" />
-					<widget source="key_red" render="Label" position="40,397" zPosition="2" size="124,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_green" render="Label" position="198,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_yellow" render="Label" position="338,397" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_blue" render="Label" position="498,397" zPosition="2" size="142,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<eLabel backgroundColor="red" cornerRadius="3" position="23,432" size="140,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="170,431" size="140,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="330,430" size="140,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="484,430" size="140,6" zPosition="11" />
+					<widget source="key_red" render="Label" position="25,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_green" render="Label" position="171,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_yellow" render="Label" position="329,390" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+					<widget source="key_blue" render="Label" position="485,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
 				</screen>"""
 
 		Screen.__init__(self, session)
@@ -2129,6 +2136,8 @@ class SatPanelb(Screen, HelpableScreen):
 				<screen name="SatPanelb" position="center,center" size="1200,820">
 					<widget enableWrapAround="1" name="Mlist" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
 					<eLabel backgroundColor="grey" position="10,760" size="1180,1" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="719,809" size="295,6" zPosition="11" />
+					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="718,773" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
 					<ePixmap position="1030,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
 					<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
 				</screen>
@@ -2136,13 +2145,21 @@ class SatPanelb(Screen, HelpableScreen):
 		elif size_w == 2560:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="1640,1040">
-					<widget name="Mlist" itemHeight="320" position="20,40" size="1600,960" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" itemHeight="320" position="20,50" size="1600,960" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1054,40" size="295,6" zPosition="11" />
+					<widget backgroundColor="#18188b" font="Regular;32" halign="center" position="1054,1" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
+					<ePixmap position="1422,7" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="1498,8" size="60,30" pixmap="skin_default/icons/help.png" />
 				</screen>
 			"""
 		else:
 			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="620,440" backgroundColor="#40000000">
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="SatPanelb" position="center,center" size="680,600" backgroundColor="#40000000">
+					<widget name="Mlist" position="10,10" size="660,489" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="16,577" size="150,6" zPosition="11" />
+					<widget backgroundColor="#18188b" font="Regular; 22" halign="center" position="17,539" render="Label" shadowColor="black" shadowOffset="-2,-2" size="150,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
+					<ePixmap position="506,544" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="583,546" size="60,30" pixmap="skin_default/icons/help.png" />
 				</screen>
 			"""
 
@@ -2564,15 +2581,15 @@ class PicSetup(Screen, ConfigListScreen):
 
 	if size_w == 1920:
 		skin = """
-		<screen name="PicSetup" position="center,170" size="1200,820" title="Setup" >
-			<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" scale="stretch" size="350,70" />
-			<ePixmap pixmap="skin_default/buttons/green.png" position="360,5" scale="stretch" size="350,70" />
+		<screen name="PicSetup" position="center,170" size="1200,820" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="350,6" zPosition="11" />
+			<eLabel backgroundColor="green" cornerRadius="3" position="362,65" size="350,6" zPosition="11" />
 			<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="350,70" source="key_red" transparent="1" valign="center" zPosition="1" />
 			<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="360,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="350,70" source="key_green" transparent="1" valign="center" zPosition="1" />
-			<widget backgroundColor="background" font="Regular;34" halign="right" position="1050,25" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
+			<widget backgroundColor="background" font="Regular;34" halign="right" position="1012,41" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Default</convert>
 			</widget>
-			<widget backgroundColor="background" font="Regular;34" halign="right" position="640,25" render="Label" shadowColor="black" shadowOffset="-2,-2" size="400,40" source="global.CurrentTime" transparent="1">
+			<widget backgroundColor="background" font="Regular;34" halign="right" position="730,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="400,40" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Date</convert>
 			</widget>
 			<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
@@ -2580,19 +2597,31 @@ class PicSetup(Screen, ConfigListScreen):
 		</screen>"""
 	elif size_w == 2560:
 		skin = """
-		<screen name="PicSetup" position="center,240" size="1640,1060" title="Setup" >
-			<ePixmap pixmap="skin_default/buttons/red.png" position="20,10" size="400,80" />
-			<ePixmap pixmap="skin_default/buttons/green.png" position="420,10" size="400,80" />
+		<screen name="PicSetup" position="center,240" size="1640,1060" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
+			<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
 			<widget render="Label" source="key_red" position="20,10" size="400,80" zPosition="5" valign="center" halign="center" backgroundColor="#9f1313" font="Regular;42" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 			<widget render="Label" source="key_green" position="420,10" size="400,80" zPosition="5" valign="center" halign="center" backgroundColor="#1f771f" font="Regular;42" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 			<eLabel position="20,100" size="1600,2" backgroundColor="grey" />
+			<widget backgroundColor="background" font="Regular;34" halign="right" position="1455,49" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
+				<convert type="ClockToText">Default</convert>
+			</widget>
+			<widget backgroundColor="background" font="Regular;34" halign="right" position="1175,9" render="Label" shadowColor="black" shadowOffset="-2,-2" size="400,40" source="global.CurrentTime" transparent="1">
+				<convert type="ClockToText">Date</convert>
+			</widget>
 			<widget name="Mlist" position="20,120" size="1600,920" enableWrapAround="1" scrollbarMode="showOnDemand" />
 		</screen>"""
 	else:
 		skin = """
-		<screen name="PicSetup" position="center,120" size="820,520" title="Setup" >
-			<ePixmap pixmap="skin_default/buttons/red.png" position="10,5" size="200,40" />
-			<ePixmap pixmap="skin_default/buttons/green.png" position="210,5" size="200,40" />
+		<screen name="PicSetup" position="center,120" size="820,520" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="9,43" size="200,6" zPosition="11" />
+			<eLabel backgroundColor="green" cornerRadius="3" position="209,43" size="200,6" zPosition="11" />
+			<widget backgroundColor="background" font="Regular;34" halign="right" position="677,4" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
+				<convert type="ClockToText">Default</convert>
+			</widget>
+			<widget backgroundColor="background" font="Regular; 22" halign="right" position="411,13" render="Label" shadowColor="black" shadowOffset="-2,-2" size="282,22" source="global.CurrentTime" transparent="1">
+				<convert type="ClockToText">Date</convert>
+			</widget>
 			<widget render="Label" source="key_red" position="10,5" size="200,40" zPosition="5" valign="center" halign="center" backgroundColor="#9f1313" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 			<widget render="Label" source="key_green" position="210,5" size="200,40" zPosition="5" valign="center" halign="center" backgroundColor="#1f771f" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 			<eLabel position="10,50" size="800,1" backgroundColor="grey" />
