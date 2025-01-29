@@ -797,39 +797,16 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# Get favorites
 		global fav1, fav2, city, start
-		# if exists(USR_PATH + "/fav1.cfg"):
-			# with open(USR_PATH + "/fav1.cfg", "r") as file:
-				# fav1 = file.readline().strip()
-			# # fav1 = fav1[fav1.rfind("/") + 1:]
-		# else:
-			# # fav1 = "New_York_City"
-
 		fav1 = config.plugins.foreca.fav1.value
 		fav1 = fav1[fav1.rfind("/") + 1:]
-
 		print(pluginPrintname, "fav1 location:", fav1)
 
-		# if exists(USR_PATH + "/fav2.cfg"):
-			# with open(USR_PATH + "/fav2.cfg", "r") as file:
-				# fav2 = file.readline().strip()
-		# else:
-			# # fav2 = "Moskva"
 		fav2 = config.plugins.foreca.fav2.value
 		fav2 = fav2[fav2.rfind("/") + 1:]
-
 		print(pluginPrintname, "fav2 location:", fav2)
 
-		# # Get home location
-		# if exists(USR_PATH + "/startservice.cfg"):
-			# with open(USR_PATH + "/startservice.cfg", "r") as file:
-				# self.ort = file.readline().strip()
-				# # start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
-		# else:
-			# # self.ort = "United_Kingdom/London"
-			# # start = "London"
-
+		# Get home location
 		self.ort = config.plugins.foreca.home.value
-
 		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
 		print(pluginPrintname, "Start Home location:", start)
 
@@ -1044,9 +1021,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			unlink(CACHE_PATH + "meteogram.png")
 		except Exception:
 			pass
-
-		self.close()
 		self.deactivateCacheDialog()
+		self.close()
 
 	def keyNumberGlobal(self, number):
 		self.tag = number
@@ -1054,10 +1030,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Fav0(self):
 		global start
-		# if exists(USR_PATH + "/startservice.cfg"):
-			# with open(USR_PATH + "/startservice.cfg", "r") as file:
-				# self.ort = file.readline().strip()
-		# else:
 		self.ort = config.plugins.foreca.home.value
 		print("home location:", self.ort)
 		start = self.ort[self.ort.rfind("/") + 1:]
@@ -1065,10 +1037,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Fav1(self):
 		global fav1
-		# if exists(USR_PATH + "/fav1.cfg"):
-			# with open(USR_PATH + "/fav1.cfg", "r") as file:
-				# self.ort = file.readline().strip()
-		# else:
 		self.ort = config.plugins.foreca.fav1.value
 		fav1 = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "fav1 location:", fav1)
@@ -1076,10 +1044,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Fav2(self):
 		global fav2
-		# if exists(USR_PATH + "/fav2.cfg"):
-			# with open(USR_PATH + "/fav2.cfg", "r") as file:
-				# self.ort = file.readline().strip()
-		# else:
 		self.ort = config.plugins.foreca.fav2.value
 		fav2 = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "fav2 location:", fav2)
@@ -1131,13 +1095,15 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def OKCallback(self, callback=None):
 		global city, fav1, fav2
-		self.ort = city
+		# self.ort = city
 		self.tag = 0
 		self.Zukunft(0)
 
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
+		city = start
+		self.ort = city
 
 		if config.plugins.foreca.citylabels.value is True:
 			self["key_green"].setText(fav1.replace("_", " "))
@@ -1197,6 +1163,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
+		city = start
+		self.ort = city
 
 		if config.plugins.foreca.citylabels.value is True:
 			self["key_green"].setText(fav1.replace("_", " "))
@@ -1360,6 +1328,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			x += 1
 
 		self["Titel2"].text = titel[0].strip("'")
+
 		# translation date
 		datum = titel[0]
 		foundPos = datum.rfind(" ")
@@ -1530,7 +1499,8 @@ class CityPanel(Screen, HelpableScreen):
 		self.setup_title = _("Select a city")
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
-
+		global city
+		city = panelmenu
 		self.onChangedEntry = []
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -1618,7 +1588,8 @@ class CityPanel(Screen, HelpableScreen):
 		self.working = False
 
 	def exit(self):
-		global menu
+		global menu, city
+		city = city
 		menu = "stop"
 		self.close()
 
@@ -1636,8 +1607,6 @@ class CityPanel(Screen, HelpableScreen):
 			FAlog("Home:", city)
 		config.plugins.foreca.home.setValue = city
 		config.plugins.foreca.home.save()
-		# with open(USR_PATH + "/startservice.cfg", "w") as fwrite:
-			# fwrite.write(city)
 		start = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1649,8 +1618,6 @@ class CityPanel(Screen, HelpableScreen):
 			FAlog("Fav1:", city)
 		config.plugins.foreca.fav1.setValue = city
 		config.plugins.foreca.fav1.save()
-		# with open(USR_PATH + "/fav1.cfg", "w") as fwrite:
-			# fwrite.write(city)
 		fav1 = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1662,8 +1629,6 @@ class CityPanel(Screen, HelpableScreen):
 			FAlog("Fav2:", city)
 		config.plugins.foreca.fav2.setValue = city
 		config.plugins.foreca.fav2.save()
-		# with open(USR_PATH + "/fav2.cfg", "w") as fwrite:
-			# fwrite.write(city)
 		fav2 = city[city.rfind("/") + 1:len(city)]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1961,10 +1926,20 @@ class SatPanel(Screen, HelpableScreen):
 		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
 
-	def PicSetupMenu(self):
-		self.session.open(PicSetup)
-
 # ------------------------------------------------------------------------------------------
+
+	def PicSetupMenu(self):
+		# self.session.open(PicSetup)
+		self.session.openWithCallback(self.OKCallback, PicSetup)
+		
+	def OKCallback(self, callback=None):
+		global  fav1, fav2, start
+		fav1 = str(config.plugins.foreca.fav1.value)
+		fav2 = str(config.plugins.foreca.fav2.value)
+		start = str(config.plugins.foreca.home.value)
+		city = start
+		self.ort = city		
+		self.exit()
 
 	def fetch_url(self, x):
 		menu = self['Mlist'].l.getCurrentSelection()[0][1]
@@ -2243,7 +2218,17 @@ class SatPanelb(Screen, HelpableScreen):
 		self.SatBild()
 
 	def PicSetupMenu(self):
-		self.session.open(PicSetup)
+		# self.session.open(PicSetup)
+		self.session.openWithCallback(self.OKCallback, PicSetup)
+
+	def OKCallback(self, callback=None):
+		global fav1, fav2, start
+		# self.ort = city
+		fav1 = str(config.plugins.foreca.fav1.value)
+		fav2 = str(config.plugins.foreca.fav2.value)
+		start = str(config.plugins.foreca.home.value)
+		self.ort = start
+		self.Exit()
 
 	def SatBild(self):
 		try:
@@ -2740,13 +2725,13 @@ class PicSetup(Screen, ConfigListScreen):
 
 	def OKCallback(self):
 		global city
-		if city:
-			print('city is:', city)
-			self.ort = city  # config_entry.value
+		if city != self.config_entry:
+			print('city is:', str(city))
+			# self.ort = city  # config_entry.value
 			self.config_entry.setValue(city)
 			self.config_entry.save()
 			self.createSetup()
-			print("New city saved:", self.ort)
+			print("New city saved:", city)
 
 	def changedEntry(self):
 		current_item = self["Mlist"].getCurrent()
@@ -2767,17 +2752,23 @@ class PicSetup(Screen, ConfigListScreen):
 		return self["Mlist"].getCurrent() and str(self["Mlist"].getCurrent()[1].getText()) or ""
 
 	def save(self):
-		# if self["Mlist"].isChanged():
-		for x in self["Mlist"].list:
-			x[1].save()
-		config.save()
+		if self["Mlist"].isChanged():
+			for x in self["Mlist"].list:
+				x[1].save()
+			config.save()
 		self.refreshPlugins()
-		self.close()
+		self.Exit()
 
 	def cancel(self):
 		for x in self["Mlist"].list:
 			x[1].cancel()
-		self.close(False, self.session)
+		# self.close(False, self.session)
+		self.Exit()
+
+	def Exit(self):
+		global menu
+		menu = "stop"
+		self.close()
 
 	def keyLeft(self):
 		self["Mlist"].handleKey(KEY_LEFT)
