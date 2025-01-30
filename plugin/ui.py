@@ -95,7 +95,7 @@ try:
 except NameError:
 	unicode = str  # In Python 3, unicode == str
 
-VERSION = "3.3.6"
+VERSION = "3.3.7"
 
 
 #
@@ -1077,6 +1077,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			"Bouquet+/- =   Fast scroll 500 (City choice)\n\n"
 			"Info       =   This information\n"
 			"Menu       =   Satellite photos and maps\n\n"
+			"Tv         =   Go to Config Plugin\n\n"
 			"Red        =   Temperature chart for the upcoming 5 days\n"
 			"Green      =   Go to Favorite 1\n"
 			"Yellow     =   Go to Favorite 2\n"
@@ -1316,7 +1317,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			windSpeed[x] = self.filter_dia(windSpeed[x])
 
 			# translate_description
-			translation_dict = self.load_translation_dict(lng)
+			# translation_dict = self.load_translation_dict(lng)
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			description[x] = self.translate_description(description[x], translation_dict)
 			print("description[x]=", description[x])
@@ -1334,7 +1335,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		foundPos = datum.rfind(" ")
 		foundPos2 = datum.find(" ")
 		# Load the translation dictionary
-		translation_dict = self.load_translation_dict(lng)
+		# translation_dict = self.load_translation_dict(lng)
 		day_text = datum[:foundPos2].strip()
 		month_text = datum[foundPos2:foundPos].strip()
 		translated_day = translation_dict.get(day_text.lower(), day_text)
@@ -1931,14 +1932,14 @@ class SatPanel(Screen, HelpableScreen):
 	def PicSetupMenu(self):
 		# self.session.open(PicSetup)
 		self.session.openWithCallback(self.OKCallback, PicSetup)
-		
+
 	def OKCallback(self, callback=None):
-		global  fav1, fav2, start
+		global fav1, fav2, start
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
 		city = start
-		self.ort = city		
+		self.ort = city
 		self.exit()
 
 	def fetch_url(self, x):
@@ -2136,7 +2137,7 @@ class SatPanelb(Screen, HelpableScreen):
 		if size_w == 1920:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="1200,820">
-					<widget enableWrapAround="1" name="Mlist" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
+					<widget name="Mlist" enableWrapAround="1" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
 					<eLabel backgroundColor="grey" position="10,760" size="1180,1" />
 					<eLabel backgroundColor="blue" cornerRadius="3" position="719,809" size="295,6" zPosition="11" />
 					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="718,773" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
@@ -2157,7 +2158,7 @@ class SatPanelb(Screen, HelpableScreen):
 		else:
 			self.skin = """
 				<screen name="SatPanelb" position="center,center" size="680,600" backgroundColor="#40000000">
-					<widget name="Mlist" position="10,10" size="660,489" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<widget name="Mlist" position="10,10" size="660,490" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
 					<eLabel backgroundColor="blue" cornerRadius="3" position="16,577" size="150,6" zPosition="11" />
 					<widget backgroundColor="#18188b" font="Regular; 22" halign="center" position="17,539" render="Label" shadowColor="black" shadowOffset="-2,-2" size="150,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
 					<ePixmap position="506,544" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
@@ -2743,7 +2744,7 @@ class PicSetup(Screen, ConfigListScreen):
 			if isinstance(config_item, (ConfigYesNo, ConfigText, ConfigSelection, ConfigEnableDisable)):
 				self.createSetup()
 		else:
-			print("Errore: Nessun elemento selezionato in Mlist!")
+			print("Errore: No element select in Mlist!")
 
 	def getCurrentEntry(self):
 		return self["Mlist"].getCurrent() and self["Mlist"].getCurrent()[0] or ""
