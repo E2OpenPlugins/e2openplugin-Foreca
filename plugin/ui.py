@@ -1447,6 +1447,7 @@ class CityPanel(Screen, HelpableScreen):
 
 	def __init__(self, session, panelmenu):
 		self.session = session
+
 		if size_w == 1920:
 			self.skin = """
 			<screen name="CityPanel" position="center,center" size="1200,820" title="Select a city">
@@ -1459,8 +1460,8 @@ class CityPanel(Screen, HelpableScreen):
 				<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
 				<widget name="Mlist" itemHeight="35" position="10,90" size="1180,665" enableWrapAround="1" scrollbarMode="showOnDemand" />
 				<eLabel backgroundColor="grey" position="10,770" size="1180,1" />
-				<ePixmap position="710,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-				<widget source="key_ok" render="Label" position="790,780" size="250,35" font="Regular;30" />
+				<ePixmap position="780,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+				<widget source="key_ok" render="Label" position="845,780" size="250,35" font="Regular;30" />
 				<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
 			</screen>"""
 		elif size_w == 2560:
@@ -1500,19 +1501,27 @@ class CityPanel(Screen, HelpableScreen):
 		self.setup_title = _("Select a city")
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
+
 		global city
 		city = panelmenu
 		self.onChangedEntry = []
+
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
 		self.setTitle(_("Select a city"))
 
+		self.filtered_list = []
+		self.search_text = ""
+		global search_ok
+		search_ok = False
+
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
 			{
+				"text": (self.openKeyboard, _("Open Keyboard")),
 				"cancel": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
@@ -1529,17 +1538,53 @@ class CityPanel(Screen, HelpableScreen):
 			},
 			-2
 		)
+
 		self.onShown.append(self.prepare)
+
+	def openKeyboard(self):
+		from Screens.VirtualKeyBoard import VirtualKeyBoard
+		self.session.openWithCallback(
+			self.filter,
+			VirtualKeyBoard,
+			title=_("Search your City"),
+			text='Rome')
+
+	def filter(self, result):
+		if result:
+			try:
+				self.filtered_list = []
+				search = result.lower()
+				for item in self.Mlist:
+					city_name = item[0][0]
+					print('city_name:', city_name)
+					if search in city_name.lower():
+						global search_ok
+						search_ok = True
+						self.filtered_list.append(item)
+				if len(self.filtered_list) < 1:
+					self.session.open(MessageBox, _('No City found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
+					return
+				else:
+					self['Mlist'].l.setList(self.filtered_list)
+					self['Mlist'].moveToIndex(0)
+					self["Mlist"].selectionEnabled(1)
+			except Exception as error:
+				print(error)
+				self.session.open(MessageBox, _('An error occurred during search!'), MessageBox.TYPE_ERROR, timeout=5)
 
 	def prepare(self):
 		self.maxidx = 0
+		self.Mlist = []
 		if exists(USR_PATH + "/City.cfg"):
 			with open(USR_PATH + "/City.cfg", "r") as content:
 				for line in content:
 					text = line.strip()
 					self.maxidx += 1
-					self.Mlist.append(self.CityEntryItem((text.replace("_", " "), text)))
-		self["Mlist"].l.setList(self.Mlist)
+					entry = (text.replace("_", " "), text)
+					self.Mlist.append(self.CityEntryItem(entry))
+
+		self.filtered_list = self.Mlist
+		self["Mlist"].l.setList(self.filtered_list)
 		self["Mlist"].selectionEnabled(1)
 
 	def jump500_up(self):
@@ -1589,10 +1634,15 @@ class CityPanel(Screen, HelpableScreen):
 		self.working = False
 
 	def exit(self):
-		global menu, city
-		city = city
-		menu = "stop"
-		self.close()
+		global search_ok
+		if search_ok is True:
+			search_ok = False
+			self.prepare()
+		else:
+			global menu, city
+			city = city
+			menu = "stop"
+			self.close()
 
 	def ok(self):
 		global city

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-01-30 11:52+0100\n"
+"POT-Creation-Date: 2025-01-30 21:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ui.py\n"
 
-#: plugin.py:20 plugin.py:27 ui.py:899 ui.py:918
+#: plugin.py:20 plugin.py:27 ⁨ui - Copia.py⁩:899 ⁨ui - Copia.py⁩:918 ui.py:899
+#: ui.py:918
 msgid "Foreca Weather Forecast"
 msgstr ""
 
@@ -27,215 +28,219 @@ msgstr ""
 msgid "Weather forecast for the upcoming 10 days"
 msgstr ""
 
-#: ui.py:282
+#: ⁨ui - Copia.py⁩:282 ui.py:282
 msgid "simple"
 msgstr ""
 
-#: ui.py:282
+#: ⁨ui - Copia.py⁩:282 ui.py:282
 msgid "better"
 msgstr ""
 
-#: ui.py:283 ui.py:284
+#: ⁨ui - Copia.py⁩:283 ⁨ui - Copia.py⁩:284 ui.py:283 ui.py:284
 msgid "black"
 msgstr ""
 
-#: ui.py:283 ui.py:284
+#: ⁨ui - Copia.py⁩:283 ⁨ui - Copia.py⁩:284 ui.py:283 ui.py:284
 msgid "blue"
 msgstr ""
 
-#: ui.py:283 ui.py:284
+#: ⁨ui - Copia.py⁩:283 ⁨ui - Copia.py⁩:284 ui.py:283 ui.py:284
 msgid "red"
 msgstr ""
 
-#: ui.py:283 ui.py:284
+#: ⁨ui - Copia.py⁩:283 ⁨ui - Copia.py⁩:284 ui.py:283 ui.py:284
 msgid "yellow"
 msgstr ""
 
-#: ui.py:283 ui.py:284
+#: ⁨ui - Copia.py⁩:283 ⁨ui - Copia.py⁩:284 ui.py:283 ui.py:284
 msgid "green"
 msgstr ""
 
-#: ui.py:291
+#: ⁨ui - Copia.py⁩:291 ui.py:291
 msgid "Metric (C, m/s)"
 msgstr ""
 
-#: ui.py:291
+#: ⁨ui - Copia.py⁩:291 ui.py:291
 msgid "Metric (C, km/h)"
 msgstr ""
 
-#: ui.py:291
+#: ⁨ui - Copia.py⁩:291 ui.py:291
 msgid "Imperial (C, mph)"
 msgstr ""
 
-#: ui.py:291
+#: ⁨ui - Copia.py⁩:291 ui.py:291
 msgid "US (F, mph)"
 msgstr ""
 
-#: ui.py:292
+#: ⁨ui - Copia.py⁩:292 ui.py:292
 msgid "12 h"
 msgstr ""
 
-#: ui.py:292
+#: ⁨ui - Copia.py⁩:292 ui.py:292
 msgid "24 h"
 msgstr ""
 
-#: ui.py:680
+#: ⁨ui - Copia.py⁩:680 ui.py:680
 msgid "Temp"
 msgstr ""
 
-#: ui.py:692
+#: ⁨ui - Copia.py⁩:692 ui.py:692
 msgid "Wind"
 msgstr ""
 
-#: ui.py:703
+#: ⁨ui - Copia.py⁩:703 ui.py:703
 msgid "Feels like:"
 msgstr ""
 
-#: ui.py:708
+#: ⁨ui - Copia.py⁩:708 ui.py:708
 msgid "Precip chance:"
 msgstr ""
 
-#: ui.py:713
+#: ⁨ui - Copia.py⁩:713 ui.py:713
 msgid "Humidity:"
 msgstr ""
 
-#: ui.py:902 ui.py:975
+#: ⁨ui - Copia.py⁩:902 ⁨ui - Copia.py⁩:975 ui.py:902 ui.py:975
 msgid "Please wait ..."
 msgstr ""
 
-#: ui.py:906
+#: ⁨ui - Copia.py⁩:906 ui.py:906
 msgid "Week"
 msgstr ""
 
-#: ui.py:907
+#: ⁨ui - Copia.py⁩:907 ui.py:907
 msgid "City"
 msgstr ""
 
-#: ui.py:913 ui.py:1114 ui.py:1175 ui.py:1506
+#: ⁨ui - Copia.py⁩:913 ⁨ui - Copia.py⁩:1114 ⁨ui - Copia.py⁩:1175 ⁨ui - Copia.py⁩:1510
+#: ui.py:913 ui.py:1114 ui.py:1175 ui.py:1509
 msgid "Favorite 1"
 msgstr ""
 
-#: ui.py:914 ui.py:1115 ui.py:1176 ui.py:1507
+#: ⁨ui - Copia.py⁩:914 ⁨ui - Copia.py⁩:1115 ⁨ui - Copia.py⁩:1176 ⁨ui - Copia.py⁩:1511
+#: ui.py:914 ui.py:1115 ui.py:1176 ui.py:1510
 msgid "Favorite 2"
 msgstr ""
 
-#: ui.py:915 ui.py:1116 ui.py:1177 ui.py:1508
+#: ⁨ui - Copia.py⁩:915 ⁨ui - Copia.py⁩:1116 ⁨ui - Copia.py⁩:1177 ⁨ui - Copia.py⁩:1512
+#: ui.py:915 ui.py:1116 ui.py:1177 ui.py:1511
 msgid "Home"
 msgstr ""
 
-#: ui.py:916
+#: ⁨ui - Copia.py⁩:916 ui.py:916
 msgid "Legend"
 msgstr ""
 
-#: ui.py:917
+#: ⁨ui - Copia.py⁩:917 ui.py:917
 msgid "Maps"
 msgstr ""
 
-#: ui.py:918
+#: ⁨ui - Copia.py⁩:918 ui.py:918
 msgid "Version "
 msgstr ""
 
-#: ui.py:923 ui.py:1516 ui.py:1781 ui.py:2185
+#: ⁨ui - Copia.py⁩:923 ⁨ui - Copia.py⁩:1525 ⁨ui - Copia.py⁩:1818 ⁨ui - Copia.py⁩:2222
+#: ui.py:923 ui.py:1525 ui.py:1831 ui.py:2235
 msgid "Exit - End"
 msgstr ""
 
-#: ui.py:924
+#: ⁨ui - Copia.py⁩:924 ui.py:924
 msgid "Menu - Weather maps"
 msgstr ""
 
-#: ui.py:925
+#: ⁨ui - Copia.py⁩:925 ui.py:925
 msgid "Info - Legend"
 msgstr ""
 
-#: ui.py:926
+#: ⁨ui - Copia.py⁩:926 ui.py:926
 msgid "OK - City"
 msgstr ""
 
-#: ui.py:927
+#: ⁨ui - Copia.py⁩:927 ui.py:927
 msgid "Left - Previous day"
 msgstr ""
 
-#: ui.py:928
+#: ⁨ui - Copia.py⁩:928 ui.py:928
 msgid "Right - Next day"
 msgstr ""
 
-#: ui.py:929
+#: ⁨ui - Copia.py⁩:929 ui.py:929
 msgid "Up - Previous page"
 msgstr ""
 
-#: ui.py:930
+#: ⁨ui - Copia.py⁩:930 ui.py:930
 msgid "Down - Next page"
 msgstr ""
 
-#: ui.py:931
+#: ⁨ui - Copia.py⁩:931 ui.py:931
 msgid "Left arrow - Previous day"
 msgstr ""
 
-#: ui.py:932
+#: ⁨ui - Copia.py⁩:932 ui.py:932
 msgid "Right arrow - Next day"
 msgstr ""
 
-#: ui.py:933
+#: ⁨ui - Copia.py⁩:933 ui.py:933
 msgid "Red - Weekoverview"
 msgstr ""
 
-#: ui.py:935
+#: ⁨ui - Copia.py⁩:935 ui.py:935
 msgid "Green - Favorite 1"
 msgstr ""
 
-#: ui.py:936
+#: ⁨ui - Copia.py⁩:936 ui.py:936
 msgid "Yellow - Favorite 2"
 msgstr ""
 
-#: ui.py:937
+#: ⁨ui - Copia.py⁩:937 ui.py:937
 msgid "Blue - Home"
 msgstr ""
 
-#: ui.py:938
+#: ⁨ui - Copia.py⁩:938 ui.py:938
 msgid "Tv - Config"
 msgstr ""
 
-#: ui.py:940
+#: ⁨ui - Copia.py⁩:940 ui.py:940
 msgid "0 - Today"
 msgstr ""
 
-#: ui.py:941
+#: ⁨ui - Copia.py⁩:941 ui.py:941
 msgid "1 - Today + 1 day"
 msgstr ""
 
-#: ui.py:942
+#: ⁨ui - Copia.py⁩:942 ui.py:942
 msgid "2 - Today + 2 days"
 msgstr ""
 
-#: ui.py:943
+#: ⁨ui - Copia.py⁩:943 ui.py:943
 msgid "3 - Today + 3 days"
 msgstr ""
 
-#: ui.py:944
+#: ⁨ui - Copia.py⁩:944 ui.py:944
 msgid "4 - Today + 4 days"
 msgstr ""
 
-#: ui.py:945
+#: ⁨ui - Copia.py⁩:945 ui.py:945
 msgid "5 - Today + 5 days"
 msgstr ""
 
-#: ui.py:946
+#: ⁨ui - Copia.py⁩:946 ui.py:946
 msgid "6 - Today + 6 days"
 msgstr ""
 
-#: ui.py:947
+#: ⁨ui - Copia.py⁩:947 ui.py:947
 msgid "7 - Today + 7 days"
 msgstr ""
 
-#: ui.py:948
+#: ⁨ui - Copia.py⁩:948 ui.py:948
 msgid "8 - Today + 8 days"
 msgstr ""
 
-#: ui.py:949
+#: ⁨ui - Copia.py⁩:949 ui.py:949
 msgid "9 - Today + 9 days"
 msgstr ""
 
-#: ui.py:1073
+#: ⁨ui - Copia.py⁩:1073 ui.py:1073
 #, python-format
 msgid ""
 "Server URL:    %s\n"
@@ -259,434 +264,461 @@ msgid ""
 "Wind direction =   Arrow to right: Wind from the West\n"
 msgstr ""
 
-#: ui.py:1500 ui.py:1510
+#: ⁨ui - Copia.py⁩:1504 ⁨ui - Copia.py⁩:1514 ui.py:1501 ui.py:1513
 msgid "Select a city"
 msgstr ""
 
-#: ui.py:1509
+#: ⁨ui - Copia.py⁩:1513 ui.py:1512
 msgid "Forecast"
 msgstr ""
 
-#: ui.py:1517 ui.py:1782 ui.py:2186
+#: ⁨ui - Copia.py⁩:1524
+msgid "Search - Find"
+msgstr ""
+
+#: ⁨ui - Copia.py⁩:1526 ⁨ui - Copia.py⁩:1819 ⁨ui - Copia.py⁩:2223 ui.py:1526
+#: ui.py:1832 ui.py:2236
 msgid "Left - Previous page"
 msgstr ""
 
-#: ui.py:1518 ui.py:1783 ui.py:2187
+#: ⁨ui - Copia.py⁩:1527 ⁨ui - Copia.py⁩:1820 ⁨ui - Copia.py⁩:2224 ui.py:1527
+#: ui.py:1833 ui.py:2237
 msgid "Right - Next page"
 msgstr ""
 
-#: ui.py:1519 ui.py:1784 ui.py:2188
+#: ⁨ui - Copia.py⁩:1528 ⁨ui - Copia.py⁩:1821 ⁨ui - Copia.py⁩:2225 ui.py:1528
+#: ui.py:1834 ui.py:2238
 msgid "Up - Previous"
 msgstr ""
 
-#: ui.py:1520 ui.py:1785 ui.py:2189
+#: ⁨ui - Copia.py⁩:1529 ⁨ui - Copia.py⁩:1822 ⁨ui - Copia.py⁩:2226 ui.py:1529
+#: ui.py:1835 ui.py:2239
 msgid "Down - Next"
 msgstr ""
 
-#: ui.py:1521
+#: ⁨ui - Copia.py⁩:1530 ui.py:1530
 msgid "OK - Select"
 msgstr ""
 
-#: ui.py:1522
+#: ⁨ui - Copia.py⁩:1531 ui.py:1531
 msgid "Green - Assign to Favorite 1"
 msgstr ""
 
-#: ui.py:1523
+#: ⁨ui - Copia.py⁩:1532 ui.py:1532
 msgid "Yellow - Assign to Favorite 2"
 msgstr ""
 
-#: ui.py:1524
+#: ⁨ui - Copia.py⁩:1533 ui.py:1533
 msgid "Blue - Assign to Home"
 msgstr ""
 
-#: ui.py:1525
+#: ⁨ui - Copia.py⁩:1534 ui.py:1534
 msgid "Channel+ - 500 back"
 msgstr ""
 
-#: ui.py:1526
+#: ⁨ui - Copia.py⁩:1535 ui.py:1535
 msgid "Channel- - 500 forward"
 msgstr ""
 
-#: ui.py:1527
+#: ⁨ui - Copia.py⁩:1536 ui.py:1536
 msgid "Volume- - 100 forward"
 msgstr ""
 
-#: ui.py:1528
+#: ⁨ui - Copia.py⁩:1537 ui.py:1537
 msgid "Volume+ - 100 back"
 msgstr ""
 
-#: ui.py:1612
+#: ⁨ui - Copia.py⁩:1649 ui.py:1662
 msgid ""
 "This city is stored as home!\n"
 "\n"
 "                                  "
 msgstr ""
 
-#: ui.py:1623
+#: ⁨ui - Copia.py⁩:1660 ui.py:1673
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
 "                             "
 msgstr ""
 
-#: ui.py:1634
+#: ⁨ui - Copia.py⁩:1671 ui.py:1684
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
 "                             "
 msgstr ""
 
-#: ui.py:1765 ui.py:1775
+#: ⁨ui - Copia.py⁩:1802 ⁨ui - Copia.py⁩:1812 ui.py:1815 ui.py:1825
 msgid "Satellite photos"
 msgstr ""
 
-#: ui.py:1771 ui.py:1907
+#: ⁨ui - Copia.py⁩:1808 ⁨ui - Copia.py⁩:1944 ui.py:1821 ui.py:1957
 msgid "Continents"
 msgstr ""
 
-#: ui.py:1772 ui.py:1892 ui.py:1896
+#: ⁨ui - Copia.py⁩:1809 ⁨ui - Copia.py⁩:1929 ⁨ui - Copia.py⁩:1933 ui.py:1822
+#: ui.py:1942 ui.py:1946
 msgid "Europe"
 msgstr ""
 
-#: ui.py:1773 ui.py:1863 ui.py:1872
+#: ⁨ui - Copia.py⁩:1810 ⁨ui - Copia.py⁩:1900 ⁨ui - Copia.py⁩:1909 ui.py:1823
+#: ui.py:1913 ui.py:1922
 msgid "Germany"
 msgstr ""
 
-#: ui.py:1774 ui.py:2178 ui.py:2649
+#: ⁨ui - Copia.py⁩:1811 ⁨ui - Copia.py⁩:2215 ⁨ui - Copia.py⁩:2686 ui.py:1824
+#: ui.py:2228 ui.py:2699
 msgid "Settings"
 msgstr ""
 
-#: ui.py:1786
+#: ⁨ui - Copia.py⁩:1823 ui.py:1836
 msgid "Red - Continents"
 msgstr ""
 
-#: ui.py:1787
+#: ⁨ui - Copia.py⁩:1824 ui.py:1837
 msgid "Green - Europe"
 msgstr ""
 
-#: ui.py:1788
+#: ⁨ui - Copia.py⁩:1825 ui.py:1838
 msgid "Yellow - Germany"
 msgstr ""
 
-#: ui.py:1789 ui.py:2190
+#: ⁨ui - Copia.py⁩:1826 ⁨ui - Copia.py⁩:2227 ui.py:1839 ui.py:2240
 msgid "Blue - Settings"
 msgstr ""
 
-#: ui.py:1790 ui.py:2191
+#: ⁨ui - Copia.py⁩:1827 ⁨ui - Copia.py⁩:2228 ui.py:1840 ui.py:2241
 msgid "OK - Show"
 msgstr ""
 
-#: ui.py:1798
+#: ⁨ui - Copia.py⁩:1835 ui.py:1848
 msgid "Air pressure"
 msgstr ""
 
-#: ui.py:1799
+#: ⁨ui - Copia.py⁩:1836 ui.py:1849
 msgid "Cloudcover Video"
 msgstr ""
 
-#: ui.py:1800
+#: ⁨ui - Copia.py⁩:1837 ui.py:1850
 msgid "Showerradar Video"
 msgstr ""
 
-#: ui.py:1801
+#: ⁨ui - Copia.py⁩:1838 ui.py:1851
 msgid "Temperature Video"
 msgstr ""
 
-#: ui.py:1802
+#: ⁨ui - Copia.py⁩:1839 ui.py:1852
 msgid "Weather map Video"
 msgstr ""
 
-#: ui.py:1803
+#: ⁨ui - Copia.py⁩:1840 ui.py:1853
 msgid "Eumetsat"
 msgstr ""
 
-#: ui.py:1842
+#: ⁨ui - Copia.py⁩:1879 ui.py:1892
 msgid "Baden-Wuerttemberg"
 msgstr ""
 
-#: ui.py:1843
+#: ⁨ui - Copia.py⁩:1880 ui.py:1893
 msgid "Bavaria"
 msgstr ""
 
-#: ui.py:1844
+#: ⁨ui - Copia.py⁩:1881 ui.py:1894
 msgid "Berlin"
 msgstr ""
 
-#: ui.py:1845
+#: ⁨ui - Copia.py⁩:1882 ui.py:1895
 msgid "Brandenburg"
 msgstr ""
 
-#: ui.py:1846
+#: ⁨ui - Copia.py⁩:1883 ui.py:1896
 msgid "Bremen"
 msgstr ""
 
-#: ui.py:1847
+#: ⁨ui - Copia.py⁩:1884 ui.py:1897
 msgid "Hamburg"
 msgstr ""
 
-#: ui.py:1848
+#: ⁨ui - Copia.py⁩:1885 ui.py:1898
 msgid "Hesse"
 msgstr ""
 
-#: ui.py:1849
+#: ⁨ui - Copia.py⁩:1886 ui.py:1899
 msgid "Lower Saxony"
 msgstr ""
 
-#: ui.py:1850
+#: ⁨ui - Copia.py⁩:1887 ui.py:1900
 msgid "Mecklenburg-Vorpommern"
 msgstr ""
 
-#: ui.py:1851
+#: ⁨ui - Copia.py⁩:1888 ui.py:1901
 msgid "North Rhine-Westphalia"
 msgstr ""
 
-#: ui.py:1852
+#: ⁨ui - Copia.py⁩:1889 ui.py:1902
 msgid "Rhineland-Palatine"
 msgstr ""
 
-#: ui.py:1853
+#: ⁨ui - Copia.py⁩:1890 ui.py:1903
 msgid "Saarland"
 msgstr ""
 
-#: ui.py:1854
+#: ⁨ui - Copia.py⁩:1891 ui.py:1904
 msgid "Saxony"
 msgstr ""
 
-#: ui.py:1855
+#: ⁨ui - Copia.py⁩:1892 ui.py:1905
 msgid "Saxony-Anhalt"
 msgstr ""
 
-#: ui.py:1856
+#: ⁨ui - Copia.py⁩:1893 ui.py:1906
 msgid "Schleswig-Holstein"
 msgstr ""
 
-#: ui.py:1857
+#: ⁨ui - Copia.py⁩:1894 ui.py:1907
 msgid "Thuringia"
 msgstr ""
 
-#: ui.py:1867
+#: ⁨ui - Copia.py⁩:1904 ui.py:1917
 msgid "Austria"
 msgstr ""
 
-#: ui.py:1868
+#: ⁨ui - Copia.py⁩:1905 ui.py:1918
 msgid "Belgium"
 msgstr ""
 
-#: ui.py:1869
+#: ⁨ui - Copia.py⁩:1906 ui.py:1919
 msgid "Czech Republic"
 msgstr ""
 
-#: ui.py:1870
+#: ⁨ui - Copia.py⁩:1907 ui.py:1920
 msgid "Denmark"
 msgstr ""
 
-#: ui.py:1871
+#: ⁨ui - Copia.py⁩:1908 ui.py:1921
 msgid "France"
 msgstr ""
 
-#: ui.py:1873
+#: ⁨ui - Copia.py⁩:1910 ui.py:1923
 msgid "Greece"
 msgstr ""
 
-#: ui.py:1874
+#: ⁨ui - Copia.py⁩:1911 ui.py:1924
 msgid "Great Britain"
 msgstr ""
 
-#: ui.py:1875
+#: ⁨ui - Copia.py⁩:1912 ui.py:1925
 msgid "Hungary"
 msgstr ""
 
-#: ui.py:1876
+#: ⁨ui - Copia.py⁩:1913 ui.py:1926
 msgid "Ireland"
 msgstr ""
 
-#: ui.py:1877
+#: ⁨ui - Copia.py⁩:1914 ui.py:1927
 msgid "Italy"
 msgstr ""
 
-#: ui.py:1878
+#: ⁨ui - Copia.py⁩:1915 ui.py:1928
 msgid "Latvia"
 msgstr ""
 
-#: ui.py:1879
+#: ⁨ui - Copia.py⁩:1916 ui.py:1929
 msgid "Luxembourg"
 msgstr ""
 
-#: ui.py:1880
+#: ⁨ui - Copia.py⁩:1917 ui.py:1930
 msgid "Netherlands"
 msgstr ""
 
-#: ui.py:1881
+#: ⁨ui - Copia.py⁩:1918 ui.py:1931
 msgid "Poland"
 msgstr ""
 
-#: ui.py:1882
+#: ⁨ui - Copia.py⁩:1919 ui.py:1932
 msgid "Portugal"
 msgstr ""
 
-#: ui.py:1883
+#: ⁨ui - Copia.py⁩:1920 ui.py:1933
 msgid "Russia"
 msgstr ""
 
-#: ui.py:1884
+#: ⁨ui - Copia.py⁩:1921 ui.py:1934
 msgid "Slovakia"
 msgstr ""
 
-#: ui.py:1885
+#: ⁨ui - Copia.py⁩:1922 ui.py:1935
 msgid "Spain"
 msgstr ""
 
-#: ui.py:1886
+#: ⁨ui - Copia.py⁩:1923 ui.py:1936
 msgid "Switzerland"
 msgstr ""
 
-#: ui.py:1897
+#: ⁨ui - Copia.py⁩:1934 ui.py:1947
 msgid "Middle East"
 msgstr ""
 
-#: ui.py:1898
+#: ⁨ui - Copia.py⁩:1935 ui.py:1948
 msgid "North Africa"
 msgstr ""
 
-#: ui.py:1899
+#: ⁨ui - Copia.py⁩:1936 ui.py:1949
 msgid "South Africa"
 msgstr ""
 
-#: ui.py:1900
+#: ⁨ui - Copia.py⁩:1937 ui.py:1950
 msgid "North America"
 msgstr ""
 
-#: ui.py:1901
+#: ⁨ui - Copia.py⁩:1938 ui.py:1951
 msgid "Middle America"
 msgstr ""
 
-#: ui.py:1902
+#: ⁨ui - Copia.py⁩:1939 ui.py:1952
 msgid "South America"
 msgstr ""
 
-#: ui.py:1903
+#: ⁨ui - Copia.py⁩:1940 ui.py:1953
 msgid "East Asia"
 msgstr ""
 
-#: ui.py:1904
+#: ⁨ui - Copia.py⁩:1941 ui.py:1954
 msgid "Middle Asia"
 msgstr ""
 
-#: ui.py:1905
+#: ⁨ui - Copia.py⁩:1942 ui.py:1955
 msgid "Southeast Asia"
 msgstr ""
 
-#: ui.py:1906
+#: ⁨ui - Copia.py⁩:1943 ui.py:1956
 msgid "Australia"
 msgstr ""
 
-#: ui.py:1964
+#: ⁨ui - Copia.py⁩:2001 ui.py:2014
 msgid "h"
 msgstr ""
 
-#: ui.py:1974
+#: ⁨ui - Copia.py⁩:2011 ui.py:2024
 msgid "Select action"
 msgstr ""
 
-#: ui.py:1997 ui.py:2038
+#: ⁨ui - Copia.py⁩:2034 ⁨ui - Copia.py⁩:2075 ui.py:2047 ui.py:2088
 msgid "eumetsat menu"
 msgstr ""
 
-#: ui.py:2080
+#: ⁨ui - Copia.py⁩:2117 ui.py:2130
 msgid "No satellite images found."
 msgstr ""
 
-#: ui.py:2083
+#: ⁨ui - Copia.py⁩:2120 ui.py:2133
 #, python-format
 msgid "Failed to process satellite data: %s"
 msgstr ""
 
-#: ui.py:2087 ui.py:2263
+#: ⁨ui - Copia.py⁩:2124 ⁨ui - Copia.py⁩:2300 ui.py:2137 ui.py:2313
 #, python-format
 msgid "A critical error occurred: %s"
 msgstr ""
 
-#: ui.py:2240
+#: ⁨ui - Copia.py⁩:2277 ui.py:2290
 msgid "Invalid selection. Please select a valid region."
 msgstr ""
 
-#: ui.py:2258
+#: ⁨ui - Copia.py⁩:2295 ui.py:2308
 #, python-format
 msgid "Failed to load the satellite image: %s"
 msgstr ""
 
-#: ui.py:2416
+#: ⁨ui - Copia.py⁩:2453 ui.py:2466
 msgid "Please wait, photo is being loaded ..."
 msgstr ""
 
-#: ui.py:2650
+#: ⁨ui - Copia.py⁩:2687 ui.py:2700
 msgid "Cancel"
 msgstr ""
 
-#: ui.py:2651
+#: ⁨ui - Copia.py⁩:2688 ui.py:2701
 msgid "Save"
 msgstr ""
 
-#: ui.py:2691
+#: ⁨ui - Copia.py⁩:2728 ui.py:2741
 msgid "Select units"
 msgstr ""
 
-#: ui.py:2692
+#: ⁨ui - Copia.py⁩:2729 ui.py:2742
 msgid "Select time format"
 msgstr ""
 
-#: ui.py:2693
+#: ⁨ui - Copia.py⁩:2730 ui.py:2743
 msgid "City names as labels in the Main screen"
 msgstr ""
 
-#: ui.py:2694
+#: ⁨ui - Copia.py⁩:2731 ui.py:2744
 msgid "Home name at start"
 msgstr ""
 
-#: ui.py:2695
+#: ⁨ui - Copia.py⁩:2732 ui.py:2745
 msgid "Fav1 name"
 msgstr ""
 
-#: ui.py:2696
+#: ⁨ui - Copia.py⁩:2733 ui.py:2746
 msgid "Fav2 name"
 msgstr ""
 
-#: ui.py:2697
+#: ⁨ui - Copia.py⁩:2734 ui.py:2747
 msgid "Frame size in full view"
 msgstr ""
 
-#: ui.py:2698
+#: ⁨ui - Copia.py⁩:2735 ui.py:2748
 msgid "Font size in slideshow"
 msgstr ""
 
-#: ui.py:2699
+#: ⁨ui - Copia.py⁩:2736 ui.py:2749
 msgid "Scaling Mode"
 msgstr ""
 
-#: ui.py:2700
+#: ⁨ui - Copia.py⁩:2737 ui.py:2750
 msgid "Slide Time (seconds)"
 msgstr ""
 
-#: ui.py:2701
+#: ⁨ui - Copia.py⁩:2738 ui.py:2751
 msgid "Show Infoline"
 msgstr ""
 
-#: ui.py:2702
+#: ⁨ui - Copia.py⁩:2739 ui.py:2752
 msgid "Textcolor"
 msgstr ""
 
-#: ui.py:2703
+#: ⁨ui - Copia.py⁩:2740 ui.py:2753
 msgid "Backgroundcolor"
 msgstr ""
 
-#: ui.py:2704
+#: ⁨ui - Copia.py⁩:2741 ui.py:2754
 msgid "Slide picture in loop"
 msgstr ""
 
-#: ui.py:2705
+#: ⁨ui - Copia.py⁩:2742 ui.py:2755
 msgid "Display in extensions menu"
 msgstr ""
 
-#: ui.py:2706
+#: ⁨ui - Copia.py⁩:2743 ui.py:2756
 msgid "Debug"
+msgstr ""
+
+#: ui.py:1524
+msgid "Open Keyboard"
+msgstr ""
+
+#: ui.py:1549
+msgid "Search your City"
+msgstr ""
+
+#: ui.py:1565
+msgid "No City found in search!!!"
+msgstr ""
+
+#: ui.py:1573
+msgid "An error occurred during search!"
 msgstr ""
