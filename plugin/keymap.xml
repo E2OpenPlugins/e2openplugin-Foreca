@@ -37,5 +37,6 @@
 		<key id="KEY_INFO" mapto="showEventInfo" flags="m"/>
 		<key id="KEY_HELP" mapto="contextMenu" flags="m"/>
 		<key id="\x1b" mapto="cancel" flags="m"/>
+		<key id="KEY_TV" mapto="tv" flags="b"/>
 	</map>
 </keymap>
