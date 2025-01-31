@@ -28,13 +28,13 @@ from Components.config import (
 	KEY_0,
 	ConfigText,
 )
+from datetime import datetime, timedelta
 from enigma import (
 	eListboxPythonMultiContent,
 	ePicLoad,
 	eTimer,
 	getDesktop,
 	gFont,
-
 	RT_VALIGN_CENTER,
 )
 from Screens.ChoiceBox import ChoiceBox
@@ -50,7 +50,7 @@ from os.path import exists, join
 from re import sub, DOTALL, compile, findall
 from skin import parseFont, parseColor
 from sys import version_info
-from time import localtime, mktime, strftime
+from time import strftime  # localtime, mktime
 from twisted.internet._sslverify import ClientTLSOptions
 from twisted.internet.ssl import ClientContextFactory
 import requests
@@ -69,6 +69,7 @@ try:
 	from urllib.parse import urlparse
 except ImportError:
 	from urlparse import urlparse
+
 
 try:
 	from PIL import Image
@@ -226,10 +227,13 @@ VERSION = "3.3.7"
 #   secure remove image from folde CACHE_PATH
 #   Remove profile ICC from bad image
 # 3.3.5 change URL to and many code improvements
+#  RECODE FROM LULULLA
 # To do:
 #   Add server url online
 # 3.3.6 fix translations and many code improvements
+#  RECODE FROM LULULLA
 # 3.3.7 removed .cfg files - add TV button for Menu Config
+#  RECODE FROM LULULLA
 
 
 class WebClientContextFactory(ClientContextFactory):
@@ -386,7 +390,6 @@ if not exists(USR_PATH):
 # Get screen size
 size_w = getDesktop(0).size().width()
 size_h = getDesktop(0).size().height()
-
 HD = False if size_w < 1280 else True
 
 # Get diacritics to handle
@@ -482,7 +485,6 @@ class MainMenuList(MenuList):
 		self.valText2 = 500, 45, 800, 42
 		self.valText3 = 500, 90, 800, 42
 		self.valText4 = 500, 135, 800, 42
-
 		self.listCompleted = []
 		self.callback = None
 		self.idx = 0
@@ -594,6 +596,7 @@ class MainMenuList(MenuList):
 		self.l.setFont(2, self.font2)
 		self.l.setFont(3, self.font3)
 		self.l.setItemHeight(self.itemHeight)
+
 		return GUIComponent.applySkin(self, desktop, parent)
 
 # --------------------------- Go through all list entries ----------------------------------
@@ -786,17 +789,23 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		# actual, local Time as Tuple
-		lt = localtime()
-		# Extract the Tuple, Date
-		jahr, monat, tag = lt[0:3]
-		heute = "%04i%02i%02i" % (jahr, monat, tag)
+		# MAIN_PAGE = BASEURL.rstrip("/")
+		# # actual, local Time as Tuple
+		# lt = localtime()
+		# # Extract the Tuple, Date
+		# jahr, monat, tag = lt[0:3]
+		# heute = "%04i%02i%02i" % (jahr, monat, tag)
+		now = datetime.now()
+		heute = now.strftime("%Y%m%d")
+
 		if DEBUG:
 			FAlog("determined local date:", str(heute))
+
 		self.tag = 0
 
 		# Get favorites
 		global fav1, fav2, city, start
+
 		fav1 = config.plugins.foreca.fav1.value
 		fav1 = fav1[fav1.rfind("/") + 1:]
 		print(pluginPrintname, "fav1 location:", fav1)
@@ -807,10 +816,16 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# Get home location
 		self.ort = config.plugins.foreca.home.value
-		start = self.ort[self.ort.rfind("/") + 1:len(self.ort)]
+		start = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "Start Home location:", start)
-
-		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, heute, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
+			BASEURL,
+			pathname2url(self.ort),
+			LANGUAGE,
+			heute,
+			config.plugins.foreca.units.value,
+			config.plugins.foreca.time.value
+		)
 		"""
 		# if isinstance(MAIN_PAGE, unicode):
 			# MAIN_PAGE = MAIN_PAGE.encode('utf-8')
@@ -923,7 +938,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				"cancel": (self.exit, _("Exit - End")),
 				"menu": (self.Menu, _("Menu - Weather maps")),
 				"showEventInfo": (self.info, _("Info - Legend")),
-				"ok": (self.OK, _("OK - City")),
+				"ok": (self.PicSetupMenu, _("OK - Config")),
 				"left": (self.left, _("Left - Previous day")),
 				"right": (self.right, _("Right - Next day")),
 				"up": (self.up, _("Up - Previous page")),
@@ -931,12 +946,10 @@ class ForecaPreview(Screen, HelpableScreen):
 				"previous": (self.previousDay, _("Left arrow - Previous day")),
 				"next": (self.nextDay, _("Right arrow - Next day")),
 				"red": (self.red, _("Red - Weekoverview")),
-				# "shift_red": (self.shift_red, _("Red long - 10 day forecast")),
 				"green": (self.Fav1, _("Green - Favorite 1")),
 				"yellow": (self.Fav2, _("Yellow - Favorite 2")),
 				"blue": (self.Fav0, _("Blue - Home")),
-				"tv": (self.PicSetupMenu, _("Tv - Config")),
-
+				"tv": (self.OK, _("Tv - City")),
 				"0": (boundFunction(self.keyNumberGlobal, 0), _("0 - Today")),
 				"1": (boundFunction(self.keyNumberGlobal, 1), _("1 - Today + 1 day")),
 				"2": (boundFunction(self.keyNumberGlobal, 2), _("2 - Today + 2 days")),
@@ -953,7 +966,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.StartPageFirst()
 
 	def PicSetupMenu(self):
-		# self.session.open(PicSetup)
 		self.session.openWithCallback(self.OKCallback, PicSetup)
 
 	def StartPageFirst(self):
@@ -1049,20 +1061,38 @@ class ForecaPreview(Screen, HelpableScreen):
 		print(pluginPrintname, "fav2 location:", fav2)
 		self.Zukunft(0)
 
+	def futurdata(self, ztag=0):
+		global MAIN_PAGE
+		# Get the current date and time
+		now = datetime.now()
+		# Calculate new date by adding day tags
+		future_date = now + timedelta(days=ztag)
+		# Get the future date in the required format (YYYYMMDD)
+		morgen = future_date.strftime("%Y%m%d")
+		return morgen
+
 	def Zukunft(self, ztag=0):
 		global MAIN_PAGE
-		# actual, local Time as Tuple
-		lt = localtime()
-		jahr, monat, tag = lt[0:3]
-		# Calculate future date
-		ntag = tag + ztag
-		zukunft = jahr, monat, ntag, 0, 0, 0, 0, 0, 0
-		morgen = mktime(zukunft)
-		lt = localtime(morgen)
-		jahr, monat, tag = lt[0:3]
-		morgen = "%04i%02i%02i" % (jahr, monat, tag)
-
-		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
+		# # actual, local Time as Tuple
+		# lt = localtime()
+		# jahr, monat, tag = lt[0:3]
+		# # Calculate future date
+		# ntag = tag + ztag
+		# zukunft = jahr, monat, ntag, 0, 0, 0, 0, 0, 0
+		# morgen = mktime(zukunft)
+		# lt = localtime(morgen)
+		# jahr, monat, tag = lt[0:3]
+		# morgen = "%04i%02i%02i" % (jahr, monat, tag)
+		morgen = self.futurdata(ztag)
+		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
+			BASEURL,
+			pathname2url(self.ort),
+			LANGUAGE,
+			morgen,
+			config.plugins.foreca.units.value,
+			config.plugins.foreca.time.value
+		)
+		# MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		if DEBUG:
 			FAlog("day link:", MAIN_PAGE)
 		# Show in GUI
@@ -1077,7 +1107,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			"Bouquet+/- =   Fast scroll 500 (City choice)\n\n"
 			"Info       =   This information\n"
 			"Menu       =   Satellite photos and maps\n\n"
-			"Tv         =   Go to Config Plugin\n\n"
+			"Ok         =   Go to Config Plugin\n\n"
+			"Tv         =   Go to City Panel\n\n"
 			"Red        =   Temperature chart for the upcoming 5 days\n"
 			"Green      =   Go to Favorite 1\n"
 			"Yellow     =   Go to Favorite 2\n"
@@ -1089,9 +1120,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def OK(self):
 		global city
-		# panelmenu = ""
 		city = self.ort
-		# self.session.openWithCallback(self.OKCallback, CityPanel, panelmenu)
 		self.session.openWithCallback(self.OKCallback, CityPanel, city)
 
 	def OKCallback(self, callback=None):
@@ -1114,6 +1143,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
+
+		# self.StartPage()
 
 		if DEBUG:
 			FAlog("MenuCallback")
@@ -1151,10 +1182,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		except Exception as e:
 			print('error red=', e)
 
-	def shift_red(self):
-		pass
-		# self.session.openWithCallback(self.MenuCallback, Foreca10Days, self.ort)
-
 	def Menu(self):
 		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
 
@@ -1175,6 +1202,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
+
+		# self.StartPage()
 
 	def loadPicture(self, url=""):
 		devicepath = CACHE_PATH + "meteogram.png"
@@ -1317,7 +1346,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			windSpeed[x] = self.filter_dia(windSpeed[x])
 
 			# translate_description
-			# translation_dict = self.load_translation_dict(lng)
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			description[x] = self.translate_description(description[x], translation_dict)
 			print("description[x]=", description[x])
@@ -1334,16 +1362,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		datum = titel[0]
 		foundPos = datum.rfind(" ")
 		foundPos2 = datum.find(" ")
-		# Load the translation dictionary
-		# translation_dict = self.load_translation_dict(lng)
 		day_text = datum[:foundPos2].strip()
 		month_text = datum[foundPos2:foundPos].strip()
 		translated_day = translation_dict.get(day_text.lower(), day_text)
 		translated_month = translation_dict.get(month_text.lower(), month_text)
-		# Capitalize the first letter for display
 		translated_day = translated_day.capitalize()
 		translated_month = translated_month.capitalize()
-		# Construct the final translated date
 		datum2 = translated_day + datum[foundPos:] + " " + translated_month
 
 		foundPos = self.ort.find("/")
@@ -1387,7 +1411,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def konvert_uml(self, text):
 		text = self.filter_dia(text)
-		# remove remaining control characters and return
 		return text[text.rfind("\\t") + 2:len(text)]
 
 
@@ -1504,7 +1527,7 @@ class CityPanel(Screen, HelpableScreen):
 
 		global city
 		city = panelmenu
-		self.onChangedEntry = []
+		# self.onChangedEntry = []
 
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -1637,12 +1660,12 @@ class CityPanel(Screen, HelpableScreen):
 		global search_ok
 		if search_ok is True:
 			search_ok = False
-			self.prepare()
-		else:
-			global menu, city
-			city = city
-			menu = "stop"
-			self.close()
+			# self.prepare()
+		# else:
+		global menu, city
+		city = city
+		menu = "stop"
+		self.close()
 
 	def ok(self):
 		global city
@@ -1757,6 +1780,7 @@ class SatPanelList(MenuList):
 				self.skinAttributes.remove((attrib, value))
 			except Exception:
 				pass
+
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
 		self.l.setItemHeight(self.itemHeight)
@@ -1815,7 +1839,7 @@ class SatPanel(Screen, HelpableScreen):
 		self.setup_title = _("Satellite photos")
 		self["Mlist"] = SatPanelList([])
 
-		self.onChangedEntry = []
+		# self.onChangedEntry = []
 		self.ort = ort
 		self.loc_id = ''
 		self["key_red"] = StaticText(_("Continents"))
@@ -1980,7 +2004,6 @@ class SatPanel(Screen, HelpableScreen):
 # ------------------------------------------------------------------------------------------
 
 	def PicSetupMenu(self):
-		# self.session.open(PicSetup)
 		self.session.openWithCallback(self.OKCallback, PicSetup)
 
 	def OKCallback(self, callback=None):
@@ -2102,7 +2125,6 @@ class SatPanel(Screen, HelpableScreen):
 				self.doContext()
 			else:
 				try:
-					# devicepath = CACHE_PATH + "sat.html"  # "/var/volatile/tmp/sat.html"
 					url = "%s%s?map=%s" % (BASEURL, pathname2url(self.ort), menu)
 					if DEBUG:
 						FAlog("VIDEO URL map = %s" % url)
@@ -2221,7 +2243,7 @@ class SatPanelb(Screen, HelpableScreen):
 		self.Mlist = mlist
 		if DEBUG:
 			FAlog("Mlist= %s" % self.Mlist, "\nSatPanelListb([])= %s" % SatPanelListb([]))
-		self.onChangedEntry = []
+		# self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
@@ -2269,7 +2291,6 @@ class SatPanelb(Screen, HelpableScreen):
 		self.SatBild()
 
 	def PicSetupMenu(self):
-		# self.session.open(PicSetup)
 		self.session.openWithCallback(self.OKCallback, PicSetup)
 
 	def OKCallback(self, callback=None):
@@ -2560,7 +2581,7 @@ class View_Slideshow(Screen):
 		if not exists(filepath):
 			print("[start_decode] File not found: %s" % filepath)
 			return
-		# print("[start_decode] decoding image: %s" % filepath)
+
 		try:
 			self.picload.startDecode(filepath)
 		except Exception as e:
@@ -2741,9 +2762,9 @@ class PicSetup(Screen, ConfigListScreen):
 		self.list.append(getConfigListEntry(_("Select units"), config.plugins.foreca.units))
 		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
-		self.list.append(getConfigListEntry(_("Home name at start"), config.plugins.foreca.home))
-		self.list.append(getConfigListEntry(_("Fav1 name"), config.plugins.foreca.fav1))
-		self.list.append(getConfigListEntry(_("Fav2 name"), config.plugins.foreca.fav2))
+		self.list.append(getConfigListEntry(_("Home City at start"), config.plugins.foreca.home))
+		self.list.append(getConfigListEntry(_("Fav1 City"), config.plugins.foreca.fav1))
+		self.list.append(getConfigListEntry(_("Fav2 City"), config.plugins.foreca.fav2))
 		self.list.append(getConfigListEntry(_("Frame size in full view"), config.plugins.foreca.framesize))
 		self.list.append(getConfigListEntry(_("Font size in slideshow"), config.plugins.foreca.fontsize))
 		self.list.append(getConfigListEntry(_("Scaling Mode"), config.plugins.foreca.resize))
@@ -2777,12 +2798,11 @@ class PicSetup(Screen, ConfigListScreen):
 	def OKCallback(self):
 		global city
 		if city != self.config_entry:
-			print('city is:', str(city))
-			# self.ort = city  # config_entry.value
+			# print('city is:', str(city))
 			self.config_entry.setValue(city)
 			self.config_entry.save()
 			self.createSetup()
-			print("New city saved:", city)
+			# print("New city saved:", city)
 
 	def changedEntry(self):
 		current_item = self["Mlist"].getCurrent()
