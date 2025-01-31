@@ -50,7 +50,7 @@ from os.path import exists, join
 from re import sub, DOTALL, compile, findall
 from skin import parseFont, parseColor
 from sys import version_info
-from time import strftime  # localtime, mktime
+from time import strftime
 from twisted.internet._sslverify import ClientTLSOptions
 from twisted.internet.ssl import ClientContextFactory
 import requests
@@ -309,14 +309,13 @@ def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.ba/"):
 	"""
 	try:
 		response = requests.get(file_url, timeout=10)
-		response.raise_for_status()  # Verifica eventuali errori HTTP
-		new_base_url = response.text.strip()  # Rimuove eventuali spazi o newline
+		response.raise_for_status()
+		new_base_url = response.text.strip()
 		test_response = requests.get(new_base_url, timeout=10)
 		test_response.raise_for_status()
 		print("New URL base found and working:", new_base_url)
 		return new_base_url
 	except Exception as e:
-		# On error, return the fallback base URL
 		print("Error reading base URL from file .txt:", str(e))
 		print("Using the fallback URL base:", fallback_url)
 		return fallback_url
@@ -350,8 +349,8 @@ PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 print("BASEURL in uso:", BASEURL)
 
-DEBUG = config.plugins.foreca.debug.value
 
+DEBUG = config.plugins.foreca.debug.value
 if DEBUG:
 	print(pluginPrintname, "Debug enabled")
 else:
@@ -789,12 +788,6 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		# MAIN_PAGE = BASEURL.rstrip("/")
-		# # actual, local Time as Tuple
-		# lt = localtime()
-		# # Extract the Tuple, Date
-		# jahr, monat, tag = lt[0:3]
-		# heute = "%04i%02i%02i" % (jahr, monat, tag)
 		now = datetime.now()
 		heute = now.strftime("%Y%m%d")
 
@@ -805,19 +798,16 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# Get favorites
 		global fav1, fav2, city, start
-
 		fav1 = config.plugins.foreca.fav1.value
 		fav1 = fav1[fav1.rfind("/") + 1:]
 		print(pluginPrintname, "fav1 location:", fav1)
-
 		fav2 = config.plugins.foreca.fav2.value
 		fav2 = fav2[fav2.rfind("/") + 1:]
 		print(pluginPrintname, "fav2 location:", fav2)
-
 		# Get home location
 		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:]
-		print(pluginPrintname, "Start Home location:", start)
+		# print(pluginPrintname, "Start Home location:", start)
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
 			BASEURL,
 			pathname2url(self.ort),
@@ -835,7 +825,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,center" size="1200,820" title="Foreca Weather Forecast">
+				<screen name="ForecaPreview" position="center,center" size="1200,900" title="Foreca Weather Forecast">
 					<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
 					<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
 					<eLabel backgroundColor="yellow" cornerRadius="3" position="600,65" size="295,6" zPosition="11" />
@@ -845,69 +835,80 @@ class ForecaPreview(Screen, HelpableScreen):
 					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
 					<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
-					<widget backgroundColor="background" source="Titel" render="Label" position="6,836" size="1180,40" foregroundColor="yellow" font="Regular;32" halign="center" transparent="1" />
+					<widget backgroundColor="background" source="Titel" render="Label" position="13,775" size="1180,40" foregroundColor="yellow" font="Regular;32" halign="center" transparent="1" />
 					<widget backgroundColor="background" source="Titel2" render="Label" position="13,123" size="1180,40" font="Regular;32" halign="center" transparent="1" />
 					<widget backgroundColor="background" source="Titel3" render="Label" position="13,84" size="1180,40" foregroundColor="yellow" font="Regular;32" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel4" render="Label" position="6,882" size="1180,40" font="Regular;32" halign="center" transparent="1" />
-					<widget name="MainList" position="10,160" size="1180,600" zPosition="3" foregroundColor="#ffffff" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="barColor" alphatest="1" font0="Regular;30" font1="Fixed;30" font2="Fixed;28" font3="Regular;30" itemHeight="200" setTime="15,40,100,45" setPict="150,40,70,70" setPictScale="1" setTemp="280,50,200,40" setTempUnits="280,95,150,40" setWindPict="550,75,35,35" setWindPictScale="1" setWind="600,50,95,40" setWindUnits="600,95,50,40" text1Pos="720,0,600,42" text2Pos="720,50,600,42" text3Pos="720,100,600,42" text4Pos="720,150,600,42" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" />
+					<widget backgroundColor="background" source="Titel4" render="Label" position="13,818" size="1180,40" font="Regular;32" halign="center" transparent="1" />
+					<widget name="MainList" position="13,165" size="1180,600" zPosition="3" foregroundColor="#ffffff" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="barColor" alphatest="1" font0="Regular;30" font1="Fixed;30" font2="Fixed;28" font3="Regular;30" itemHeight="200" setTime="15,40,100,45" setPict="150,40,70,70" setPictScale="1" setTemp="280,50,200,40" setTempUnits="280,95,150,40" setWindPict="550,75,35,35" setWindPictScale="1" setWind="600,50,95,40" setWindUnits="600,95,50,40" text1Pos="720,0,600,42" text2Pos="720,50,600,42" text3Pos="720,100,600,42" text4Pos="720,150,600,42" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" />
 					<eLabel backgroundColor="grey" position="10,770" size="1180,1" />
-					<ePixmap position="10,780" size="60,30" pixmap="skin_default/icons/info.png" />
-					<ePixmap position="360,780" size="60,30" pixmap="skin_default/icons/menu.png" />
-					<ePixmap position="710,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<widget source="key_info" render="Label" position="90,780" size="250,35" font="Regular;30" />
-					<widget source="key_menu" render="Label" position="440,780" size="250,35" font="Regular;30" />
-					<widget source="key_ok" render="Label" position="790,780" size="250,35" font="Regular;30" />
-					<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
+					<ePixmap position="1025,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png" />
+					<ePixmap position="379,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png" />
+					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="705,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png" />
+					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
+					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
+					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
+					<widget source="key_info" render="Label" position="771,864" size="250,35" font="Regular;30" />
+					<widget source="key_menu" render="Label" position="441,864" size="250,35" font="Regular;30" />
+					<widget source="key_ok" render="Label" position="104,864" size="250,35" font="Regular;30" />
 				</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="ForecaPreview" position="center,center" size="1640,1040" title="Foreca Weather Forecast" >
-					<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="yellow" cornerRadius="3" position="820,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="1220,85" size="400,6" zPosition="11" />
-					<widget source="key_red" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_green" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_yellow" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_blue" render="Label" position="1220,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<eLabel position="20,100" size="1600,2" backgroundColor="grey" />
-					<widget backgroundColor="background" source="Titel" render="Label" position="20,110" size="1600,100" font="Regular;44" valign="center" halign="center" transparent="1"/>
-					<widget backgroundColor="background" source="Titel2" render="Label" position="20,110" size="1600,100" font="Regular;44" valign="center" halign="center" transparent="1"/>
-					<widget name="MainList" position="20,220" size="1600,720" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<eLabel position="20,960" size="1600,2" backgroundColor="grey" />
-					<ePixmap position="20,980" size="100,50" pixmap="skin_default/buttons/key_info.png" />
-					<ePixmap position="460,980" size="100,50" pixmap="skin_default/buttons/key_menu.png" />
-					<ePixmap position="900,980" size="100,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<widget source="key_info" render="Label" position="140,980" size="320,50" font="Regular;44" />
-					<widget source="key_menu" render="Label" position="580,980" size="320,50" font="Regular;44" />
-					<widget source="key_ok" render="Label" position="1020,980" size="320,50" font="Regular;44" />
-					<ePixmap position="1500,980" size="100,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
+				<screen name="ForecaPreview" position="center,center" size="1600,1200" title="Foreca Weather Forecast">
+					<eLabel backgroundColor="red" cornerRadius="3" position="14,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="green" cornerRadius="3" position="407,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="800,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1194,87" size="394,8" zPosition="11"/>
+					<widget backgroundColor="#9f1313" font="Regular;40" halign="center" position="14,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_red" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#1f771f" font="Regular;40" halign="center" position="407,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_green" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#a08500" font="Regular;40" halign="center" position="800,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="14,107" size="1574,2"/>
+					<widget backgroundColor="background" source="Titel" render="Label" position="18,1034" size="1574,54" foregroundColor="yellow" font="Regular;43" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel2" render="Label" position="18,164" size="1574,54" font="Regular;43" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel3" render="Label" position="18,112" size="1574,54" foregroundColor="yellow" font="Regular;43" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel4" render="Label" position="18,1091" size="1574,54" font="Regular;43" halign="center" transparent="1"/>
+					<widget name="MainList" position="18,220" size="1574,800" zPosition="3" foregroundColor="#ffffff" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="barColor" alphatest="1" font0="Regular;30" font1="Fixed;30" font2="Fixed;28" font3="Regular;30" itemHeight="267" setTime="15,40,100,45" setPict="150,40,70,70" setPictScale="1" setTemp="280,50,200,40" setTempUnits="280,95,150,40" setWindPict="550,75,35,35" setWindPictScale="1" setWind="600,50,95,40" setWindUnits="600,95,50,40" text1Pos="720,0,600,42" text2Pos="720,50,600,42" text3Pos="720,100,600,42" text4Pos="720,150,600,42" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1"/>
+					<eLabel backgroundColor="grey" position="14,1027" size="1574,2"/>
+					<ePixmap position="1367,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+					<ePixmap position="506,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+					<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="940,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
+					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png"/>
+					<widget source="key_info" render="Label" position="1028,1152" size="334,47" font="Regular;40"/>
+					<widget source="key_menu" render="Label" position="588,1152" size="334,47" font="Regular;40"/>
+					<widget source="key_ok" render="Label" position="139,1152" size="334,47" font="Regular;40"/>
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="ForecaPreview" position="550,240" size="820,600" title="Foreca Weather Forecast">
-					<eLabel backgroundColor="red" cornerRadius="3" position="10,40" size="200,6" zPosition="11" />
-					<eLabel backgroundColor="green" cornerRadius="3" position="210,40" size="200,6" zPosition="11" />
-					<eLabel backgroundColor="yellow" cornerRadius="3" position="410,40" size="200,6" zPosition="11" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="610,40" size="200,6" zPosition="11" />
-					<widget source="key_red" render="Label" position="10,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_green" render="Label" position="210,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_yellow" render="Label" position="410,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_blue" render="Label" position="610,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<eLabel position="10,50" size="800,1" backgroundColor="grey" />
-					<widget backgroundColor="background" source="Titel" render="Label" position="10,54" size="800,30" font="Regular;22" valign="center" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel2" render="Label" position="10,80" size="800,30" font="Regular;22" valign="center" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel3" render="Label" position="2,524" size="800,30" foregroundColor="yellow" font="Regular; 22" halign="center" transparent="1" />
-					<widget backgroundColor="background" source="Titel4" render="Label" position="0,558" size="800,30" font="Regular; 22" halign="center" transparent="1" />
-					<widget name="MainList" position="10,110" size="800,360" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<eLabel position="10,480" size="800,1" backgroundColor="grey" />
-					<ePixmap position="10,490" size="50,25" pixmap="skin_default/buttons/key_info.png" />
-					<ePixmap position="230,490" size="50,25" pixmap="skin_default/buttons/key_menu.png" />
-					<ePixmap position="450,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<widget source="key_info" render="Label" position="70,490" size="160,25" font="Regular;22" />
-					<widget source="key_menu" render="Label" position="290,490" size="160,25" font="Regular;22" />
-					<widget source="key_ok" render="Label" position="510,490" size="160,25" font="Regular;22" />
-					<ePixmap position="750,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
+				<screen name="ForecaPreview" position="center,center" size="800,600" title="Foreca Weather Forecast">
+					<eLabel backgroundColor="red" cornerRadius="3" position="6,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="green" cornerRadius="3" position="203,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="400,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="blue" cornerRadius="3" position="596,43" size="196,4" zPosition="11"/>
+					<widget backgroundColor="#9f1313" font="Regular;20" halign="center" position="6,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_red" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#1f771f" font="Regular;20" halign="center" position="203,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_green" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#a08500" font="Regular;20" halign="center" position="400,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="6,53" size="786,1"/>
+					<widget backgroundColor="background" source="Titel" render="Label" position="8,516" size="786,26" foregroundColor="yellow" font="Regular;21" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel2" render="Label" position="8,82" size="786,26" font="Regular;21" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel3" render="Label" position="8,56" size="786,26" foregroundColor="yellow" font="Regular;21" halign="center" transparent="1"/>
+					<widget backgroundColor="background" source="Titel4" render="Label" position="8,545" size="786,26" font="Regular;21" halign="center" transparent="1"/>
+					<widget name="MainList" position="8,110" size="786,400" zPosition="3" foregroundColor="#ffffff" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="barColor" alphatest="1" font0="Regular;30" font1="Fixed;30" font2="Fixed;28" font3="Regular;30" itemHeight="133" setTime="15,40,100,45" setPict="150,40,70,70" setPictScale="1" setTemp="280,50,200,40" setTempUnits="280,95,150,40" setWindPict="550,75,35,35" setWindPictScale="1" setWind="600,50,95,40" setWindUnits="600,95,50,40" text1Pos="720,0,600,42" text2Pos="720,50,600,42" text3Pos="720,100,600,42" text4Pos="720,150,600,42" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1"/>
+					<eLabel backgroundColor="grey" position="6,513" size="786,1"/>
+					<ePixmap position="683,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+					<ePixmap position="252,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+					<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="470,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
+					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png"/>
+					<widget source="key_info" render="Label" position="514,576" size="166,23" font="Regular;20"/>
+					<widget source="key_menu" render="Label" position="294,576" size="166,23" font="Regular;20"/>
+					<widget source="key_ok" render="Label" position="69,576" size="166,23" font="Regular;20"/>
 				</screen>"""
 
 		Screen.__init__(self, session)
@@ -1073,16 +1074,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def Zukunft(self, ztag=0):
 		global MAIN_PAGE
-		# # actual, local Time as Tuple
-		# lt = localtime()
-		# jahr, monat, tag = lt[0:3]
-		# # Calculate future date
-		# ntag = tag + ztag
-		# zukunft = jahr, monat, ntag, 0, 0, 0, 0, 0, 0
-		# morgen = mktime(zukunft)
-		# lt = localtime(morgen)
-		# jahr, monat, tag = lt[0:3]
-		# morgen = "%04i%02i%02i" % (jahr, monat, tag)
 		morgen = self.futurdata(ztag)
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
 			BASEURL,
@@ -1092,7 +1083,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			config.plugins.foreca.units.value,
 			config.plugins.foreca.time.value
 		)
-		# MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (BASEURL, pathname2url(self.ort), LANGUAGE, morgen, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
 		if DEBUG:
 			FAlog("day link:", MAIN_PAGE)
 		# Show in GUI
@@ -1125,7 +1115,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def OKCallback(self, callback=None):
 		global city, fav1, fav2
-		# self.ort = city
 		self.tag = 0
 		self.Zukunft(0)
 
@@ -1143,8 +1132,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
-
-		# self.StartPage()
 
 		if DEBUG:
 			FAlog("MenuCallback")
@@ -1187,7 +1174,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def MenuCallback(self):
 		global menu, start, fav1, fav2
-
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
@@ -1261,7 +1247,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
 		link = str(fulltext.findall(html))
-		print('Link=', link)
+		# print('Link=', link)
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = str(fulltext.findall(link))
 		# print "Day ", tag
@@ -1385,7 +1371,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
 		if not exists(dict_file):
 			dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/endict.txt"
-		print('dict_file=', dict_file)
+		# print('dict_file=', dict_file)
 		translation_dict = {}
 		with open(dict_file, 'r') as file:
 			for line in file:
@@ -1420,6 +1406,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 
 class CityPanelList(MenuList):
+
 	def __init__(self, list, font0=22, font1=16, itemHeight=30, enableWrapAround=True):
 		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
 		GUIComponent.__init__(self)
@@ -1433,6 +1420,7 @@ class CityPanelList(MenuList):
 
 # ---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
+
 		def font(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
 
@@ -1473,51 +1461,68 @@ class CityPanel(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-			<screen name="CityPanel" position="center,center" size="1200,820" title="Select a city">
-				<eLabel backgroundColor="green" cornerRadius="3" position="10,65" size="390,6" zPosition="11" />
-				<eLabel backgroundColor="yellow" cornerRadius="3" position="405,65" size="390,6" zPosition="11" />
-				<eLabel backgroundColor="blue" cornerRadius="3" position="800,65" size="390,6" zPosition="11" />
-				<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_green" transparent="1" valign="center" zPosition="1" />
-				<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="405,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
-				<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="800,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="390,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
-				<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
-				<widget name="Mlist" itemHeight="35" position="10,90" size="1180,665" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				<eLabel backgroundColor="grey" position="10,770" size="1180,1" />
-				<ePixmap position="780,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-				<widget source="key_ok" render="Label" position="845,780" size="250,35" font="Regular;30" />
-				<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
+			<screen name="CityPanel" position="center,center" size="1200,900" title="Select a city">
+					<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="600,65" size="295,6" zPosition="11" />
+					<eLabel backgroundColor="blue" cornerRadius="3" position="895,65" size="295,6" zPosition="11" />
+					<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_red" transparent="1" valign="center" zPosition="1" />
+					<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
+					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
+					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
+					<eLabel backgroundColor="grey" position="10,80" size="1180,2" />
+					<widget name="Mlist" itemHeight="35" position="10,90" size="1180,665" enableWrapAround="1" scrollbarMode="showOnDemand" />
+					<eLabel backgroundColor="grey" position="10,770" size="1180,2" />
+					<ePixmap position="1025,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png" />
+					<ePixmap position="379,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png" />
+					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="705,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png" />
+					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
+					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 			</screen>"""
+
+
 		elif size_w == 2560:
 			self.skin = """
-			<screen name="CityPanel" position="center,center" size="1240,1040" title="Select a city" >
-				<eLabel backgroundColor="green" cornerRadius="3" position="20,80" size="400,6" zPosition="11" />
-				<eLabel backgroundColor="yellow" cornerRadius="3" position="420,80" size="400,6" zPosition="11" />
-				<eLabel backgroundColor="blue" cornerRadius="3" position="820,80" size="400,6" zPosition="11" />
-				<widget source="key_green" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<widget source="key_yellow" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<widget source="key_blue" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<eLabel position="20,100" size="1200,2" backgroundColor="grey" />
-				<widget name="Mlist" itemHeight="60" position="20,110" size="1200,840" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				<eLabel position="20,960" size="1200,2" backgroundColor="grey" />
-				<widget source="key_ok" render="Label" position="860,980" size="280,50" font="Regular;44" />
-				<ePixmap position="720,980" size="100,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-				<ePixmap position="1120,980" size="100,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
+			<screen name="CityPanel" position="center,center" size="1600,1200" title="Select a city">
+				<eLabel backgroundColor="red" cornerRadius="3" position="14,87" size="394,8" zPosition="11"/>
+				<eLabel backgroundColor="green" cornerRadius="3" position="407,87" size="394,8" zPosition="11"/>
+				<eLabel backgroundColor="yellow" cornerRadius="3" position="800,87" size="394,8" zPosition="11"/>
+				<eLabel backgroundColor="blue" cornerRadius="3" position="1194,87" size="394,8" zPosition="11"/>
+				<widget backgroundColor="#9f1313" font="Regular;40" halign="center" position="14,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_red" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#1f771f" font="Regular;40" halign="center" position="407,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_green" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#a08500" font="Regular;40" halign="center" position="800,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+				<eLabel backgroundColor="grey" position="14,107" size="1574,3"/>
+				<widget name="Mlist" itemHeight="47" position="14,120" size="1574,887" enableWrapAround="1" scrollbarMode="showOnDemand"/>
+				<eLabel backgroundColor="grey" position="14,1027" size="1574,3"/>
+				<ePixmap position="1367,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+				<ePixmap position="506,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+				<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+				<ePixmap position="940,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+				<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+				<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 			</screen>"""
 		else:
 			self.skin = """
-			<screen name="CityPanel" position="center,center" size="620,520" title="Select a city" >
-				<eLabel backgroundColor="green" cornerRadius="3" position="11,45" size="200,6" zPosition="11" />
-				<eLabel backgroundColor="yellow" cornerRadius="3" position="210,45" size="200,6" zPosition="11" />
-				<eLabel backgroundColor="blue" cornerRadius="3" position="410,45" size="200,6" zPosition="11" />
-				<widget source="key_green" render="Label" position="10,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<widget source="key_yellow" render="Label" position="210,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<widget source="key_blue" render="Label" position="410,5" size="200,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-				<eLabel position="10,50" size="600,1" backgroundColor="grey" />
-				<widget name="Mlist" itemHeight="30" position="10,55" size="600,420" enableWrapAround="1" scrollbarMode="showOnDemand" />
-				<eLabel position="10,480" size="600,1" backgroundColor="grey" />
-				<widget source="key_ok" render="Label" position="430,490" size="140,25" font="Regular;22" />
-				<ePixmap position="370,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-				<ePixmap position="560,490" size="50,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
+			<screen name="CityPanel" position="center,center" size="800,600" title="Select a city">
+				<eLabel backgroundColor="red" cornerRadius="3" position="6,43" size="196,4" zPosition="11"/>
+				<eLabel backgroundColor="green" cornerRadius="3" position="203,43" size="196,4" zPosition="11"/>
+				<eLabel backgroundColor="yellow" cornerRadius="3" position="400,43" size="196,4" zPosition="11"/>
+				<eLabel backgroundColor="blue" cornerRadius="3" position="596,43" size="196,4" zPosition="11"/>
+				<widget backgroundColor="#9f1313" font="Regular;20" halign="center" position="6,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_red" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#1f771f" font="Regular;20" halign="center" position="203,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_green" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#a08500" font="Regular;20" halign="center" position="400,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+				<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+				<eLabel backgroundColor="grey" position="6,53" size="786,1"/>
+				<widget name="Mlist" itemHeight="23" position="6,60" size="786,443" enableWrapAround="1" scrollbarMode="showOnDemand"/>
+				<eLabel backgroundColor="grey" position="6,513" size="786,1"/>
+				<ePixmap position="683,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+				<ePixmap position="252,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+				<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+				<ePixmap position="470,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+				<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+				<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 			</screen>"""
 
 		Screen.__init__(self, session)
@@ -1527,7 +1532,6 @@ class CityPanel(Screen, HelpableScreen):
 
 		global city
 		city = panelmenu
-		# self.onChangedEntry = []
 
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -1546,6 +1550,7 @@ class CityPanel(Screen, HelpableScreen):
 			{
 				"text": (self.openKeyboard, _("Open Keyboard")),
 				"cancel": (self.exit, _("Exit - End")),
+				"red": (self.exit, _("Exit - End")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
@@ -1579,7 +1584,7 @@ class CityPanel(Screen, HelpableScreen):
 				search = result.lower()
 				for item in self.Mlist:
 					city_name = item[0][0]
-					print('city_name:', city_name)
+					# print('city_name:', city_name)
 					if search in city_name.lower():
 						global search_ok
 						search_ok = True
@@ -1744,6 +1749,7 @@ class SatPanelList(MenuList):
 
 # ---------------------- get skin attribs ----------------------------
 	def applySkin(self, desktop, parent):
+
 		def warningWrongSkinParameter(string, wanted, given):
 			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
 
@@ -1794,7 +1800,7 @@ class SatPanel(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="1200,820" title="Satellite photos" >
+				<screen name="SatPanel" position="center,center" size="1200,900" title="Satellite photos" >
 					<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
 					<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
 					<eLabel backgroundColor="yellow" cornerRadius="3" position="600,65" size="295,6" zPosition="11" />
@@ -1803,43 +1809,62 @@ class SatPanel(Screen, HelpableScreen):
 					<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
 					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
-					<widget enableWrapAround="1" name="Mlist" itemHeight="144" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
+					<eLabel backgroundColor="grey" position="10,80" size="1180,2" />
+					<widget enableWrapAround="1" name="Mlist" itemHeight="145" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
+					<eLabel backgroundColor="grey" position="10,770" size="1180,2" />
+					<ePixmap position="1025,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png" />
+					<ePixmap position="379,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png" />
+					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="705,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png" />
+					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
+					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 				</screen>"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="1640,1080" title="Satellite photos" >
-					<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="yellow" cornerRadius="3" position="820,85" size="400,6" zPosition="11" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="1220,85" size="400,6" zPosition="11" />
-					<widget source="key_red" render="Label" position="20,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_green" render="Label" position="420,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_yellow" render="Label" position="820,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#a08500" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<widget source="key_blue" render="Label" position="1220,10" size="400,80" zPosition="1" font="Regular;40" halign="center" valign="center" backgroundColor="#18188b" transparent="1" shadowColor="black" shadowOffset="-2,-2" />
-					<eLabel position="20,100" size="1600,2" backgroundColor="grey" />
-					<widget name="Mlist" itemHeight="320" position="20,110" size="1600,960" enableWrapAround="1" scrollbarMode="showOnDemand" />
+				<screen name="SatPanel" position="center,center" size="1600,1200" title="Satellite photos">
+					<eLabel backgroundColor="red" cornerRadius="3" position="14,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="green" cornerRadius="3" position="407,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="800,87" size="394,8" zPosition="11"/>
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1194,87" size="394,8" zPosition="11"/>
+					<widget backgroundColor="#9f1313" font="Regular;40" halign="center" position="14,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_red" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#1f771f" font="Regular;40" halign="center" position="407,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_green" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#a08500" font="Regular;40" halign="center" position="800,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="14,107" size="1574,3"/>
+					<widget enableWrapAround="1" name="Mlist" itemHeight="194" position="14,120" scrollbarMode="showOnDemand" size="1574,960"/>
+					<eLabel backgroundColor="grey" position="14,1027" size="1574,3"/>
+					<ePixmap position="1367,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+					<ePixmap position="506,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+					<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="940,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 				</screen>"""
 		else:
 			self.skin = """
-				<screen name="SatPanel" position="center,center" size="630,440" title="Satellite photos" backgroundColor="#40000000">
-					<widget name="Mlist" position="10,10" size="600,370" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<eLabel position="0,385" zPosition="2" size="630,1" backgroundColor="#c1cdc1" />
-					<eLabel backgroundColor="red" cornerRadius="3" position="23,432" size="140,6" zPosition="11" />
-					<eLabel backgroundColor="green" cornerRadius="3" position="170,431" size="140,6" zPosition="11" />
-					<eLabel backgroundColor="yellow" cornerRadius="3" position="330,430" size="140,6" zPosition="11" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="484,430" size="140,6" zPosition="11" />
-					<widget source="key_red" render="Label" position="25,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_green" render="Label" position="171,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_yellow" render="Label" position="329,390" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
-					<widget source="key_blue" render="Label" position="485,391" zPosition="2" size="140,45" font="Regular;20" valign="center" halign="left" transparent="1" />
+				<screen name="SatPanel" position="center,center" size="800,600" title="Satellite photos">
+					<eLabel backgroundColor="red" cornerRadius="3" position="6,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="green" cornerRadius="3" position="203,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="yellow" cornerRadius="3" position="400,43" size="196,4" zPosition="11"/>
+					<eLabel backgroundColor="blue" cornerRadius="3" position="596,43" size="196,4" zPosition="11"/>
+					<widget backgroundColor="#9f1313" font="Regular;20" halign="center" position="6,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_red" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#1f771f" font="Regular;20" halign="center" position="203,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_green" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#a08500" font="Regular;20" halign="center" position="400,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
+					<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="6,53" size="786,1"/>
+					<widget enableWrapAround="1" name="Mlist" itemHeight="96" position="6,60" scrollbarMode="showOnDemand" size="786,480"/>
+					<eLabel backgroundColor="grey" position="6,513" size="786,1"/>
+					<ePixmap position="683,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
+					<ePixmap position="252,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
+					<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="470,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
+					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 				</screen>"""
 
 		Screen.__init__(self, session)
 		self.setup_title = _("Satellite photos")
 		self["Mlist"] = SatPanelList([])
-
-		# self.onChangedEntry = []
 		self.ort = ort
 		self.loc_id = ''
 		self["key_red"] = StaticText(_("Continents"))
@@ -1847,7 +1872,6 @@ class SatPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Germany"))
 		self["key_blue"] = StaticText(_("Settings"))
 		self.setTitle(_("Satellite photos"))
-
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -2073,7 +2097,6 @@ class SatPanel(Screen, HelpableScreen):
 			if choice:
 				title, url = choice
 				devicepath = join(CACHE_PATH, "meteogram.png")
-
 				try:
 					req = Request(url, headers=HEADERS)
 					resp = urlopen(req, timeout=10)
@@ -2082,10 +2105,9 @@ class SatPanel(Screen, HelpableScreen):
 					matches = findall(pattern, content, DOTALL)
 					if matches:
 						chosen_link = matches[0]
-						print("Link select:", chosen_link)
+						# print("Link select:", chosen_link)
 						if not chosen_link.startswith("http"):
 							chosen_link = base_url + chosen_link
-
 						try:
 							img_response = requests.get(chosen_link, headers=HEADERS, timeout=10)
 							img = Image.open(BytesIO(img_response.content))
@@ -2208,33 +2230,41 @@ class SatPanelb(Screen, HelpableScreen):
 
 		if size_w == 1920:
 			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="1200,820">
-					<widget name="Mlist" enableWrapAround="1" itemHeight="144" position="10,20" scrollbarMode="showOnDemand" size="1180,720" />
-					<eLabel backgroundColor="grey" position="10,760" size="1180,1" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="719,809" size="295,6" zPosition="11" />
-					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="718,773" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<ePixmap position="1030,780" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<ePixmap position="1120,780" size="60,30" pixmap="skin_default/icons/help.png" />
+				<screen name="SatPanelb" position="center,center" size="1200,900">
+					<eLabel backgroundColor="blue" cornerRadius="3" position="895,65" size="295,6" zPosition="11" />
+					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
+					<eLabel backgroundColor="grey" position="10,80" size="1180,2" />
+					<widget name="Mlist" enableWrapAround="1" itemHeight="144" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
+					<eLabel backgroundColor="grey" position="10,770" size="1180,2" />
+					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
+					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
+					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 				</screen>
 			"""
 		elif size_w == 2560:
 			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="1640,1040">
-					<widget name="Mlist" itemHeight="320" position="20,50" size="1600,960" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="1054,40" size="295,6" zPosition="11" />
-					<widget backgroundColor="#18188b" font="Regular;32" halign="center" position="1054,1" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<ePixmap position="1422,7" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<ePixmap position="1498,8" size="60,30" pixmap="skin_default/icons/help.png" />
+				<screen name="SatPanelb" position="center,center" size="1600,1200">
+					<eLabel backgroundColor="blue" cornerRadius="3" position="1194,87" size="394,8" zPosition="11"/>
+					<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="14,107" size="1574,3"/>
+					<widget name="Mlist" enableWrapAround="1" itemHeight="192" position="14,120" scrollbarMode="showOnDemand" size="1574,960"/>
+					<eLabel backgroundColor="grey" position="14,1027" size="1574,3"/>
+					<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 				</screen>
 			"""
 		else:
 			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="680,600" backgroundColor="#40000000">
-					<widget name="Mlist" position="10,10" size="660,490" zPosition="3" backgroundColor="#40000000" backgroundColorSelected="#565656" enableWrapAround="1" scrollbarMode="showOnDemand" />
-					<eLabel backgroundColor="blue" cornerRadius="3" position="16,577" size="150,6" zPosition="11" />
-					<widget backgroundColor="#18188b" font="Regular; 22" halign="center" position="17,539" render="Label" shadowColor="black" shadowOffset="-2,-2" size="150,38" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<ePixmap position="506,544" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<ePixmap position="583,546" size="60,30" pixmap="skin_default/icons/help.png" />
+				<screen name="SatPanelb" position="center,center" size="800,600">
+					<eLabel backgroundColor="blue" cornerRadius="3" position="596,43" size="196,4" zPosition="11"/>
+					<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
+					<eLabel backgroundColor="grey" position="6,53" size="786,1"/>
+					<widget name="Mlist" enableWrapAround="1" itemHeight="96" position="6,60" scrollbarMode="showOnDemand" size="786,480"/>
+					<eLabel backgroundColor="grey" position="6,513" size="786,1"/>
+					<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
+					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 				</screen>
 			"""
 
@@ -2243,13 +2273,11 @@ class SatPanelb(Screen, HelpableScreen):
 		self.Mlist = mlist
 		if DEBUG:
 			FAlog("Mlist= %s" % self.Mlist, "\nSatPanelListb([])= %s" % SatPanelListb([]))
-		# self.onChangedEntry = []
 		self["Mlist"] = SatPanelListb([])
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText(_("Settings"))
 		self.setTitle(title)
-
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -2346,7 +2374,6 @@ class PicView(Screen):
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
 
-		self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"on\" /> \
@@ -2458,7 +2485,7 @@ class View_Slideshow(Screen):
 		space = config.plugins.foreca.framesize.value
 		fontsize = config.plugins.foreca.fontsize.value
 
-		self.skindir = "/tmp"
+		# self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space + 40) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2) - 40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
@@ -2553,7 +2580,7 @@ class View_Slideshow(Screen):
 		ptr = self.picload.getData()
 		if ptr is not None:
 			text = ""
-			print("[finish_decode] Image data loaded successfully.")
+			# print("[finish_decode] Image data loaded successfully.")
 			try:
 				if picInfo:
 					parts = picInfo.split('\n', 1)
@@ -2573,13 +2600,11 @@ class View_Slideshow(Screen):
 			return
 
 		filepath = self.picfilelist[self.pindex]
-
 		if CACHE_PATH not in filepath:
 			filepath = CACHE_PATH + filepath
-
-		print("[start_decode] filepath:", filepath)
+		# print("[start_decode] filepath:", filepath)
 		if not exists(filepath):
-			print("[start_decode] File not found: %s" % filepath)
+			# print("[start_decode] File not found: %s" % filepath)
 			return
 
 		try:
@@ -2633,7 +2658,7 @@ class View_Slideshow(Screen):
 				if exists(full_path):
 					try:
 						remove(full_path)
-						print("Image file removed:", full_path)
+						# print("Image file removed:", full_path)
 					except OSError as e:
 						print("Error while removing file:", full_path, e)
 
@@ -2645,7 +2670,7 @@ class View_Slideshow(Screen):
 						file_path = join(CACHE_PATH, filename)
 						try:
 							remove(file_path)
-							print("Image file removed:", file_path)
+							# print("Image file removed:", file_path)
 						except OSError as e:
 							print("Error while removing file:", file_path, e)
 		except Exception as e:
@@ -2665,51 +2690,58 @@ class PicSetup(Screen, ConfigListScreen):
 
 	if size_w == 1920:
 		skin = """
-		<screen name="PicSetup" position="center,170" size="1200,820" title="Setup">
-			<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="350,6" zPosition="11" />
-			<eLabel backgroundColor="green" cornerRadius="3" position="362,65" size="350,6" zPosition="11" />
-			<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="350,70" source="key_red" transparent="1" valign="center" zPosition="1" />
-			<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="360,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="350,70" source="key_green" transparent="1" valign="center" zPosition="1" />
+		<screen name="PicSetup" position="center,center" size="1200,900" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="10,65" size="295,6" zPosition="11" />
+			<eLabel backgroundColor="green" cornerRadius="3" position="305,65" size="295,6" zPosition="11" />
+			<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_red" transparent="1" valign="center" zPosition="1" />
+			<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
+			<eLabel backgroundColor="grey" position="10,80" size="1180,2" />
+			<widget enableWrapAround="1" name="Mlist" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
+			<eLabel backgroundColor="grey" position="10,770" size="1180,2" />
+			<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
 			<widget backgroundColor="background" font="Regular;34" halign="right" position="1012,41" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Default</convert>
 			</widget>
 			<widget backgroundColor="background" font="Regular;34" halign="right" position="730,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="400,40" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Date</convert>
 			</widget>
-			<eLabel backgroundColor="grey" position="10,80" size="1180,1" />
-			<widget enableWrapAround="1" name="Mlist" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
 		</screen>"""
+
 	elif size_w == 2560:
 		skin = """
-		<screen name="PicSetup" position="center,240" size="1640,1060" title="Setup">
-			<eLabel backgroundColor="red" cornerRadius="3" position="20,85" size="400,6" zPosition="11" />
-			<eLabel backgroundColor="green" cornerRadius="3" position="420,85" size="400,6" zPosition="11" />
-			<widget render="Label" source="key_red" position="20,10" size="400,80" zPosition="5" valign="center" halign="center" backgroundColor="#9f1313" font="Regular;42" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-			<widget render="Label" source="key_green" position="420,10" size="400,80" zPosition="5" valign="center" halign="center" backgroundColor="#1f771f" font="Regular;42" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-			<eLabel position="20,100" size="1600,2" backgroundColor="grey" />
-			<widget backgroundColor="background" font="Regular;34" halign="right" position="1455,49" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
+		<screen name="PicSetup" position="center,center" size="1600,1200" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="14,87" size="394,8" zPosition="11"/>
+			<eLabel backgroundColor="green" cornerRadius="3" position="407,87" size="394,8" zPosition="11"/>
+			<widget backgroundColor="#9f1313" font="Regular;40" halign="center" position="14,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_red" transparent="1" valign="center" zPosition="1"/>
+			<widget backgroundColor="#1f771f" font="Regular;40" halign="center" position="407,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_green" transparent="1" valign="center" zPosition="1"/>
+			<eLabel backgroundColor="grey" position="14,107" size="1574,3"/>
+			<widget enableWrapAround="1" name="Mlist" position="14,120" scrollbarMode="showOnDemand" size="1574,960"/>
+			<eLabel backgroundColor="grey" position="14,1027" size="1574,3"/>
+			<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+			<widget backgroundColor="background" font="Regular;46" halign="right" position="1350,55" render="Label" shadowColor="black" shadowOffset="-2,-2" size="160,54" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Default</convert>
 			</widget>
-			<widget backgroundColor="background" font="Regular;34" halign="right" position="1175,9" render="Label" shadowColor="black" shadowOffset="-2,-2" size="400,40" source="global.CurrentTime" transparent="1">
+			<widget backgroundColor="background" font="Regular;46" halign="right" position="974,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="534,54" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Date</convert>
 			</widget>
-			<widget name="Mlist" position="20,120" size="1600,920" enableWrapAround="1" scrollbarMode="showOnDemand" />
 		</screen>"""
 	else:
 		skin = """
-		<screen name="PicSetup" position="center,120" size="820,520" title="Setup">
-			<eLabel backgroundColor="red" cornerRadius="3" position="9,43" size="200,6" zPosition="11" />
-			<eLabel backgroundColor="green" cornerRadius="3" position="209,43" size="200,6" zPosition="11" />
-			<widget backgroundColor="background" font="Regular;34" halign="right" position="677,4" render="Label" shadowColor="black" shadowOffset="-2,-2" size="120,40" source="global.CurrentTime" transparent="1">
+		<screen name="PicSetup" position="center,center" size="800,600" title="Setup">
+			<eLabel backgroundColor="red" cornerRadius="3" position="6,43" size="196,4" zPosition="11"/>
+			<eLabel backgroundColor="green" cornerRadius="3" position="203,43" size="196,4" zPosition="11"/>
+			<widget backgroundColor="#9f1313" font="Regular;20" halign="center" position="6,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_red" transparent="1" valign="center" zPosition="1"/>
+			<widget backgroundColor="#1f771f" font="Regular;20" halign="center" position="203,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_green" transparent="1" valign="center" zPosition="1"/>
+			<eLabel backgroundColor="grey" position="6,53" size="786,1"/>
+			<widget enableWrapAround="1" name="Mlist" position="6,60" scrollbarMode="showOnDemand" size="786,480"/>
+			<eLabel backgroundColor="grey" position="6,513" size="786,1"/>
+			<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
+			<widget backgroundColor="background" font="Regular;22" halign="right" position="674,27" render="Label" shadowColor="black" shadowOffset="-2,-2" size="80,26" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Default</convert>
 			</widget>
-			<widget backgroundColor="background" font="Regular; 22" halign="right" position="411,13" render="Label" shadowColor="black" shadowOffset="-2,-2" size="282,22" source="global.CurrentTime" transparent="1">
+			<widget backgroundColor="background" font="Regular;22" halign="right" position="486,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="266,26" source="global.CurrentTime" transparent="1">
 				<convert type="ClockToText">Date</convert>
 			</widget>
-			<widget render="Label" source="key_red" position="10,5" size="200,40" zPosition="5" valign="center" halign="center" backgroundColor="#9f1313" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-			<widget render="Label" source="key_green" position="210,5" size="200,40" zPosition="5" valign="center" halign="center" backgroundColor="#1f771f" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-			<eLabel position="10,50" size="800,1" backgroundColor="grey" />
-			<widget name="Mlist" position="10,60" size="800,450" enableWrapAround="1" scrollbarMode="showOnDemand" />
 		</screen>"""
 	if DEBUG:
 		FAlog("Setup...")
@@ -2828,18 +2860,15 @@ class PicSetup(Screen, ConfigListScreen):
 				x[1].save()
 			config.save()
 		self.refreshPlugins()
-		self.Exit()
+		self.cancel()
 
 	def cancel(self):
 		for x in self["Mlist"].list:
 			x[1].cancel()
-		# self.close(False, self.session)
-		self.Exit()
-
-	def Exit(self):
 		global menu
 		menu = "stop"
 		self.close()
+		# self.close(False, self.session)
 
 	def keyLeft(self):
 		self["Mlist"].handleKey(KEY_LEFT)
