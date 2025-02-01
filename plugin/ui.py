@@ -1091,21 +1091,20 @@ class ForecaPreview(Screen, HelpableScreen):
 	def info(self):
 		message = str("%s" % (_(
 			"Server URL:    %s\n\n"
-			"<   >      =   Prognosis next/previous day\n"
-			"0 - 9      =   Prognosis (x) days from now\n\n"
-			"VOL+/-     =   Fast scroll 100 (City choice)\n"
-			"Bouquet+/- =   Fast scroll 500 (City choice)\n\n"
-			"Info       =   This information\n"
-			"Menu       =   Satellite photos and maps\n\n"
-			"Ok         =   Go to Config Plugin\n\n"
-			"Tv         =   Go to City Panel\n\n"
-			"Red        =   Temperature chart for the upcoming 5 days\n"
-			"Green      =   Go to Favorite 1\n"
-			"Yellow     =   Go to Favorite 2\n"
-			"Blue       =   Go to Home\n\n"
-			"Wind direction =   Arrow to right: Wind from the West\n"
 		) % BASEURL))
-
+		message += _("<   >      =   Prognosis next/previous day\n")
+		message += _("0 - 9      =   Prognosis (x) days from now\n\n")
+		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
+		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n\n")
+		message += _("Info       =   This information\n")
+		message += _("Menu       =   Satellite photos and maps\n\n")
+		message += _("Ok         =   Go to Config Plugin\n\n")
+		message += _("Tv         =   Go to City Panel\n\n")
+		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
+		message += _("Green      =   Go to Favorite 1\n")
+		message += _("Yellow     =   Go to Favorite 2\n")
+		message += _("Blue       =   Go to Home\n\n")
+		message += _("Wind direction =   Arrow to right: Wind from the West\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
