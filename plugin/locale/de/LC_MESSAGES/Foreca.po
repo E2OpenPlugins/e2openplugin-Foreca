@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-01 13:06+0100\n"
-"PO-Revision-Date: 2025-02-01 13:06+0100\n"
+"POT-Creation-Date: 2025-02-01 13:05+0100\n"
+"PO-Revision-Date: 2025-02-01 13:41+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -239,70 +239,86 @@ msgid ""
 "Server URL:    %s\n"
 "\n"
 msgstr ""
+"Server URL:    %s\n"
+"\n"
 
 #: ui.py:1095
 msgid "<   >      =   Prognosis next/previous day\n"
-msgstr ""
+msgstr "<   >      =   Prognose nächster/vorheriger Tag\n"
 
 #: ui.py:1096
 msgid ""
 "0 - 9      =   Prognosis (x) days from now\n"
 "\n"
 msgstr ""
+"0 - 9      =   Prognose in (x) Tagen ab jetzt\n"
+"\n"
 
 #: ui.py:1097
 msgid "VOL+/-     =   Fast scroll 100 (City choice)\n"
-msgstr ""
+msgstr "VOL+/-   =   schnell scrollen 100 (Stadtauswahl)\n"
 
 #: ui.py:1098
 msgid ""
 "Bouquet+/- =   Fast scroll 500 (City choice)\n"
 "\n"
 msgstr ""
+"Bouquet+/- =   schnell scrollen 500 (Stadtauswahl)\n"
+"\n"
 
 #: ui.py:1099
 msgid "Info       =   This information\n"
-msgstr ""
+msgstr "Info       =   Diese Information\n"
 
 #: ui.py:1100
 msgid ""
 "Menu       =   Satellite photos and maps\n"
 "\n"
 msgstr ""
+"Menu    =   Satellitenfotos und Karten\n"
+"\n"
 
 #: ui.py:1101
 msgid ""
 "Ok         =   Go to Config Plugin\n"
 "\n"
 msgstr ""
+"Ok         =   Gehe zu Plugin Konfiguration\n"
+"\n"
 
 #: ui.py:1102
 msgid ""
 "Tv         =   Go to City Panel\n"
 "\n"
 msgstr ""
+"TV         =  Zum Stadt-Panel gehen\n"
+"\n"
 
 #: ui.py:1103
 msgid "Red        =   Temperature chart for the upcoming 5 days\n"
-msgstr "Wettervorhersage für die nächsten 10 Tage\n"
+msgstr "Rot        =   Temperaturdiagramm für die kommenden 5 Tage\n"
 
 #: ui.py:1104
 msgid "Green      =   Go to Favorite 1\n"
-msgstr "Grün - Auf Favorit 1 legen\n"
+msgstr ""
+"Grün      =   Gehe zu Favorit 1\n"
+"\n"
 
 #: ui.py:1105
 msgid "Yellow     =   Go to Favorite 2\n"
-msgstr "Gelb - Auf Favorit 2 legen\n"
+msgstr "Gelb      =   Gehe zu Favorit 1\n"
 
 #: ui.py:1106
 msgid ""
 "Blue       =   Go to Home\n"
 "\n"
 msgstr ""
+"Blau       =   Gehe zu Heimat\n"
+"\n"
 
 #: ui.py:1107
 msgid "Wind direction =   Arrow to right: Wind from the West\n"
-msgstr ""
+msgstr "Windrichtung =   Pfeil zeigt nach rechts: Wind weht aus Westen\n"
 
 #: ui.py:1526 ui.py:1537
 msgid "Select a city"
@@ -760,52 +776,3 @@ msgstr "Anzeigen im Erweiterungsmenü"
 #: ui.py:2805
 msgid "Debug"
 msgstr "Debug"
-
-#~ msgid "City"
-#~ msgstr "Stadt"
-
-#, python-format
-#~ msgid ""
-#~ "Server URL:    %s\n"
-#~ "\n"
-#~ "<   >      =   Prognosis next/previous day\n"
-#~ "0 - 9      =   Prognosis (x) days from now\n"
-#~ "\n"
-#~ "VOL+/-     =   Fast scroll 100 (City choice)\n"
-#~ "Bouquet+/- =   Fast scroll 500 (City choice)\n"
-#~ "\n"
-#~ "Info       =   This information\n"
-#~ "Menu       =   Satellite photos and maps\n"
-#~ "\n"
-#~ "Ok         =   Go to Config Plugin\n"
-#~ "\n"
-#~ "Tv         =   Go to City Panel\n"
-#~ "\n"
-#~ "Red        =   Temperature chart for the upcoming 5 days\n"
-#~ "Green      =   Go to Favorite 1\n"
-#~ "Yellow     =   Go to Favorite 2\n"
-#~ "Blue       =   Go to Home\n"
-#~ "\n"
-#~ "Wind direction =   Arrow to right: Wind from the West\n"
-#~ msgstr ""
-#~ "Server URL:    %s\n"
-#~ "\n"
-#~ "<   >      =   Prognose nächster/vorheriger Tag\n"
-#~ "0 - 9      =   Prognose in (x) Tagen ab jetzt\n"
-#~ "\n"
-#~ "VOL+/-   =   schnell scrollen 100 (Stadtauswahl)\n"
-#~ "Bouquet+/- =   schnell scrollen 500 (Stadtauswahl)\n"
-#~ "\n"
-#~ "Info       =   Diese Information\n"
-#~ "Menu    =   Satellitenfotos und Karten\n"
-#~ "\n"
-#~ "Ok         =   Gehe zu Plugin Konfiguration\n"
-#~ "\n"
-#~ "Tv         =  Zum Stadt-Panel gehen\n"
-#~ "\n"
-#~ "Rot       =   Prognosediagramm der nächsten 5 Tage\n"
-#~ "Grün    =   Prognose für Favorit 1\n"
-#~ "Gelb     =   Prognose für Favorit 2\n"
-#~ "Blau     =   Prognose für Wohnort\n"
-#~ "\n"
-#~ "Windrichtung =   Pfeil zeigt nach rechts: Wind weht aus Westen\n"
