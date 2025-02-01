@@ -6,5 +6,5 @@ Priority: optional
 Maintainer: Bauernbub
 Architecture: all
 OE: enigma2-plugin-extensions-foreca
-Homepage: http://openpli.org/forums/topic/25848-foreca-weather-plugin-problem/
+Homepage: http://forums.openpli.org/topic/101039-foreca-work-on-pli/
 Source: https://github.com/E2OpenPlugins/e2openplugin-Foreca

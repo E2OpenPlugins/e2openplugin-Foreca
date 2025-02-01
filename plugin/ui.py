@@ -920,7 +920,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["Titel4"] = StaticText()
 		self["Titel5"] = StaticText()
 		self["key_red"] = StaticText(_("Week"))
-		self["key_ok"] = StaticText(_("City"))
+		self["key_ok"] = StaticText(_("Config"))
 		if config.plugins.foreca.citylabels.value is True:
 			self["key_green"] = StaticText(fav1.replace("_", " "))
 			self["key_yellow"] = StaticText(fav2.replace("_", " "))
@@ -1188,8 +1188,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
-
-		# self.StartPage()
 
 	def loadPicture(self, url=""):
 		devicepath = CACHE_PATH + "meteogram.png"
@@ -2485,7 +2483,6 @@ class View_Slideshow(Screen):
 		space = config.plugins.foreca.framesize.value
 		fontsize = config.plugins.foreca.fontsize.value
 
-		# self.skindir = "/tmp"
 		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
 			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space + 40) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2) - 40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
