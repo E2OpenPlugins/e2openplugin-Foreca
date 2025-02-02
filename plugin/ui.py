@@ -1339,7 +1339,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
-		self["Titel2"].text = titel[0].strip("'")
+		self["Titel2"].text = ""  # titel[0].strip("'")
 
 		# translation date
 		datum = titel[0]
