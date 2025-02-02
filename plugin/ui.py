@@ -2088,7 +2088,8 @@ class SatPanel(Screen, HelpableScreen):
 					seen_links.add(link)
 
 		def returnToChoiceBox(result=None):
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 		def boxAction(choice):
 			if choice:
@@ -2127,7 +2128,8 @@ class SatPanel(Screen, HelpableScreen):
 					returnToChoiceBox()
 
 		if len(menu) > 0:
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 	def SatBild(self):
 		try:
