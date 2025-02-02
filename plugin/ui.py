@@ -1339,7 +1339,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
-		self["Titel2"].text = titel[0].strip("'")
+		self["Titel2"].text = ""  # titel[0].strip("'")
 
 		# translation date
 		datum = titel[0]
@@ -2088,7 +2088,8 @@ class SatPanel(Screen, HelpableScreen):
 					seen_links.add(link)
 
 		def returnToChoiceBox(result=None):
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 		def boxAction(choice):
 			if choice:
@@ -2127,7 +2128,8 @@ class SatPanel(Screen, HelpableScreen):
 					returnToChoiceBox()
 
 		if len(menu) > 0:
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
+			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 	def SatBild(self):
 		try:
