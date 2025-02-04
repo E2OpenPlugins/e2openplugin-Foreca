@@ -321,12 +321,25 @@ def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.ba/"):
 		return fallback_url
 
 
+lng = 'en'
 try:
 	lng = config.osd.language.value
 	lng = lng[:-3]
 except:
 	lng = 'en'
 	pass
+
+"""
+# def detect_system_language():
+	# try:
+		# from Components.config import config
+		# lng = config.osd.language.value
+		# return lng.split('_')[0] if '_' in lng else lng
+	# except (ImportError, AttributeError, KeyError):
+		# return lng
+
+# detect_system_language()
+"""
 
 """
 selected_language = config.plugins.foreca.languages.value
@@ -1339,7 +1352,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
-		self["Titel2"].text = ""  # titel[0].strip("'")
+		# self["Titel2"].text = ""  # titel[0].strip("'")
+		self["Titel2"].text = titel[0].strip("'")
 
 		# translation date
 		datum = titel[0]
@@ -1478,7 +1492,6 @@ class CityPanel(Screen, HelpableScreen):
 					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 			</screen>"""
 
-
 		elif size_w == 2560:
 			self.skin = """
 			<screen name="CityPanel" position="center,center" size="1600,1200" title="Select a city">
@@ -1527,8 +1540,9 @@ class CityPanel(Screen, HelpableScreen):
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
 
-		global city
-		city = panelmenu
+		# global city
+		self.city = panelmenu
+		print('city = panelmenu:', self.city, type(self.city))
 
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
@@ -1664,49 +1678,49 @@ class CityPanel(Screen, HelpableScreen):
 			search_ok = False
 			# self.prepare()
 		# else:
-		global menu, city
-		city = city
+		global menu
 		menu = "stop"
-		self.close()
+		# print('self.city=:', self.city)
+		self.close(self.city)
 
 	def ok(self):
-		global city
-		city = self['Mlist'].l.getCurrentSelection()[0][1]
+		selected_city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])  # Selezione dell'utente
+		print("OK city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		if DEBUG:
-			FAlog("city= %s" % city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		self.exit()
+			FAlog("city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		self.close(selected_city)  # Restituisci direttamente la stringa selezionata
 
 	def blue(self):
 		global start
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Home:", city)
-		config.plugins.foreca.home.setValue = city
+			FAlog("Home:", self.city)
+		config.plugins.foreca.home.setValue(self.city)  # ✅ FIX
 		config.plugins.foreca.home.save()
-		start = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
+		start = self.city[self.city.rfind("/") + 1:]
+		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def green(self):
 		global fav1
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Fav1:", city)
-		config.plugins.foreca.fav1.setValue = city
+			FAlog("Fav1:", self.city)
+		config.plugins.foreca.fav1.setValue = (self.city)
 		config.plugins.foreca.fav1.save()
-		fav1 = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
+		fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
+		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def yellow(self):
 		global fav2
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Fav2:", city)
-		config.plugins.foreca.fav2.setValue = city
+			FAlog("Fav2:", self.city)
+		config.plugins.foreca.fav2.setValue = (self.city)  # ✅ FIX
 		config.plugins.foreca.fav2.save()
-		fav2 = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
+		fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
+		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self, entry):
@@ -2088,7 +2102,6 @@ class SatPanel(Screen, HelpableScreen):
 					seen_links.add(link)
 
 		def returnToChoiceBox(result=None):
-			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
 			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 		def boxAction(choice):
@@ -2128,7 +2141,6 @@ class SatPanel(Screen, HelpableScreen):
 					returnToChoiceBox()
 
 		if len(menu) > 0:
-			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
 			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 	def SatBild(self):
@@ -2811,28 +2823,52 @@ class PicSetup(Screen, ConfigListScreen):
 	def OKcity(self):
 		# panelmenu = ""
 		current_item = str(self["Mlist"].getCurrent()[1].getText())
-		print("current_item:", current_item)
-		if current_item:
-			if current_item == config.plugins.foreca.home.value:
-				self.config_entry = config.plugins.foreca.home
-			elif current_item == config.plugins.foreca.fav1.value:
-				self.config_entry = config.plugins.foreca.fav1
-			elif current_item == config.plugins.foreca.fav2.value:
-				self.config_entry = config.plugins.foreca.fav2
-			else:
-				print("No Valid element")
-				return
-			print("Config entry actual:", self.config_entry.value)
-			self.session.openWithCallback(self.OKCallback, CityPanel, self.config_entry)
+		self.config_entry = None
+		print("current_item:", type(current_item), current_item)
+		print("config.plugins.foreca.home:", type(config.plugins.foreca.home), config.plugins.foreca.home.value)
+		print("config.plugins.foreca.fav1:", type(config.plugins.foreca.fav1), config.plugins.foreca.fav1.value)
+		print("config.plugins.foreca.fav2:", type(config.plugins.foreca.fav2), config.plugins.foreca.fav2.value)
+		if current_item == config.plugins.foreca.home.value:
+			self.config_entry = config.plugins.foreca.home
+		elif current_item == config.plugins.foreca.fav1.value:
+			self.config_entry = config.plugins.foreca.fav1
+		elif current_item == config.plugins.foreca.fav2.value:
+			self.config_entry = config.plugins.foreca.fav2
 
-	def OKCallback(self):
-		global city
-		if city != self.config_entry:
-			# print('city is:', str(city))
-			self.config_entry.setValue(city)
-			self.config_entry.save()
-			self.createSetup()
-			# print("New city saved:", city)
+		print("Config entry actual:", self.config_entry.value)
+		self.session.openWithCallback(self.OKCallback, CityPanel, self.config_entry)
+
+	def OKCallback(self, city=None):
+		print("Received city:", city)
+		print("Type of self.config_entry before setValue:", self.config_entry, type(self.config_entry))
+
+		if isinstance(city, ConfigText):
+			city = city.getValue()
+			print("Extracted city value:", city)
+
+		city_parts = city.split("/")  # Separiamo il paese dalla città
+		if len(city_parts) == 2:
+			country, city_name = city_parts
+			print("Country:", country)
+			print("City:", city_name)
+		else:
+			print("ERROR: city format is incorrect")
+
+		if not isinstance(city, str):
+			print("ERROR: city is not a string! Current type:", type(city))
+			return
+
+		if not isinstance(self.config_entry, ConfigText):
+			print("ERROR: self.config_entry is not a ConfigText instance! Current type:", type(self.config_entry))
+			return
+
+		if city is None:
+			print("No city selected, exiting callback.")
+			return
+
+		self.config_entry.setValue(city)  # Ora dovrebbe essere sicuro
+		self.config_entry.save()
+		self.createSetup()
 
 	def changedEntry(self):
 		current_item = self["Mlist"].getCurrent()
