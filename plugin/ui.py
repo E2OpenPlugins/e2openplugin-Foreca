@@ -1378,7 +1378,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		translated_month = translation_dict.get(month_text.lower(), month_text)
 		translated_day = translated_day.capitalize()
 		translated_month = translated_month.capitalize()
-		datum2 = translated_day + datum[foundPos:] + " " + translated_month
+		datum2 = translated_day + ", " + datum[foundPos:] + ". " + translated_month
 
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
