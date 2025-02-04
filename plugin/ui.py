@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
-from . import _, file_url
+from . import _, file_url  # , isDreambox
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.ConfigList import ConfigList
@@ -630,7 +630,10 @@ class MainMenuList(MenuList):
 		self.buildEntry(None)
 
 # ----------------------------------- Build entries for list -------------------------------
+
 	def buildEntry(self, picInfo=None):
+															
+																	 
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
 
@@ -774,7 +777,11 @@ class ForecaPreviewCache(Screen):
 		self.curr = 0
 
 		self.timer = eTimer()
-		self.timer.callback.append(self.showNextSpinner)
+		# self.timer.callback.append(self.showNextSpinner)
+		try:
+			self.timer.callback.append(self.showNextSpinner)
+		except:
+			self.timer_conn = self.timer.timeout.connect(self.showNextSpinner)
 
 	def start(self):
 		self.show()
@@ -801,6 +808,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
+		MAIN_PAGE = BASEURL.rstrip("/")
 		now = datetime.now()
 		heute = now.strftime("%Y%m%d")
 
@@ -1021,6 +1029,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
 		except Exception as e:
 			self.error(repr(e))
+		self.deactivateCacheDialog()
 
 	def error(self, err=""):
 		if DEBUG:
@@ -1096,6 +1105,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			config.plugins.foreca.units.value,
 			config.plugins.foreca.time.value
 		)
+		# if isinstance(MAIN_PAGE, unicode):
+			# MAIN_PAGE = MAIN_PAGE.encode('utf-8')
 		if DEBUG:
 			FAlog("day link:", MAIN_PAGE)
 		# Show in GUI
@@ -1147,6 +1158,8 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		if DEBUG:
 			FAlog("MenuCallback")
+
+		self.deactivateCacheDialog()
 
 	def left(self):
 		if not self.working and self.tag >= 1:
@@ -1232,6 +1245,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel = fulltext.findall(html)
 		if DEBUG:
 			FAlog("fulltext=%s titel= %s" % (fulltext, titel))
+
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 
 		if DEBUG:
@@ -1293,10 +1307,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		# <span class="warm"><strong>+15&deg;</strong></span><br />
 		fulltime = compile(r'<div class="c4">.*?<strong>(.+?)&.+?', DOTALL)
 		temp = fulltime.findall(html)
+
 		if DEBUG:
 			FAlog("Temp=%s" % str(temp))
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
+
 		fulltext = compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', DOTALL)
 		thumbnails = fulltext.findall(html)
 		if DEBUG:
@@ -1354,7 +1370,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# self["Titel2"].text = ""  # titel[0].strip("'")
 		self["Titel2"].text = titel[0].strip("'")
-
 		# translation date
 		datum = titel[0]
 		foundPos = datum.rfind(" ")
@@ -1376,7 +1391,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
-		self.deactivateCacheDialog()
+		# self.deactivateCacheDialog()
 
 	def load_translation_dict(self, lng):
 		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
@@ -1542,8 +1557,7 @@ class CityPanel(Screen, HelpableScreen):
 
 		# global city
 		self.city = panelmenu
-		print('city = panelmenu:', self.city, type(self.city))
-
+		# print('city = panelmenu:', self.city, type(self.city))
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
@@ -2361,6 +2375,14 @@ class SatPanelb(Screen, HelpableScreen):
 			try:
 				download_image(url, devicepath)
 				remove_icc_profile(devicepath)
+				"""
+				req = Request(url, headers=HEADERS)
+				resp = urlopen(req, timeout=2)
+				with open(devicepath, 'wb') as f:
+					f.write(resp.read())
+					img = Image.open(devicepath)
+					img.save(devicepath, icc_profile=None)
+				"""
 				self.session.open(PicView, devicepath, 0, False)
 			except Exception as e:
 				if DEBUG:
@@ -2409,8 +2431,13 @@ class PicView(Screen):
 		self.dirlistcount = 0
 		self.index = 0
 		self.picload = ePicLoad()
-		self.picload.PictureData.get().append(self.finish_decode)
+		# self.picload.PictureData.get().append(self.finish_decode)
+		try:
+			self.picload.PictureData.get().append(self.finish_decode)
+		except:
+			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
 		self.onLayoutFinish.append(self.setPicloadConf)
+
 		self.startslide = startslide
 
 	def setPicloadConf(self):
@@ -2541,10 +2568,21 @@ class View_Slideshow(Screen):
 		self.pindex = pindex - self.dirlistcount
 		if self.pindex < 0:
 			self.pindex = 0
+
 		self.picload = ePicLoad()
-		self.picload.PictureData.get().append(self.finish_decode)
+		# self.picload.PictureData.get().append(self.finish_decode)
+		try:
+			self.picload.PictureData.get().append(self.finish_decode)
+		except:
+			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
+
 		self.slideTimer = eTimer()
-		self.slideTimer.callback.append(self.slidePic)
+		# self.slideTimer.callback.append(self.slidePic)
+		try:
+			self.slideTimer.callback.append(self.slidePic)
+		except:
+			self.slideTimer_conn = self.slideTimer.timeout.connect(self.slidePic)
+
 		if self.maxentry >= 0:
 			self.onLayoutFinish.append(self.setPicloadConf)
 		if startslide is True:
