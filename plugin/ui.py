@@ -632,8 +632,8 @@ class MainMenuList(MenuList):
 # ----------------------------------- Build entries for list -------------------------------
 
 	def buildEntry(self, picInfo=None):
-															
-																	 
+
+
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
 
@@ -808,7 +808,6 @@ class ForecaPreview(Screen, HelpableScreen):
 	def __init__(self, session):
 		global MAIN_PAGE, menu
 		self.session = session
-		MAIN_PAGE = BASEURL.rstrip("/")
 		now = datetime.now()
 		heute = now.strftime("%Y%m%d")
 
@@ -1158,7 +1157,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		if DEBUG:
 			FAlog("MenuCallback")
-
 		self.deactivateCacheDialog()
 
 	def left(self):
