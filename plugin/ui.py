@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
-from . import _, file_url
+from . import _, file_url  # , isDreambox
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.ConfigList import ConfigList
@@ -321,12 +321,25 @@ def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.ba/"):
 		return fallback_url
 
 
+lng = 'en'
 try:
 	lng = config.osd.language.value
 	lng = lng[:-3]
 except:
 	lng = 'en'
 	pass
+
+"""
+# def detect_system_language():
+	# try:
+		# from Components.config import config
+		# lng = config.osd.language.value
+		# return lng.split('_')[0] if '_' in lng else lng
+	# except (ImportError, AttributeError, KeyError):
+		# return lng
+
+# detect_system_language()
+"""
 
 """
 selected_language = config.plugins.foreca.languages.value
@@ -617,7 +630,10 @@ class MainMenuList(MenuList):
 		self.buildEntry(None)
 
 # ----------------------------------- Build entries for list -------------------------------
+
 	def buildEntry(self, picInfo=None):
+
+
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
 
@@ -761,7 +777,11 @@ class ForecaPreviewCache(Screen):
 		self.curr = 0
 
 		self.timer = eTimer()
-		self.timer.callback.append(self.showNextSpinner)
+		# self.timer.callback.append(self.showNextSpinner)
+		try:
+			self.timer.callback.append(self.showNextSpinner)
+		except:
+			self.timer_conn = self.timer.timeout.connect(self.showNextSpinner)
 
 	def start(self):
 		self.show()
@@ -1008,6 +1028,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
 		except Exception as e:
 			self.error(repr(e))
+		self.deactivateCacheDialog()
 
 	def error(self, err=""):
 		if DEBUG:
@@ -1083,6 +1104,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			config.plugins.foreca.units.value,
 			config.plugins.foreca.time.value
 		)
+		# if isinstance(MAIN_PAGE, unicode):
+			# MAIN_PAGE = MAIN_PAGE.encode('utf-8')
 		if DEBUG:
 			FAlog("day link:", MAIN_PAGE)
 		# Show in GUI
@@ -1134,6 +1157,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		if DEBUG:
 			FAlog("MenuCallback")
+		self.deactivateCacheDialog()
 
 	def left(self):
 		if not self.working and self.tag >= 1:
@@ -1219,6 +1243,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		titel = fulltext.findall(html)
 		if DEBUG:
 			FAlog("fulltext=%s titel= %s" % (fulltext, titel))
+
 		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
 
 		if DEBUG:
@@ -1280,10 +1305,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		# <span class="warm"><strong>+15&deg;</strong></span><br />
 		fulltime = compile(r'<div class="c4">.*?<strong>(.+?)&.+?', DOTALL)
 		temp = fulltime.findall(html)
+
 		if DEBUG:
 			FAlog("Temp=%s" % str(temp))
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
+
 		fulltext = compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', DOTALL)
 		thumbnails = fulltext.findall(html)
 		if DEBUG:
@@ -1339,8 +1366,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
-		self["Titel2"].text = ""  # titel[0].strip("'")
-
+		# self["Titel2"].text = ""  # titel[0].strip("'")
+		self["Titel2"].text = titel[0].strip("'")
 		# translation date
 		datum = titel[0]
 		foundPos = datum.rfind(" ")
@@ -1351,7 +1378,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		translated_month = translation_dict.get(month_text.lower(), month_text)
 		translated_day = translated_day.capitalize()
 		translated_month = translated_month.capitalize()
-		datum2 = translated_day + datum[foundPos:] + " " + translated_month
+		datum2 = translated_day + ", " + datum[foundPos:] + ". " + translated_month
 
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
@@ -1362,7 +1389,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
-		self.deactivateCacheDialog()
+		# self.deactivateCacheDialog()
 
 	def load_translation_dict(self, lng):
 		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
@@ -1478,7 +1505,6 @@ class CityPanel(Screen, HelpableScreen):
 					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 			</screen>"""
 
-
 		elif size_w == 2560:
 			self.skin = """
 			<screen name="CityPanel" position="center,center" size="1600,1200" title="Select a city">
@@ -1527,9 +1553,9 @@ class CityPanel(Screen, HelpableScreen):
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
 
-		global city
-		city = panelmenu
-
+		# global city
+		self.city = panelmenu
+		# print('city = panelmenu:', self.city, type(self.city))
 		self["key_green"] = StaticText(_("Favorite 1"))
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
@@ -1664,49 +1690,49 @@ class CityPanel(Screen, HelpableScreen):
 			search_ok = False
 			# self.prepare()
 		# else:
-		global menu, city
-		city = city
+		global menu
 		menu = "stop"
-		self.close()
+		# print('self.city=:', self.city)
+		self.close(self.city)
 
 	def ok(self):
-		global city
-		city = self['Mlist'].l.getCurrentSelection()[0][1]
+		selected_city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])  # Selezione dell'utente
+		print("OK city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		if DEBUG:
-			FAlog("city= %s" % city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		self.exit()
+			FAlog("city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		self.close(selected_city)  # Restituisci direttamente la stringa selezionata
 
 	def blue(self):
 		global start
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Home:", city)
-		config.plugins.foreca.home.setValue = city
+			FAlog("Home:", self.city)
+		config.plugins.foreca.home.setValue(self.city)  # ✅ FIX
 		config.plugins.foreca.home.save()
-		start = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), city)
+		start = self.city[self.city.rfind("/") + 1:]
+		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def green(self):
 		global fav1
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Fav1:", city)
-		config.plugins.foreca.fav1.setValue = city
+			FAlog("Fav1:", self.city)
+		config.plugins.foreca.fav1.setValue = (self.city)
 		config.plugins.foreca.fav1.save()
-		fav1 = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), city)
+		fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
+		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def yellow(self):
 		global fav2
-		city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
-			FAlog("Fav2:", city)
-		config.plugins.foreca.fav2.setValue = city
+			FAlog("Fav2:", self.city)
+		config.plugins.foreca.fav2.setValue = (self.city)  # ✅ FIX
 		config.plugins.foreca.fav2.save()
-		fav2 = city[city.rfind("/") + 1:len(city)]
-		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), city)
+		fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
+		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
 	def CityEntryItem(self, entry):
@@ -2088,7 +2114,6 @@ class SatPanel(Screen, HelpableScreen):
 					seen_links.add(link)
 
 		def returnToChoiceBox(result=None):
-			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
 			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 		def boxAction(choice):
@@ -2128,7 +2153,6 @@ class SatPanel(Screen, HelpableScreen):
 					returnToChoiceBox()
 
 		if len(menu) > 0:
-			# self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("eumetsat menu"))
 			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
 
 	def SatBild(self):
@@ -2349,6 +2373,14 @@ class SatPanelb(Screen, HelpableScreen):
 			try:
 				download_image(url, devicepath)
 				remove_icc_profile(devicepath)
+				"""
+				req = Request(url, headers=HEADERS)
+				resp = urlopen(req, timeout=2)
+				with open(devicepath, 'wb') as f:
+					f.write(resp.read())
+					img = Image.open(devicepath)
+					img.save(devicepath, icc_profile=None)
+				"""
 				self.session.open(PicView, devicepath, 0, False)
 			except Exception as e:
 				if DEBUG:
@@ -2397,8 +2429,13 @@ class PicView(Screen):
 		self.dirlistcount = 0
 		self.index = 0
 		self.picload = ePicLoad()
-		self.picload.PictureData.get().append(self.finish_decode)
+		# self.picload.PictureData.get().append(self.finish_decode)
+		try:
+			self.picload.PictureData.get().append(self.finish_decode)
+		except:
+			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
 		self.onLayoutFinish.append(self.setPicloadConf)
+
 		self.startslide = startslide
 
 	def setPicloadConf(self):
@@ -2529,10 +2566,21 @@ class View_Slideshow(Screen):
 		self.pindex = pindex - self.dirlistcount
 		if self.pindex < 0:
 			self.pindex = 0
+
 		self.picload = ePicLoad()
-		self.picload.PictureData.get().append(self.finish_decode)
+		# self.picload.PictureData.get().append(self.finish_decode)
+		try:
+			self.picload.PictureData.get().append(self.finish_decode)
+		except:
+			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
+
 		self.slideTimer = eTimer()
-		self.slideTimer.callback.append(self.slidePic)
+		# self.slideTimer.callback.append(self.slidePic)
+		try:
+			self.slideTimer.callback.append(self.slidePic)
+		except:
+			self.slideTimer_conn = self.slideTimer.timeout.connect(self.slidePic)
+
 		if self.maxentry >= 0:
 			self.onLayoutFinish.append(self.setPicloadConf)
 		if startslide is True:
@@ -2811,28 +2859,52 @@ class PicSetup(Screen, ConfigListScreen):
 	def OKcity(self):
 		# panelmenu = ""
 		current_item = str(self["Mlist"].getCurrent()[1].getText())
-		print("current_item:", current_item)
-		if current_item:
-			if current_item == config.plugins.foreca.home.value:
-				self.config_entry = config.plugins.foreca.home
-			elif current_item == config.plugins.foreca.fav1.value:
-				self.config_entry = config.plugins.foreca.fav1
-			elif current_item == config.plugins.foreca.fav2.value:
-				self.config_entry = config.plugins.foreca.fav2
-			else:
-				print("No Valid element")
-				return
-			print("Config entry actual:", self.config_entry.value)
-			self.session.openWithCallback(self.OKCallback, CityPanel, self.config_entry)
+		self.config_entry = None
+		print("current_item:", type(current_item), current_item)
+		print("config.plugins.foreca.home:", type(config.plugins.foreca.home), config.plugins.foreca.home.value)
+		print("config.plugins.foreca.fav1:", type(config.plugins.foreca.fav1), config.plugins.foreca.fav1.value)
+		print("config.plugins.foreca.fav2:", type(config.plugins.foreca.fav2), config.plugins.foreca.fav2.value)
+		if current_item == config.plugins.foreca.home.value:
+			self.config_entry = config.plugins.foreca.home
+		elif current_item == config.plugins.foreca.fav1.value:
+			self.config_entry = config.plugins.foreca.fav1
+		elif current_item == config.plugins.foreca.fav2.value:
+			self.config_entry = config.plugins.foreca.fav2
 
-	def OKCallback(self):
-		global city
-		if city != self.config_entry:
-			# print('city is:', str(city))
-			self.config_entry.setValue(city)
-			self.config_entry.save()
-			self.createSetup()
-			# print("New city saved:", city)
+		print("Config entry actual:", self.config_entry.value)
+		self.session.openWithCallback(self.OKCallback, CityPanel, self.config_entry)
+
+	def OKCallback(self, city=None):
+		print("Received city:", city)
+		print("Type of self.config_entry before setValue:", self.config_entry, type(self.config_entry))
+
+		if isinstance(city, ConfigText):
+			city = city.getValue()
+			print("Extracted city value:", city)
+
+		city_parts = city.split("/")  # Separiamo il paese dalla città
+		if len(city_parts) == 2:
+			country, city_name = city_parts
+			print("Country:", country)
+			print("City:", city_name)
+		else:
+			print("ERROR: city format is incorrect")
+
+		if not isinstance(city, str):
+			print("ERROR: city is not a string! Current type:", type(city))
+			return
+
+		if not isinstance(self.config_entry, ConfigText):
+			print("ERROR: self.config_entry is not a ConfigText instance! Current type:", type(self.config_entry))
+			return
+
+		if city is None:
+			print("No city selected, exiting callback.")
+			return
+
+		self.config_entry.setValue(city)  # Ora dovrebbe essere sicuro
+		self.config_entry.save()
+		self.createSetup()
 
 	def changedEntry(self):
 		current_item = self["Mlist"].getCurrent()
