@@ -1343,6 +1343,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<div class="c2">.+?<strong>(.+?)<.+?', DOTALL)
 		windSpeed = fulltext.findall(html)
+		# windspeed = windspeed.replace('kmh', 'km/h')
 		if DEBUG:
 			FAlog("windSpeed=%s" % str(windSpeed))
 
@@ -1354,6 +1355,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			precip[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", precip[x])))
 			humidity[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", humidity[x])))
 			windSpeed[x] = self.filter_dia(windSpeed[x])
+			windSpeed[x] = windSpeed[x].replace('kmh', 'km/h')
 
 			# translate_description
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
