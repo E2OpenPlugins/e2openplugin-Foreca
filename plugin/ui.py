@@ -949,7 +949,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_blue"] = StaticText(_("Home"))
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
-		self.setTitle(_("Foreca Weather Forecast") + " " + _("Version ") + VERSION)
+		self.setTitle(_("Foreca Weather Forecast"))  # + " " + _("Version ") + VERSION)
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -1115,6 +1115,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		message = str("%s" % (_(
 			"Server URL:    %s\n\n"
 		) % BASEURL))
+		message += _("VERSION    =   %s\n") % VERSION
 		message += _("<   >      =   Prognosis next/previous day\n")
 		message += _("0 - 9      =   Prognosis (x) days from now\n\n")
 		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
