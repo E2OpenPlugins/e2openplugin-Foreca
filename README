@@ -1,3 +1,27 @@
+Foreca weather forecast plugin
+
+################ENGLISH####################
+
+Worldwide weather forecast for 10 days with satellite images, weather videos and much more. 
+
+The plugin shows weather forecasts up to a maximum of 9 days in advance. The output is provided with graphic symbols and short explanations about the weather situation. Slideshows about cloud cover and precipitation can also be accessed.
+
+Use the keys 0 to 9 to call up the forecast for the next 10 days: 0 = today, 1 = tomorrow, 2 = the day after tomorrow, 3 = in 3 days, etc. Use the left/right keys to scroll to the previous/next day. A graphical 5-day temperature and precipitation history can be accessed using the red button.
+
+The OK button provides an extensive list to select the desired location or save it as a favorite. The home location (blue button) and two other favorites (green and yellow buttons) can be saved here for direct retrieval. Since the list already includes over 22,000 cities, for faster navigation you can use the Bouquet +/- keys to jump in 500 increments and the Volume +/- in 100 increments. If you want to add places yourself, you can add the file "/etc/enigma2/Foreca/City.cfg". To do this, find the exact name in the URL by searching Foreca. Place names with umlauts that appear in the URL with a/o/u instead of ä/ö/ü can be entered in the "City.cfg" with umlauts (e.g. Düsseldorf for Dusseldorf) and then appear in the location selection and Heading of the forecasts in the correct spelling. But that works, for example. E.g. not for Cologne because it is transcribed in the URL with a double sound (Koeln).
+
+The menu key opens an overview from which various slideshows can be started. A slideshow consists of several individual images that are played as a time-lapse video. At the end of the slideshow you can scroll using the left/right buttons.
+
+The basic setting of some parameters can be changed from the slideshow menu using the blue button. Will e.g. For example, if the image change time is set higher, the time-lapse video will run slower. A loop can be set with “Repeat slide show”. The units of measurement used (°C - °F, km/h - m/s - mph) and the time display (12h - 24h) can also be selected here.
+
+The respective key functions are displayed by pressing the Help key. 
+
+The source of the forecasts and weather maps is the Finnish company Foreca.
+
+Base URL is read from baseurl.txt file. If Foreca stops working, then new base URL is set to that file and enigma2 boot is enough to Foreca to work again.
+
+################GERMAN####################
+
 Weltweite Wettervorhersage für 10 Tage mit Satellitenbildern, Wetter-Videos und vielem mehr. 
 
 Das Plugin zeigt Wetterprognosen bis maximal 9 Tage im voraus. Die Ausgabe erfolgt mit grafischen Symbolen und kurzen Erklärungen über die Wetterlage. Außerdem können Slideshows über Bewölkung und Niederschlag abgerufen werden. 
@@ -16,3 +40,11 @@ Quelle der Prognosen und Wetterkarten ist das finnische Unternehmen Foreca.
 
 Weitere Informationen und Screenshots gibt es bei Dreambox-Blog unter "Foreca Wettervorhersage" [http://www.dreambox-blog.com/index.php/5446/foreca-wettervorhersage-mit-satellitenbildern-und-mehr] und "Neue Foreca Version" [http://www.dreambox-blog.com/index.php/6590/neue-version-des-foreca-wettervorhersage-plugins-behebt-diverse-probleme]. 
 
+
+latest updates by @Lululla support here
+https://www.linuxsat-support.com/thread/112874-foreca-weather-plugin/
+
+oATV
+https://www.opena.tv/viewtopic.php?t=142
+VTI
+https://vuplus-support.org/wbb4/index.php?thread/149216-foreca-wettervorhersage
