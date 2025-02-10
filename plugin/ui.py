@@ -1113,21 +1113,21 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def info(self):
 		message = str("%s" % (_(
-			"Server URL:    %s\n\n"
+			"Server URL:    %s\n"
 		) % BASEURL))
 		message += _("VERSION    =   %s\n") % VERSION
 		message += _("<   >      =   Prognosis next/previous day\n")
-		message += _("0 - 9      =   Prognosis (x) days from now\n\n")
+		message += _("0 - 9      =   Prognosis (x) days from now\n")
 		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
-		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n\n")
+		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
 		message += _("Info       =   This information\n")
-		message += _("Menu       =   Satellite photos and maps\n\n")
-		message += _("Ok         =   Go to Config Plugin\n\n")
-		message += _("Tv         =   Go to City Panel\n\n")
+		message += _("Menu       =   Satellite photos and maps\n")
+		message += _("Ok         =   Go to Config Plugin\n")
+		message += _("Tv         =   Go to City Panel\n")
 		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
 		message += _("Green      =   Go to Favorite 1\n")
 		message += _("Yellow     =   Go to Favorite 2\n")
-		message += _("Blue       =   Go to Home\n\n")
+		message += _("Blue       =   Go to Home\n")
 		message += _("Wind direction =   Arrow to right: Wind from the West\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
@@ -1344,7 +1344,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<div class="c2">.+?<strong>(.+?)<.+?', DOTALL)
 		windSpeed = fulltext.findall(html)
-		# windspeed = windspeed.replace('kmh', 'km/h')
 		if DEBUG:
 			FAlog("windSpeed=%s" % str(windSpeed))
 
@@ -1564,7 +1563,7 @@ class CityPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
-		self["key_red"] = StaticText(_(" "))
+		self["key_red"] = StaticText(_("Keyboard "))
 		self.setTitle(_("Select a city"))
 
 		self.filtered_list = []
@@ -1576,9 +1575,9 @@ class CityPanel(Screen, HelpableScreen):
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
 			{
-				"text": (self.openKeyboard, _("Open Keyboard")),
+				"text": (self.openKeyboard, _("Keyboard")),
 				"cancel": (self.exit, _("Exit - End")),
-				"red": (self.exit, _("Exit - End")),
+				"red": (self.openKeyboard, _("Keyboard")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
