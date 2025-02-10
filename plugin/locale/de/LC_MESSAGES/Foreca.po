@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-01 13:05+0100\n"
-"PO-Revision-Date: 2025-02-01 13:41+0100\n"
+"PO-Revision-Date: 2025-02-08 21:15+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -306,7 +306,7 @@ msgstr ""
 
 #: ui.py:1105
 msgid "Yellow     =   Go to Favorite 2\n"
-msgstr "Gelb      =   Gehe zu Favorit 1\n"
+msgstr "Gelb      =   Gehe zu Favorit 2\n"
 
 #: ui.py:1106
 msgid ""
