@@ -299,7 +299,7 @@ config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6'}
 
 
-def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.ba/"):
+def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.nz/"):
 	"""
 	Reads a new URL base from a .txt file hosted on a site.
 	If it fails to get the content or the URL is invalid, it uses a fallback URL base.
@@ -2433,7 +2433,6 @@ class PicView(Screen):
 		self.dirlistcount = 0
 		self.index = 0
 		self.picload = ePicLoad()
-		# self.picload.PictureData.get().append(self.finish_decode)
 		try:
 			self.picload.PictureData.get().append(self.finish_decode)
 		except:
@@ -2572,14 +2571,12 @@ class View_Slideshow(Screen):
 			self.pindex = 0
 
 		self.picload = ePicLoad()
-		# self.picload.PictureData.get().append(self.finish_decode)
 		try:
 			self.picload.PictureData.get().append(self.finish_decode)
 		except:
 			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
 
 		self.slideTimer = eTimer()
-		# self.slideTimer.callback.append(self.slidePic)
 		try:
 			self.slideTimer.callback.append(self.slidePic)
 		except:
