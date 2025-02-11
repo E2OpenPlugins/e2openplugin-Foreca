@@ -1225,7 +1225,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			img.save(devicepath, icc_profile=None)
 		except Exception as e:
 			print("Errore nella rimozione del profilo ICC:", e)
-		self.session.open(PicView, devicepath, 0, False)
+		self.session.open(PicViewx, devicepath, 0, False, self.plaats)
 
 	def getForecaPage(self, html):
 		"""
@@ -1384,8 +1384,9 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
-		self["Titel"].text = plaats.replace("_", " ") + "  -  " + datum2
-		self["Titel4"].text = plaats.replace("_", " ")
+		self.plaats = plaats.replace("_", " ")
+		self["Titel"].text = self.plaats + "  -  " + datum2
+		self["Titel4"].text = self.plaats
 		self["Titel5"].text = datum2
 		self["Titel3"].text = self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(datalist)
@@ -2142,7 +2143,7 @@ class SatPanel(Screen, HelpableScreen):
 							img.save(devicepath, "PNG")
 							if DEBUG:
 								FAlog("Image dimensions: {}x{}".format(img.width, img.height))
-							self.session.openWithCallback(returnToChoiceBox, PicView, devicepath, 0, False)
+							self.session.openWithCallback(returnToChoiceBox, PicViewx, devicepath, 0, False, None)
 						except requests.RequestException as e:
 							if DEBUG:
 								FAlog("Error downloading image: %s" % str(e))
@@ -2385,7 +2386,7 @@ class SatPanelb(Screen, HelpableScreen):
 					img = Image.open(devicepath)
 					img.save(devicepath, icc_profile=None)
 				"""
-				self.session.open(PicView, devicepath, 0, False)
+				self.session.open(PicViewx, devicepath, 0, False, None)
 			except Exception as e:
 				if DEBUG:
 					FAlog("SatBild Error: Failed to download or save the image", str(e))
@@ -2402,16 +2403,18 @@ class SatPanelb(Screen, HelpableScreen):
 # ------------------------------------------------------------------------------------------
 
 
-class PicView(Screen):
+class PicViewx(Screen):
 
-	def __init__(self, session, filelist, index, startslide):
+	def __init__(self, session, filelist, index, startslide, plaats=None):
 		self.session = session
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
+		spaceh = space + 5  # str(spaceh)
 
-		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
-			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
-			<widget name=\"pic\" position=\"" + str(space) + "," + str(space) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"on\" /> \
+		self.skin = "<screen name=\"PicView\" title=\"PicView\" position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
+			<!-- <eLabel position=\"0,0\" zPosition=\"-1\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> --> \
+			<widget name=\"pic\" position=\"" + str(space) + ", 50"  + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"blend\" /> \
+			<widget name=\"city\" position=\"center,center\" size=\"1000,50\" font=\"Regular;34\" zPosition=\"10\" backgroundColor=\"" + self.bgcolor + "\" foregroundColor=\"#0000b3\" transparent=\"1\" /> \
 			</screen>"
 
 		Screen.__init__(self, session)
@@ -2425,10 +2428,12 @@ class PicView(Screen):
 		)
 
 		self["pic"] = Pixmap()
+		self["city"] = Label(plaats)
 		self.filelist = filelist
 		self.old_index = 0
 		self.lastindex = index
 		self.currPic = []
+		self.setTitle(plaats)
 		self.shownow = True
 		self.dirlistcount = 0
 		self.index = 0
