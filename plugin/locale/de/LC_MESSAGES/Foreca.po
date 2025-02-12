@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-12 15:23+0100\n"
-"PO-Revision-Date: 2025-02-12 15:23+0100\n"
+"PO-Revision-Date: 2025-02-12 15:34+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -230,81 +230,46 @@ msgid "9 - Today + 9 days"
 msgstr "9 - Heute + 9 Tage"
 
 #: ui.py:1116
-#, fuzzy, python-format
-#| msgid ""
-#| "Server URL:    %s\n"
-#| "\n"
+#, python-format
 msgid "Server URL:    %s\n"
-msgstr ""
-"Server URL:    %s\n"
-"\n"
+msgstr "Server URL:    %s\n"
 
 #: ui.py:1118
 #, python-format
 msgid "VERSION    =   %s\n"
-msgstr ""
+msgstr "VERSION    =   %s\n"
 
 #: ui.py:1119
 msgid "<   >      =   Prognosis next/previous day\n"
 msgstr "<   >      =   Prognose nächster/vorheriger Tag\n"
 
 #: ui.py:1120
-#, fuzzy
-#| msgid ""
-#| "0 - 9      =   Prognosis (x) days from now\n"
-#| "\n"
 msgid "0 - 9      =   Prognosis (x) days from now\n"
-msgstr ""
-"0 - 9      =   Prognose in (x) Tagen ab jetzt\n"
-"\n"
+msgstr "0 - 9      =   Prognose in (x) Tagen ab jetzt\n"
 
 #: ui.py:1121
 msgid "VOL+/-     =   Fast scroll 100 (City choice)\n"
 msgstr "VOL+/-   =   schnell scrollen 100 (Stadtauswahl)\n"
 
 #: ui.py:1122
-#, fuzzy
-#| msgid ""
-#| "Bouquet+/- =   Fast scroll 500 (City choice)\n"
-#| "\n"
 msgid "Bouquet+/- =   Fast scroll 500 (City choice)\n"
-msgstr ""
-"Bouquet+/- =   schnell scrollen 500 (Stadtauswahl)\n"
-"\n"
+msgstr "Bouquet+/- =   schnell scrollen 500 (Stadtauswahl)\n"
 
 #: ui.py:1123
 msgid "Info       =   This information\n"
 msgstr "Info       =   Diese Information\n"
 
 #: ui.py:1124
-#, fuzzy
-#| msgid ""
-#| "Menu       =   Satellite photos and maps\n"
-#| "\n"
 msgid "Menu       =   Satellite photos and maps\n"
-msgstr ""
-"Menu    =   Satellitenfotos und Karten\n"
-"\n"
+msgstr "Menu    =   Satellitenfotos und Karten\n"
 
 #: ui.py:1125
-#, fuzzy
-#| msgid ""
-#| "Ok         =   Go to Config Plugin\n"
-#| "\n"
 msgid "Ok         =   Go to Config Plugin\n"
-msgstr ""
-"Ok         =   Gehe zu Plugin Konfiguration\n"
-"\n"
+msgstr "Ok         =   Gehe zu Plugin Konfiguration\n"
 
 #: ui.py:1126
-#, fuzzy
-#| msgid ""
-#| "Tv         =   Go to City Panel\n"
-#| "\n"
 msgid "Tv         =   Go to City Panel\n"
-msgstr ""
-"TV         =  Zum Stadt-Panel gehen\n"
-"\n"
+msgstr "TV         =  Zum Stadt-Panel gehen\n"
 
 #: ui.py:1127
 msgid "Red        =   Temperature chart for the upcoming 5 days\n"
@@ -321,14 +286,8 @@ msgid "Yellow     =   Go to Favorite 2\n"
 msgstr "Gelb      =   Gehe zu Favorit 2\n"
 
 #: ui.py:1130
-#, fuzzy
-#| msgid ""
-#| "Blue       =   Go to Home\n"
-#| "\n"
 msgid "Blue       =   Go to Home\n"
-msgstr ""
-"Blau       =   Gehe zu Heimat\n"
-"\n"
+msgstr "Blau       =   Gehe zu Heimat\n"
 
 #: ui.py:1131
 msgid "Wind direction =   Arrow to right: Wind from the West\n"
@@ -343,10 +302,8 @@ msgid "Forecast"
 msgstr "Prognose"
 
 #: ui.py:1567 ui.py:1579 ui.py:1581
-#, fuzzy
-#| msgid "Open Keyboard"
 msgid "Keyboard"
-msgstr "Tastatur öffnen"
+msgstr "Tastatur"
 
 #: ui.py:1582 ui.py:1908 ui.py:2314
 msgid "Left - Previous page"
