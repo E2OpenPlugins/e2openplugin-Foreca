@@ -1564,7 +1564,7 @@ class CityPanel(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Favorite 2"))
 		self["key_blue"] = StaticText(_("Home"))
 		self["key_ok"] = StaticText(_("Forecast"))
-		self["key_red"] = StaticText(_("Keyboard "))
+		self["key_red"] = StaticText(_("Keyboard"))
 		self.setTitle(_("Select a city"))
 
 		self.filtered_list = []

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-01 13:05+0100\n"
-"PO-Revision-Date: 2025-02-08 21:15+0100\n"
+"POT-Creation-Date: 2025-02-12 15:23+0100\n"
+"PO-Revision-Date: 2025-02-12 15:23+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: plugin.py:20 plugin.py:27 ui.py:915 ui.py:934
+#: plugin.py:20 plugin.py:27 ui.py:933 ui.py:952
 msgid "Foreca Weather Forecast"
 msgstr "Foreca Wettervorhersage"
 
@@ -77,322 +77,338 @@ msgstr "12 std"
 msgid "24 h"
 msgstr "24 std"
 
-#: ui.py:682
+#: ui.py:696
 msgid "Temp"
 msgstr "Temp"
 
-#: ui.py:694
+#: ui.py:708
 msgid "Wind"
 msgstr "Wind"
 
-#: ui.py:705
+#: ui.py:719
 msgid "Feels like:"
 msgstr "Fühlt sich an wie:"
 
-#: ui.py:710
+#: ui.py:724
 msgid "Precip chance:"
 msgstr "Niederschlagswahrscheinlichkeit:"
 
-#: ui.py:715
+#: ui.py:729
 msgid "Humidity:"
 msgstr "Feuchtigkeit:"
 
-#: ui.py:918 ui.py:988
+#: ui.py:936 ui.py:1006
 msgid "Please wait ..."
 msgstr "Bitte warten..."
 
-#: ui.py:922
+#: ui.py:940
 msgid "Week"
 msgstr "Woche"
 
-#: ui.py:923
+#: ui.py:941
 msgid "Config"
 msgstr "Konfig"
 
-#: ui.py:929 ui.py:1131 ui.py:1187 ui.py:1533
+#: ui.py:947 ui.py:1155 ui.py:1212 ui.py:1563
 msgid "Favorite 1"
 msgstr "Favorit 1"
 
-#: ui.py:930 ui.py:1132 ui.py:1188 ui.py:1534
+#: ui.py:948 ui.py:1156 ui.py:1213 ui.py:1564
 msgid "Favorite 2"
 msgstr "Favorit 2"
 
-#: ui.py:931 ui.py:1133 ui.py:1189 ui.py:1535
+#: ui.py:949 ui.py:1157 ui.py:1214 ui.py:1565
 msgid "Home"
 msgstr "Wohnort"
 
-#: ui.py:932
+#: ui.py:950
 msgid "Legend"
 msgstr "Legende"
 
-#: ui.py:933
+#: ui.py:951
 msgid "Maps"
 msgstr "Karten"
 
-#: ui.py:934
-msgid "Version "
-msgstr "Version "
-
-#: ui.py:939 ui.py:1549 ui.py:1550 ui.py:1876 ui.py:2282
+#: ui.py:957 ui.py:1580 ui.py:1907 ui.py:2313
 msgid "Exit - End"
 msgstr "Exit - Beenden"
 
-#: ui.py:940
+#: ui.py:958
 msgid "Menu - Weather maps"
 msgstr "Menü - Wetterkarten"
 
-#: ui.py:941
+#: ui.py:959
 msgid "Info - Legend"
 msgstr "Info - Legende"
 
-#: ui.py:942
+#: ui.py:960
 msgid "OK - Config"
 msgstr "OK - Konfig"
 
-#: ui.py:943
+#: ui.py:961
 msgid "Left - Previous day"
 msgstr "Links -  Voriger Tag"
 
-#: ui.py:944
+#: ui.py:962
 msgid "Right - Next day"
 msgstr "Rechts - Nächster Tag"
 
-#: ui.py:945
+#: ui.py:963
 msgid "Up - Previous page"
 msgstr "Hoch - Vorige Seite"
 
-#: ui.py:946
+#: ui.py:964
 msgid "Down - Next page"
 msgstr "Runter - Nächste Seite"
 
-#: ui.py:947
+#: ui.py:965
 msgid "Left arrow - Previous day"
 msgstr "Pfeil links - Voriger Tag"
 
-#: ui.py:948
+#: ui.py:966
 msgid "Right arrow - Next day"
 msgstr "Pfeil rechts - Nächster Tag"
 
-#: ui.py:949
+#: ui.py:967
 msgid "Red - Weekoverview"
 msgstr "Rot - Wochenüberblick"
 
-#: ui.py:950
+#: ui.py:968
 msgid "Green - Favorite 1"
 msgstr "Grün - Favorit 1"
 
-#: ui.py:951
+#: ui.py:969
 msgid "Yellow - Favorite 2"
 msgstr "Gelb - Favorit 2"
 
-#: ui.py:952
+#: ui.py:970
 msgid "Blue - Home"
 msgstr "Blau - Wohnort"
 
-#: ui.py:953
+#: ui.py:971
 msgid "Tv - City"
 msgstr "TV - Stadt"
 
-#: ui.py:954
+#: ui.py:972
 msgid "0 - Today"
 msgstr "0 - Heute"
 
-#: ui.py:955
+#: ui.py:973
 msgid "1 - Today + 1 day"
 msgstr "1 - Heute + 1 Tag"
 
-#: ui.py:956
+#: ui.py:974
 msgid "2 - Today + 2 days"
 msgstr "2 - Heute + 2 Tage"
 
-#: ui.py:957
+#: ui.py:975
 msgid "3 - Today + 3 days"
 msgstr "3 - Heute + 3 Tage"
 
-#: ui.py:958
+#: ui.py:976
 msgid "4 - Today + 4 days"
 msgstr "4 - Heute + 4 Tage"
 
-#: ui.py:959
+#: ui.py:977
 msgid "5 - Today + 5 days"
 msgstr "5 - Heute + 5 Tage"
 
-#: ui.py:960
+#: ui.py:978
 msgid "6 - Today + 6 days"
 msgstr "6 - Heute + 6 Tage"
 
-#: ui.py:961
+#: ui.py:979
 msgid "7 - Today + 7 days"
 msgstr "7 - Heute + 7 Tage"
 
-#: ui.py:962
+#: ui.py:980
 msgid "8 - Today + 8 days"
 msgstr "8 - Heute + 8 Tage"
 
-#: ui.py:963
+#: ui.py:981
 msgid "9 - Today + 9 days"
 msgstr "9 - Heute + 9 Tage"
 
-#: ui.py:1093
-#, python-format
-msgid ""
-"Server URL:    %s\n"
-"\n"
+#: ui.py:1116
+#, fuzzy, python-format
+#| msgid ""
+#| "Server URL:    %s\n"
+#| "\n"
+msgid "Server URL:    %s\n"
 msgstr ""
 "Server URL:    %s\n"
 "\n"
 
-#: ui.py:1095
+#: ui.py:1118
+#, python-format
+msgid "VERSION    =   %s\n"
+msgstr ""
+
+#: ui.py:1119
 msgid "<   >      =   Prognosis next/previous day\n"
 msgstr "<   >      =   Prognose nächster/vorheriger Tag\n"
 
-#: ui.py:1096
-msgid ""
-"0 - 9      =   Prognosis (x) days from now\n"
-"\n"
+#: ui.py:1120
+#, fuzzy
+#| msgid ""
+#| "0 - 9      =   Prognosis (x) days from now\n"
+#| "\n"
+msgid "0 - 9      =   Prognosis (x) days from now\n"
 msgstr ""
 "0 - 9      =   Prognose in (x) Tagen ab jetzt\n"
 "\n"
 
-#: ui.py:1097
+#: ui.py:1121
 msgid "VOL+/-     =   Fast scroll 100 (City choice)\n"
 msgstr "VOL+/-   =   schnell scrollen 100 (Stadtauswahl)\n"
 
-#: ui.py:1098
-msgid ""
-"Bouquet+/- =   Fast scroll 500 (City choice)\n"
-"\n"
+#: ui.py:1122
+#, fuzzy
+#| msgid ""
+#| "Bouquet+/- =   Fast scroll 500 (City choice)\n"
+#| "\n"
+msgid "Bouquet+/- =   Fast scroll 500 (City choice)\n"
 msgstr ""
 "Bouquet+/- =   schnell scrollen 500 (Stadtauswahl)\n"
 "\n"
 
-#: ui.py:1099
+#: ui.py:1123
 msgid "Info       =   This information\n"
 msgstr "Info       =   Diese Information\n"
 
-#: ui.py:1100
-msgid ""
-"Menu       =   Satellite photos and maps\n"
-"\n"
+#: ui.py:1124
+#, fuzzy
+#| msgid ""
+#| "Menu       =   Satellite photos and maps\n"
+#| "\n"
+msgid "Menu       =   Satellite photos and maps\n"
 msgstr ""
 "Menu    =   Satellitenfotos und Karten\n"
 "\n"
 
-#: ui.py:1101
-msgid ""
-"Ok         =   Go to Config Plugin\n"
-"\n"
+#: ui.py:1125
+#, fuzzy
+#| msgid ""
+#| "Ok         =   Go to Config Plugin\n"
+#| "\n"
+msgid "Ok         =   Go to Config Plugin\n"
 msgstr ""
 "Ok         =   Gehe zu Plugin Konfiguration\n"
 "\n"
 
-#: ui.py:1102
-msgid ""
-"Tv         =   Go to City Panel\n"
-"\n"
+#: ui.py:1126
+#, fuzzy
+#| msgid ""
+#| "Tv         =   Go to City Panel\n"
+#| "\n"
+msgid "Tv         =   Go to City Panel\n"
 msgstr ""
 "TV         =  Zum Stadt-Panel gehen\n"
 "\n"
 
-#: ui.py:1103
+#: ui.py:1127
 msgid "Red        =   Temperature chart for the upcoming 5 days\n"
 msgstr "Rot        =   Temperaturdiagramm für die kommenden 5 Tage\n"
 
-#: ui.py:1104
+#: ui.py:1128
 msgid "Green      =   Go to Favorite 1\n"
 msgstr ""
 "Grün      =   Gehe zu Favorit 1\n"
 "\n"
 
-#: ui.py:1105
+#: ui.py:1129
 msgid "Yellow     =   Go to Favorite 2\n"
 msgstr "Gelb      =   Gehe zu Favorit 2\n"
 
-#: ui.py:1106
-msgid ""
-"Blue       =   Go to Home\n"
-"\n"
+#: ui.py:1130
+#, fuzzy
+#| msgid ""
+#| "Blue       =   Go to Home\n"
+#| "\n"
+msgid "Blue       =   Go to Home\n"
 msgstr ""
 "Blau       =   Gehe zu Heimat\n"
 "\n"
 
-#: ui.py:1107
+#: ui.py:1131
 msgid "Wind direction =   Arrow to right: Wind from the West\n"
 msgstr "Windrichtung =   Pfeil zeigt nach rechts: Wind weht aus Westen\n"
 
-#: ui.py:1526 ui.py:1537
+#: ui.py:1556 ui.py:1568
 msgid "Select a city"
 msgstr "Einen Ort auswählen"
 
-#: ui.py:1536
+#: ui.py:1566
 msgid "Forecast"
 msgstr "Prognose"
 
-#: ui.py:1548
-msgid "Open Keyboard"
+#: ui.py:1567 ui.py:1579 ui.py:1581
+#, fuzzy
+#| msgid "Open Keyboard"
+msgid "Keyboard"
 msgstr "Tastatur öffnen"
 
-#: ui.py:1551 ui.py:1877 ui.py:2283
+#: ui.py:1582 ui.py:1908 ui.py:2314
 msgid "Left - Previous page"
 msgstr "Links - Vorige Seite"
 
-#: ui.py:1552 ui.py:1878 ui.py:2284
+#: ui.py:1583 ui.py:1909 ui.py:2315
 msgid "Right - Next page"
 msgstr "Rechts - Nächste Seite"
 
-#: ui.py:1553 ui.py:1879 ui.py:2285
+#: ui.py:1584 ui.py:1910 ui.py:2316
 msgid "Up - Previous"
 msgstr "Hoch - Vorige"
 
-#: ui.py:1554 ui.py:1880 ui.py:2286
+#: ui.py:1585 ui.py:1911 ui.py:2317
 msgid "Down - Next"
 msgstr "Unten - Nächste"
 
-#: ui.py:1555
+#: ui.py:1586
 msgid "OK - Select"
 msgstr "OK - Wählen"
 
-#: ui.py:1556
+#: ui.py:1587
 msgid "Green - Assign to Favorite 1"
 msgstr "Grün - Auf Favorit 1 legen"
 
-#: ui.py:1557
+#: ui.py:1588
 msgid "Yellow - Assign to Favorite 2"
 msgstr "Gelb - Auf Favorit 2 legen"
 
-#: ui.py:1558
+#: ui.py:1589
 msgid "Blue - Assign to Home"
 msgstr "Blau - Auf Wohnort legen"
 
-#: ui.py:1559
+#: ui.py:1590
 msgid "Channel+ - 500 back"
 msgstr "Kanal+ - 500 zurück"
 
-#: ui.py:1560
+#: ui.py:1591
 msgid "Channel- - 500 forward"
 msgstr "Kanal- - 500 vorwärts"
 
-#: ui.py:1561
+#: ui.py:1592
 msgid "Volume- - 100 forward"
 msgstr "Volumen- - 100 vorwärts"
 
-#: ui.py:1562
+#: ui.py:1593
 msgid "Volume+ - 100 back"
 msgstr "Volumen+ - 100 zurück"
 
-#: ui.py:1574
+#: ui.py:1605
 msgid "Search your City"
 msgstr "Suche deine Stadt"
 
-#: ui.py:1590
+#: ui.py:1621
 msgid "No City found in search!!!"
 msgstr "Keine Stadt in der Suche gefunden!!!"
 
-#: ui.py:1598
+#: ui.py:1629
 msgid "An error occurred during search!"
 msgstr "Bei der Suche ist ein Fehler aufgetreten!"
 
-#: ui.py:1687
+#: ui.py:1718
 msgid ""
 "This city is stored as home!\n"
 "\n"
@@ -402,7 +418,7 @@ msgstr ""
 "\n"
 "                   "
 
-#: ui.py:1698
+#: ui.py:1729
 msgid ""
 "This city is stored as favorite 1!\n"
 "\n"
@@ -412,7 +428,7 @@ msgstr ""
 "\n"
 "                   "
 
-#: ui.py:1709
+#: ui.py:1740
 msgid ""
 "This city is stored as favorite 2!\n"
 "\n"
@@ -422,357 +438,359 @@ msgstr ""
 "\n"
 "                    "
 
-#: ui.py:1863 ui.py:1871
+#: ui.py:1894 ui.py:1902
 msgid "Satellite photos"
 msgstr "Satellitenbilder"
 
-#: ui.py:1867 ui.py:2002
+#: ui.py:1898 ui.py:2033
 msgid "Continents"
 msgstr "Kontinente"
 
-#: ui.py:1868 ui.py:1987 ui.py:1991
+#: ui.py:1899 ui.py:2018 ui.py:2022
 msgid "Europe"
 msgstr "Europa"
 
-#: ui.py:1869 ui.py:1958 ui.py:1967
+#: ui.py:1900 ui.py:1989 ui.py:1998
 msgid "Germany"
 msgstr "Deutschland"
 
-#: ui.py:1870 ui.py:2276 ui.py:2748
+#: ui.py:1901 ui.py:2307 ui.py:2804
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ui.py:1881
+#: ui.py:1912
 msgid "Red - Continents"
 msgstr "Rot - Kontinente"
 
-#: ui.py:1882
+#: ui.py:1913
 msgid "Green - Europe"
 msgstr "Grün - Europa"
 
-#: ui.py:1883
+#: ui.py:1914
 msgid "Yellow - Germany"
 msgstr "Gelb - Deutschland"
 
-#: ui.py:1884 ui.py:2287
+#: ui.py:1915 ui.py:2318
 msgid "Blue - Settings"
 msgstr "Blau - Einstellungen"
 
-#: ui.py:1885 ui.py:2288
+#: ui.py:1916 ui.py:2319
 msgid "OK - Show"
 msgstr "OK - Anzeigen"
 
-#: ui.py:1893
+#: ui.py:1924
 msgid "Air pressure"
 msgstr "Luftdruck"
 
-#: ui.py:1894
+#: ui.py:1925
 msgid "Cloudcover Video"
 msgstr "Bewölkungs-Video"
 
-#: ui.py:1895
+#: ui.py:1926
 msgid "Showerradar Video"
 msgstr "Niederschlagsradar"
 
-#: ui.py:1896
+#: ui.py:1927
 msgid "Temperature Video"
 msgstr "Temperatur Video"
 
-#: ui.py:1897
+#: ui.py:1928
 msgid "Weather map Video"
 msgstr "Wetter-Video"
 
-#: ui.py:1898
+#: ui.py:1929
 msgid "Eumetsat"
 msgstr "Eumetsat"
 
-#: ui.py:1937
+#: ui.py:1968
 msgid "Baden-Wuerttemberg"
 msgstr "Baden-Württemberg"
 
-#: ui.py:1938
+#: ui.py:1969
 msgid "Bavaria"
 msgstr "Bayern"
 
-#: ui.py:1939
+#: ui.py:1970
 msgid "Berlin"
 msgstr "Berlin"
 
-#: ui.py:1940
+#: ui.py:1971
 msgid "Brandenburg"
 msgstr "Brandenburg"
 
-#: ui.py:1941
+#: ui.py:1972
 msgid "Bremen"
 msgstr "Bremen"
 
-#: ui.py:1942
+#: ui.py:1973
 msgid "Hamburg"
 msgstr "Hamburg"
 
-#: ui.py:1943
+#: ui.py:1974
 msgid "Hesse"
 msgstr "Hessen"
 
-#: ui.py:1944
+#: ui.py:1975
 msgid "Lower Saxony"
 msgstr "Niedersachsen"
 
-#: ui.py:1945
+#: ui.py:1976
 msgid "Mecklenburg-Vorpommern"
 msgstr "Mecklenburg-Vorpommern"
 
-#: ui.py:1946
+#: ui.py:1977
 msgid "North Rhine-Westphalia"
 msgstr "Nordrhein-Westfalen"
 
-#: ui.py:1947
+#: ui.py:1978
 msgid "Rhineland-Palatine"
 msgstr "Rheinland-Pfalz"
 
-#: ui.py:1948
+#: ui.py:1979
 msgid "Saarland"
 msgstr "Saarland"
 
-#: ui.py:1949
+#: ui.py:1980
 msgid "Saxony"
 msgstr "Sachsen"
 
-#: ui.py:1950
+#: ui.py:1981
 msgid "Saxony-Anhalt"
 msgstr "Sachsen-Anhalt"
 
-#: ui.py:1951
+#: ui.py:1982
 msgid "Schleswig-Holstein"
 msgstr "Schleswig-Holstein"
 
-#: ui.py:1952
+#: ui.py:1983
 msgid "Thuringia"
 msgstr "Thüringen"
 
-#: ui.py:1962
+#: ui.py:1993
 msgid "Austria"
 msgstr "Österreich"
 
-#: ui.py:1963
+#: ui.py:1994
 msgid "Belgium"
 msgstr "Belgien"
 
-#: ui.py:1964
+#: ui.py:1995
 msgid "Czech Republic"
 msgstr "Tschechien"
 
-#: ui.py:1965
+#: ui.py:1996
 msgid "Denmark"
 msgstr "Dänemark"
 
-#: ui.py:1966
+#: ui.py:1997
 msgid "France"
 msgstr "Frankreich"
 
-#: ui.py:1968
+#: ui.py:1999
 msgid "Greece"
 msgstr "Griechenland"
 
-#: ui.py:1969
+#: ui.py:2000
 msgid "Great Britain"
 msgstr "Großbritannien"
 
-#: ui.py:1970
+#: ui.py:2001
 msgid "Hungary"
 msgstr "Ungarn"
 
-#: ui.py:1971
+#: ui.py:2002
 msgid "Ireland"
 msgstr "Irland"
 
-#: ui.py:1972
+#: ui.py:2003
 msgid "Italy"
 msgstr "Italien"
 
-#: ui.py:1973
+#: ui.py:2004
 msgid "Latvia"
 msgstr "Lettland"
 
-#: ui.py:1974
+#: ui.py:2005
 msgid "Luxembourg"
 msgstr "Luxemburg"
 
-#: ui.py:1975
+#: ui.py:2006
 msgid "Netherlands"
 msgstr "Niederlande"
 
-#: ui.py:1976
+#: ui.py:2007
 msgid "Poland"
 msgstr "Polen"
 
-#: ui.py:1977
+#: ui.py:2008
 msgid "Portugal"
 msgstr "Portugal"
 
-#: ui.py:1978
+#: ui.py:2009
 msgid "Russia"
 msgstr "Russland"
 
-#: ui.py:1979
+#: ui.py:2010
 msgid "Slovakia"
 msgstr "Slowakei"
 
-#: ui.py:1980
+#: ui.py:2011
 msgid "Spain"
 msgstr "Spanien"
 
-#: ui.py:1981
+#: ui.py:2012
 msgid "Switzerland"
 msgstr "Schweiz"
 
-#: ui.py:1992
+#: ui.py:2023
 msgid "Middle East"
 msgstr "Mittlerer Osten"
 
-#: ui.py:1993
+#: ui.py:2024
 msgid "North Africa"
 msgstr "Nord-Afrika"
 
-#: ui.py:1994
+#: ui.py:2025
 msgid "South Africa"
 msgstr "Süd-Afrika"
 
-#: ui.py:1995
+#: ui.py:2026
 msgid "North America"
 msgstr "Nord-Amerika"
 
-#: ui.py:1996
+#: ui.py:2027
 msgid "Middle America"
 msgstr "Mittel-Amerika"
 
-#: ui.py:1997
+#: ui.py:2028
 msgid "South America"
 msgstr "Süd-Amerika"
 
-#: ui.py:1998
+#: ui.py:2029
 msgid "East Asia"
 msgstr "Ost-Asien"
 
-#: ui.py:1999
+#: ui.py:2030
 msgid "Middle Asia"
 msgstr "Zentral-Asien"
 
-#: ui.py:2000
+#: ui.py:2031
 msgid "Southeast Asia"
 msgstr "Südost-Asien"
 
-#: ui.py:2001
+#: ui.py:2032
 msgid "Australia"
 msgstr "Australien"
 
-#: ui.py:2058
+#: ui.py:2089
 msgid "h"
 msgstr "h"
 
-#: ui.py:2068
+#: ui.py:2099
 msgid "Select action"
 msgstr "Aktion auswählen"
 
-#: ui.py:2091 ui.py:2130
-msgid "eumetsat menu"
-msgstr "eumetsat Menü"
-
-#: ui.py:2171
+#: ui.py:2202
 msgid "No satellite images found."
 msgstr "Keine Satellitenbilder gefunden."
 
-#: ui.py:2174
+#: ui.py:2205
 #, python-format
 msgid "Failed to process satellite data: %s"
 msgstr "Satellitendaten konnten nicht verarbeitet werden: %s"
 
-#: ui.py:2178 ui.py:2359
+#: ui.py:2209 ui.py:2398
 #, python-format
 msgid "A critical error occurred: %s"
 msgstr "Ein kritischer Fehler ist aufgetreten: %s"
 
-#: ui.py:2336
+#: ui.py:2367
 msgid "Invalid selection. Please select a valid region."
 msgstr "Ungültige Auswahl. Bitte wählen Sie eine gültige Region."
 
-#: ui.py:2354
+#: ui.py:2393
 #, python-format
 msgid "Failed to load the satellite image: %s"
 msgstr "Das Satellitenbild konnte nicht geladen werden: %s"
 
-#: ui.py:2510
+#: ui.py:2557
 msgid "Please wait, photo is being loaded ..."
 msgstr "Bitte warten, Foto wird geladen..."
 
-#: ui.py:2749
+#: ui.py:2805
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ui.py:2750
+#: ui.py:2806
 msgid "Save"
 msgstr "Speichern"
 
-#: ui.py:2790
+#: ui.py:2846
 msgid "Select units"
 msgstr "Maßeinheiten"
 
-#: ui.py:2791
+#: ui.py:2847
 msgid "Select time format"
 msgstr "Uhrzeitformat"
 
-#: ui.py:2792
+#: ui.py:2848
 msgid "City names as labels in the Main screen"
 msgstr "Städtenamen als Beschriftung im Hauptmenü"
 
-#: ui.py:2793
+#: ui.py:2849
 msgid "Home City at start"
 msgstr "Heimat Stadt beim Start"
 
-#: ui.py:2794
+#: ui.py:2850
 msgid "Fav1 City"
 msgstr "Fav1 Stadt"
 
-#: ui.py:2795
+#: ui.py:2851
 msgid "Fav2 City"
 msgstr "Fav2 Stadt"
 
-#: ui.py:2796
+#: ui.py:2852
 msgid "Frame size in full view"
 msgstr "Rahmenbreite im Vollbild"
 
-#: ui.py:2797
+#: ui.py:2853
 msgid "Font size in slideshow"
 msgstr "Schriftgröße der Diashow"
 
-#: ui.py:2798
+#: ui.py:2854
 msgid "Scaling Mode"
 msgstr "Skalierung"
 
-#: ui.py:2799
+#: ui.py:2855
 msgid "Slide Time (seconds)"
 msgstr "Bild-Wechselzeit (Sekunden)"
 
-#: ui.py:2800
+#: ui.py:2856
 msgid "Show Infoline"
 msgstr "Zeige Informationszeile"
 
-#: ui.py:2801
+#: ui.py:2857
 msgid "Textcolor"
 msgstr "Textfarbe"
 
-#: ui.py:2802
+#: ui.py:2858
 msgid "Backgroundcolor"
 msgstr "Hintergrundfarbe"
 
-#: ui.py:2803
+#: ui.py:2859
 msgid "Slide picture in loop"
 msgstr "Diashow wiederholen"
 
-#: ui.py:2804
+#: ui.py:2860
 msgid "Display in extensions menu"
 msgstr "Anzeigen im Erweiterungsmenü"
 
-#: ui.py:2805
+#: ui.py:2861
 msgid "Debug"
 msgstr "Debug"
+
+#~ msgid "Version "
+#~ msgstr "Version "
+
+#~ msgid "eumetsat menu"
+#~ msgstr "eumetsat Menü"
