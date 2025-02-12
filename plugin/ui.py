@@ -1139,7 +1139,7 @@ class ForecaPreview(Screen, HelpableScreen):
 	def OKCallback(self, callback=None):
 		global city, fav1, fav2
 		self.tag = 0
-		self.Zukunft(0)
+		# self.Zukunft(0)
 
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
@@ -1155,6 +1155,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
+
+		self.Zukunft(0)
 
 		if DEBUG:
 			FAlog("MenuCallback")
@@ -1387,7 +1389,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.plaats = plaats.replace("_", " ")
 		self["Titel"].text = self.plaats + "  -  " + datum2
 		self["Titel4"].text = self.plaats
-		self["Titel5"].text = datum2
+		self["Titel5"].text = u'\U0001F321'  # datum2
 		self["Titel3"].text = self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)

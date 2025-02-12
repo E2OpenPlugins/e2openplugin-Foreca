@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 15:23+0100\n"
-"PO-Revision-Date: 2025-02-12 15:34+0100\n"
+"POT-Creation-Date: 2025-02-12 20:43+0100\n"
+"PO-Revision-Date: 2025-02-12 20:44+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -277,9 +277,7 @@ msgstr "Rot        =   Temperaturdiagramm für die kommenden 5 Tage\n"
 
 #: ui.py:1128
 msgid "Green      =   Go to Favorite 1\n"
-msgstr ""
-"Grün      =   Gehe zu Favorit 1\n"
-"\n"
+msgstr "Grün      =   Gehe zu Favorit 1\n"
 
 #: ui.py:1129
 msgid "Yellow     =   Go to Favorite 2\n"
