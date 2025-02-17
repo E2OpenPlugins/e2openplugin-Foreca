@@ -1138,9 +1138,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def OKCallback(self, callback=None):
 		global city, fav1, fav2
-		self.tag = 0
-		# self.Zukunft(0)
-
+		print('callback=,', str(callback))
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
@@ -1156,7 +1154,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
 
-		self.Zukunft(0)
+		self.tag = 0
+		self.Zukunft(self.tag)
 
 		if DEBUG:
 			FAlog("MenuCallback")
@@ -1370,8 +1369,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
 			x += 1
 
-		# self["Titel2"].text = ""  # titel[0].strip("'")
-		self["Titel2"].text = titel[0].strip("'")
+		# Date management
+		self["Titel2"].text = ""  # titel[0].strip("'")
 		# translation date
 		datum = titel[0]
 		foundPos = datum.rfind(" ")
@@ -1382,15 +1381,25 @@ class ForecaPreview(Screen, HelpableScreen):
 		translated_month = translation_dict.get(month_text.lower(), month_text)
 		translated_day = translated_day.capitalize()
 		translated_month = translated_month.capitalize()
-		datum2 = translated_day + ", " + datum[foundPos:] + ". " + translated_month
+		datum2 = translated_month + " " + datum[foundPos + 1:]
+		ye = datetime.now()
+		year = ye.year
+		datum2 = str(year) + " " + datum2 + " " + translated_day
 
+		# Location Management
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
-		self["Titel"].text = self.plaats + "  -  " + datum2
+
+		# Set 'Titel' with formatted date
+		self["Titel"].text = datum2
+
+		# Set 'Titel4' with location only
 		self["Titel4"].text = self.plaats
-		self["Titel5"].text = u'\U0001F321'  # datum2
-		self["Titel3"].text = self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
+		print('self.plaats=', self.plaats)
+
+		self["Titel5"].text = ''  # datum2
+		self["Titel3"].text = ''  # self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
@@ -1580,7 +1589,7 @@ class CityPanel(Screen, HelpableScreen):
 			{
 				"text": (self.openKeyboard, _("Keyboard")),
 				"cancel": (self.exit, _("Exit - End")),
-				"red": (self.openKeyboard, _("Keyboard")),
+				"red": (self.openKeyboard, _("Open Keyboard")),
 				"left": (self.left, _("Left - Previous page")),
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
@@ -1703,11 +1712,11 @@ class CityPanel(Screen, HelpableScreen):
 		self.close(self.city)
 
 	def ok(self):
-		selected_city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])  # Selezione dell'utente
-		print("OK city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
+		print("OK city= %s" % self.city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		if DEBUG:
-			FAlog("city= %s" % selected_city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		self.close(selected_city)  # Restituisci direttamente la stringa selezionata
+			FAlog("city= %s" % self.city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		self.close(self.city)
 
 	def blue(self):
 		global start
@@ -2411,13 +2420,13 @@ class PicViewx(Screen):
 		self.session = session
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
-		spaceh = space + 5  # str(spaceh)
+		space = space + 5
 
 		self.skin = "<screen name=\"PicView\" title=\"PicView\" position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
-			<!-- <eLabel position=\"0,0\" zPosition=\"-1\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> --> \
-			<widget name=\"pic\" position=\"" + str(space) + ", 50"  + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"blend\" /> \
-			<widget name=\"city\" position=\"center,center\" size=\"1000,50\" font=\"Regular;34\" zPosition=\"10\" backgroundColor=\"" + self.bgcolor + "\" foregroundColor=\"#0000b3\" transparent=\"1\" /> \
-			</screen>"
+					<!-- <eLabel position=\"0,0\" zPosition=\"-1\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> --> \
+					<widget name=\"pic\" position=\"" + str(space) + ", 50" + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"blend\" /> \
+					<widget name=\"city\" position=\"" + str(space) + ", 100" + "\" font=\"Regular;34\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" foregroundColor=\"#ffffff\" zPosition=\"10\" transparent=\"1\" /> \
+					</screen>"
 
 		Screen.__init__(self, session)
 		self["actions"] = ActionMap(
