@@ -1616,11 +1616,32 @@ class CityPanel(Screen, HelpableScreen):
 				"prevBouquet": (self.jump500_up, _("Channel- - 500 forward")),
 				"volumeDown": (self.jump100_up, _("Volume- - 100 forward")),
 				"volumeUp": (self.jump100_down, _("Volume+ - 100 back")),
+				"showEventInfo": (self.info, _("Info - Legend")),
 			},
 			-2
 		)
 
 		self.onShown.append(self.prepare)
+
+	def info(self):
+		message = str("%s" % (_(
+			"Server URL:    %s\n"
+		) % BASEURL))
+		message += _("VERSION    =   %s\n") % VERSION
+		message += _("<   >      =   Prognosis next/previous day\n")
+		message += _("0 - 9      =   Prognosis (x) days from now\n")
+		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
+		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
+		message += _("Info       =   This information\n")
+		message += _("Menu       =   Satellite photos and maps\n")
+		message += _("Ok         =   Go to Config Plugin\n")
+		message += _("Tv or Txt  =   Go to City Panel\n")
+		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
+		message += _("Green      =   Go to Favorite 1\n")
+		message += _("Yellow     =   Go to Favorite 2\n")
+		message += _("Blue       =   Go to Home\n")
+		message += _("Wind direction =   Arrow to right: Wind from the West\n")
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def openKeyboard(self):
 		from Screens.VirtualKeyBoard import VirtualKeyBoard
