@@ -930,7 +930,13 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 
 		Screen.__init__(self, session)
-		self.setup_title = _("Foreca Weather Forecast")
+		try:
+			Screen.setTitle(self, _("Foreca Weather Forecast") + ' ' + start.replace("_", " "))
+		except:
+			try:
+				self.setTitle(_("Foreca Weather Forecast") + ' ' + start.replace("_", " "))
+			except:
+				pass
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
 		self["Titel2"] = StaticText(_("Please wait ..."))
@@ -969,6 +975,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				"yellow": (self.Fav2, _("Yellow - Favorite 2")),
 				"blue": (self.Fav0, _("Blue - Home")),
 				"tv": (self.OK, _("Tv - City")),
+				"text": (self.OK, _("text - City")),
 				"0": (boundFunction(self.keyNumberGlobal, 0), _("0 - Today")),
 				"1": (boundFunction(self.keyNumberGlobal, 1), _("1 - Today + 1 day")),
 				"2": (boundFunction(self.keyNumberGlobal, 2), _("2 - Today + 2 days")),
@@ -983,6 +990,8 @@ class ForecaPreview(Screen, HelpableScreen):
 			-2
 		)
 		self.StartPageFirst()
+		self.onShow.append(self.getPage)
+		
 
 	def PicSetupMenu(self):
 		self.session.openWithCallback(self.OKCallback, PicSetup)
@@ -996,7 +1005,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["MainList"].show
 		self.cacheTimer = eTimer()
 		self.cacheDialog.start()
-		self.onLayoutFinish.append(self.getPage)
+		# self.onLayoutFinish.append(self.getPage)
 
 	def StartPage(self):
 		self["Titel"].text = ""
@@ -1011,6 +1020,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.getPage()
 
 	def getPage(self, page=None):
+		global start
 		if DEBUG:
 			FAlog("getPage...")
 		self.cacheDialog.start()
@@ -1123,7 +1133,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		message += _("Info       =   This information\n")
 		message += _("Menu       =   Satellite photos and maps\n")
 		message += _("Ok         =   Go to Config Plugin\n")
-		message += _("Tv         =   Go to City Panel\n")
+		message += _("Tv or Txt  =   Go to City Panel\n")
 		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
 		message += _("Green      =   Go to Favorite 1\n")
 		message += _("Yellow     =   Go to Favorite 2\n")
@@ -1132,17 +1142,20 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
-		global city
-		city = self.ort
-		self.session.openWithCallback(self.OKCallback, CityPanel, city)
+		# global city
+		self.city = self.ort
+		self.session.openWithCallback(self.OKCallback, CityPanel, self.city)
 
 	def OKCallback(self, callback=None):
-		global city, fav1, fav2
+		global fav1, fav2  # city,
 		print('callback=,', str(callback))
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
+
 		city = start
+		if callback is not None:
+			city = callback[callback.rfind("/") + 1:].replace("_", " ")
 		self.ort = city
 
 		if config.plugins.foreca.citylabels.value is True:
@@ -1202,8 +1215,8 @@ class ForecaPreview(Screen, HelpableScreen):
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
-		city = start
-		self.ort = city
+		self.city = start
+		self.ort = self.city
 
 		if config.plugins.foreca.citylabels.value is True:
 			self["key_green"].setText(fav1.replace("_", " "))
@@ -1397,6 +1410,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		# Set 'Titel4' with location only
 		self["Titel4"].text = self.plaats
 		print('self.plaats=', self.plaats)
+		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)  # .replace("_", " "))
 
 		self["Titel5"].text = ''  # datum2
 		self["Titel3"].text = ''  # self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
