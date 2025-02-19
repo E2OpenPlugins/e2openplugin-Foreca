@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
-from . import _, file_url  # , isDreambox
+from . import _, file_url
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.ConfigList import ConfigList
@@ -299,6 +299,7 @@ config.plugins.foreca.debug = ConfigEnableDisable(default=False)
 HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6'}
 
 
+# check for BASEURL
 def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.nz/"):
 	"""
 	Reads a new URL base from a .txt file hosted on a site.
@@ -329,17 +330,6 @@ except:
 	lng = 'en'
 	pass
 
-"""
-# def detect_system_language():
-	# try:
-		# from Components.config import config
-		# lng = config.osd.language.value
-		# return lng.split('_')[0] if '_' in lng else lng
-	# except (ImportError, AttributeError, KeyError):
-		# return lng
-
-# detect_system_language()
-"""
 
 """
 selected_language = config.plugins.foreca.languages.value
@@ -351,6 +341,8 @@ if not selected_language == 'no':
 else:
 	BASEURL = get_base_url_from_txt(file_url)
 """
+
+
 BASEURL = get_base_url_from_txt(file_url)
 if not BASEURL.endswith("/"):
 	BASEURL += "/"
@@ -635,7 +627,11 @@ class MainMenuList(MenuList):
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
 
+		# Color by temperature
 		violetred = 0xC7D285
+		mblau = 0x40b3ff
+		weiss = 0xffffff
+		"""
 		violet = 0xff40b3
 		gruen = 0x77f424
 		dgruen = 0x53c905
@@ -645,10 +641,9 @@ class MainMenuList(MenuList):
 		gelb = 0xffff40
 		ddblau = 0x3b62ff
 		dblau = 0x408cff
-		mblau = 0x40b3ff
 		blau = 0x40d9ff
 		hblau = 0x40ffff
-		weiss = 0xffffff
+		"""
 
 		if config.plugins.foreca.units.value == "us":
 			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
@@ -656,6 +651,7 @@ class MainMenuList(MenuList):
 		else:
 			self.centigrades = int(self.x[2])
 			tempUnit = "°C"
+		"""
 		if self.centigrades <= -20:
 			self.tempcolor = ddblau
 		elif self.centigrades <= -15:
@@ -680,6 +676,37 @@ class MainMenuList(MenuList):
 			self.tempcolor = drot
 		else:
 			self.tempcolor = violet
+		"""
+
+		def getTempColor(temp):
+			""" Determine color based on temperature """
+			if temp <= -20:
+				return 0x3b62ff
+			elif temp <= -15:
+				return 0x408cff
+			elif temp <= -10:
+				return 0x40b3ff
+			elif temp <= -5:
+				return 0x40d9ff
+			elif temp <= 0:
+				return 0x40ffff
+			elif temp < 5:
+				return 0x53c905
+			elif temp < 10:
+				return 0x77f424
+			elif temp < 15:
+				return 0xffff40
+			elif temp < 20:
+				return 0xffb340
+			elif temp < 25:
+				return 0xff6640
+			elif temp < 30:
+				return 0xff4040
+			else:
+				return 0xff40b3
+
+		# Color management based on temperature
+		self.tempcolor = getTempColor(self.centigrades)
 
 		# Time
 		x, y, w, h = self.valTime
@@ -775,11 +802,7 @@ class ForecaPreviewCache(Screen):
 		self.curr = 0
 
 		self.timer = eTimer()
-		# self.timer.callback.append(self.showNextSpinner)
-		try:
-			self.timer.callback.append(self.showNextSpinner)
-		except:
-			self.timer_conn = self.timer.timeout.connect(self.showNextSpinner)
+		self.timer.callback.append(self.showNextSpinner)
 
 	def start(self):
 		self.show()
@@ -989,9 +1012,26 @@ class ForecaPreview(Screen, HelpableScreen):
 			},
 			-2
 		)
-		self.StartPageFirst()
+		# self.StartPageFirst()
+		self.onLayoutFinish.append(self.StartPageFirst)
 		self.onShow.append(self.getPage)
-		
+
+	def update_button(self):
+		global fav1, fav2, city, start
+		fav1 = config.plugins.foreca.fav1.value
+		fav1 = fav1[fav1.rfind("/") + 1:]
+		fav2 = config.plugins.foreca.fav2.value
+		fav2 = fav2[fav2.rfind("/") + 1:]
+		self.ort = config.plugins.foreca.home.value
+		start = self.ort[self.ort.rfind("/") + 1:]
+		if config.plugins.foreca.citylabels.value is True:
+			self["key_green"] = StaticText(fav1.replace("_", " "))
+			self["key_yellow"] = StaticText(fav2.replace("_", " "))
+			self["key_blue"] = StaticText(start.replace("_", " "))
+		else:
+			self["key_green"] = StaticText(_("Favorite 1"))
+			self["key_yellow"] = StaticText(_("Favorite 2"))
+			self["key_blue"] = StaticText(_("Home"))
 
 	def PicSetupMenu(self):
 		self.session.openWithCallback(self.OKCallback, PicSetup)
@@ -1020,7 +1060,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.getPage()
 
 	def getPage(self, page=None):
-		global start
 		if DEBUG:
 			FAlog("getPage...")
 		self.cacheDialog.start()
@@ -1036,6 +1075,9 @@ class ForecaPreview(Screen, HelpableScreen):
 			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
 		except Exception as e:
 			self.error(repr(e))
+
+		self.update_button()
+
 		self.deactivateCacheDialog()
 
 	def error(self, err=""):
@@ -1142,7 +1184,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
-		# global city
 		self.city = self.ort
 		self.session.openWithCallback(self.OKCallback, CityPanel, self.city)
 
@@ -1157,16 +1198,16 @@ class ForecaPreview(Screen, HelpableScreen):
 		if callback is not None:
 			city = callback[callback.rfind("/") + 1:].replace("_", " ")
 		self.ort = city
-
-		if config.plugins.foreca.citylabels.value is True:
-			self["key_green"].setText(fav1.replace("_", " "))
-			self["key_yellow"].setText(fav2.replace("_", " "))
-			self["key_blue"].setText(start.replace("_", " "))
-		else:
-			self["key_green"].setText(_("Favorite 1"))
-			self["key_yellow"].setText(_("Favorite 2"))
-			self["key_blue"].setText(_("Home"))
-
+		"""
+		# if config.plugins.foreca.citylabels.value is True:
+			# self["key_green"].setText(fav1.replace("_", " "))
+			# self["key_yellow"].setText(fav2.replace("_", " "))
+			# self["key_blue"].setText(start.replace("_", " "))
+		# else:
+			# self["key_green"].setText(_("Favorite 1"))
+			# self["key_yellow"].setText(_("Favorite 2"))
+			# self["key_blue"].setText(_("Home"))
+		"""
 		self.tag = 0
 		self.Zukunft(self.tag)
 
@@ -1211,7 +1252,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
 
 	def MenuCallback(self):
-		global menu, start, fav1, fav2
+		global start, fav1, fav2  # menu,
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
@@ -1582,7 +1623,6 @@ class CityPanel(Screen, HelpableScreen):
 		self.Mlist = []
 		self["Mlist"] = CityPanelList([])
 
-		# global city
 		self.city = panelmenu
 		# print('city = panelmenu:', self.city, type(self.city))
 		self["key_green"] = StaticText(_("Favorite 1"))
@@ -1594,8 +1634,7 @@ class CityPanel(Screen, HelpableScreen):
 
 		self.filtered_list = []
 		self.search_text = ""
-		global search_ok
-		search_ok = False
+		self.search_ok = False
 
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
@@ -1660,8 +1699,7 @@ class CityPanel(Screen, HelpableScreen):
 					city_name = item[0][0]
 					# print('city_name:', city_name)
 					if search in city_name.lower():
-						global search_ok
-						search_ok = True
+						self.search_ok = True
 						self.filtered_list.append(item)
 				if len(self.filtered_list) < 1:
 					self.session.open(MessageBox, _('No City found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
@@ -1736,14 +1774,9 @@ class CityPanel(Screen, HelpableScreen):
 		self.working = False
 
 	def exit(self):
-		global search_ok
-		if search_ok is True:
-			search_ok = False
-			# self.prepare()
-		# else:
-		global menu
-		menu = "stop"
-		# print('self.city=:', self.city)
+		if self.search_ok is True:
+			self.search_ok = False
+		self.city[self.city.rfind("/") + 1:]
 		self.close(self.city)
 
 	def ok(self):
@@ -1751,6 +1784,7 @@ class CityPanel(Screen, HelpableScreen):
 		print("OK city= %s" % self.city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 		if DEBUG:
 			FAlog("city= %s" % self.city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
+		self.city[self.city.rfind("/") + 1:]
 		self.close(self.city)
 
 	def blue(self):
@@ -1761,6 +1795,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.home.setValue(self.city)  # ✅ FIX
 		config.plugins.foreca.home.save()
 		start = self.city[self.city.rfind("/") + 1:]
+		self.city = start
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1772,6 +1807,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav1.setValue = (self.city)
 		config.plugins.foreca.fav1.save()
 		fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
+		self.city = fav1
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1783,6 +1819,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav2.setValue = (self.city)  # ✅ FIX
 		config.plugins.foreca.fav2.save()
 		fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
+		self.city = fav2
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1825,7 +1862,7 @@ class SatPanelList(MenuList):
 	def applySkin(self, desktop, parent):
 
 		def warningWrongSkinParameter(string, wanted, given):
-			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
+			print("[SatPanelList] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
 
 		def font(value):
 			self.font0 = parseFont(value, ((1, 1), (1, 1)))
@@ -1992,8 +2029,8 @@ class SatPanel(Screen, HelpableScreen):
 		self["Mlist"].pageDown()
 
 	def exit(self):
-		global menu
-		menu = "stop"
+		# global menu
+		# menu = "stop"
 		self.close()
 
 	def deactivateCacheDialog(self):
@@ -2090,11 +2127,13 @@ class SatPanel(Screen, HelpableScreen):
 		res = [entry]
 		if DEBUG:
 			FAlog("entry=", entry)
+
 		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
 		thumb_width = 200
 		if pict_scale:
 			thumb_width = thumb.size().width()
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin - 4), png=thumb))  # png vorn
+
+		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin - 4), png=thumb))
 		x, y, w, h = self["Mlist"].textPos
 		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
@@ -2290,6 +2329,7 @@ class SatPanelListb(MenuList):
 				self.skinAttributes.remove((attrib, value))
 			except Exception:
 				pass
+
 		self.l.setFont(0, self.font0)
 		self.l.setFont(1, self.font1)
 		self.l.setItemHeight(self.itemHeight)
@@ -2382,8 +2422,8 @@ class SatPanelb(Screen, HelpableScreen):
 		self["Mlist"].pageDown()
 
 	def Exit(self):
-		global menu
-		menu = "stop"
+		# global menu
+		# menu = "stop"
 		self.close()
 
 	def ok(self):
@@ -2628,10 +2668,7 @@ class View_Slideshow(Screen):
 			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
 
 		self.slideTimer = eTimer()
-		try:
-			self.slideTimer.callback.append(self.slidePic)
-		except:
-			self.slideTimer_conn = self.slideTimer.timeout.connect(self.slidePic)
+		self.slideTimer.callback.append(self.slidePic)
 
 		if self.maxentry >= 0:
 			self.onLayoutFinish.append(self.setPicloadConf)
@@ -2934,7 +2971,7 @@ class PicSetup(Screen, ConfigListScreen):
 			city = city.getValue()
 			print("Extracted city value:", city)
 
-		city_parts = city.split("/")  # Separiamo il paese dalla città
+		city_parts = city.split("/")  # Let's separate the country from the city
 		if len(city_parts) == 2:
 			country, city_name = city_parts
 			print("Country:", country)
@@ -2954,7 +2991,7 @@ class PicSetup(Screen, ConfigListScreen):
 			print("No city selected, exiting callback.")
 			return
 
-		self.config_entry.setValue(city)  # Ora dovrebbe essere sicuro
+		self.config_entry.setValue(city)
 		self.config_entry.save()
 		self.createSetup()
 
@@ -2987,10 +3024,9 @@ class PicSetup(Screen, ConfigListScreen):
 	def cancel(self):
 		for x in self["Mlist"].list:
 			x[1].cancel()
-		global menu
-		menu = "stop"
+		# global menu
+		# menu = "stop"
 		self.close()
-		# self.close(False, self.session)
 
 	def keyLeft(self):
 		self["Mlist"].handleKey(KEY_LEFT)
