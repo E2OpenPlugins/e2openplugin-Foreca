@@ -981,18 +981,19 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.onShow.append(self.update_button)
 
 	def update_button(self):
-		global fav1, fav2, start  # , city
-		fav1 = config.plugins.foreca.fav1.getValue()
-		fav1 = fav1[fav1.rfind("/") + 1:]
-		fav2 = config.plugins.foreca.fav2.getValue()
-		fav2 = fav2[fav2.rfind("/") + 1:]
-		home = config.plugins.foreca.home.getValue()
-		home = self.ort[self.ort.rfind("/") + 1:]
-
+		global fav1, fav2, start
+		"""
+		# fav1 = config.plugins.foreca.fav1.getValue()
+		# fav1 = fav1[fav1.rfind("/") + 1:]
+		# fav2 = config.plugins.foreca.fav2.getValue()
+		# fav2 = fav2[fav2.rfind("/") + 1:]
+		# start = config.plugins.foreca.home.getValue()
+		# start = self.ort[self.ort.rfind("/") + 1:]
+		"""
 		if config.plugins.foreca.citylabels.value:
 			self["key_green"].setText(fav1.replace("_", " "))
 			self["key_yellow"].setText(fav2.replace("_", " "))
-			self["key_blue"].setText(home.replace("_", " "))
+			self["key_blue"].setText(start.replace("_", " "))
 		else:
 			self["key_green"].setText(_("Favorite 1"))
 			self["key_yellow"].setText(_("Favorite 2"))
