@@ -2029,8 +2029,6 @@ class SatPanel(Screen, HelpableScreen):
 		self["Mlist"].pageDown()
 
 	def exit(self):
-		# global menu
-		# menu = "stop"
 		self.close()
 
 	def deactivateCacheDialog(self):
@@ -2464,14 +2462,6 @@ class SatPanelb(Screen, HelpableScreen):
 			try:
 				download_image(url, devicepath)
 				remove_icc_profile(devicepath)
-				"""
-				req = Request(url, headers=HEADERS)
-				resp = urlopen(req, timeout=2)
-				with open(devicepath, 'wb') as f:
-					f.write(resp.read())
-					img = Image.open(devicepath)
-					img.save(devicepath, icc_profile=None)
-				"""
 				self.session.open(PicViewx, devicepath, 0, False, None)
 			except Exception as e:
 				if DEBUG:
@@ -2524,10 +2514,7 @@ class PicViewx(Screen):
 		self.dirlistcount = 0
 		self.index = 0
 		self.picload = ePicLoad()
-		try:
-			self.picload.PictureData.get().append(self.finish_decode)
-		except:
-			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
+		self.picload.PictureData.get().append(self.finish_decode)
 		self.onLayoutFinish.append(self.setPicloadConf)
 
 		self.startslide = startslide
@@ -2662,11 +2649,7 @@ class View_Slideshow(Screen):
 			self.pindex = 0
 
 		self.picload = ePicLoad()
-		try:
-			self.picload.PictureData.get().append(self.finish_decode)
-		except:
-			self.picload_conn = self.picload.PictureData.connect(self.finish_decode)
-
+		self.picload.PictureData.get().append(self.finish_decode)
 		self.slideTimer = eTimer()
 		self.slideTimer.callback.append(self.slidePic)
 
@@ -3024,8 +3007,6 @@ class PicSetup(Screen, ConfigListScreen):
 	def cancel(self):
 		for x in self["Mlist"].list:
 			x[1].cancel()
-		# global menu
-		# menu = "stop"
 		self.close()
 
 	def keyLeft(self):
