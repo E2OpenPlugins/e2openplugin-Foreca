@@ -618,6 +618,7 @@ class MainMenuList(MenuList):
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
 
+		""" Determine color base """
 		# Color by temperature
 		violetred = 0xC7D285
 		mblau = 0x40b3ff
@@ -804,7 +805,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.tag = 0
 
 		# Get favorites
-		global fav1, fav2, start  # , city
+		global fav1, fav2, start
 		fav1 = config.plugins.foreca.fav1.value
 		fav1 = fav1[fav1.rfind("/") + 1:]
 		print(pluginPrintname, "fav1 location:", fav1)
@@ -1153,7 +1154,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.openWithCallback(self.OKCallback, CityPanel, self.city)
 
 	def OKCallback(self, callback=None):
-		global fav1, fav2  # city,
+		global fav1, fav2
 		print('OKCallback callback=,', str(callback))
 		fav1 = str(config.plugins.foreca.fav1.getValue())
 		fav2 = str(config.plugins.foreca.fav2.getValue())
@@ -2843,7 +2844,6 @@ class PicSetup(Screen, ConfigListScreen):
 		)
 		self.list = []
 		self.onChangedEntry = []
-
 		self["Mlist"] = ConfigList(self.list)
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
@@ -2937,9 +2937,9 @@ class PicSetup(Screen, ConfigListScreen):
 			return
 
 		try:
-			self.config_entry.setValue(city)  # Imposta la città
-			self.config_entry.save()  # Salva la configurazione
-			configfile.save()  # Salva il file di configurazione
+			self.config_entry.setValue(city)
+			self.config_entry.save()
+			configfile.save()
 		except Exception as e:
 			print("Unexpected error:", e)
 		self.city = city
