@@ -2,7 +2,9 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
+
 from . import _, file_url
+
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.ConfigList import ConfigList
@@ -329,18 +331,6 @@ try:
 except:
 	lng = 'en'
 	pass
-
-
-"""
-selected_language = config.plugins.foreca.languages.value
-if not selected_language == 'no':
-	if selected_language == "https://www.farsiweather.com/":
-		BASEURL = selected_language  # URL specifico per il Farsi
-	else:
-		BASEURL = 'https://www.foreca.' + selected_language
-else:
-	BASEURL = get_base_url_from_txt(file_url)
-"""
 
 
 BASEURL = get_base_url_from_txt(file_url)
@@ -1198,16 +1188,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		if callback is not None:
 			city = callback[callback.rfind("/") + 1:].replace("_", " ")
 		self.ort = city
-		"""
-		# if config.plugins.foreca.citylabels.value is True:
-			# self["key_green"].setText(fav1.replace("_", " "))
-			# self["key_yellow"].setText(fav2.replace("_", " "))
-			# self["key_blue"].setText(start.replace("_", " "))
-		# else:
-			# self["key_green"].setText(_("Favorite 1"))
-			# self["key_yellow"].setText(_("Favorite 2"))
-			# self["key_blue"].setText(_("Home"))
-		"""
 		self.tag = 0
 		self.Zukunft(self.tag)
 
