@@ -1386,10 +1386,12 @@ class ForecaPreview(Screen, HelpableScreen):
 		translated_day = translated_day.capitalize()
 		translated_month = translated_month.capitalize()
 		datum2 = translated_month + " " + datum[foundPos + 1:]
+		"""
 		ye = datetime.now()
 		year = ye.year
 		datum2 = str(year) + " " + datum2 + " " + translated_day
-
+		"""
+		datum2 = datum2 + " " + translated_day
 		# Location Management
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
