@@ -1135,19 +1135,17 @@ class ForecaPreview(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		message += _("VERSION    =   %s\n") % VERSION
-		message += _("<   >      =   Prognosis next/previous day\n")
-		message += _("Up/Down    =   Next/previous page\n")
-		message += _("0 - 9      =   Prognosis (x) days from now\n")
-		message += _("Info       =   This information\n")
-		message += _("Menu       =   Satellite photos and maps\n")
+		message += _("Wind direction =   Arrow to right: Wind from the West\n")
 		message += _("Ok         =   Go to Config Plugin\n")
-		message += _("Tv/Txt     =   Go to City Panel\n")
 		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
 		message += _("Green      =   Go to Favorite 1\n")
 		message += _("Yellow     =   Go to Favorite 2\n")
 		message += _("Blue       =   Go to Home\n")
-		message += _("Txt/Tv        =   Go to City Panel\n")
-		message += _("Wind direction =   Arrow to right: Wind from the West\n")
+		message += _("Tv/Txt     =   Go to City Panel\n")
+		message += _("Menu       =   Satellite photos and maps\n")
+		message += _("Up/Down    =   Previous/Next page\n")		
+		message += _("<   >      =   Prognosis Previous/Next day\n")
+		message += _("0 - 9      =   Prognosis (x) days from now\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
@@ -1622,16 +1620,16 @@ class CityPanel(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		message += _("VERSION    =   %s\n") % VERSION
-		message += _("<   >      =   Next/previous page (City choice)\n")
 		message += _("Ok         =   City choice - Select\n")
-		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
-		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
-		message += _("Info       =   This information\n")
-		message += _("Txt        =   Open Keyboard\n")
-		message += _("Txt - Red  =   Open Keyboard\n")
 		message += _("Green      =   Assign to Favorite 1\n")
 		message += _("Yellow     =   Assign to Favorite 2\n")
 		message += _("Blue       =   Assign to Home\n")
+		message += _("Txt/Red    =   Open Keyboard\n")
+		message += _("Up/Down    =   Previous/Next\n")		
+		message += _("<   >      =   Previous/Next page (City choice)\n")
+		message += _("Vol+/-     =   Fast scroll 100 (City choice)\n")
+		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
+		message += _("Info       =   This information\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def openKeyboard(self):
@@ -1947,6 +1945,7 @@ class SatPanel(Screen, HelpableScreen):
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
+				"showEventInfo": (self.info, _("Info - Legend")),
 				"red": (self.MapsContinents, _("Red - Continents")),
 				"green": (self.MapsEurope, _("Green - Europe")),
 				"yellow": (self.MapsGermany, _("Yellow - Germany")),
@@ -1956,6 +1955,22 @@ class SatPanel(Screen, HelpableScreen):
 			-2
 		)
 		self.onShown.append(self.prepare)
+
+	def info(self):
+		message = str("%s" % (_(
+			"Server URL:    %s\n"
+		) % BASEURL))
+		message += _("VERSION    =   %s\n") % VERSION
+		message += _("Ok         =   Show map\n")
+		message += _("Red        =   Continents\n")
+		message += _("Green      =   Europe\n")
+		message += _("Yellow     =   Germany\n")
+		message += _("Blue       =   Settings\n")
+		message += _("Txt/Red    =   Open Keyboard\n")
+		message += _("Up/Down    =   Previous/Next\n")		
+		message += _("<   >      =   Previous/Next page\n")
+		message += _("Info       =   This information\n")
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def prepare(self):
 		self.Mlist = []
@@ -2353,11 +2368,25 @@ class SatPanelb(Screen, HelpableScreen):
 				"right": (self.right, _("Right - Next page")),
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
+				"showEventInfo": (self.info, _("Info - Legend")),
 				"blue": (self.PicSetupMenu, _("Blue - Settings")),
 				"ok": (self.ok, _("OK - Show")),
 			},
 			-2,
 		)
+
+	def info(self):
+		message = str("%s" % (_(
+			"Server URL:    %s\n"
+		) % BASEURL))
+		message += _("VERSION    =   %s\n") % VERSION
+		message += _("Ok         =   Show map\n")
+		message += _("Blue       =   Settings\n")
+		message += _("Txt/Red    =   Open Keyboard\n")
+		message += _("Up/Down    =   Previous/Next\n")		
+		message += _("<   >      =   Previous/Next page\n")
+		message += _("Info       =   This information\n")
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def up(self):
 		self["Mlist"].up()
@@ -2564,14 +2593,17 @@ class View_Slideshow(Screen):
 		Screen.__init__(self, session)
 
 		self["actions"] = ActionMap(
-			["OkCancelActions", "MediaPlayerActions"],
+			["OkCancelActions", "MediaPlayerActions", "HotkeyActions"],
 			{
 				"cancel": self.Exit,
+				"red": self.Exit,
 				"stop": self.Exit,
 				"pause": self.PlayPause,
 				"play": self.PlayPause,
 				"previous": self.prevPic,
 				"next": self.nextPic,
+				"displayHelp": self.info,
+				"info": self.info
 			},
 			-1
 		)
@@ -2609,6 +2641,20 @@ class View_Slideshow(Screen):
 			self.onLayoutFinish.append(self.setPicloadConf)
 		if startslide is True:
 			self.PlayPause()
+
+	def info(self):
+		message = str("%s" % (_(
+			"Server URL:    %s\n"
+		) % BASEURL))
+		message += _("VERSION    =   %s\n") % VERSION
+		message += _("=========== Menu Slide Show ==============\n")
+		message += _("Prev/Next  =   Prev./Next Pic\n")
+		message += _("Pause      =   Pause Pic\n")
+		message += _("Play       =   Play Pic\n")
+		message += _("Stop       =   Exit\n")
+		message += _("Red        =   Exit\n")
+		message += _("Info       =   This information\n")
+		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def setPicloadConf(self):
 		sc = getScale()
@@ -2922,7 +2968,7 @@ class PicSetup(Screen, ConfigListScreen):
 
 		if not isinstance(self.config_entry, ConfigText):
 			print("WARNING: self.config_entry was lost or corrupted. Restoring it.")
-			self.config_entry = config.plugins.foreca.home  # Assicurati che sia quello corretto
+			self.config_entry = config.plugins.foreca.home
 
 		if self.config_entry is None:
 			print("ERROR: self.config_entry is still None after restoring!")
