@@ -1136,17 +1136,17 @@ class ForecaPreview(Screen, HelpableScreen):
 		) % BASEURL))
 		message += _("VERSION    =   %s\n") % VERSION
 		message += _("<   >      =   Prognosis next/previous day\n")
+		message += _("Up/Down    =   Next/previous page\n")
 		message += _("0 - 9      =   Prognosis (x) days from now\n")
-		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
-		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
 		message += _("Info       =   This information\n")
 		message += _("Menu       =   Satellite photos and maps\n")
 		message += _("Ok         =   Go to Config Plugin\n")
-		message += _("Tv or Txt  =   Go to City Panel\n")
+		message += _("Tv/Txt     =   Go to City Panel\n")
 		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
 		message += _("Green      =   Go to Favorite 1\n")
 		message += _("Yellow     =   Go to Favorite 2\n")
 		message += _("Blue       =   Go to Home\n")
+		message += _("Txt/Tv        =   Go to City Panel\n")
 		message += _("Wind direction =   Arrow to right: Wind from the West\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
@@ -1398,17 +1398,20 @@ class ForecaPreview(Screen, HelpableScreen):
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
+		print('self.plaats=', self.plaats)
 
 		# Set 'Titel' with formatted date
 		self["Titel"].text = datum2
 
+		self["Titel3"].text = ''  # self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
+
 		# Set 'Titel4' with location only
 		self["Titel4"].text = self.plaats
-		print('self.plaats=', self.plaats)
-		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)  # .replace("_", " "))
 
 		self["Titel5"].text = ''  # datum2
-		self["Titel3"].text = ''  # self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
+
+		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)  # .replace("_", " "))
+
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
@@ -1619,19 +1622,16 @@ class CityPanel(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		message += _("VERSION    =   %s\n") % VERSION
-		message += _("<   >      =   Prognosis next/previous day\n")
-		message += _("0 - 9      =   Prognosis (x) days from now\n")
+		message += _("<   >      =   Next/previous page (City choice)\n")
+		message += _("Ok         =   City choice - Select\n")
 		message += _("VOL+/-     =   Fast scroll 100 (City choice)\n")
 		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
 		message += _("Info       =   This information\n")
-		message += _("Menu       =   Satellite photos and maps\n")
-		message += _("Ok         =   Go to Config Plugin\n")
-		message += _("Tv or Txt  =   Go to City Panel\n")
-		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
-		message += _("Green      =   Go to Favorite 1\n")
-		message += _("Yellow     =   Go to Favorite 2\n")
-		message += _("Blue       =   Go to Home\n")
-		message += _("Wind direction =   Arrow to right: Wind from the West\n")
+		message += _("Txt        =   Open Keyboard\n")
+		message += _("Txt - Red  =   Open Keyboard\n")
+		message += _("Green      =   Assign to Favorite 1\n")
+		message += _("Yellow     =   Assign to Favorite 2\n")
+		message += _("Blue       =   Assign to Home\n")
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def openKeyboard(self):
