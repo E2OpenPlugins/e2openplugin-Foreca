@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Foreca 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-12 20:43+0100\n"
-"PO-Revision-Date: 2025-02-12 20:44+0100\n"
+"PO-Revision-Date: 2025-02-17 19:44+0100\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -87,7 +87,7 @@ msgstr "Wind"
 
 #: ui.py:719
 msgid "Feels like:"
-msgstr "Fühlt sich an wie:"
+msgstr "fühlt sich an wie:"
 
 #: ui.py:724
 msgid "Precip chance:"
@@ -95,7 +95,7 @@ msgstr "Niederschlagswahrscheinlichkeit:"
 
 #: ui.py:729
 msgid "Humidity:"
-msgstr "Feuchtigkeit:"
+msgstr "Luftfeuchtigkeit relativ:"
 
 #: ui.py:936 ui.py:1006
 msgid "Please wait ..."
