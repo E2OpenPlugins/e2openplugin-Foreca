@@ -345,8 +345,8 @@ PICON_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/picon/"
 THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 print("BASEURL in uso:", BASEURL)
 
-
 DEBUG = config.plugins.foreca.debug.value
+
 if DEBUG:
 	print(pluginPrintname, "Debug enabled")
 else:
@@ -820,16 +820,15 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		# Get favorites
 		global fav1, fav2, start
-		fav1 = config.plugins.foreca.fav1.value
-		fav1 = fav1[fav1.rfind("/") + 1:]
+		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
+		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
+		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
 		print(pluginPrintname, "fav1 location:", fav1)
-		fav2 = config.plugins.foreca.fav2.value
-		fav2 = fav2[fav2.rfind("/") + 1:]
 		print(pluginPrintname, "fav2 location:", fav2)
+		print(pluginPrintname, "Start Home location:", start)
 		# Get home location
 		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:]
-		# print(pluginPrintname, "Start Home location:", start)
 		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
 			BASEURL,
 			pathname2url(self.ort),
@@ -956,7 +955,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		self["key_info"] = StaticText(_("Legend"))
 		self["key_menu"] = StaticText(_("Maps"))
-		self.setTitle(_("Foreca Weather Forecast"))  # + " " + _("Version ") + VERSION)
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -1005,7 +1003,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
 
-		self["Titel4"].text = str(start)
+		self["Titel4"].text = self.ort[self.ort.rfind("/") + 1:]
 
 	def PicSetupMenu(self):
 		self.session.openWithCallback(self.OKCallback, PicSetup)
@@ -1085,25 +1083,37 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.tag = number
 		self.Zukunft(self.tag)
 
+	def titel(self):
+		foundPos = self.ort.find("/")
+		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
+		self.plaats = plaats.replace("_", " ")
+		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)
+
 	def Fav0(self):
 		global start
 		self.ort = config.plugins.foreca.home.value
-		print("home location:", self.ort)
 		start = self.ort[self.ort.rfind("/") + 1:]
+		print(pluginPrintname, "Fav0 ort location:", self.ort)
+		print(pluginPrintname, "Fav0 start:", start)
+		self.titel()
 		self.Zukunft(0)
 
 	def Fav1(self):
 		global fav1
 		self.ort = config.plugins.foreca.fav1.value
 		fav1 = self.ort[self.ort.rfind("/") + 1:]
-		print(pluginPrintname, "fav1 location:", fav1)
+		print(pluginPrintname, "Fav1 ort location:", self.ort)
+		print(pluginPrintname, "Fav1 fav1 location:", fav1)
+		self.titel()
 		self.Zukunft(0)
 
 	def Fav2(self):
 		global fav2
 		self.ort = config.plugins.foreca.fav2.value
 		fav2 = self.ort[self.ort.rfind("/") + 1:]
-		print(pluginPrintname, "fav2 location:", fav2)
+		print(pluginPrintname, "Fav2 ort location:", self.ort)
+		print(pluginPrintname, "Fav2 fav2 location:", fav2)
+		self.titel()
 		self.Zukunft(0)
 
 	def futurdata(self, ztag=0):
@@ -1112,7 +1122,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		now = datetime.now()
 		# Calculate new date by adding day tags
 		future_date = now + timedelta(days=ztag)
-		# Get the future date in the required format (YYYYMMDD)
 		morgen = future_date.strftime("%Y%m%d")
 		return morgen
 
@@ -1171,9 +1180,9 @@ class ForecaPreview(Screen, HelpableScreen):
 		"""
 		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
 		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
-		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
+		# start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
 
-		self.ort = start
+		self.ort = config.plugins.foreca.home.getValue()  # start
 		if callback is not None:
 			self.ort = callback
 		self.tag = 0
@@ -1214,7 +1223,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		try:
 			if not self.working:
 				self.url = "%smeteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (BASEURL, self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-				print('self.url=', self.url)
+				print('red self.url=', self.url)
 				self.loadPicture(self.url)
 		except Exception as e:
 			print('error red=', e)
@@ -1223,12 +1232,18 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
 
 	def MenuCallback(self):
-		global start, fav1, fav2  # menu,
+		global start, fav1, fav2
+		"""
 		fav1 = str(config.plugins.foreca.fav1.value)
 		fav2 = str(config.plugins.foreca.fav2.value)
 		start = str(config.plugins.foreca.home.value)
-		self.city = start
-		self.ort = self.city
+		"""
+		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
+		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
+		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
+
+		self.city = config.plugins.foreca.home.getValue()
+		self.ort = config.plugins.foreca.home.getValue()  # self.city
 		self.update_button()
 
 	def loadPicture(self, url=""):
@@ -1378,7 +1393,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			# translate_description
 			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			description[x] = self.translate_description(description[x], translation_dict)
-			print("description[x]=", description[x])
+			# print("getForecaPage description[x]=", description[x])
 			# translate_description end
 
 			if DEBUG:
@@ -1409,7 +1424,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
-		print('self.plaats=', self.plaats)
+		print('getForecaPage self.plaats=', self.plaats)
 
 		# Set 'Titel' with formatted date
 		self["Titel"].text = datum2
@@ -1421,8 +1436,7 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		self["Titel5"].text = ''  # datum2
 
-		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)  # .replace("_", " "))
-
+		self.titel()
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
@@ -1751,7 +1765,6 @@ class CityPanel(Screen, HelpableScreen):
 		if DEBUG:
 			FAlog("city= %s" % self.city, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
 
-		self.city[self.city.rfind("/") + 1:]
 		self.close(self.city)
 
 	def blue(self):
@@ -1763,7 +1776,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.home.save()
 		configfile.save()
 		# start = self.city[self.city.rfind("/") + 1:]
-		start = self.city
+		start = self.city[self.city.rfind("/") + 1:]
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1776,7 +1789,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav1.save()
 		configfile.save()
 		# fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
-		fav1 = self.city  # ✅ FIX
+		fav1 = self.city[self.city.rfind("/") + 1:]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1789,7 +1802,7 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav2.save()
 		configfile.save()
 		# fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
-		fav2 = self.city
+		fav2 = self.city[self.city.rfind("/") + 1:]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -2442,10 +2455,13 @@ class SatPanelb(Screen, HelpableScreen):
 	def OKCallback(self, callback=None):
 		global fav1, fav2, start
 		# self.ort = city
-		fav1 = str(config.plugins.foreca.fav1.getValue())
-		fav2 = str(config.plugins.foreca.fav2.getValue())
-		start = str(config.plugins.foreca.home.getValue())
-		self.ort = start
+		# fav1 = str(config.plugins.foreca.fav1.getValue())
+		# fav2 = str(config.plugins.foreca.fav2.getValue())
+		# start = str(config.plugins.foreca.home.getValue())
+		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
+		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
+		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
+		self.ort = config.plugins.foreca.home.getValue()
 		self.Exit()
 
 	def SatBild(self):
