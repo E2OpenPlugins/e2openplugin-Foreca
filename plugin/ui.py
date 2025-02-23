@@ -1164,14 +1164,18 @@ class ForecaPreview(Screen, HelpableScreen):
 	def OKCallback(self, callback=None):
 		global fav1, fav2
 		print('OKCallback callback=,', str(callback))
-		fav1 = str(config.plugins.foreca.fav1.getValue())
-		fav2 = str(config.plugins.foreca.fav2.getValue())
-		start = str(config.plugins.foreca.home.getValue())
+		"""
+		fav1 = config.plugins.foreca.fav1.getValue()
+		fav2 = config.plugins.foreca.fav2.getValue()
+		start = config.plugins.foreca.home.getValue()
+		"""
+		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
+		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
+		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
 
-		city = start
+		self.ort = start
 		if callback is not None:
-			city = callback[callback.rfind("/") + 1:].replace("_", " ")
-		self.ort = city
+			self.ort = callback
 		self.tag = 0
 		self.Zukunft(self.tag)
 
@@ -1738,7 +1742,7 @@ class CityPanel(Screen, HelpableScreen):
 	def exit(self):
 		if self.search_ok is True:
 			self.search_ok = False
-		self.city[self.city.rfind("/") + 1:]
+		# self.city[self.city.rfind("/") + 1:]
 		self.close(self.city)
 
 	def ok(self):
@@ -1758,8 +1762,8 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.home.setValue(self.city)  # ✅ FIX
 		config.plugins.foreca.home.save()
 		configfile.save()
-		start = self.city[self.city.rfind("/") + 1:]
-		self.city = start
+		# start = self.city[self.city.rfind("/") + 1:]
+		start = self.city
 		message = "%s %s" % (_("This city is stored as home!\n\n                                  "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1771,8 +1775,8 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav1.setValue = (self.city)
 		config.plugins.foreca.fav1.save()
 		configfile.save()
-		fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
-		self.city = fav1
+		# fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
+		fav1 = self.city  # ✅ FIX
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -1784,8 +1788,8 @@ class CityPanel(Screen, HelpableScreen):
 		config.plugins.foreca.fav2.setValue = (self.city)  # ✅ FIX
 		config.plugins.foreca.fav2.save()
 		configfile.save()
-		fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
-		self.city = fav2
+		# fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
+		fav2 = self.city
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
 
@@ -2888,7 +2892,7 @@ class PicSetup(Screen, ConfigListScreen):
 			self, "ForecaActions",
 			{
 				"ok": (self.OKcity, _("OK - City")),
-				"Save": (self.save, _("Green - Save")),
+				"green": (self.save, _("Green - Save")),
 				"cancel": (self.cancel, _("Exit - End")),
 				"red": (self.cancel, _("Exit - End")),
 				"left": (self.keyLeft, _("Left")),
@@ -3006,9 +3010,9 @@ class PicSetup(Screen, ConfigListScreen):
 		try:
 			self.config_entry.setValue(city)
 			self.config_entry.save()
-			configfile.save()
 		except Exception as e:
 			print("Unexpected error:", e)
+		configfile.save()
 		self.city = city
 		self.createSetup()
 
