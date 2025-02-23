@@ -6,7 +6,7 @@ from __future__ import print_function
 from . import _, file_url
 
 from Components.AVSwitch import AVSwitch
-from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
+from Components.ActionMap import HelpableActionMap
 from Components.ConfigList import ConfigList
 from Components.ConfigList import ConfigListScreen
 from Components.FileList import FileList
@@ -412,6 +412,20 @@ if exists(USR_PATH + "/Filter.cfg"):
 			FILTERin.append(regel[7:15].strip())
 			FILTERout.append(regel[17:].strip())
 	file.close
+
+
+# ---------------------- Help Message Functions --------------------------------------------
+
+
+def format_message(entries):
+	max_left_width = max(len(entry[0]) for entry in entries)
+	formatted_message = ""
+	for entry in entries:
+		left_column = entry[0]
+		right_column = entry[1]
+		spaces = " " * (max_left_width - len(left_column))
+		formatted_message += "{:<{width}} =   {}\n".format(left_column + spaces, right_column, width=max_left_width)
+	return formatted_message
 
 
 # ---------------------- Skin Functions ----------------------------------------------------
@@ -982,14 +996,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def update_button(self):
 		global fav1, fav2, start
-		"""
-		# fav1 = config.plugins.foreca.fav1.getValue()
-		# fav1 = fav1[fav1.rfind("/") + 1:]
-		# fav2 = config.plugins.foreca.fav2.getValue()
-		# fav2 = fav2[fav2.rfind("/") + 1:]
-		# start = config.plugins.foreca.home.getValue()
-		# start = self.ort[self.ort.rfind("/") + 1:]
-		"""
 		if config.plugins.foreca.citylabels.value:
 			self["key_green"].setText(fav1.replace("_", " "))
 			self["key_yellow"].setText(fav2.replace("_", " "))
@@ -1127,25 +1133,28 @@ class ForecaPreview(Screen, HelpableScreen):
 		"""
 		if DEBUG:
 			FAlog("day link:", MAIN_PAGE)
-		# Show in GUI
+
 		self.StartPage()
 
 	def info(self):
 		message = str("%s" % (_(
 			"Server URL:    %s\n"
 		) % BASEURL))
-		message += _("VERSION    =   %s\n") % VERSION
-		message += _("Wind direction =   Arrow to right: Wind from the West\n")
-		message += _("Ok         =   Go to Config Plugin\n")
-		message += _("Red        =   Temperature chart for the upcoming 5 days\n")
-		message += _("Green      =   Go to Favorite 1\n")
-		message += _("Yellow     =   Go to Favorite 2\n")
-		message += _("Blue       =   Go to Home\n")
-		message += _("Tv/Txt     =   Go to City Panel\n")
-		message += _("Menu       =   Satellite photos and maps\n")
-		message += _("Up/Down    =   Previous/Next page\n")		
-		message += _("<   >      =   Prognosis Previous/Next day\n")
-		message += _("0 - 9      =   Prognosis (x) days from now\n")
+		entries = [
+			("VERSION", VERSION),
+			("Wind direction", "Arrow to right: Wind from the West"),
+			("Ok", "Go to Config Plugin"),
+			("Red", "Temperature chart for the upcoming 5 days"),
+			("Green", "Go to Favorite 1"),
+			("Yellow", "Go to Favorite 2"),
+			("Blue", "Go to Home"),
+			("Tv/Txt", "Go to City Panel"),
+			("Menu", "Satellite photos and maps"),
+			("Up/Down", "Previous/Next page"),
+			("<   >", "Prognosis Previous/Next day"),
+			("0 - 9", "Prognosis (x) days from now")
+		]
+		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def OK(self):
@@ -1612,24 +1621,28 @@ class CityPanel(Screen, HelpableScreen):
 			},
 			-2
 		)
-
 		self.onShown.append(self.prepare)
 
 	def info(self):
 		message = str("%s" % (_(
 			"Server URL:    %s\n"
 		) % BASEURL))
-		message += _("VERSION    =   %s\n") % VERSION
-		message += _("Ok         =   City choice - Select\n")
-		message += _("Green      =   Assign to Favorite 1\n")
-		message += _("Yellow     =   Assign to Favorite 2\n")
-		message += _("Blue       =   Assign to Home\n")
-		message += _("Txt/Red    =   Open Keyboard\n")
-		message += _("Up/Down    =   Previous/Next\n")		
-		message += _("<   >      =   Previous/Next page (City choice)\n")
-		message += _("Vol+/-     =   Fast scroll 100 (City choice)\n")
-		message += _("Bouquet+/- =   Fast scroll 500 (City choice)\n")
-		message += _("Info       =   This information\n")
+		entries = [
+			("Server URL", BASEURL),
+			("VERSION", VERSION),
+			("Wind direction", "Arrow to right: Wind from the West"),
+			("Ok", "Go to Config Plugin"),
+			("Red", "Temperature chart for the upcoming 5 days"),
+			("Green", "Go to Favorite 1"),
+			("Yellow", "Go to Favorite 2"),
+			("Blue", "Go to Home"),
+			("Tv/Txt", "Go to City Panel"),
+			("Menu", "Satellite photos and maps"),
+			("Up/Down", "Previous/Next page"),
+			("<   >", "Prognosis Previous/Next day"),
+			("0 - 9", "Prognosis (x) days from now")
+		]
+		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def openKeyboard(self):
@@ -1946,6 +1959,7 @@ class SatPanel(Screen, HelpableScreen):
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
 				"showEventInfo": (self.info, _("Info - Legend")),
+				"info": (self.info, _("Info - Legend")),
 				"red": (self.MapsContinents, _("Red - Continents")),
 				"green": (self.MapsEurope, _("Green - Europe")),
 				"yellow": (self.MapsGermany, _("Yellow - Germany")),
@@ -1960,16 +1974,19 @@ class SatPanel(Screen, HelpableScreen):
 		message = str("%s" % (_(
 			"Server URL:    %s\n"
 		) % BASEURL))
-		message += _("VERSION    =   %s\n") % VERSION
-		message += _("Ok         =   Show map\n")
-		message += _("Red        =   Continents\n")
-		message += _("Green      =   Europe\n")
-		message += _("Yellow     =   Germany\n")
-		message += _("Blue       =   Settings\n")
-		message += _("Txt/Red    =   Open Keyboard\n")
-		message += _("Up/Down    =   Previous/Next\n")		
-		message += _("<   >      =   Previous/Next page\n")
-		message += _("Info       =   This information\n")
+		entries = [
+			("VERSION", "%s" % VERSION),
+			("Ok", "Show map"),
+			("Red", "Continents"),
+			("Green", "Europe"),
+			("Yellow", "Germany"),
+			("Blue", "Settings"),
+			("Txt/Red", "Open Keyboard"),
+			("Up/Down", "Previous/Next"),
+			("<   >", "Previous/Next page"),
+			("Info", "This information")
+		]
+		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def prepare(self):
@@ -2358,7 +2375,6 @@ class SatPanelb(Screen, HelpableScreen):
 		self["Mlist"].l.setList(self.Mlist)
 		self["Mlist"].selectionEnabled(1)
 		self["key_blue"] = StaticText(_("Settings"))
-		self.setTitle(title)
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
@@ -2369,23 +2385,28 @@ class SatPanelb(Screen, HelpableScreen):
 				"up": (self.up, _("Up - Previous")),
 				"down": (self.down, _("Down - Next")),
 				"showEventInfo": (self.info, _("Info - Legend")),
+				"info": (self.info, _("Info - Legend")),
 				"blue": (self.PicSetupMenu, _("Blue - Settings")),
 				"ok": (self.ok, _("OK - Show")),
 			},
 			-2,
 		)
+		self.setTitle(title)
 
 	def info(self):
 		message = str("%s" % (_(
 			"Server URL:    %s\n"
 		) % BASEURL))
-		message += _("VERSION    =   %s\n") % VERSION
-		message += _("Ok         =   Show map\n")
-		message += _("Blue       =   Settings\n")
-		message += _("Txt/Red    =   Open Keyboard\n")
-		message += _("Up/Down    =   Previous/Next\n")		
-		message += _("<   >      =   Previous/Next page\n")
-		message += _("Info       =   This information\n")
+		entries = [
+			("VERSION", "%s" % VERSION),
+			("Ok", "Show map"),
+			("Blue", "Settings"),
+			("Txt/Red", "Open Keyboard"),
+			("Up/Down", "Previous/Next"),
+			("<   >", "Previous/Next page"),
+			("Info", "This information")
+		]
+		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def up(self):
@@ -2475,15 +2496,14 @@ class PicViewx(Screen):
 					</screen>"
 
 		Screen.__init__(self, session)
-		self["actions"] = ActionMap(
-			["OkCancelActions", "MediaPlayerActions"],
+		self["actions"] = HelpableActionMap(
+			self, "ForecaActions",
 			{
-				"cancel": self.Exit,
-				"stop": self.Exit,
+				"cancel": (self.Exit, _("Exit - End")),
+				"stop": (self.Exit, _("Exit - End")),
 			},
 			-1
 		)
-
 		self["pic"] = Pixmap()
 		self["city"] = Label(plaats)
 		self.filelist = filelist
@@ -2591,23 +2611,21 @@ class View_Slideshow(Screen):
 			<widget name=\"file\" position=\"" + str(space + 45) + "," + str(space + 10) + "\" size=\"" + str(size_w - (space * 2) - 50) + "," + str(fontsize + 5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
 			</screen>"
 		Screen.__init__(self, session)
-
-		self["actions"] = ActionMap(
-			["OkCancelActions", "MediaPlayerActions", "HotkeyActions"],
+		self["actions"] = HelpableActionMap(
+			self, "ForecaActions",
 			{
-				"cancel": self.Exit,
-				"red": self.Exit,
-				"stop": self.Exit,
-				"pause": self.PlayPause,
-				"play": self.PlayPause,
-				"previous": self.prevPic,
-				"next": self.nextPic,
-				"displayHelp": self.info,
-				"info": self.info
+				"cancel": (self.Exit, _("Exit - End")),
+				"red": (self.Exit, _("Exit - End")),
+				"stop": (self.Exit, _("Exit - End")),
+				"pause": (self.PlayPause, _("Pause")),
+				"playpause": (self.PlayPause, _("Play/Pause")),
+				"previous": (self.prevPic, _("Left - Previous")),
+				"next": (self.nextPic, _("Right - Next")),
+				"showEventInfo": (self.info, _("Info - Legend")),
+				"info": (self.info, _("Info - Legend")),
 			},
-			-1
+			-1,
 		)
-
 		self["point"] = Pixmap()
 		self["pic"] = Pixmap()
 		self["play_icon"] = Pixmap()
@@ -2646,14 +2664,16 @@ class View_Slideshow(Screen):
 		message = str("%s" % (_(
 			"Server URL:    %s\n"
 		) % BASEURL))
-		message += _("VERSION    =   %s\n") % VERSION
-		message += _("=========== Menu Slide Show ==============\n")
-		message += _("Prev/Next  =   Prev./Next Pic\n")
-		message += _("Pause      =   Pause Pic\n")
-		message += _("Play       =   Play Pic\n")
-		message += _("Stop       =   Exit\n")
-		message += _("Red        =   Exit\n")
-		message += _("Info       =   This information\n")
+		entries = [
+			("VERSION", "%s" % VERSION),
+			("Prev/Next", "Prev./Next Pic"),
+			("Pause", "Pause Pic"),
+			("Play", "Play Pic"),
+			("Stop", "Exit"),
+			("Red", "Exit"),
+			("Info", "This information")
+		]
+		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 	def setPicloadConf(self):
@@ -2864,31 +2884,31 @@ class PicSetup(Screen, ConfigListScreen):
 		self.setup_title = _("Settings")
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-		self["actions"] = NumberActionMap(
-			["SetupActions", "ColorActions", 'WizardActions'],
+		self["actions"] = HelpableActionMap(
+			self, "ForecaActions",
 			{
-				"ok": self.OKcity,
-				"save": self.save,
-				"green": self.save,
-				"cancel": self.cancel,
-				"red": self.cancel,
-				"left": self.keyLeft,
-				"right": self.keyRight,
-				"up": self.keyUp,
-				"down": self.keyDown,
-				"0": self.keyNumber,
-				"1": self.keyNumber,
-				"2": self.keyNumber,
-				"3": self.keyNumber,
-				"4": self.keyNumber,
-				"5": self.keyNumber,
-				"6": self.keyNumber,
-				"7": self.keyNumber,
-				"8": self.keyNumber,
-				"9": self.keyNumber,
+				"ok": (self.OKcity, _("OK - City")),
+				"Save": (self.Fav1, _("Green - Save")),
+				"cancel": (self.cancel, _("Exit - End")),
+				"red": (self.cancel, _("Exit - End")),
+				"left": (self.keyLeft, _("Left")),
+				"right": (self.keyRight, _("Right")),
+				"up": (self.keyUp, _("Up")),
+				"down": (self.keyDown, _("Down ")),
+				"0": (boundFunction(self.keyNumberGlobal, 0), _("0")),
+				"1": (boundFunction(self.keyNumberGlobal, 1), _("1")),
+				"2": (boundFunction(self.keyNumberGlobal, 2), _("2")),
+				"3": (boundFunction(self.keyNumberGlobal, 3), _("3")),
+				"4": (boundFunction(self.keyNumberGlobal, 4), _("4")),
+				"5": (boundFunction(self.keyNumberGlobal, 5), _("5")),
+				"6": (boundFunction(self.keyNumberGlobal, 6), _("6")),
+				"7": (boundFunction(self.keyNumberGlobal, 7), _("7")),
+				"8": (boundFunction(self.keyNumberGlobal, 8), _("8")),
+				"9": (boundFunction(self.keyNumberGlobal, 9), _("9")),
 			},
-			-3,
+			-3
 		)
+
 		self.list = []
 		self.onChangedEntry = []
 		self["Mlist"] = ConfigList(self.list)
