@@ -2888,7 +2888,7 @@ class PicSetup(Screen, ConfigListScreen):
 			self, "ForecaActions",
 			{
 				"ok": (self.OKcity, _("OK - City")),
-				"Save": (self.save, _("Green - Save")),
+				"save": (self.save, _("Green - Save")),
 				"cancel": (self.cancel, _("Exit - End")),
 				"red": (self.cancel, _("Exit - End")),
 				"left": (self.keyLeft, _("Left")),
