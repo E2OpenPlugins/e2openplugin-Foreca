@@ -811,7 +811,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.session = session
 		now = datetime.now()
 		heute = now.strftime("%Y%m%d")
-
 		if DEBUG:
 			FAlog("determined local date:", str(heute))
 
@@ -932,13 +931,7 @@ class ForecaPreview(Screen, HelpableScreen):
 				</screen>"""
 
 		Screen.__init__(self, session)
-		try:
-			Screen.setTitle(self, _("Foreca Weather Forecast") + ' ' + start.replace("_", " "))
-		except:
-			try:
-				self.setTitle(_("Foreca Weather Forecast") + ' ' + start.replace("_", " "))
-			except:
-				pass
+		self.setTitle(_("Foreca Weather Forecast") + " " + _("v.") + VERSION)
 		self["MainList"] = MainMenuList()
 		self["Titel"] = StaticText()
 		self["Titel2"] = StaticText(_("Please wait ..."))
@@ -987,7 +980,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			},
 			-2
 		)
-		# self.StartPageFirst()
 		self.onLayoutFinish.append(self.StartPageFirst)
 		self.onShow.append(self.update_button)
 
@@ -1002,7 +994,7 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
 
-		self["Titel4"].text = self.ort[self.ort.rfind("/") + 1:]
+		self["Titel4"].text = self.ort[self.ort.rfind("/") + 1:].replace("_", " ")
 
 	def PicSetupMenu(self):
 		self.session.openWithCallback(self.OKCallback, PicSetup)
@@ -1083,10 +1075,13 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.Zukunft(self.tag)
 
 	def titel(self):
+		"""
 		foundPos = self.ort.find("/")
 		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
 		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)
+		"""
+		self.setTitle(_("Foreca Weather Forecast") + " " + _("v.") + VERSION)
 
 	def Fav0(self):
 		global start
@@ -1296,13 +1291,10 @@ class ForecaPreview(Screen, HelpableScreen):
 			return ' '.join(translated_words)
 
 		translation_dict = self.load_translation_dict(lng)
-		# titel[0] = self.konvert_uml(str(sub(r'<[^>]*>', "", titel[0])))
 		titel[0] = translate_description_gettext(titel[0], translation_dict)
 
-		# <a href="/Austria/Linz?details=20110330">We</a>
 		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
 		link = str(fulltext.findall(html))
-		# print('Link=', link)
 		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
 		tag = str(fulltext.findall(link))
 		# print "Day ", tag
@@ -1318,7 +1310,6 @@ class ForecaPreview(Screen, HelpableScreen):
 
 		fulltext = compile(r'<a href="(.+?)".+?', DOTALL)
 		taglink = str(fulltext.findall(html))
-		# taglink = konvert_uml(taglink)
 		if DEBUG:
 			FAlog("Daylink %s" % taglink)
 
@@ -1343,7 +1334,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			FAlog("Temp=%s" % str(temp))
 
 		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
-
 		fulltext = compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', DOTALL)
 		thumbnails = fulltext.findall(html)
 		if DEBUG:
@@ -1382,7 +1372,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		timeEntries = len(zeit)
 		x = 0
 		while x < timeEntries:
-			# description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
 			feels[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", feels[x])))
 			precip[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", precip[x])))
 			humidity[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", humidity[x])))
@@ -1424,22 +1413,17 @@ class ForecaPreview(Screen, HelpableScreen):
 		plaats = _(self.ort[0:foundPos]) + ", " + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
 		print('getForecaPage self.plaats=', self.plaats)
-
 		# Set 'Titel' with formatted date
 		self["Titel"].text = datum2
-
-		self["Titel3"].text = ''  # self.ort[:foundPos].replace("_", " ") + "\r\n" + self.ort[foundPos + 1:].replace("_", " ") + "\r\n" + datum2
-
+		self["Titel3"].text = ''
 		# Set 'Titel4' with location only
-		self["Titel4"].text = self.plaats
-
 		self["Titel5"].text = ''  # datum2
 
 		self.titel()
+
 		self["MainList"].SetList(datalist)
 		self["MainList"].selectionEnabled(0)
 		self["MainList"].show
-		# self.deactivateCacheDialog()
 
 	def load_translation_dict(self, lng):
 		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
@@ -2627,7 +2611,7 @@ class View_Slideshow(Screen):
 			<widget name=\"pic\" position=\"" + str(space) + "," + str(space + 40) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2) - 40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
 			<widget name=\"point\" position=\"" + str(space + 5) + "," + str(space + 10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "record.png\" alphatest=\"on\" /> \
 			<widget name=\"play_icon\" position=\"" + str(space + 25) + "," + str(space + 10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"  alphatest=\"on\" /> \
-			<widget name=\"file\" position=\"" + str(space + 45) + "," + str(space + 10) + "\" size=\"" + str(size_w - (space * 2) - 50) + "," + str(fontsize + 5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"left\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
+			<widget name=\"file\" position=\"" + str(space + 45) + "," + str(space + 10) + "\" size=\"" + str(size_w - (space * 2) - 50) + "," + str(fontsize + 5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"center\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
 			</screen>"
 		Screen.__init__(self, session)
 		self["actions"] = HelpableActionMap(
