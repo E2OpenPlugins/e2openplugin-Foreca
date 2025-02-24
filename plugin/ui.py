@@ -479,11 +479,10 @@ class MainMenuList(MenuList):
 		self.font1 = gFont("Regular", 26)
 		self.font2 = gFont("Regular", 28)
 		self.font3 = gFont("Regular", 28)
-
-		self.itemHeight = 150
+		self.itemHeight = 120
 		self.valTime = 5, 80, 100, 45
-		self.valPict = 120, 45, 70, 70
-		self.valPictScale = 1
+		self.valPict = 110, 45, 70, 70
+		self.valPictScale = 0
 		self.valTemp = 200, 55, 150, 40
 		self.valTempUnits = 200, 95, 15, 40
 		self.valWindPict = 320, 75, 35, 35
@@ -725,7 +724,7 @@ class MainMenuList(MenuList):
 		textsechs = self.x[6]
 		textsechs = textsechs.replace("&deg;", "") + tempUnit
 		textsechs = textsechs.replace("Feels Like:", _("Feels like:"))
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=mblau, color_sel=mblau))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=2, text=textsechs, color=self.tempcolor, color_sel=self.tempcolor))
 
 		x, y, w, h = self.valText3
 		textsechs = self.x[7]
@@ -1422,7 +1421,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		datum2 = datum2 + " " + translated_day
 		# Location Management
 		foundPos = self.ort.find("/")
-		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
+		plaats = _(self.ort[0:foundPos]) + ", " + self.ort[foundPos + 1:len(self.ort)]
 		self.plaats = plaats.replace("_", " ")
 		print('getForecaPage self.plaats=', self.plaats)
 
