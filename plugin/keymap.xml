@@ -35,6 +35,7 @@
 		<key id="KEY_EXIT" mapto="cancel" flags="m"/>
 		<key id="KEY_HOME" mapto="cancel" flags="m"/>
 		<key id="KEY_INFO" mapto="showEventInfo" flags="m"/>
+		<key id="KEY_INFO" mapto="info" flags="b"/>
 		<key id="KEY_HELP" mapto="contextMenu" flags="m"/>
 		<key id="\x1b" mapto="cancel" flags="m"/>
 		<key id="KEY_TV" mapto="tv" flags="b"/>
@@ -43,9 +44,9 @@
 		<key id="KEY_LAST" mapto="backspace" flags="mr" />
 		<key id="KEY_STOP" mapto="backspace" flags="mr" />
 		<key id="KEY_BACKSPACE" mapto="backspace" flags="mr" />
-		<key id="KEY_PLAYPAUSE" mapto="delete" flags="mr" />
-		<key id="KEY_PLAY" mapto="delete" flags="mr" />
-		<key id="KEY_PAUSE" mapto="delete" flags="mr" />
+		<key id="KEY_PLAYPAUSE" mapto="playpause" flags="mr" />
+		<key id="KEY_PLAY" mapto="play" flags="mr" />
+		<key id="KEY_PAUSE" mapto="pause" flags="mr" />
 		<key id="KEY_DELETE" mapto="delete" flags="mr" />
 	</map>
 </keymap>
