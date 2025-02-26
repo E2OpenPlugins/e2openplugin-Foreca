@@ -637,20 +637,6 @@ class MainMenuList(MenuList):
 		mblau = 0x40b3ff
 		weiss = 0xffffff
 
-		"""
-		violet = 0xff40b3
-		gruen = 0x77f424
-		dgruen = 0x53c905
-		drot = 0xff4040
-		rot = 0xff6640
-		orange = 0xffb340
-		gelb = 0xffff40
-		ddblau = 0x3b62ff
-		dblau = 0x408cff
-		blau = 0x40d9ff
-		hblau = 0x40ffff
-		"""
-
 		if config.plugins.foreca.units.value == "us":
 			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
 			tempUnit = "°F"
@@ -1144,20 +1130,19 @@ class ForecaPreview(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		entries = [
-			("VERSION", VERSION),
-			("Wind direction", _("Arrow to right: Wind from the West")),
-			("Ok", _("Go to Config Plugin")),
-			("Red", _("Temperature chart for the upcoming 5 days")),
-			("Green", _("Go to Favorite 1")),
-			("Yellow", _("Go to Favorite 2")),
-			("Blue", _("Go to Home")),
-			("Tv/Txt", _("Go to City Panel")),
-			("Menu", _("Satellite photos and maps")),
-			("Up/Down", _("Previous/Next page")),
-			("<   >", _("Prognosis Previous/Next day")),
-			("0 - 9", _("Prognosis (x) days from now"))
+			(_("VERSION"), VERSION),
+			(_("Wind direction"), _("Arrow to right: Wind from the West")),
+			(_("Ok"), _("Go to Config Plugin")),
+			(_("Red"), _("Temperature chart for the upcoming 5 days")),
+			(_("Green"), _("Go to Favorite 1")),
+			(_("Yellow"), _("Go to Favorite 2")),
+			(_("Blue"), _("Go to Home")),
+			(_("Tv/Txt"), _("Go to City Panel")),
+			(_("Menu"), _("Satellite photos and maps")),
+			(_("Up/Down"), _("Previous/Next page")),
+			(_("<   >"), _("Prognosis Previous/Next day")),
+			(_("0 - 9"), _("Prognosis (x) days from now"))
 		]
-
 		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
@@ -1630,19 +1615,19 @@ class CityPanel(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		entries = [
-			("Server URL", BASEURL),
-			("VERSION", VERSION),
-			("Wind direction", _("Arrow to right: Wind from the West")),
-			("Ok", _("Go to Config Plugin")),
-			("Red", _("Temperature chart for the upcoming 5 days")),
-			("Green", _("Go to Favorite 1")),
-			("Yellow", _("Go to Favorite 2")),
-			("Blue", _("Go to Home")),
-			("Tv/Txt", _("Go to City Panel")),
-			("Menu", _("Satellite photos and maps")),
-			("Up/Down", _("Previous/Next page")),
-			("<   >", _("Prognosis Previous/Next day")),
-			("0 - 9", _("Prognosis (x) days from now"))
+			(_("Server URL"), BASEURL),
+			(_("VERSION"), VERSION),
+			(_("Wind direction"), _("Arrow to right: Wind from the West")),
+			(_("Ok"), _("Go to Config Plugin")),
+			(_("Red"), _("Temperature chart for the upcoming 5 days")),
+			(_("Green"), _("Go to Favorite 1")),
+			(_("Yellow"), _("Go to Favorite 2")),
+			(_("Blue"), _("Go to Home")),
+			(_("Tv/Txt"), _("Go to City Panel")),
+			(_("Menu"), _("Satellite photos and maps")),
+			(_("Up/Down"), _("Previous/Next page")),
+			(_("<   >"), _("Prognosis Previous/Next day")),
+			(_("0 - 9"), _("Prognosis (x) days from now"))
 		]
 
 		message += format_message(entries)
@@ -1976,16 +1961,16 @@ class SatPanel(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		entries = [
-			("VERSION", "%s" % VERSION),
-			("Ok", _("Show map")),
-			("Red", _("Continents")),
-			("Green", _("Europe")),
-			("Yellow", _("Germany")),
-			("Blue", _("Settings")),
-			("Txt/Red", _("Open Keyboard")),
-			("Up/Down", _("Previous/Next")),
-			("<   >", _("Previous/Next page")),
-			("Info", _("This information"))
+			("VERSION", "%s" % VERSION),  # Non serve la traduzione
+			(_("Ok"), _("Show map")),
+			(_("Red"), _("Continents")),
+			(_("Green"), _("Europe")),
+			(_("Yellow"), _("Germany")),
+			(_("Blue"), _("Settings")),
+			(_("Txt/Red"), _("Open Keyboard")),
+			(_("Up/Down"), _("Previous/Next")),
+			(_("<   >"), _("Previous/Next page")),
+			(_("Info"), _("This information"))
 		]
 		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
@@ -2399,13 +2384,13 @@ class SatPanelb(Screen, HelpableScreen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		entries = [
-			("VERSION", "%s" % VERSION),
-			("Ok", _("Show map")),
-			("Blue", _("Settings")),
-			("Txt/Red", _("Open Keyboard")),
-			("Up/Down", _("Previous/Next")),
-			("<   >", _("Previous/Next page")),
-			("Info", _("This information"))
+			("VERSION", "%s" % VERSION),  # No translation needed
+			(_("Ok"), _("Show map")),
+			(_("Blue"), _("Settings")),
+			(_("Txt/Red"), _("Open Keyboard")),
+			(_("Up/Down"), _("Previous/Next")),
+			(_("<   >"), _("Previous/Next page")),
+			(_("Info"), _("This information"))
 		]
 		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
@@ -2669,13 +2654,13 @@ class View_Slideshow(Screen):
 			"Server URL:    %s\n"
 		) % BASEURL))
 		entries = [
-			("VERSION", "%s" % VERSION),
-			("Prev/Next", _("Prev./Next Pic")),
-			("Pause", _("Pause Pic")),
-			("Play", _("Play Pic")),
-			("Stop", _("Exit")),
-			("Red", _("Exit")),
-			("Info", _("This information"))
+			("VERSION", "%s" % VERSION),  # No translation needed
+			(_("Prev/Next"), _("Prev./Next Pic")),
+			(_("Pause"), _("Pause Pic")),
+			(_("Play"), _("Play Pic")),
+			(_("Stop"), _("Exit")),
+			(_("Red"), _("Exit")),
+			(_("Info"), _("This information"))
 		]
 		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
