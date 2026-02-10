@@ -3,13 +3,12 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-from . import _, file_url
+from . import _  # , file_url
 
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import HelpableActionMap
 from Components.ConfigList import ConfigList
 from Components.ConfigList import ConfigListScreen
-from Components.FileList import FileList
 from Components.GUIComponent import GUIComponent
 from Components.Label import Label
 from Components.Language import language
@@ -31,7 +30,7 @@ from Components.config import (
 	KEY_0,
 	ConfigText,
 )
-from datetime import datetime, timedelta
+from datetime import timedelta
 from enigma import (
 	eListboxPythonMultiContent,
 	ePicLoad,
@@ -40,6 +39,8 @@ from enigma import (
 	gFont,
 	RT_VALIGN_CENTER,
 )
+from json import loads
+from locale import setlocale, LC_COLLATE
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -47,18 +48,15 @@ from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
-from locale import setlocale, LC_COLLATE, strxfrm
 from os import makedirs, unlink, remove, listdir
-from os.path import exists, join
-from re import sub, DOTALL, compile, findall
+from os.path import exists, join, getsize
+from re import sub, DOTALL, findall
 from skin import parseFont, parseColor
 from sys import version_info
-from time import strftime
 from twisted.internet._sslverify import ClientTLSOptions
+from twisted.internet.reactor import callInThread
 from twisted.internet.ssl import ClientContextFactory
-import requests
 import ssl
-import warnings
 
 PY3 = version_info[0] == 3
 if PY3:
@@ -74,16 +72,10 @@ except ImportError:
 	from urlparse import urlparse
 
 
-try:
-	from PIL import Image
-except ImportError:
-	from Image import Image
-
-
-if PY3:
-	from io import BytesIO
-else:
-	from cStringIO import StringIO as BytesIO
+# try:
+	# from PIL import Image
+# except ImportError:
+	# from Image import Image
 
 
 try:
@@ -97,9 +89,9 @@ else:
 try:
 	unicode
 except NameError:
-	unicode = str  # In Python 3, unicode == str
+	unicode = str
 
-VERSION = "3.3.7"
+VERSION = "3.3.9"
 
 
 #
@@ -115,7 +107,7 @@ VERSION = "3.3.7"
 #        We wish all users wonderful weather!
 #
 #
-#                 31.12.2024
+#                 11/03/2025
 #
 #     Source of information: https://www.foreca.ba
 #
@@ -237,6 +229,11 @@ VERSION = "3.3.7"
 #  RECODE FROM LULULLA
 # 3.3.7 removed .cfg files - add TV button for Menu Config
 #  RECODE FROM LULULLA
+# 3.3.8 Mahor fix on clean all code unnecessay / append new PY3
+#  Translate 90% complete
+#  # thank's Orlandoxx  restore Eumsat screen picxview
+#  RECODE FROM LULULLA
+# 3.3.9  fixed
 
 
 class WebClientContextFactory(ClientContextFactory):
@@ -251,41 +248,10 @@ class WebClientContextFactory(ClientContextFactory):
 		return ctx
 
 
-languages = [
-	("no", "NO (Default)"),
-	("com", "English"),
-	("ba", "Bosnia ed Erzegovina"),
-	("nz", "New Zealand"),
-	("bg", "българск"),
-	("cs", "Čeština"),
-	("da", "Dansk"),
-	("de", "Deutsch"),
-	("com/el", "ελληνικά"),
-	("es", "Español"),
-	("et", "Eesti"),
-	("https://www.farsiweather.com/", "زبان فارسی"),
-	("fr", "Français"),
-	("hr", "Hrvatski"),
-	("in", "तब"),
-	("it", "Italiano"),
-	("lv", "Latviešu"),
-	("hu", "Magyar"),
-	("nl", "Nederlands"),
-	("pl", "Polski"),
-	("pt", "Português"),
-	("ro", "Româneşte"),
-	("ru", "Русский"),
-	("sk", "Slovenčina"),
-	("fi", "Suomi"),
-	("sv", "Svenska"),
-	("tr", "Türkçe"),
-]
-
 pluginPrintname = "[Foreca Ver. %s]" % VERSION
-# config.plugins.foreca.languages = ConfigSelection(default="no", choices=languages)
 config.plugins.foreca.home = ConfigText(default="Germany/Berlin", fixed_size=False)
 config.plugins.foreca.fav1 = ConfigText(default="United_States/New_York/New_York_City", fixed_size=False)
-config.plugins.foreca.fav2 = ConfigText(default="Japan/Tokyo", fixed_size=False)
+config.plugins.foreca.fav2 = ConfigText(default="Italy/Rome", fixed_size=False)
 config.plugins.foreca.resize = ConfigSelection(default="0", choices=[("0", _("simple")), ("1", _("better"))])
 config.plugins.foreca.bgcolor = ConfigSelection(default="#00000000", choices=[("#00000000", _("black")), ("#009eb9ff", _("blue")), ("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
 config.plugins.foreca.textcolor = ConfigSelection(default="#0038FF48", choices=[("#00000000", _("black")), ("#009eb9ff", _("blue")), ("#00ff5a51", _("red")), ("#00ffe875", _("yellow")), ("#0038FF48", _("green"))])
@@ -297,32 +263,21 @@ config.plugins.foreca.loop = ConfigYesNo(default=False)
 config.plugins.foreca.citylabels = ConfigEnableDisable(default=True)
 config.plugins.foreca.units = ConfigSelection(default="metrickmh", choices=[("metric", _("Metric (C, m/s)")), ("metrickmh", _("Metric (C, km/h)")), ("imperial", _("Imperial (C, mph)")), ("us", _("US (F, mph)"))])
 config.plugins.foreca.time = ConfigSelection(default="24h", choices=[("12h", _("12 h")), ("24h", _("24 h"))])
-config.plugins.foreca.debug = ConfigEnableDisable(default=False)
-
-HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6'}
+config.plugins.foreca.debug = ConfigEnableDisable(default=True)
 
 
-# check for BASEURL
-def get_base_url_from_txt(file_url, fallback_url="https://www.foreca.nz/"):
-	"""
-	Reads a new URL base from a .txt file hosted on a site.
-	If it fails to get the content or the URL is invalid, it uses a fallback URL base.
-	:param file_url: URL of the .txt file that contains the new URL base
-	:param fallback_url: URL to use if an error occurs
-	:return: The URL base obtained from the .txt file or the fallback URL
-	"""
-	try:
-		response = requests.get(file_url, timeout=10)
-		response.raise_for_status()
-		new_base_url = response.text.strip()
-		test_response = requests.get(new_base_url, timeout=10)
-		test_response.raise_for_status()
-		print("New URL base found and working:", new_base_url)
-		return new_base_url
-	except Exception as e:
-		print("Error reading base URL from file .txt:", str(e))
-		print("Using the fallback URL base:", fallback_url)
-		return fallback_url
+BASEURL = "https://www.foreca.com/"
+
+HEADERS = {
+	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0 Safari/537.36',
+	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+	'Accept-Language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
+}
+HEADERS_API = {
+	'User-Agent': HEADERS['User-Agent'],
+	'Accept': 'application/json,text/plain,*/*',
+	'Referer': BASEURL,
+}
 
 
 lng = 'en'
@@ -334,7 +289,6 @@ except:
 	pass
 
 
-BASEURL = get_base_url_from_txt(file_url)
 if not BASEURL.endswith("/"):
 	BASEURL += "/"
 
@@ -346,6 +300,15 @@ THUMB_PATH = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/thumb/"
 print("BASEURL in uso:", BASEURL)
 
 DEBUG = config.plugins.foreca.debug.value
+AGENTS = [
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36",
+	"Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0",
+	"Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edge/87.0.664.75",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363"
+]
+
 
 if DEBUG:
 	print(pluginPrintname, "Debug enabled")
@@ -363,11 +326,34 @@ if not exists(CACHE_PATH):
 		pass
 
 
+def get_current_time():
+	try:
+		from datetime import datetime, timedelta, timezone
+		return datetime.now(tz=timezone(timedelta(hours=-1)))
+	except ImportError:
+		class MyTimezone(datetime.tzinfo):
+			def __init__(self, offset):
+				self.offset = offset
+
+			def utcoffset(self, dt):
+				return self.offset
+
+			def tzname(self, dt):
+				return "Custom Timezone"
+
+			def dst(self, dt):
+				return timedelta(0)
+
+		tz_offset = MyTimezone(timedelta(hours=-1))
+		return datetime.now(tz=tz_offset)
+
+
 def FAlog(info, wert=""):
 	if config.plugins.foreca.debug.value:
 		try:
+			now = get_current_time()
 			with open('/tmp/foreca.log', 'a') as f:
-				f.write('{} {} {}\r\n'.format(strftime('%H:%M:%S'), info, wert))
+				f.write('{} {} {}'.format(now.strftime('%H:%M:%S'), info, wert))
 		except IOError:
 			print('[Foreca] Logging-Error')
 	else:
@@ -446,27 +432,12 @@ def download_image(url, devicepath):
 		raise e
 
 
-def remove_icc_profile(devicepath):
-	try:
-		warnings.filterwarnings("ignore", "(?s).*iCCP.*", category=UserWarning)
-		img = Image.open(devicepath)
-		img.save(devicepath, icc_profile=None)
-	except Exception as e:
-		print("Error: Failed to remove ICC profile", str(e))
-		raise e
-
-
 def getScale():
 	return AVSwitch().getFramebufferScale()
 
 
 def clean_url(url):
 	return url.replace('\ufeff', '')
-
-
-# ------------------------------------------------------------------------------------------
-# ----------------------------------  MainMenuList   ---------------------------------------
-# ------------------------------------------------------------------------------------------
 
 
 class MainMenuList(MenuList):
@@ -501,7 +472,6 @@ class MainMenuList(MenuList):
 		if DEBUG:
 			FAlog("MainMenuList...")
 
-# --------------------------- get skin attribs ---------------------------------------------
 	def applySkin(self, desktop, parent):
 		def warningWrongSkinParameter(string, wanted, given):
 			print("[ForecaPreview] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
@@ -607,7 +577,6 @@ class MainMenuList(MenuList):
 
 		return GUIComponent.applySkin(self, desktop, parent)
 
-# --------------------------- Go through all list entries ----------------------------------
 	def buildEntries(self):
 		if DEBUG:
 			FAlog("buildEntries:", str(len(self.list)))
@@ -625,8 +594,6 @@ class MainMenuList(MenuList):
 		self.wind = THUMB_PATH + str(windDirection)
 		self.buildEntry(None)
 
-# ----------------------------------- Build entries for list -------------------------------
-
 	def buildEntry(self, picInfo=None):
 		self.x = self.list[self.idx]
 		self.res = [(self.x[0], self.x[1])]
@@ -637,11 +604,22 @@ class MainMenuList(MenuList):
 		mblau = 0x40b3ff
 		weiss = 0xffffff
 
+		# Manage temperature as a string
+		temp_str = self.x[2]  # Es: "+18°"
+
+		# Extract the number from the temperature string
+		try:
+			# Remove symbols and convert
+			temp_clean = temp_str.replace('+', '').replace('°', '').replace('°C', '').replace('°F', '').strip()
+			temp_value = int(float(temp_clean))  # Gestisci decimali
+		except (ValueError, AttributeError):
+			temp_value = 20  # Default if conversion fails
+
 		if config.plugins.foreca.units.value == "us":
-			self.centigrades = round((int(self.x[2]) - 32) / 1.8)
+			self.centigrades = round((temp_value - 32) / 1.8)
 			tempUnit = "°F"
 		else:
-			self.centigrades = int(self.x[2])
+			self.centigrades = temp_value  # Usa il valore numerico per i colori
 			tempUnit = "°C"
 
 		def getTempColor(temp):
@@ -688,7 +666,7 @@ class MainMenuList(MenuList):
 		x, y, w, h = self.valTemp
 		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=_("Temp"), color=weiss, color_sel=weiss))
 		x, y, w, h = self.valTempUnits
-		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[2] + tempUnit, color=self.tempcolor, color_sel=self.tempcolor))
+		self.res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=3, text=self.x[2], color=self.tempcolor, color_sel=self.tempcolor))  # Usa self.x[2] originale
 
 		# wind pictogram
 		pngpic = LoadPixmap(self.wind + ".png")
@@ -737,11 +715,6 @@ class MainMenuList(MenuList):
 		self.buildEntries()
 
 
-# ------------------------------------------------------------------------------------------
-# ------------------------------------------ Spinner ---------------------------------------
-# ------------------------------------------------------------------------------------------
-
-
 class ForecaPreviewCache(Screen):
 
 	if size_w == 1920:
@@ -785,17 +758,13 @@ class ForecaPreviewCache(Screen):
 		png = LoadPixmap(cached=True, path=PICON_PATH + str(self.curr) + ".png")
 		self["spinner"].instance.setPixmap(png)
 
-# ------------------------------------------------------------------------------------------
-# ------------------------------ Foreca Preview---------------------------------------------
-# ------------------------------------------------------------------------------------------
-
 
 class ForecaPreview(Screen, HelpableScreen):
 
 	def __init__(self, session):
-		global MAIN_PAGE, menu
+		global MAIN_PAGE
 		self.session = session
-		now = datetime.now()
+		now = get_current_time()
 		heute = now.strftime("%Y%m%d")
 		if DEBUG:
 			FAlog("determined local date:", str(heute))
@@ -807,9 +776,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
 		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
 		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
-		print(pluginPrintname, "fav1 location:", fav1)
-		print(pluginPrintname, "fav2 location:", fav2)
-		print(pluginPrintname, "Start Home location:", start)
+
 		# Get home location
 		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:]
@@ -821,10 +788,6 @@ class ForecaPreview(Screen, HelpableScreen):
 			config.plugins.foreca.units.value,
 			config.plugins.foreca.time.value
 		)
-		"""
-		# if isinstance(MAIN_PAGE, unicode):
-			# MAIN_PAGE = MAIN_PAGE.encode('utf-8')
-		"""
 		if DEBUG:
 			FAlog("initial link:", MAIN_PAGE)
 
@@ -854,7 +817,7 @@ class ForecaPreview(Screen, HelpableScreen):
 					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
 					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png" />
 					<widget source="key_info" render="Label" position="771,864" size="250,35" font="Regular;30" />
-					<widget source="key_menu" render="Label" position="441,864" size="250,35" font="Regular;30" />
+					<!-- <widget source="key_menu" render="Label" position="441,864" size="250,35" font="Regular;30" /> -->
 					<widget source="key_ok" render="Label" position="104,864" size="250,35" font="Regular;30" />
 				</screen>"""
 		elif size_w == 2560:
@@ -883,7 +846,7 @@ class ForecaPreview(Screen, HelpableScreen):
 					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png"/>
 					<widget source="key_info" render="Label" position="1028,1152" size="334,47" font="Regular;40"/>
-					<widget source="key_menu" render="Label" position="588,1152" size="334,47" font="Regular;40"/>
+					<!-- <widget source="key_menu" render="Label" position="588,1152" size="334,47" font="Regular;40"/> -->
 					<widget source="key_ok" render="Label" position="139,1152" size="334,47" font="Regular;40"/>
 				</screen>"""
 		else:
@@ -912,7 +875,7 @@ class ForecaPreview(Screen, HelpableScreen):
 					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
 					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_help.png"/>
 					<widget source="key_info" render="Label" position="514,576" size="166,23" font="Regular;20"/>
-					<widget source="key_menu" render="Label" position="294,576" size="166,23" font="Regular;20"/>
+					<!-- <widget source="key_menu" render="Label" position="294,576" size="166,23" font="Regular;20"/> -->
 					<widget source="key_ok" render="Label" position="69,576" size="166,23" font="Regular;20"/>
 				</screen>"""
 
@@ -932,13 +895,13 @@ class ForecaPreview(Screen, HelpableScreen):
 		self["key_blue"] = StaticText('')
 
 		self["key_info"] = StaticText(_("Legend"))
-		self["key_menu"] = StaticText(_("Maps"))
+		# self["key_menu"] = StaticText(_("Maps"))
 		HelpableScreen.__init__(self)
 		self["actions"] = HelpableActionMap(
 			self, "ForecaActions",
 			{
 				"cancel": (self.exit, _("Exit - End")),
-				"menu": (self.Menu, _("Menu - Weather maps")),
+				# "menu": (self.Menu, _("Menu - Weather maps")),
 				"showEventInfo": (self.info, _("Info - Legend")),
 				"ok": (self.PicSetupMenu, _("OK - Config")),
 				"left": (self.left, _("Left - Previous day")),
@@ -970,7 +933,6 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.onShow.append(self.update_button)
 
 	def update_button(self):
-		global fav1, fav2, start
 		if config.plugins.foreca.citylabels.value:
 			self["key_green"].setText(fav1.replace("_", " "))
 			self["key_yellow"].setText(fav2.replace("_", " "))
@@ -980,23 +942,30 @@ class ForecaPreview(Screen, HelpableScreen):
 			self["key_yellow"].setText(_("Favorite 2"))
 			self["key_blue"].setText(_("Home"))
 
+		self["key_red"].setText(_("Maps"))
 		self["Titel4"].text = self.ort[self.ort.rfind("/") + 1:].replace("_", " ")
 
 	def PicSetupMenu(self):
 		self.session.openWithCallback(self.OKCallback, PicSetup)
 
 	def StartPageFirst(self):
+		print("[Foreca] === STARTPAGEFIRST CALLED ===")
 		if DEBUG:
 			FAlog("StartPageFirst...")
 		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
 		self["MainList"].callback = self.deactivateCacheDialog
 		self.working = False
-		self["MainList"].show
-		self.cacheTimer = eTimer()
+		self["MainList"].show()
 		self.cacheDialog.start()
-		self.onLayoutFinish.append(self.getPage)
+
+		callInThread(self.getPage)
+
+	def onLayoutFinished(self):
+		print("[Foreca] === ONLAYOUTFINISHED CALLED ===")
+		callInThread(self.getPage)
 
 	def StartPage(self):
+		print("[Foreca] === GETPAGE CALLED ===")
 		self["Titel"].text = ""
 		self["Titel3"].text = ""
 		self["Titel4"].text = ""
@@ -1006,27 +975,82 @@ class ForecaPreview(Screen, HelpableScreen):
 		if DEBUG:
 			FAlog("MainList show...")
 		self["MainList"].show
-		self.getPage()
+		callInThread(self.getPage)
 
 	def getPage(self, page=None):
+		print("[Foreca] getPage:", page)
 		if DEBUG:
 			FAlog("getPage...")
+
 		self.cacheDialog.start()
 		self.working = True
 		if not page:
 			page = ""
-		url = "%s%s" % (MAIN_PAGE, page)
+		url = MAIN_PAGE + str(page)
+
 		if DEBUG:
-			FAlog("page link:", url)
+			FAlog("page link: " + str(url))
+		print("[Foreca] getPage: " + str(url))
 		try:
 			req = Request(url, headers=HEADERS)
+			if DEBUG:
+				FAlog("Request headers: " + str(HEADERS))
+
 			resp = urlopen(req, timeout=10)
-			self.getForecaPage(resp.read().decode('utf-8') if PY3 else resp.read())
+			html_content = resp.read().decode('utf-8') if PY3 else resp.read()
+
+			if DEBUG:
+				FAlog("HTTP Status Code: " + str(resp.getcode()))
+				FAlog("Response length: " + str(len(html_content)))
+				FAlog("First 500 chars of response: " + str(html_content[:500]))
+				with open('/tmp/foreca_response.html', 'w') as f:
+					f.write(html_content)
+
+			# THIS IS AN IMPORTANT CALL!
+			self.getForecaPage(html_content)
+
+			FAlog("Searching for API patterns...")
+
 		except Exception as e:
+			FAlog("Error in getPage: " + str(e))
 			self.error(repr(e))
 
 		self.update_button()
 		self.deactivateCacheDialog()
+
+	def getForecaPage(self, html):
+		"""Simplified version that uses only JSON parsing"""
+		print("[Foreca] === FORECA PARSING START ===")
+
+		try:
+			# Initialize location
+			foundPos = self.ort.find("/")
+			if foundPos != -1:
+				plaats = _(self.ort[0:foundPos]) + ", " + self.ort[foundPos + 1:len(self.ort)]
+				self.plaats = plaats.replace("_", " ")
+			else:
+				self.plaats = self.ort.replace("_", " ")
+
+			print(f"[Foreca] Location: {self.plaats}")
+			print(f"[Foreca] Current tag: {self.tag}")
+
+			# FIRST TRY: Modern JSON parsing
+			print("[Foreca] Attempting JSON parsing...")
+			datalist = self.extractModernHourlyData(html)
+
+			if datalist:
+				print(f"[Foreca] SUCCESS: Got {len(datalist)} data points from JSON parsing!")
+				parsed_data = self.parseJSONWeatherData(datalist)
+				self.displayWeatherData(parsed_data, "JSON Forecast")
+			else:
+				print("[Foreca] FAILED: No data from JSON parsing")
+				self.displayWeatherData([], "No Data Available")
+
+		except Exception as e:
+			print(f"[Foreca] ERROR in getForecaPage: {e}")
+			import traceback
+			traceback.print_exc()
+			self.displayWeatherData([], "Error")
 
 	def error(self, err=""):
 		if DEBUG:
@@ -1035,6 +1059,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.deactivateCacheDialog()
 
 	def deactivateCacheDialog(self):
+		print(pluginPrintname, "deactivateCacheDialog")
 		self.cacheDialog.stop()
 		self.working = False
 
@@ -1059,22 +1084,34 @@ class ForecaPreview(Screen, HelpableScreen):
 	def keyNumberGlobal(self, number):
 		self.tag = number
 		self.Zukunft(self.tag)
+		FAlog("Jump to day: " + str(self.tag))
 
 	def titel(self):
-		"""
-		foundPos = self.ort.find("/")
-		plaats = _(self.ort[0:foundPos]) + "-" + self.ort[foundPos + 1:len(self.ort)]
-		self.plaats = plaats.replace("_", " ")
-		self.setTitle(_("Foreca Weather Forecast") + ' ' + self.plaats)
-		"""
-		self.setTitle(_("Foreca Weather Forecast") + " " + _("v.") + VERSION)
+		print("[Foreca] titel called with tag:", self.tag)
+
+		# Determine day text
+		if self.tag == 0:
+			day_text = _("Today")
+		elif self.tag == 1:
+			day_text = _("Tomorrow")
+		else:
+			day_text = _("Day") + " +" + str(self.tag)
+
+		# Get date string
+		current_date = get_current_time()
+		display_date = current_date + timedelta(days=self.tag)
+		date_str = display_date.strftime('%d/%m/%Y')
+
+		title = _("Foreca Weather Forecast") + " " + _("v.") + VERSION + f" - {day_text} ({date_str})"
+		self.setTitle(title)
+		print("[Foreca] Setting title:", title)
 
 	def Fav0(self):
 		global start
 		self.ort = config.plugins.foreca.home.value
 		start = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "Fav0 ort location:", self.ort)
-		print(pluginPrintname, "Fav0 start:", start)
+		self.tag = 0
 		self.titel()
 		self.Zukunft(0)
 
@@ -1083,7 +1120,7 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.ort = config.plugins.foreca.fav1.value
 		fav1 = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "Fav1 ort location:", self.ort)
-		print(pluginPrintname, "Fav1 fav1 location:", fav1)
+		self.tag = 0
 		self.titel()
 		self.Zukunft(0)
 
@@ -1092,53 +1129,56 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.ort = config.plugins.foreca.fav2.value
 		fav2 = self.ort[self.ort.rfind("/") + 1:]
 		print(pluginPrintname, "Fav2 ort location:", self.ort)
-		print(pluginPrintname, "Fav2 fav2 location:", fav2)
+		self.tag = 0
 		self.titel()
 		self.Zukunft(0)
 
-	def futurdata(self, ztag=0):
-		global MAIN_PAGE
-		# Get the current date and time
-		now = datetime.now()
-		# Calculate new date by adding day tags
-		future_date = now + timedelta(days=ztag)
-		morgen = future_date.strftime("%Y%m%d")
-		return morgen
-
 	def Zukunft(self, ztag=0):
 		global MAIN_PAGE
-		morgen = self.futurdata(ztag)
-		MAIN_PAGE = "%s%s?lang=%s&details=%s&units=%s&tf=%s" % (
-			BASEURL,
-			pathname2url(self.ort),
-			LANGUAGE,
-			morgen,
-			config.plugins.foreca.units.value,
-			config.plugins.foreca.time.value
-		)
-		"""
-		if isinstance(MAIN_PAGE, unicode):
-			MAIN_PAGE = MAIN_PAGE.encode('utf-8')
-		"""
-		if DEBUG:
-			FAlog("day link:", MAIN_PAGE)
+		print("[Foreca] Zukunft called with offset:", ztag)
+		print("[Foreca] Current location:", self.ort)
 
+		self.tag = ztag  # Store the day offset
+
+		# Build URL with correct day parameter
+		if ztag == 0:
+			# Today - use main page
+			MAIN_PAGE = "%s%s?lang=%s&units=%s&tf=%s" % (
+				BASEURL,
+				pathname2url(self.ort),
+				LANGUAGE,
+				config.plugins.foreca.units.value,
+				config.plugins.foreca.time.value
+			)
+		else:
+			# Future days - use hourly endpoint with day parameter
+			MAIN_PAGE = "%s%s/hourly?lang=%s&day=%s&units=%s&tf=%s" % (
+				BASEURL,
+				pathname2url(self.ort),
+				LANGUAGE,
+				ztag,  # This should be 1 for tomorrow, 2 for day after, etc.
+				config.plugins.foreca.units.value,
+				config.plugins.foreca.time.value
+			)
+
+		if DEBUG:
+			print("[Foreca] Day link: " + MAIN_PAGE + ", day offset: " + str(ztag))
+
+		print("[Foreca] New MAIN_PAGE:", MAIN_PAGE)
 		self.StartPage()
 
 	def info(self):
-		message = str("%s" % (_(
-			"Server URL:    %s\n"
-		) % BASEURL))
+		message = str("%s" % (_("Server URL:    %s\n") % BASEURL))
 		entries = [
 			(_("VERSION"), VERSION),
 			(_("Wind direction"), _("Arrow to right: Wind from the West")),
 			(_("Ok"), _("Go to Config Plugin")),
-			(_("Red"), _("Temperature chart for the upcoming 5 days")),
+			(_("Red"), _("Weather maps and forecasts")),
 			(_("Green"), _("Go to Favorite 1")),
 			(_("Yellow"), _("Go to Favorite 2")),
 			(_("Blue"), _("Go to Home")),
 			(_("Tv/Txt"), _("Go to City Panel")),
-			(_("Menu"), _("Satellite photos and maps")),
+			# (_("Menu"), _("Satellite photos and maps")),
 			(_("Up/Down"), _("Previous/Next page")),
 			(_("<   >"), _("Prognosis Previous/Next day")),
 			(_("0 - 9"), _("Prognosis (x) days from now"))
@@ -1148,21 +1188,16 @@ class ForecaPreview(Screen, HelpableScreen):
 
 	def OK(self):
 		self.city = self.ort
+		print("[Foreca] OK:", self.city)
 		self.session.openWithCallback(self.OKCallback, CityPanel, self.city)
 
 	def OKCallback(self, callback=None):
 		global fav1, fav2
 		print('OKCallback callback=,', str(callback))
-		"""
-		fav1 = config.plugins.foreca.fav1.getValue()
-		fav2 = config.plugins.foreca.fav2.getValue()
-		start = config.plugins.foreca.home.getValue()
-		"""
 		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
 		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
-		# start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
 
-		self.ort = config.plugins.foreca.home.getValue()  # start
+		self.ort = config.plugins.foreca.home.getValue()
 		if callback is not None:
 			self.ort = callback
 		self.tag = 0
@@ -1176,14 +1211,16 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.deactivateCacheDialog()
 
 	def left(self):
-		if not self.working and self.tag >= 1:
+		if not self.working and self.tag > 0:  # Allow only until today (tag 0)
 			self.tag = self.tag - 1
 			self.Zukunft(self.tag)
+			FAlog("Previous day: " + str(self.tag))
 
 	def right(self):
-		if not self.working and self.tag < 9:
+		if not self.working and self.tag < 9:  # Maximum 9 days in the future
 			self.tag = self.tag + 1
 			self.Zukunft(self.tag)
+			FAlog("Next day: " + str(self.tag))
 
 	def up(self):
 		if not self.working:
@@ -1200,24 +1237,49 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.right()
 
 	def red(self):
+		"""Show weather maps selection instead of meteogram"""
 		try:
-			if not self.working:
-				self.url = "%smeteogram.php?loc_id=%s&mglang=%s&units=%s&tf=%s/meteogram.png" % (BASEURL, self.loc_id, LANGUAGE, config.plugins.foreca.units.value, config.plugins.foreca.time.value)
-				print('red self.url=', self.url)
-				self.loadPicture(self.url)
+			# Lista delle mappe meteo disponibili
+			weather_maps = [
+				(_("Temperature Map"), "temp_map.png", _("Temperature forecast")),
+				(_("Pressure Map"), "pressure_map.png", _("Air pressure forecast")),
+				(_("Cloud Cover Map"), "cloud_map.png", _("Cloud cover and precipitation")),
+				(_("Satellite Map"), "sat_map.png", _("Satellite weather view")),
+				(_("Rain Radar Map"), "rain_map.png", _("Precipitation radar")),
+			]
+
+			# Filtra solo le mappe che esistono
+			available_maps = []
+			for name, map_file, desc in weather_maps:
+				map_path = THUMB_PATH + map_file
+				if exists(map_path):
+					available_maps.append((name, map_file, desc))
+
+			if not available_maps:
+				self.session.open(MessageBox, _("No weather maps available"), MessageBox.TYPE_INFO)
+				return
+
+			choice_list = []
+			for name, map_file, desc in available_maps:
+				choice_list.append((f"{name} - {desc}", map_file))
+
+			self.session.openWithCallback(
+				self.weatherMapSelected,
+				ChoiceBox,
+				title=_("Select Weather Map"),
+				list=choice_list
+			)
+
 		except Exception as e:
-			print('error red=', e)
+			print("[Foreca] Error in red button: %s" % str(e))
+			self.session.open(MessageBox, _("Error loading weather maps"), MessageBox.TYPE_ERROR)
 
 	def Menu(self):
-		self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
+		# self.session.openWithCallback(self.MenuCallback, SatPanel, self.ort)
+		pass
 
 	def MenuCallback(self):
 		global start, fav1, fav2
-		"""
-		fav1 = str(config.plugins.foreca.fav1.value)
-		fav2 = str(config.plugins.foreca.fav2.value)
-		start = str(config.plugins.foreca.home.value)
-		"""
 		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
 		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
 		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
@@ -1226,192 +1288,296 @@ class ForecaPreview(Screen, HelpableScreen):
 		self.ort = config.plugins.foreca.home.getValue()  # self.city
 		self.update_button()
 
-	def loadPicture(self, url=""):
-		devicepath = CACHE_PATH + "meteogram.png"
-		req = Request(url, headers=HEADERS)
-		resp = urlopen(req, timeout=10)
-		with open(devicepath, 'wb') as f:
-			f.write(resp.read())
+	def displayWeatherData(self, datalist, source):
+		"""Display data with proper day information"""
+		print("[Foreca] displayWeatherData called with %d items from %s" % (len(datalist), source))
+
+		# Determine day text and date
+		if self.tag == 0:
+			day_text = _("Today")
+		elif self.tag == 1:
+			day_text = _("Tomorrow")
+		else:
+			day_text = _("Day") + " +" + str(self.tag)
+
+		current_date = get_current_time()
+		display_date = current_date + timedelta(days=self.tag)
+		date_str = display_date.strftime('%d/%m/%Y')
+
+		if not datalist:
+			self["Titel2"].text = _("No weather data available")
+			self["Titel3"].text = f"Foreca - {day_text} {date_str}"
+			self["Titel4"].text = self.plaats
+			self["Titel5"].text = ""
+			self.titel()
+			self["MainList"].SetList([])
+		else:
+			self["Titel2"].text = ""
+			self["Titel3"].text = f"Foreca - {day_text} {date_str}"
+			self["Titel4"].text = self.plaats
+			self["Titel5"].text = f"{len(datalist)}h forecast"
+			self.titel()
+			print("[Foreca] Setting list with %d items for %s" % (len(datalist), day_text))
+			self["MainList"].SetList(datalist)
+
+		print("[Foreca] DISPLAYED %d ITEMS" % len(datalist))
+
+	def extractModernHourlyData(self, html_content, debug=False):
+		print("[Foreca] === extractModernHourlyData START ===")
+		print("[Foreca] HTML length: " + str(len(html_content)))
+
+		# Save HTML for analysis
 		try:
-			warnings.filterwarnings("ignore", "(?s).*iCCP.*", category=UserWarning)
-			img = Image.open(devicepath)
-			img.save(devicepath, icc_profile=None)
+			with open('/tmp/foreca_debug.html', 'w') as f:
+				f.write(html_content)
+			print("[Foreca] HTML saved to /tmp/foreca_debug.html")
+		except:
+			pass
+
+		json_patterns = [
+			r'data:\s*(\[.*?\]),\s*data3h:',
+			r'data:\s*(\[.*?\])',
+			r'window\.__DATA__\s*=\s*({.*?});',
+			r'var\s+forecaData\s*=\s*({.*?});',
+			r'"hourly":\s*(\[.*?\])',
+			r'"hours":\s*(\[.*?\])',
+			r'"temperature":\s*(\[.*?\])',
+		]
+
+		for i, pattern in enumerate(json_patterns):
+			try:
+				print(f"[Foreca] Trying pattern {i}: {pattern[:50]}...")
+				matches = findall(pattern, html_content, DOTALL)
+				print(f"[Foreca] Pattern {i}: Found {len(matches)} matches")
+
+				if matches:
+					match_content = matches[0]
+					print(f"[Foreca] Pattern {i} SUCCESS, length: {len(match_content)}")
+					print(f"[Foreca] First 300 chars: {match_content[:300]}...")
+
+					# Save the matched JSON for analysis
+					try:
+						with open(f'/tmp/foreca_pattern_{i}.json', 'w') as f:
+							f.write(match_content)
+						print(f"[Foreca] Pattern {i} data saved to /tmp/foreca_pattern_{i}.json")
+					except:
+						pass
+
+					# Try to parse the JSON
+					try:
+						data = loads(match_content)
+						print(f"[Foreca] JSON parsed successfully: type={type(data)}, length={len(data) if isinstance(data, list) else 'N/A'}")
+						if isinstance(data, list) and data:
+							print(f"[Foreca] First item keys: {list(data[0].keys())}")
+							print(f"[Foreca] Sample data: {data[0]}")
+						return data
+					except Exception as e:
+						print(f"[Foreca] JSON parse error: {e}")
+						continue
+
+			except Exception as e:
+				print(f"[Foreca] Pattern {i} search error: {e}")
+				continue
+
+		print("[Foreca] === extractModernHourlyData FAILED - No patterns matched ===")
+		return None
+
+	def parseJSONWeatherData(self, weather_data):
+		"""Parse Foreca JSON data - PROPER TIME SORTING"""
+		try:
+			print("[Foreca] === DEBUG WEATHER DATA ===")
+			print("[Foreca] Total data points: %d" % len(weather_data))
+			if weather_data:
+				print("[Foreca] First 3 items:")
+				for i in range(min(3, len(weather_data))):
+					print("[Foreca]   %d: %s" % (i, weather_data[i]))
+			print("[Foreca] Requested day offset: %d" % self.tag)
+
+			datalist = []
+			print("[Foreca] Parsing weather data for day offset=%d" % self.tag)
+
+			translation_dict = self.load_translation_dict(LANGUAGE)
+
+			# ⚠️ FIX: When day=1 in URL, we already get tomorrow's data
+			# Don't apply additional offset in parsing!
+			if self.tag == 0:
+				# Today - take first 24 hours
+				start_index = 0
+				end_index = min(24, len(weather_data))
+			else:
+				# Future days - the API already returns the correct day
+				# Just take available hours (usually 24)
+				start_index = 0
+				end_index = len(weather_data)
+
+			filtered_data = weather_data[start_index:end_index]
+			print("[Foreca] Taking hours %d to %d for day %d" % (start_index, end_index, self.tag))
+
+			# Sort data chronologically
+			try:
+				from datetime import datetime
+
+				def get_sort_key(hour_data):
+					time_str = hour_data.get('time', '')
+					try:
+						return datetime.strptime(time_str, '%Y-%m-%dT%H:%M')
+					except:
+						return time_str
+
+				filtered_data_sorted = sorted(filtered_data, key=get_sort_key)
+				print("[Foreca] Data sorted chronologically")
+
+			except Exception as e:
+				print("[Foreca] Datetime sorting failed: %s" % e)
+				filtered_data_sorted = filtered_data
+
+			# Parse each hour
+			for hour_data in filtered_data_sorted:
+				try:
+					# Extract time
+					time_str = hour_data.get('time', '')
+					if 'T' in time_str:
+						time_str = time_str.split('T')[1][:5]
+
+					# Temperature
+					temp_value = hour_data.get('temp', 20)
+					temp_str = "+%d°" % temp_value if temp_value > 0 else "%d°" % temp_value
+
+					# Weather condition
+					wx_condition = hour_data.get('wx', '')
+					symb = hour_data.get('symb', 'd000')
+
+					if wx_condition:
+						condition = wx_condition
+					else:
+						condition = self.symbolToCondition(symb)
+
+					condition = self.translate_description(condition, translation_dict)
+
+					# Wind
+					wind_speed_kmh = hour_data.get('windskmh', hour_data.get('winds', 10))
+					wind_speed = "%d km/h" % wind_speed_kmh
+
+					wind_cardinal = hour_data.get('windCardinal', '')
+					if wind_cardinal:
+						wind_dir = "w" + wind_cardinal
+					else:
+						wind_dir_deg = hour_data.get('windd', 0)
+						wind_dir = self.degreesToWindDirection(wind_dir_deg)
+
+					# Additional data
+					feels_temp = hour_data.get('flike', temp_value)
+					feels_str = _("Feels like:") + " +%d°" % feels_temp if feels_temp > 0 else _("Feels like:") + " %d°" % feels_temp
+
+					precip_chance = hour_data.get('rainp', 0)
+					precip_str = _("Precipitations:") + " %d%%" % precip_chance
+
+					humidity = hour_data.get('rhum', 50)
+					humidity_str = _("Humidity:") + " %d%%" % humidity
+
+					# Create row
+					row = [
+						symb, time_str, temp_str, wind_dir, wind_speed,
+						condition, feels_str, precip_str, humidity_str
+					]
+
+					datalist.append(row)
+					print("[Foreca] Added hour: %s - %s" % (time_str, temp_str))
+
+				except Exception as e:
+					print("[Foreca] Error parsing hour data: %s" % str(e))
+					continue
+
+			print("[Foreca] Successfully parsed %d hours for day %d" % (len(datalist), self.tag))
+			return datalist
+
 		except Exception as e:
-			print("Errore nella rimozione del profilo ICC:", e)
-		self.session.open(PicViewx, devicepath, 0, False, self.plaats)
+			print("[Foreca] Error in parseJSONWeatherData: %s" % str(e))
+			import traceback
+			traceback.print_exc()
+			return []
 
-	def getForecaPage(self, html):
-		"""
-		with open("/tmp/foreca_response.html", "w", encoding="utf-8") as f:
-			f.write(html)
-		"""
-		fulltext = compile(r"id: '(.*?)'", DOTALL)
-		id = fulltext.findall(html)
-		if DEBUG:
-			FAlog("fulltext= %s id= %s" % (fulltext, id))
-		self.loc_id = str(id[0])
-		# <!-- START -->
-		if DEBUG:
-			FAlog("Start:" + str(len(html)))
-		fulltext = compile(r'<!-- START -->.+?<h6><span>(.+?)</h6>', DOTALL)
-		titel = fulltext.findall(html)
-		if DEBUG:
-			FAlog("fulltext=%s titel= %s" % (fulltext, titel))
+	def symbolToCondition(self, symbol):
+		"""Convert Foreca symbol to text condition - SAFE MAPPING"""
+		symbol_map = {
+			# Clear
+			'd000': 'Clear', 'n000': 'Clear', 'd001': 'Clear', 'n001': 'Clear',
 
-		titel[0] = str(sub(r'<[^>]*>', "", titel[0]))
+			# Mostly clear
+			'd100': 'Mostly clear', 'n100': 'Mostly clear', 'd101': 'Mostly clear', 'n101': 'Mostly clear',
 
-		if DEBUG:
-			FAlog("titel[0]=%s" % titel[0])
+			# Partly cloudy
+			'd200': 'Partly cloudy', 'n200': 'Partly cloudy', 'd201': 'Partly cloudy', 'n201': 'Partly cloudy',
+			'd202': 'Partly cloudy', 'n202': 'Partly cloudy',
 
-		def translate_description_gettext(description, translation_dict):
-			cleaned_description = sub(r'[\t\r\n]', ' ', description).strip()
-			words = sub(r'([.,!?])', r' \1 ', cleaned_description).split()
-			translated_words = []
-			for word in words:
-				is_capitalized = word[0].isupper()
-				translated_word = translation_dict.get(word.lower(), word)
-				if is_capitalized:
-					translated_word = translated_word.capitalize()
-				translated_words.append(translated_word)
-				print("translated_words=", translated_words)
-			return ' '.join(translated_words)
+			# Cloudy
+			'd300': 'Cloudy', 'n300': 'Cloudy', 'd301': 'Cloudy', 'n301': 'Cloudy',
 
-		translation_dict = self.load_translation_dict(lng)
-		titel[0] = translate_description_gettext(titel[0], translation_dict)
+			# Overcast
+			'd400': 'Overcast', 'n400': 'Overcast', 'd401': 'Overcast', 'n401': 'Overcast',
 
-		fulltext = compile(r'<!-- START -->(.+?)<h6>', DOTALL)
-		link = str(fulltext.findall(html))
-		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
-		tag = str(fulltext.findall(link))
-		# print "Day ", tag
+			# Fog
+			'd500': 'Fog', 'n500': 'Fog', 'd501': 'Fog', 'n501': 'Fog',
 
-		# ---------- Wetterdaten -----------
+			# Light rain
+			'd210': 'Light rain', 'n210': 'Light rain', 'd211': 'Light rain', 'n211': 'Light rain',
+			'd212': 'Light rain', 'n212': 'Light rain', 'd310': 'Light rain', 'n310': 'Light rain',
+			'd311': 'Light rain', 'n311': 'Light rain', 'd312': 'Light rain', 'n312': 'Light rain',
+			'd410': 'Light rain', 'n410': 'Light rain',
 
-		# <div class="row clr0">
-		fulltext = compile(r'<!-- START -->(.+?)<div class="datecopy">', DOTALL)
-		html = str(fulltext.findall(html))
-		if DEBUG:
-			FAlog("searching .....")
-		datalist = []
+			# Rain
+			'd220': 'Rain', 'n220': 'Rain', 'd222': 'Rain', 'n222': 'Rain',
+			'd320': 'Rain', 'n320': 'Rain', 'd322': 'Rain', 'n322': 'Rain',
+			'd420': 'Rain', 'n420': 'Rain',
 
-		fulltext = compile(r'<a href="(.+?)".+?', DOTALL)
-		taglink = str(fulltext.findall(html))
-		if DEBUG:
-			FAlog("Daylink %s" % taglink)
+			# Heavy rain
+			'd230': 'Heavy rain', 'n230': 'Heavy rain', 'd231': 'Heavy rain', 'n231': 'Heavy rain',
+			'd232': 'Heavy rain', 'n232': 'Heavy rain', 'd240': 'Heavy rain', 'n240': 'Heavy rain',
+			'd330': 'Heavy rain', 'n330': 'Heavy rain', 'd331': 'Heavy rain', 'n331': 'Heavy rain',
+			'd332': 'Heavy rain', 'n332': 'Heavy rain', 'd340': 'Heavy rain', 'n340': 'Heavy rain',
+			'd430': 'Heavy rain', 'n430': 'Heavy rain',
 
-		fulltext = compile(r'<a href=".+?>(.+?)<.+?', DOTALL)
-		tag = fulltext.findall(html)
+			# Thunderstorm
+			'd221': 'Thunderstorm', 'n221': 'Thunderstorm', 'd321': 'Thunderstorm', 'n321': 'Thunderstorm',
+			'd421': 'Thunderstorm', 'n421': 'Thunderstorm',
 
-		if DEBUG:
-			FAlog("Day=%s" % str(tag))
+			# Snow
+			'd600': 'Snow', 'n600': 'Snow', 'd610': 'Snow', 'n610': 'Snow',
+			'd620': 'Snow', 'n620': 'Snow', 'd630': 'Snow', 'n630': 'Snow',
 
-		# <div class="c0"> <strong>17:00</strong></div>
-		fulltime = compile(r'<div class="c0"> <strong>(.+?)<.+?', DOTALL)
-		zeit = fulltime.findall(html)
-		if DEBUG:
-			FAlog("Time=%s" % str(zeit))
+			# Sleet
+			'd700': 'Sleet', 'n700': 'Sleet', 'd710': 'Sleet', 'n710': 'Sleet',
+			'd720': 'Sleet', 'n720': 'Sleet', 'd730': 'Sleet', 'n730': 'Sleet',
+		}
 
-		# <div class="c4">
-		# <span class="warm"><strong>+15&deg;</strong></span><br />
-		fulltime = compile(r'<div class="c4">.*?<strong>(.+?)&.+?', DOTALL)
-		temp = fulltime.findall(html)
+		condition = symbol_map.get(symbol, 'Unknown')
+		print(f"[Foreca] Symbol mapping: {symbol} -> {condition}")
+		return condition
 
-		if DEBUG:
-			FAlog("Temp=%s" % str(temp))
-
-		# <div class="symbol_50x50d symbol_d000_50x50" title="clear"
-		fulltext = compile(r'<div class="symbol_50x50.+? symbol_(.+?)_50x50.+?', DOTALL)
-		thumbnails = fulltext.findall(html)
-		if DEBUG:
-			FAlog("thumbnails=%s" % str(thumbnails))
-
-		fulltext = compile(r'<div class="c3">.+? (.+?)<br />.+?', DOTALL)
-		description = fulltext.findall(html)
-		if DEBUG:
-			FAlog("description=%s" % str(description).lstrip("\r\n\t").lstrip())
-
-		fulltext = compile(r'<div class="c3">.+?<br />(.+?)</strong>.+?', DOTALL)
-		feels = fulltext.findall(html)
-		if DEBUG:
-			FAlog("feels=%s" % str(feels).lstrip("\t").lstrip())
-
-		fulltext = compile(r'<div class="c3">.+?</strong><br />(.+?)</.+?', DOTALL)
-		precip = fulltext.findall(html)
-		if DEBUG:
-			FAlog("precip=%s" % str(precip).lstrip("\t").lstrip())
-
-		fulltext = compile(r'<div class="c3">.+?</strong><br />.+?</strong><br />(.+?)</', DOTALL)
-		humidity = fulltext.findall(html)
-		if DEBUG:
-			FAlog("humidity=%s" % str(humidity).lstrip("\t").lstrip())
-
-		fulltext = compile(r'<div class="c2">.+?<img src="//img-b.foreca.net/s/symb-wind/(.+?).gif', DOTALL)
-		windDirection = fulltext.findall(html)
-		if DEBUG:
-			FAlog("windDirection=%s" % str(windDirection))
-
-		fulltext = compile(r'<div class="c2">.+?<strong>(.+?)<.+?', DOTALL)
-		windSpeed = fulltext.findall(html)
-		if DEBUG:
-			FAlog("windSpeed=%s" % str(windSpeed))
-
-		timeEntries = len(zeit)
-		x = 0
-		while x < timeEntries:
-			feels[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", feels[x])))
-			precip[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", precip[x])))
-			humidity[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", humidity[x])))
-			windSpeed[x] = self.filter_dia(windSpeed[x])
-			windSpeed[x] = windSpeed[x].replace('kmh', 'km/h')
-
-			# translate_description
-			description[x] = self.konvert_uml(str(sub(r'<[^>]*>', "", description[x])))
-			description[x] = self.translate_description(description[x], translation_dict)
-			# print("getForecaPage description[x]=", description[x])
-			# translate_description end
-
-			if DEBUG:
-				FAlog("weather: %s, %s, %s, %s, %s, %s, %s, %s" % (zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]))
-			datalist.append([thumbnails[x], zeit[x], temp[x], windDirection[x], windSpeed[x], description[x], feels[x], precip[x], humidity[x]])
-			x += 1
-
-		# Date management
-		self["Titel2"].text = ""  # titel[0].strip("'")
-		# translation date
-		datum = titel[0]
-		foundPos = datum.rfind(" ")
-		foundPos2 = datum.find(" ")
-		day_text = datum[:foundPos2].strip()
-		month_text = datum[foundPos2:foundPos].strip()
-		translated_day = translation_dict.get(day_text.lower(), day_text)
-		translated_month = translation_dict.get(month_text.lower(), month_text)
-		translated_day = translated_day.capitalize()
-		translated_month = translated_month.capitalize()
-		datum2 = translated_month + " " + datum[foundPos + 1:]
-		"""
-		ye = datetime.now()
-		year = ye.year
-		datum2 = str(year) + " " + datum2 + " " + translated_day
-		"""
-		datum2 = datum2 + " " + translated_day
-		# Location Management
-		foundPos = self.ort.find("/")
-		plaats = _(self.ort[0:foundPos]) + ", " + self.ort[foundPos + 1:len(self.ort)]
-		self.plaats = plaats.replace("_", " ")
-		print('getForecaPage self.plaats=', self.plaats)
-		# Set 'Titel' with formatted date
-		self["Titel"].text = datum2
-		self["Titel3"].text = ''
-		# Set 'Titel4' with location only
-		self["Titel5"].text = ''  # datum2
-
-		self.titel()
-
-		self["MainList"].SetList(datalist)
-		self["MainList"].selectionEnabled(0)
-		self["MainList"].show
+	def degreesToWindDirection(self, degrees):
+		"""Convert degrees to available wind direction icons"""
+		# Map to available icons: w000(N), w045(NE), w090(E), w135(SE), w180(S), w225(SW), w270(W), w315(NW)
+		if 337.5 <= degrees or degrees < 22.5:
+			return 'w000'  # N
+		elif 22.5 <= degrees < 67.5:
+			return 'w045'  # NE
+		elif 67.5 <= degrees < 112.5:
+			return 'w090'  # E
+		elif 112.5 <= degrees < 157.5:
+			return 'w135'  # SE
+		elif 157.5 <= degrees < 202.5:
+			return 'w180'  # S
+		elif 202.5 <= degrees < 247.5:
+			return 'w225'  # SW
+		elif 247.5 <= degrees < 292.5:
+			return 'w270'  # W
+		elif 292.5 <= degrees < 337.5:
+			return 'w315'  # NW
+		else:
+			return 'w000'  # Default
 
 	def load_translation_dict(self, lng):
+		print("[Foreca] load_translation_dict:", lng)
 		dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/%sdict.txt" % lng
 		if not exists(dict_file):
 			dict_file = resolveFilename(SCOPE_PLUGINS) + "Extensions/Foreca/dict/endict.txt"
@@ -1425,11 +1591,19 @@ class ForecaPreview(Screen, HelpableScreen):
 		return translation_dict
 
 	def translate_description(self, description, translation_dict):
-		cleaned_description = sub(r'[\t\r\n]', ' ', description).strip()
-		if cleaned_description.lower() in translation_dict:
-			return translation_dict[cleaned_description.lower()]
-		words = cleaned_description.split()
-		return ' '.join([translation_dict.get(word.lower(), word) for word in words])
+		# Clean the description from tabs, carriage returns, and newlines
+		cleaned_description = sub(r"[\t\r\n]", " ", description).strip()
+		# Separate punctuation to avoid incorrect translations
+		words = sub(r"([.,!?])", r" \1 ", cleaned_description).split()
+		translated_words = []
+		for word in words:
+			is_capitalized = word[0].isupper() if word else False
+			translated_word = translation_dict.get(word.lower(), word)
+			# Restore capitalization if needed
+			if is_capitalized:
+				translated_word = translated_word.capitalize()
+			translated_words.append(translated_word)
+		return " ".join(translated_words).replace(" .", ".").replace(" ,", ",").replace(" !", "!").replace(" ?", "?")
 
 	def filter_dia(self, text):
 		filterItem = 0
@@ -1442,10 +1616,203 @@ class ForecaPreview(Screen, HelpableScreen):
 		text = self.filter_dia(text)
 		return text[text.rfind("\\t") + 2:len(text)]
 
+	def loadPicture(self, url=""):
+		"""Load meteogram - either extract data or use alternative"""
+		print("[Foreca] === LOAD PICTURE START ===")
 
-# ------------------------------------------------------------------------------------------
-# ------------------------------ City Panel ------------------------------------------------
-# ------------------------------------------------------------------------------------------
+		try:
+			devicepath = CACHE_PATH + "meteogram.png"
+
+			# Clear previous
+			if exists(devicepath):
+				remove(devicepath)
+
+			print("[Foreca] Downloading meteogram page from: %s" % url)
+
+			# Download HTML page
+			headers = {
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+			}
+
+			req = Request(url, headers=headers)
+			resp = urlopen(req, timeout=20)
+			html_content = resp.read().decode('utf-8')
+			print("[Foreca] Downloaded HTML, length: %d bytes" % len(html_content))
+
+			# Try to extract meteogram data
+			meteogram_data = self.extractMeteogramData(html_content)
+
+			if meteogram_data:
+				print("[Foreca] Meteogram data extracted, creating summary...")
+				# Create a simple text-based meteogram summary
+				self.createMeteogramSummary(meteogram_data, devicepath)
+			else:
+				# Fallback: Use local weather map
+				print("[Foreca] No meteogram data, using fallback")
+				self.useMeteogramFallback(devicepath)
+
+			# Show the result
+			from twisted.internet import reactor
+			reactor.callFromThread(self.showMeteogram, devicepath)
+
+		except Exception as e:
+			print("[Foreca] Error in loadPicture: %s" % e)
+			from twisted.internet import reactor
+			reactor.callFromThread(self.showError, _("Failed to load meteogram: %s") % str(e))
+
+	def extractMeteogramData(self, html_content):
+		"""Extract meteogram data from the HTML page"""
+		print("[Foreca] === EXTRACT METEOGRAM DATA ===")
+
+		try:
+			# Pattern per trovare i dati del meteogramma
+			patterns = [
+				r'window\.renderMeteogram\(\s*\{[^}]*data:\s*(\[[^\]]*\])',
+				r'renderMeteogram\(\s*\{[^}]*data:\s*(\[[^\]]*\])',
+				r'data:\s*(\[.*?\])\s*,\s*[}]\)'
+			]
+
+			for i, pattern in enumerate(patterns):
+				matches = findall(pattern, html_content, DOTALL)
+				if matches:
+					print("[Foreca] Found meteogram data with pattern %d" % i)
+					json_data = matches[0]
+					print("[Foreca] Meteogram data length: %d" % len(json_data))
+					print("[Foreca] Sample data: %s..." % json_data[:200])
+
+					try:
+						data = loads(json_data)
+						print("[Foreca] Meteogram JSON parsed successfully: %d points" % len(data))
+						return data
+					except Exception as e:
+						print("[Foreca] Error parsing meteogram JSON: %s" % e)
+						continue
+
+			print("[Foreca] No meteogram data found in HTML")
+			return None
+
+		except Exception as e:
+			print("[Foreca] Error extracting meteogram data: %s" % e)
+			return None
+
+	def createMeteogramSummary(self, data, output_path):
+		"""Create a simple text-based meteogram summary"""
+		try:
+			print("[Foreca] Creating meteogram summary from %d data points" % len(data))
+
+			# Extract key information
+			summary_lines = []
+			summary_lines.append("=== FORECA 5-DAY FORECAST ===")
+			summary_lines.append("Time    Temp Precip Condition")
+			summary_lines.append("-" * 40)
+
+			for hour_data in data[:24]:  # Show first 24 hours
+				time_str = hour_data.get('time', '')[-8:-3]  # Extract HH:MM
+				temp = hour_data.get('temp', 0)
+				precip = hour_data.get('rain', 0)
+				condition = hour_data.get('wx', 'Unknown')
+
+				summary_lines.append(f"{time_str}   {temp:2}°C   {precip:3}mm   {condition}")
+
+			summary_text = "\n".join(summary_lines)
+
+			# Save as text file (or could create a simple image)
+			with open(output_path.replace('.png', '.txt'), 'w') as f:
+				f.write(summary_text)
+
+			print("[Foreca] Meteogram summary created")
+
+			# For now, use a local image since we can't easily create PNG
+			self.useMeteogramFallback(output_path)
+
+		except Exception as e:
+			print("[Foreca] Error creating meteogram summary: %s" % e)
+			self.useMeteogramFallback(output_path)
+
+	def useMeteogramFallback(self, output_path):
+		"""Use a local weather map as fallback"""
+		try:
+			# Copy a local weather map image
+			local_images = [
+				THUMB_PATH + "temp_map.png",
+				THUMB_PATH + "pressure_map.png",
+				THUMB_PATH + "cloud_map.png",
+				THUMB_PATH + "sat_map.png"
+			]
+
+			for local_img in local_images:
+				if exists(local_img):
+					import shutil
+					shutil.copy2(local_img, output_path)
+					print("[Foreca] Using fallback image: %s" % local_img)
+					return
+
+			# Create a simple colored image as last resort
+			self.createSimpleMeteogramImage(output_path)
+
+		except Exception as e:
+			print("[Foreca] Error with fallback: %s" % e)
+
+	def createSimpleMeteogramImage(self, output_path):
+		"""Create a simple colored rectangle as meteogram placeholder"""
+		try:
+			from PIL import Image, ImageDraw
+
+			# Create a simple image with text
+			img = Image.new('RGB', (800, 400), color=(0, 0, 0))
+			d = ImageDraw.Draw(img)
+
+			# Add some text
+			d.text((50, 50), "FORECA METEOGRAM", fill=(255, 255, 255))
+			d.text((50, 100), "5-Day Weather Forecast", fill=(255, 255, 255))
+			d.text((50, 150), "Data available but cannot display", fill=(255, 200, 200))
+			d.text((50, 200), "graphical meteogram", fill=(255, 200, 200))
+
+			img.save(output_path, 'PNG')
+			print("[Foreca] Created simple meteogram placeholder")
+
+		except Exception as e:
+			print("[Foreca] Cannot create image: %s" % e)
+			# Create empty file as last resort
+			open(output_path, 'wb').close()
+
+	def weatherMapSelected(self, result):
+		"""Handle weather map selection"""
+		if result:
+			map_file = result[1]
+			map_path = THUMB_PATH + map_file
+
+			if exists(map_path):
+				# Determina titolo in base alla mappa
+				title_map = {
+					"temp_map.png": _("Temperature Forecast"),
+					"pressure_map.png": _("Pressure Forecast"),
+					"cloud_map.png": _("Cloud Cover Forecast"),
+					"sat_map.png": _("Satellite View"),
+					"rain_map.png": _("Rain Radar"),
+				}
+
+				title = title_map.get(map_file, _("Weather Map"))
+				full_title = f"{self.plaats} - {title}"
+
+				print("[Foreca] Opening weather map: %s" % map_file)
+				self.session.open(PicView, map_path, 0, False, full_title)
+			else:
+				self.session.open(MessageBox, _("Selected map not found"), MessageBox.TYPE_ERROR)
+
+	def showMeteogram(self, devicepath):
+		"""Show meteogram in main thread"""
+		print("[Foreca] showMeteogram called with: %s" % devicepath)
+		if exists(devicepath) and getsize(devicepath) > 0:
+			self.session.open(PicView, devicepath, 0, False, str(self.plaats) + " - 5 Day Forecast")
+		else:
+			self.session.open(MessageBox, _("Meteogram file not found"), MessageBox.TYPE_ERROR)
+
+	def showError(self, message):
+		"""Show error in main thread"""
+		print("[Foreca] showError: %s" % message)
+		self.session.open(MessageBox, message, MessageBox.TYPE_ERROR)
 
 
 class CityPanelList(MenuList):
@@ -1624,12 +1991,11 @@ class CityPanel(Screen, HelpableScreen):
 			(_("Yellow"), _("Go to Favorite 2")),
 			(_("Blue"), _("Go to Home")),
 			(_("Tv/Txt"), _("Go to City Panel")),
-			(_("Menu"), _("Satellite photos and maps")),
+			# (_("Menu"), _("Satellite photos and maps")),
 			(_("Up/Down"), _("Previous/Next page")),
 			(_("<   >"), _("Prognosis Previous/Next day")),
 			(_("0 - 9"), _("Prognosis (x) days from now"))
 		]
-
 		message += format_message(entries)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
@@ -1639,16 +2005,16 @@ class CityPanel(Screen, HelpableScreen):
 			self.filter,
 			VirtualKeyBoard,
 			title=_("Search your City"),
-			text='Rome')
+			text='')
 
 	def filter(self, result):
 		if result:
 			try:
 				self.filtered_list = []
-				search = result.lower()
+				search_term = result.lower()
 				for item in self.Mlist:
 					city_name = item[0][0]
-					if search in city_name.lower():
+					if search_term in city_name.lower():
 						self.search_ok = True
 						self.filtered_list.append(item)
 				if len(self.filtered_list) < 1:
@@ -1726,7 +2092,6 @@ class CityPanel(Screen, HelpableScreen):
 	def exit(self):
 		if self.search_ok is True:
 			self.search_ok = False
-		# self.city[self.city.rfind("/") + 1:]
 		self.close(self.city)
 
 	def ok(self):
@@ -1742,7 +2107,7 @@ class CityPanel(Screen, HelpableScreen):
 		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			FAlog("Home:", self.city)
-		config.plugins.foreca.home.setValue(self.city)  # ✅ FIX
+		config.plugins.foreca.home.setValue(self.city)
 		config.plugins.foreca.home.save()
 		configfile.save()
 		start = self.city[self.city.rfind("/") + 1:]
@@ -1754,10 +2119,9 @@ class CityPanel(Screen, HelpableScreen):
 		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			FAlog("Fav1:", self.city)
-		config.plugins.foreca.fav1.setValue = (self.city)
+		config.plugins.foreca.fav1.setValue(self.city)
 		config.plugins.foreca.fav1.save()
 		configfile.save()
-		# fav1 = self.city[self.city.rfind("/") + 1:len(self.city)]  # ✅ FIX
 		fav1 = self.city[self.city.rfind("/") + 1:]
 		message = "%s %s" % (_("This city is stored as favorite 1!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1767,10 +2131,9 @@ class CityPanel(Screen, HelpableScreen):
 		self.city = sub(r" ", "_", self['Mlist'].l.getCurrentSelection()[0][1])
 		if DEBUG:
 			FAlog("Fav2:", self.city)
-		config.plugins.foreca.fav2.setValue = (self.city)  # ✅ FIX
+		config.plugins.foreca.fav2.setValue(self.city)
 		config.plugins.foreca.fav2.save()
 		configfile.save()
-		# fav2 = self.city[self.city.rfind("/") + 1:len(self.city)]
 		fav2 = self.city[self.city.rfind("/") + 1:]
 		message = "%s %s" % (_("This city is stored as favorite 2!\n\n                             "), self.city)
 		self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=8)
@@ -1786,702 +2149,18 @@ class CityPanel(Screen, HelpableScreen):
 		res.append(MultiContentEntryText(pos=(col, 0), size=(1000, itemHeight), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
 		return res
 
-# ------------------------------------------------------------------------------------------
-# ------------------------------ Satellite photos ------------------------------------------
-# ------------------------------------------------------------------------------------------
 
-
-class SatPanelList(MenuList):
-
-	if HD:
-		ItemSkin = 143
-	else:
-		ItemSkin = 123
-
-	def __init__(self, list, font0=28, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
-		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		GUIComponent.__init__(self)
-		self.font0 = gFont("Regular", font0)
-		self.font1 = gFont("Regular", font1)
-		self.itemHeight = itemHeight
-		self.pictScale = 0
-		self.foregroundColorSelected = 8900346
-		self.foregroundColor = 0xffffff
-		self.backgroundColorSelected = 0x565656
-		self.textPos = 230, 45, 380, 50
-
-# ---------------------- get skin attribs ----------------------------
-	def applySkin(self, desktop, parent):
-
-		def warningWrongSkinParameter(string, wanted, given):
-			print("[SatPanelList] wrong '%s' skin parameters. Must be %d arguments (%d given)" % (string, wanted, given))
-
-		def font(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
-		def setPictScale(value):
-			self.pictScale = int(value)
-
-		def foregroundColor(value):
-			self.foregroundColor = parseColor(value).argb()
-
-		def foregroundColorSelected(value):
-			self.foregroundColorSelected = parseColor(value).argb()
-
-		def backgroundColorSelected(value):
-			self.backgroundColorSelected = parseColor(value).argb()
-
-		def textPos(value):
-			self.textPos = list(map(int, value.split(",")))
-			lx = len(self.textPos)
-			if lx != 4:
-				warningWrongSkinParameter(attrib, 4, lx)
-
-		for (attrib, value) in list(self.skinAttributes):
-			try:
-				locals().get(attrib)(value)
-				self.skinAttributes.remove((attrib, value))
-			except Exception:
-				pass
-
-		self.l.setFont(0, self.font0)
-		self.l.setFont(1, self.font1)
-		self.l.setItemHeight(self.itemHeight)
-		return GUIComponent.applySkin(self, desktop, parent)
-
-
-class SatPanel(Screen, HelpableScreen):
-
-	def __init__(self, session, ort):
-		self.session = session
-
-		if size_w == 1920:
-			self.skin = """
-				<screen name="SatPanel" position="center,center" size="1200,900" title="Satellite photos" >
-					<eLabel backgroundColor="red" position="10,65" size="295,6" zPosition="11" />
-					<eLabel backgroundColor="green" position="305,65" size="295,6" zPosition="11" />
-					<eLabel backgroundColor="yellow" position="600,65" size="295,6" zPosition="11" />
-					<eLabel backgroundColor="blue" position="895,65" size="295,6" zPosition="11" />
-					<widget backgroundColor="#9f1313" font="Regular;30" halign="center" position="10,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_red" transparent="1" valign="center" zPosition="1" />
-					<widget backgroundColor="#1f771f" font="Regular;30" halign="center" position="305,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_green" transparent="1" valign="center" zPosition="1" />
-					<widget backgroundColor="#a08500" font="Regular;30" halign="center" position="600,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_yellow" transparent="1" valign="center" zPosition="1" />
-					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<eLabel backgroundColor="#999999" position="10,80" size="1180,2" />
-					<widget enableWrapAround="1" name="Mlist" itemHeight="145" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
-					<eLabel backgroundColor="#999999" position="10,770" size="1180,2" />
-					<ePixmap position="1025,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png" />
-					<ePixmap position="379,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png" />
-					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<ePixmap position="705,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png" />
-					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
-					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
-				</screen>"""
-		elif size_w == 2560:
-			self.skin = """
-				<screen name="SatPanel" position="center,center" size="1600,1200" title="Satellite photos">
-					<eLabel backgroundColor="red" position="14,87" size="394,8" zPosition="11"/>
-					<eLabel backgroundColor="green" position="407,87" size="394,8" zPosition="11"/>
-					<eLabel backgroundColor="yellow" position="800,87" size="394,8" zPosition="11"/>
-					<eLabel backgroundColor="blue" position="1194,87" size="394,8" zPosition="11"/>
-					<widget backgroundColor="#9f1313" font="Regular;40" halign="center" position="14,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_red" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#1f771f" font="Regular;40" halign="center" position="407,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_green" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#a08500" font="Regular;40" halign="center" position="800,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
-					<eLabel backgroundColor="#999999" position="14,107" size="1574,3"/>
-					<widget enableWrapAround="1" name="Mlist" itemHeight="194" position="14,120" scrollbarMode="showOnDemand" size="1574,960"/>
-					<eLabel backgroundColor="#999999" position="14,1027" size="1574,3"/>
-					<ePixmap position="1367,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
-					<ePixmap position="506,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
-					<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
-					<ePixmap position="940,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
-					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
-					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
-				</screen>"""
-		else:
-			self.skin = """
-				<screen name="SatPanel" position="center,center" size="800,600" title="Satellite photos">
-					<eLabel backgroundColor="red" position="6,43" size="196,4" zPosition="11"/>
-					<eLabel backgroundColor="green" position="203,43" size="196,4" zPosition="11"/>
-					<eLabel backgroundColor="yellow" position="400,43" size="196,4" zPosition="11"/>
-					<eLabel backgroundColor="blue" position="596,43" size="196,4" zPosition="11"/>
-					<widget backgroundColor="#9f1313" font="Regular;20" halign="center" position="6,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_red" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#1f771f" font="Regular;20" halign="center" position="203,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_green" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#a08500" font="Regular;20" halign="center" position="400,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_yellow" transparent="1" valign="center" zPosition="1"/>
-					<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
-					<eLabel backgroundColor="#999999" position="6,53" size="786,1"/>
-					<widget enableWrapAround="1" name="Mlist" itemHeight="96" position="6,60" scrollbarMode="showOnDemand" size="786,480"/>
-					<eLabel backgroundColor="#999999" position="6,513" size="786,1"/>
-					<ePixmap position="683,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_text.png"/>
-					<ePixmap position="252,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_menu.png"/>
-					<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
-					<ePixmap position="470,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_info.png"/>
-					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
-					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
-				</screen>"""
-
-		Screen.__init__(self, session)
-		self.setup_title = _("Satellite photos")
-		self["Mlist"] = SatPanelList([])
-		self.ort = ort
-		self.loc_id = ''
-		self["key_red"] = StaticText(_("Continents"))
-		self["key_green"] = StaticText(_("Europe"))
-		self["key_yellow"] = StaticText(_("Germany"))
-		self["key_blue"] = StaticText(_("Settings"))
-		self.setTitle(_("Satellite photos"))
-		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(
-			self, "ForecaActions",
-			{
-				"cancel": (self.exit, _("Exit - End")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
-				"showEventInfo": (self.info, _("Info - Legend")),
-				"info": (self.info, _("Info - Legend")),
-				"red": (self.MapsContinents, _("Red - Continents")),
-				"green": (self.MapsEurope, _("Green - Europe")),
-				"yellow": (self.MapsGermany, _("Yellow - Germany")),
-				"blue": (self.PicSetupMenu, _("Blue - Settings")),
-				"ok": (self.ok, _("OK - Show")),
-			},
-			-2
-		)
-		self.onShown.append(self.prepare)
-
-	def info(self):
-		message = str("%s" % (_(
-			"Server URL:    %s\n"
-		) % BASEURL))
-		entries = [
-			("VERSION", "%s" % VERSION),  # Non serve la traduzione
-			(_("Ok"), _("Show map")),
-			(_("Red"), _("Continents")),
-			(_("Green"), _("Europe")),
-			(_("Yellow"), _("Germany")),
-			(_("Blue"), _("Settings")),
-			(_("Txt/Red"), _("Open Keyboard")),
-			(_("Up/Down"), _("Previous/Next")),
-			(_("<   >"), _("Previous/Next page")),
-			(_("Info"), _("This information"))
-		]
-		message += format_message(entries)
-		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
-
-	def prepare(self):
-		self.Mlist = []
-		self.Mlist.append(self.SatEntryItem((_("Air pressure"), 'pressure')))
-		self.Mlist.append(self.SatEntryItem((_("Cloudcover Video"), 'cloud')))
-		self.Mlist.append(self.SatEntryItem((_("Showerradar Video"), 'rain')))
-		self.Mlist.append(self.SatEntryItem((_("Temperature Video"), 'temp')))
-		self.Mlist.append(self.SatEntryItem((_("Weather map Video"), 'sat')))
-		self.Mlist.append(self.SatEntryItem((_("Eumetsat"), 'eumetsat')))
-
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
-
-	def up(self):
-		self["Mlist"].up()
-		self["Mlist"].selectionEnabled(1)
-
-	def down(self):
-		self["Mlist"].down()
-		self["Mlist"].selectionEnabled(1)
-
-	def left(self):
-		self["Mlist"].pageUp()
-
-	def right(self):
-		self["Mlist"].pageDown()
-
-	def exit(self):
-		self.close()
-
-	def deactivateCacheDialog(self):
-		self.cacheDialog.stop()
-		self.working = False
-
-	def ok(self):
-		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG:
-			FAlog("SatPanel menu= %s" % menu, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-
-		self.cacheDialog = self.session.instantiateDialog(ForecaPreviewCache)
-		self.cacheDialog.start()
-		self.SatBild()
-
-	def MapsGermany(self):
-		itemList = [
-			(_("Baden-Wuerttemberg"), 'badenwuerttemberg'),
-			(_("Bavaria"), 'bayern'),
-			(_("Berlin"), 'berlin'),
-			(_("Brandenburg"), 'brandenburg'),
-			(_("Bremen"), 'bremen'),
-			(_("Hamburg"), 'hamburg'),
-			(_("Hesse"), 'hessen'),
-			(_("Lower Saxony"), 'niedersachsen'),
-			(_("Mecklenburg-Vorpommern"), 'mecklenburgvorpommern'),
-			(_("North Rhine-Westphalia"), 'nordrheinwestfalen'),
-			(_("Rhineland-Palatine"), 'rheinlandpfalz'),
-			(_("Saarland"), 'saarland'),
-			(_("Saxony"), 'sachsen'),
-			(_("Saxony-Anhalt"), 'sachsenanhalt'),
-			(_("Schleswig-Holstein"), 'schleswigholstein'),
-			(_("Thuringia"), 'thueringen'),
-		]
-		itemList.sort(key=lambda i: strxfrm(i[0]))
-		self.Mlist = []
-		for item in itemList:
-			self.Mlist.append(self.SatEntryItem(item))
-		self.session.open(SatPanelb, self.ort, _("Germany"), self.Mlist)
-
-	def MapsEurope(self):
-		itemList = [
-			(_("Austria"), 'oesterreich'),
-			(_("Belgium"), 'belgien'),
-			(_("Czech Republic"), 'tschechien'),
-			(_("Denmark"), 'daenemark'),
-			(_("France"), 'frankreich'),
-			(_("Germany"), 'deutschland'),
-			(_("Greece"), 'griechenland'),
-			(_("Great Britain"), 'grossbritannien'),
-			(_("Hungary"), 'ungarn'),
-			(_("Ireland"), 'irland'),
-			(_("Italy"), 'italien'),
-			(_("Latvia"), 'lettland'),
-			(_("Luxembourg"), 'luxemburg'),
-			(_("Netherlands"), 'niederlande'),
-			(_("Poland"), 'polen'),
-			(_("Portugal"), 'portugal'),
-			(_("Russia"), 'russland'),
-			(_("Slovakia"), 'slowakei'),
-			(_("Spain"), 'spanien'),
-			(_("Switzerland"), 'schweiz'),
-		]
-		itemList.sort(key=lambda i: strxfrm(i[0]))
-		self.Mlist = []
-		for item in itemList:
-			self.Mlist.append(self.SatEntryItem(item))
-		self.session.open(SatPanelb, self.ort, _("Europe"), self.Mlist)
-
-	def MapsContinents(self):
-		self.Mlist = []
-		self.Mlist.append(self.SatEntryItem((_("Europe"), 'europa')))
-		self.Mlist.append(self.SatEntryItem((_("Middle East"), 'naherosten')))
-		self.Mlist.append(self.SatEntryItem((_("North Africa"), 'afrika_nord')))
-		self.Mlist.append(self.SatEntryItem((_("South Africa"), 'afrika_sued')))
-		self.Mlist.append(self.SatEntryItem((_("North America"), 'nordamerika')))
-		self.Mlist.append(self.SatEntryItem((_("Middle America"), 'mittelamerika')))
-		self.Mlist.append(self.SatEntryItem((_("South America"), 'suedamerika')))
-		self.Mlist.append(self.SatEntryItem((_("East Asia"), 'ostasien')))
-		self.Mlist.append(self.SatEntryItem((_("Middle Asia"), 'zentralasien')))
-		self.Mlist.append(self.SatEntryItem((_("Southeast Asia"), 'suedostasien')))
-		self.Mlist.append(self.SatEntryItem((_("Australia"), 'australienundozeanien')))
-		self.session.open(SatPanelb, self.ort, _("Continents"), self.Mlist)
-
-# ------------------------------------------------------------------------------------------
-
-	def SatEntryItem(self, entry):
-		pict_scale = self["Mlist"].pictScale
-		ItemSkin = self["Mlist"].itemHeight
-		mblau = self["Mlist"].foregroundColorSelected
-		weiss = self["Mlist"].foregroundColor
-		grau = self["Mlist"].backgroundColorSelected
-
-		res = [entry]
-		if DEBUG:
-			FAlog("entry=", entry)
-
-		thumb = LoadPixmap(THUMB_PATH + entry[1] + ".png")
-		thumb_width = 200
-		if pict_scale:
-			thumb_width = thumb.size().width()
-
-		res.append(MultiContentEntryPixmapAlphaTest(pos=(2, 2), size=(thumb_width, ItemSkin - 4), png=thumb))
-		x, y, w, h = self["Mlist"].textPos
-		res.append(MultiContentEntryText(pos=(x, y), size=(w, h), font=0, text=entry[0], color=weiss, color_sel=mblau, backcolor_sel=grau, flags=RT_VALIGN_CENTER))
-		return res
-
-# ------------------------------------------------------------------------------------------
-
-	def PicSetupMenu(self):
-		self.session.openWithCallback(self.OKCallback, PicSetup)
-
-	def OKCallback(self, callback=None):
-		global fav1, fav2, start
-		fav1 = str(config.plugins.foreca.fav1.getValue())
-		fav2 = str(config.plugins.foreca.fav2.getValue())
-		start = str(config.plugins.foreca.home.getValue())
-		city = start
-		self.ort = city
-		self.exit()
-
-	def fetch_url(self, x):
-		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if not x.startswith("http"):
-			x = "https:" + x
-		url = x
-		if '[TYPE]' in url:
-			url = url.replace('[TYPE]', menu)
-
-		global foundz
-		foundz = 'jpg'
-		foundPos = url.find("0000.jpg")
-		if DEBUG:
-			FAlog("x= {}".format(x), "url= {}, foundPos= {}".format(url, foundPos))
-		if foundPos == -1:
-			foundPos = url.find(".jpg")
-		if foundPos == -1:
-			foundPos = url.find(".png")
-			foundz = 'png'
-		file = url[foundPos - 10:foundPos]
-		file2 = file[0:4] + "-" + file[4:6] + "-" + file[6:8] + " - " + file[8:10] + " " + _("h")
-		file2 = file2.replace(" ", "")
-		if DEBUG:
-			FAlog("file= %s file2= %s" % (file, file2))
-		req = Request(url, headers=HEADERS)
-		resp = urlopen(req, timeout=10)
-		with open("%s%s.%s" % (CACHE_PATH, file2, foundz), 'wb') as f:
-			f.write(resp.read())
-
-	def doContext(self):
-		text = _("Select action")
-		base_url = "https://www.sat24.com"
-
-		try:
-			response = requests.get(base_url + "/en-gb/continent/eu", headers=HEADERS, timeout=10)
-			response.raise_for_status()
-			html = response.text if PY3 else response.content
-		except requests.RequestException as e:
-			print("Error while page download: %s" % str(e))
-			return
-		pattern = r'<li class=".*?">\s*<a .*?href="([^"]+)".*?>\s*(.*?)\s*</a>'
-		matches = findall(pattern, html)
-		seen_links = set()
-		menu = []
-
-		for href, title in matches:
-			if 'satellite' in title.lower():
-				link = base_url + href
-				if link not in seen_links:
-					menu.append((title.strip(), link))
-					seen_links.add(link)
-
-		def returnToChoiceBox(result=None):
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
-
-		def boxAction(choice):
-			if choice:
-				title, url = choice
-				devicepath = join(CACHE_PATH, "meteogram.png")
-				try:
-					req = Request(url, headers=HEADERS)
-					resp = urlopen(req, timeout=10)
-					content = resp.read().decode('utf-8') if PY3 else resp.read()
-					pattern = r'<div class="absolute w-full h-full overflow-hidden z-10">.*?<img .*?alt="satLayer".*?src="([^"]+)".*?>'
-					matches = findall(pattern, content, DOTALL)
-					if matches:
-						chosen_link = matches[0]
-						if not chosen_link.startswith("http"):
-							chosen_link = base_url + chosen_link
-						try:
-							img_response = requests.get(chosen_link, headers=HEADERS, timeout=10)
-							img = Image.open(BytesIO(img_response.content))
-							img = img.convert("RGB")  # Rimuove ICC
-							img.save(devicepath, "PNG")
-							if DEBUG:
-								FAlog("Image dimensions: {}x{}".format(img.width, img.height))
-							self.session.openWithCallback(returnToChoiceBox, PicViewx, devicepath, 0, False, None)
-						except requests.RequestException as e:
-							if DEBUG:
-								FAlog("Error downloading image: %s" % str(e))
-							returnToChoiceBox()
-					else:
-						if DEBUG:
-							FAlog("Image not found on the page.")
-						returnToChoiceBox()
-				except Exception as e:
-					if DEBUG:
-						FAlog("Error processing page: %s" % str(e))
-					returnToChoiceBox()
-
-		if len(menu) > 0:
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
-
-	def SatBild(self):
-		try:
-			current_selection = self['Mlist'].l.getCurrentSelection()
-			if not current_selection or not current_selection[0] or len(current_selection[0]) < 2:
-				if DEBUG:
-					FAlog("SatBild Error: Invalid selection in CurrentSelection", str(current_selection))
-				return
-			menu = current_selection[0][1]
-			if DEBUG:
-				FAlog("SatBild menu= %s" % menu, "CurrentSelection= %s" % current_selection)
-			self.deactivateCacheDialog()
-			if menu == "eumetsat":
-				self.doContext()
-			else:
-				try:
-					url = "%s%s?map=%s" % (BASEURL, pathname2url(self.ort), menu)
-					if DEBUG:
-						FAlog("VIDEO URL map = %s" % url)
-					req = Request(url, headers=HEADERS)
-					resp = urlopen(req, timeout=10)
-					content = (resp.read().decode('utf-8') if PY3 else resp.read())
-					start_pattern = r"var urltemplate"
-					end_pattern = r"var timehdrs"
-					section_pattern = compile(r"%s(.*?)%s" % (start_pattern, end_pattern), DOTALL)
-					section_match = section_pattern.search(content)
-
-					if section_match:
-						section_content = section_match.group(1)
-						fulltext = compile(r'(\/\/cache.*?\.(jpg|png))', DOTALL)
-						urls = fulltext.findall(section_content)
-						for url, ext in urls:
-							full_url = 'https:' + url
-							if DEBUG:
-								FAlog("Valid URL:", full_url)
-							self.fetch_url(full_url)
-						self.session.open(View_Slideshow, 0, True)
-					else:
-						if DEBUG:
-							FAlog("SatBild Warning: No image URLs found in page content.")
-						self.session.open(MessageBox, _("No satellite images found."), MessageBox.TYPE_INFO)
-						return
-				except Exception as e:
-					self.session.open(MessageBox, _("Failed to process satellite data: %s" % str(e)), MessageBox.TYPE_ERROR)
-		except Exception as e:
-			if DEBUG:
-				FAlog("SatBild Critical Error", str(e))
-			self.session.open(MessageBox, _("A critical error occurred: %s" % str(e)), MessageBox.TYPE_ERROR)
-
-
-# ------------------------------------------------------------------------------------------
-# ------------------------------ Weather Maps ----------------------------------------------
-# ------------------------------------------------------------------------------------------
-
-
-class SatPanelListb(MenuList):
-
-	if HD:
-		ItemSkin = 143
-	else:
-		ItemSkin = 123
-
-	def __init__(self, list, font0=24, font1=16, itemHeight=ItemSkin, enableWrapAround=True):
-		MenuList.__init__(self, [], False, eListboxPythonMultiContent)
-		self.font0 = gFont("Regular", font0)
-		self.font1 = gFont("Regular", font1)
-		self.itemHeight = itemHeight
-
-# ---------------------- get skin attribs ----------------------------
-	def applySkin(self, desktop, parent):
-		def font(value):
-			self.font0 = parseFont(value, ((1, 1), (1, 1)))
-
-		def font1(value):
-			self.font1 = parseFont(value, ((1, 1), (1, 1)))
-
-		def itemHeight(value):
-			self.itemHeight = int(value)
-
-		for (attrib, value) in list(self.skinAttributes):
-			try:
-				locals().get(attrib)(value)
-				self.skinAttributes.remove((attrib, value))
-			except Exception:
-				pass
-
-		self.l.setFont(0, self.font0)
-		self.l.setFont(1, self.font1)
-		self.l.setItemHeight(self.itemHeight)
-		return GUIComponent.applySkin(self, desktop, parent)
-
-
-class SatPanelb(Screen, HelpableScreen):
-
-	def __init__(self, session, ort, title, mlist):
-		self.session = session
-		self.ort = ort
-
-		if size_w == 1920:
-			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="1200,900">
-					<eLabel backgroundColor="blue" position="895,65" size="295,6" zPosition="11" />
-					<widget backgroundColor="#18188b" font="Regular;30" halign="center" position="895,5" render="Label" shadowColor="black" shadowOffset="-2,-2" size="295,70" source="key_blue" transparent="1" valign="center" zPosition="1" />
-					<eLabel backgroundColor="#999999" position="10,80" size="1180,2" />
-					<widget name="Mlist" enableWrapAround="1" itemHeight="144" position="10,90" scrollbarMode="showOnDemand" size="1180,720" />
-					<eLabel backgroundColor="#999999" position="10,770" size="1180,2" />
-					<ePixmap position="42,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png" />
-					<ePixmap position="1135,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png" />
-					<ePixmap position="1085,864" size="60,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png" />
-				</screen>
-			"""
-		elif size_w == 2560:
-			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="1600,1200">
-					<eLabel backgroundColor="blue" position="1194,87" size="394,8" zPosition="11"/>
-					<widget backgroundColor="#18188b" font="Regular;40" halign="center" position="1194,7" render="Label" shadowColor="black" shadowOffset="-2,-2" size="394,94" source="key_blue" transparent="1" valign="center" zPosition="1"/>
-					<eLabel backgroundColor="#999999" position="14,107" size="1574,3"/>
-					<widget name="Mlist" enableWrapAround="1" itemHeight="192" position="14,120" scrollbarMode="showOnDemand" size="1574,960"/>
-					<eLabel backgroundColor="#999999" position="14,1027" size="1574,3"/>
-					<ePixmap position="56,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
-					<ePixmap position="1514,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
-					<ePixmap position="1447,1152" size="80,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
-				</screen>
-			"""
-		else:
-			self.skin = """
-				<screen name="SatPanelb" position="center,center" size="800,600">
-					<eLabel backgroundColor="blue" position="596,43" size="196,4" zPosition="11"/>
-					<widget backgroundColor="#18188b" font="Regular;20" halign="center" position="596,3" render="Label" shadowColor="black" shadowOffset="-2,-2" size="196,46" source="key_blue" transparent="1" valign="center" zPosition="1"/>
-					<eLabel backgroundColor="#999999" position="6,53" size="786,1"/>
-					<widget name="Mlist" enableWrapAround="1" itemHeight="96" position="6,60" scrollbarMode="showOnDemand" size="786,480"/>
-					<eLabel backgroundColor="#999999" position="6,513" size="786,1"/>
-					<ePixmap position="28,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_ok.png"/>
-					<ePixmap position="756,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_next.png"/>
-					<ePixmap position="723,576" size="40,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Foreca/buttons/key_prev.png"/>
-				</screen>
-			"""
-
-		Screen.__init__(self, session)
-		self.setup_title = title
-		self.Mlist = mlist
-		if DEBUG:
-			FAlog("Mlist= %s" % self.Mlist, "\nSatPanelListb([])= %s" % SatPanelListb([]))
-		self["Mlist"] = SatPanelListb([])
-		self["Mlist"].l.setList(self.Mlist)
-		self["Mlist"].selectionEnabled(1)
-		self["key_blue"] = StaticText(_("Settings"))
-		HelpableScreen.__init__(self)
-		self["actions"] = HelpableActionMap(
-			self, "ForecaActions",
-			{
-				"cancel": (self.Exit, _("Exit - End")),
-				"left": (self.left, _("Left - Previous page")),
-				"right": (self.right, _("Right - Next page")),
-				"up": (self.up, _("Up - Previous")),
-				"down": (self.down, _("Down - Next")),
-				"showEventInfo": (self.info, _("Info - Legend")),
-				"info": (self.info, _("Info - Legend")),
-				"blue": (self.PicSetupMenu, _("Blue - Settings")),
-				"ok": (self.ok, _("OK - Show")),
-			},
-			-2,
-		)
-		self.setTitle(title)
-
-	def info(self):
-		message = str("%s" % (_(
-			"Server URL:    %s\n"
-		) % BASEURL))
-		entries = [
-			("VERSION", "%s" % VERSION),  # No translation needed
-			(_("Ok"), _("Show map")),
-			(_("Blue"), _("Settings")),
-			(_("Txt/Red"), _("Open Keyboard")),
-			(_("Up/Down"), _("Previous/Next")),
-			(_("<   >"), _("Previous/Next page")),
-			(_("Info"), _("This information"))
-		]
-		message += format_message(entries)
-		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
-
-	def up(self):
-		self["Mlist"].up()
-		self["Mlist"].selectionEnabled(1)
-
-	def down(self):
-		self["Mlist"].down()
-		self["Mlist"].selectionEnabled(1)
-
-	def left(self):
-		self["Mlist"].pageUp()
-
-	def right(self):
-		self["Mlist"].pageDown()
-
-	def Exit(self):
-		self.close()
-
-	def ok(self):
-		menu = self['Mlist'].l.getCurrentSelection()[0][1]
-		if DEBUG:
-			FAlog("SatPanelb menu= %s" % menu, "CurrentSelection= %s" % self['Mlist'].l.getCurrentSelection())
-		self.SatBild()
-
-	def PicSetupMenu(self):
-		self.session.openWithCallback(self.OKCallback, PicSetup)
-
-	def OKCallback(self, callback=None):
-		global fav1, fav2, start
-		# self.ort = city
-		# fav1 = str(config.plugins.foreca.fav1.getValue())
-		# fav2 = str(config.plugins.foreca.fav2.getValue())
-		# start = str(config.plugins.foreca.home.getValue())
-		fav1 = config.plugins.foreca.fav1.getValue()[config.plugins.foreca.fav1.getValue().rfind("/") + 1:]
-		fav2 = config.plugins.foreca.fav2.getValue()[config.plugins.foreca.fav2.getValue().rfind("/") + 1:]
-		start = config.plugins.foreca.home.getValue()[config.plugins.foreca.home.getValue().rfind("/") + 1:]
-		self.ort = config.plugins.foreca.home.getValue()
-		self.Exit()
-
-	def SatBild(self):
-		try:
-			current_selection = self['Mlist'].l.getCurrentSelection()
-			if not current_selection or not current_selection[0] or len(current_selection[0]) < 2:
-				if DEBUG:
-					FAlog("SatBild Error: Invalid selection in CurrentSelection", str(current_selection))
-				self.session.open(MessageBox, _("Invalid selection. Please select a valid region."), MessageBox.TYPE_ERROR)
-				return
-
-			region = current_selection[0][1]
-			if DEBUG:
-				FAlog("SatBild: Selected region = %s" % region)
-			devicepath = CACHE_PATH + "meteogram.png"
-			url = "http://img.wetterkontor.de/karten/" + region + "0.jpg"
-			if DEBUG:
-				FAlog("SatBild: Downloading image from URL = %s" % url)
-
-			try:
-				download_image(url, devicepath)
-				remove_icc_profile(devicepath)
-				self.session.open(PicViewx, devicepath, 0, False, None)
-			except Exception as e:
-				if DEBUG:
-					FAlog("SatBild Error: Failed to download or save the image", str(e))
-				self.session.open(MessageBox, _("Failed to load the satellite image: %s" % str(e)), MessageBox.TYPE_ERROR)
-
-		except Exception as e:
-			if DEBUG:
-				FAlog("SatBild Critical Error", str(e))
-			self.session.open(MessageBox, _("A critical error occurred: %s" % str(e)), MessageBox.TYPE_ERROR)
-
-
-# ------------------------------------------------------------------------------------------
-# -------------------------- Picture viewer for large pictures -----------------------------
-# ------------------------------------------------------------------------------------------
-
-
-class PicViewx(Screen):
+class PicView(Screen):
 
 	def __init__(self, session, filelist, index, startslide, plaats=None):
 		self.session = session
 		self.bgcolor = config.plugins.foreca.bgcolor.value
 		space = config.plugins.foreca.framesize.value
 		space = space + 5
-
 		self.skin = "<screen name=\"PicView\" title=\"PicView\" position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" > \
 					<!-- <eLabel position=\"0,0\" zPosition=\"-1\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> --> \
 					<widget name=\"pic\" position=\"" + str(space) + ", 50" + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2)) + "\" zPosition=\"1\" alphatest=\"blend\" /> \
-					<widget name=\"city\" position=\"" + str(space) + ", 100" + "\" font=\"Regular;34\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" foregroundColor=\"#ffffff\" zPosition=\"10\" transparent=\"1\" /> \
+					<widget name=\"city\" position=\"" + str(space) + ", 20" + "\" font=\"Regular;34\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" foregroundColor=\"#ffffff\" zPosition=\"10\" transparent=\"1\" /> \
 					</screen>"
 
 		Screen.__init__(self, session)
@@ -2496,6 +2175,7 @@ class PicViewx(Screen):
 		self["pic"] = Pixmap()
 		self["city"] = Label(plaats)
 		self.filelist = filelist
+		self.startslide = startslide
 		self.old_index = 0
 		self.lastindex = index
 		self.currPic = []
@@ -2506,8 +2186,6 @@ class PicViewx(Screen):
 		self.picload = ePicLoad()
 		self.picload.PictureData.get().append(self.finish_decode)
 		self.onLayoutFinish.append(self.setPicloadConf)
-
-		self.startslide = startslide
 
 	def setPicloadConf(self):
 		sc = getScale()
@@ -2531,7 +2209,6 @@ class PicViewx(Screen):
 		if self.shownow and len(self.currPic):
 			self.shownow = False
 			if self.currPic[0]:
-				# remove_icc_profile(self.currPic[0])
 				print("[ShowPicture] Imposto l'immagine:", self.currPic[0])
 				self["pic"].instance.setPixmap(self.currPic[0].__deref__())
 			else:
@@ -2576,236 +2253,6 @@ class PicViewx(Screen):
 		self.clear_images()
 		self.close(self.lastindex + self.dirlistcount)
 
-# ------------------------------------------------------------------------------------------
-# ------------------------------ Slide Show ------------------------------------------------
-# ------------------------------------------------------------------------------------------
-
-
-class View_Slideshow(Screen):
-
-	def __init__(self, session, pindex=0, startslide=False):
-
-		if DEBUG:
-			FAlog("SlideShow is running...")
-		self.textcolor = config.plugins.foreca.textcolor.value
-		self.bgcolor = config.plugins.foreca.bgcolor.value
-		space = config.plugins.foreca.framesize.value
-		fontsize = config.plugins.foreca.fontsize.value
-
-		self.skin = "<screen position=\"0,0\" size=\"" + str(size_w) + "," + str(size_h) + "\" flags=\"wfNoBorder\" > \
-			<eLabel position=\"0,0\" zPosition=\"0\" size=\"" + str(size_w) + "," + str(size_h) + "\" backgroundColor=\"" + self.bgcolor + "\" /> \
-			<widget name=\"pic\" position=\"" + str(space) + "," + str(space + 40) + "\" size=\"" + str(size_w - (space * 2)) + "," + str(size_h - (space * 2) - 40) + "\" zPosition=\"1\" alphatest=\"on\" /> \
-			<widget name=\"point\" position=\"" + str(space + 5) + "," + str(space + 10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "record.png\" alphatest=\"on\" /> \
-			<widget name=\"play_icon\" position=\"" + str(space + 25) + "," + str(space + 10) + "\" size=\"20,20\" zPosition=\"2\" pixmap=\"" + THUMB_PATH + "ico_mp_play.png\"  alphatest=\"on\" /> \
-			<widget name=\"file\" position=\"" + str(space + 45) + "," + str(space + 10) + "\" size=\"" + str(size_w - (space * 2) - 50) + "," + str(fontsize + 5) + "\" font=\"Regular;" + str(fontsize) + "\" halign=\"center\" foregroundColor=\"" + self.textcolor + "\" zPosition=\"2\" noWrap=\"1\" transparent=\"1\" /> \
-			</screen>"
-		Screen.__init__(self, session)
-		self["actions"] = HelpableActionMap(
-			self, "ForecaActions",
-			{
-				"cancel": (self.Exit, _("Exit - End")),
-				"red": (self.Exit, _("Exit - End")),
-				"stop": (self.Exit, _("Exit - End")),
-				"pause": (self.PlayPause, _("Pause")),
-				"playpause": (self.PlayPause, _("Play/Pause")),
-				"previous": (self.prevPic, _("Left - Previous")),
-				"next": (self.nextPic, _("Right - Next")),
-				"showEventInfo": (self.info, _("Info - Legend")),
-				"info": (self.info, _("Info - Legend")),
-			},
-			-1,
-		)
-		self["point"] = Pixmap()
-		self["pic"] = Pixmap()
-		self["play_icon"] = Pixmap()
-		self["file"] = Label(_("Please wait, photo is being loaded ..."))
-		self.old_index = 0
-		self.picfilelist = []
-		self.lastindex = pindex
-		self.currPic = []
-		self.shownow = True
-		self.dirlistcount = 0
-
-		self.filelist = FileList(CACHE_PATH, showDirectories=False, matchingPattern=r"^.*\.(jpg|png)$", useServiceRef=False)
-		for x in self.filelist.getFileList():
-			if x[0][0]:
-				if x[0][1] is False:
-					self.picfilelist.append(x[0][0] if PY3 else CACHE_PATH + x[0][0])
-				else:
-					self.dirlistcount += 1
-
-		self.maxentry = len(self.picfilelist) - 1
-		self.pindex = pindex - self.dirlistcount
-		if self.pindex < 0:
-			self.pindex = 0
-
-		self.picload = ePicLoad()
-		self.picload.PictureData.get().append(self.finish_decode)
-		self.slideTimer = eTimer()
-		self.slideTimer.callback.append(self.slidePic)
-
-		if self.maxentry >= 0:
-			self.onLayoutFinish.append(self.setPicloadConf)
-		if startslide is True:
-			self.PlayPause()
-
-	def info(self):
-		message = str("%s" % (_(
-			"Server URL:    %s\n"
-		) % BASEURL))
-		entries = [
-			("VERSION", "%s" % VERSION),  # No translation needed
-			(_("Prev/Next"), _("Prev./Next Pic")),
-			(_("Pause"), _("Pause Pic")),
-			(_("Play"), _("Play Pic")),
-			(_("Stop"), _("Exit")),
-			(_("Red"), _("Exit")),
-			(_("Info"), _("This information"))
-		]
-		message += format_message(entries)
-		self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
-
-	def setPicloadConf(self):
-		sc = getScale()
-		if not sc or len(sc) < 2:
-			sc = (1920, 1080)
-		if not hasattr(self, 'bgcolor') or not self.bgcolor:
-			self.bgcolor = "#000000"
-		resize_value = int(config.plugins.foreca.resize.value) if str(config.plugins.foreca.resize.value).isdigit() else 1
-		self.picload.setPara([
-			self["pic"].instance.size().width(),
-			self["pic"].instance.size().height(),
-			sc[0],
-			sc[1],
-			0,
-			resize_value,
-			self.bgcolor
-		])
-		if "play_icon" in self and self["play_icon"]:
-			self["play_icon"].hide()
-		if "file" in self and self["file"] and config.plugins.foreca.infoline.value is False:
-			self["file"].hide()
-		self.start_decode()
-
-	def ShowPicture(self):
-		if self.shownow and len(self.currPic):
-			self.shownow = False
-			self["file"].setText(self.currPic[0].replace(".jpg", "").replace(".png", ""))
-			self.lastindex = self.currPic[1]
-			if self.currPic[2]:
-				self["pic"].instance.setPixmap(self.currPic[2].__deref__())
-			else:
-				print("[ShowPicture] No image data present.")
-			self.currPic = []
-			self.nextDay()
-			self.start_decode()
-
-	def finish_decode(self, picInfo=""):
-		self["point"].hide()
-		ptr = self.picload.getData()
-		if ptr is not None:
-			text = ""
-			try:
-				if picInfo:
-					parts = picInfo.split('\n', 1)
-					if parts and '/' in parts[0]:
-						filename = parts[0].split('/')[-1]
-						text = "(" + str(self.pindex + 1) + "/" + str(self.maxentry + 1) + ") " + filename
-				self.currPic = [text, self.pindex, ptr]
-				self.ShowPicture()
-			except Exception as e:
-				print("[finish_decode] Errore:", str(e))
-		else:
-			print("[finish_decode] No image data obtained from picload.")
-
-	def start_decode(self):
-		if self.pindex < 0 or self.pindex >= len(self.picfilelist):
-			print("[start_decode] Index out of bounds: %d" % self.pindex)
-			return
-
-		filepath = self.picfilelist[self.pindex]
-		if CACHE_PATH not in filepath:
-			filepath = CACHE_PATH + filepath
-		if not exists(filepath):
-			return
-
-		try:
-			self.picload.startDecode(filepath)
-		except Exception as e:
-			print("[start_decode] Error while decoding image: %s" % str(e))
-		self["point"].show()
-
-	def nextDay(self):
-		self.pindex += 1
-		if self.pindex > self.maxentry:
-			self.pindex = 0
-
-	def prev(self):
-		self.pindex -= 1
-		if self.pindex < 0:
-			self.pindex = self.maxentry
-
-	def slidePic(self):
-		if DEBUG:
-			FAlog("slide to next Picture index=" + str(self.lastindex))
-		if config.plugins.foreca.loop.value is False and self.lastindex == self.maxentry:
-			self.PlayPause()
-		self.shownow = True
-		self.ShowPicture()
-
-	def PlayPause(self):
-		if self.slideTimer.isActive():
-			self.slideTimer.stop()
-			self["play_icon"].hide()
-		else:
-			self.slideTimer.start(config.plugins.foreca.slidetime.value * 1000)
-			self["play_icon"].show()
-			self.nextPic()
-
-	def prevPic(self):
-		self.currPic = []
-		self.pindex = self.lastindex
-		self.prev()
-		self.start_decode()
-		self.shownow = True
-
-	def nextPic(self):
-		self.shownow = True
-		self.ShowPicture()
-
-	def clear_images(self):
-		try:
-			for filepath in self.picfilelist:
-				full_path = join(CACHE_PATH, filepath)
-				if exists(full_path):
-					try:
-						remove(full_path)
-					except OSError as e:
-						print("Error while removing file:", full_path, e)
-
-			self.picfilelist = []
-
-			if exists(CACHE_PATH):
-				for filename in listdir(CACHE_PATH):
-					if filename.endswith(".jpg") or filename.endswith(".png"):
-						file_path = join(CACHE_PATH, filename)
-						try:
-							remove(file_path)
-							# print("Image file removed:", file_path)
-						except OSError as e:
-							print("Error while removing file:", file_path, e)
-		except Exception as e:
-			print("Error no file:", e)
-
-	def Exit(self):
-		del self.picload
-		self.clear_images()
-		self.close(self.lastindex + self.dirlistcount)
-
-
-# ------------------------------------------------------------------------------------------
-# -------------------------------- Foreca Settings -----------------------------------------
-# ------------------------------------------------------------------------------------------
 
 class PicSetup(Screen, ConfigListScreen):
 
@@ -2911,7 +2358,6 @@ class PicSetup(Screen, ConfigListScreen):
 	def createSetup(self):
 		self.editListEntry = None
 		self.list = []
-		# self.list.append(getConfigListEntry(_("Type Server"), config.plugins.foreca.languages))
 		self.list.append(getConfigListEntry(_("Select units"), config.plugins.foreca.units))
 		self.list.append(getConfigListEntry(_("Select time format"), config.plugins.foreca.time))
 		self.list.append(getConfigListEntry(_("City names as labels in the Main screen"), config.plugins.foreca.citylabels))
@@ -2934,13 +2380,6 @@ class PicSetup(Screen, ConfigListScreen):
 	def OKcity(self):
 		current_item = str(self["Mlist"].getCurrent()[1].getText())
 		self.config_entry = None
-
-		"""
-		print("current_item:", type(current_item), current_item)
-		print("config.plugins.foreca.home:", type(config.plugins.foreca.home), config.plugins.foreca.home.value)
-		print("config.plugins.foreca.fav1:", type(config.plugins.foreca.fav1), config.plugins.foreca.fav1.value)
-		print("config.plugins.foreca.fav2:", type(config.plugins.foreca.fav2), config.plugins.foreca.fav2.value)
-		"""
 
 		if current_item == config.plugins.foreca.home.value:
 			self.config_entry = config.plugins.foreca.home
@@ -2982,11 +2421,6 @@ class PicSetup(Screen, ConfigListScreen):
 		if self.config_entry is None:
 			print("ERROR: self.config_entry is still None after restoring!")
 			return
-		"""
-		print("Config entry actual:", self.config_entry, type(self.config_entry))
-		print("Available methods:", dir(self.config_entry))
-		print("Checking if setValue exists:", hasattr(self.config_entry, "setValue"))
-		"""
 
 		if not callable(getattr(self.config_entry, "setValue", None)):
 			print("ERROR: setValue is not callable! It is:", type(self.config_entry.setValue))
@@ -3048,7 +2482,7 @@ class PicSetup(Screen, ConfigListScreen):
 		self['Mlist'].instance.moveSelection(self['Mlist'].instance.moveUp)
 		self.createSetup()
 
-	def keyNumber(self, number):
+	def keyNumberGlobal(self, number):
 		self["Mlist"].handleKey(KEY_0 + number)
 		self.createSetup()
 

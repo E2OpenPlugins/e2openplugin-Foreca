@@ -143,3 +143,4 @@ very cloudy or overcast=stark bewölkt oder bedeckt
 very cloudy with rain and thunderstorms and fog=stark bewölkt mit Regen, Gewittern und Nebel
 very cloudy with rain and thunderstorms=stark bewölkt mit Regen und Gewittern
 very heavy rain, locally flooding=sehr starker Regen, örtlich Hochwasser
+Germany=Deutschland
